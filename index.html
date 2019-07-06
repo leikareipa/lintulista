@@ -7,12 +7,56 @@
         <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
-        Hello there.
+        <p>Hello there.</p>
+
+        <input id="search"
+               type="search"
+               placeholder=""
+               spellcheck="false"
+               autocomplete="off"
+               oninput="update_search(event);">
+
+        <div id="results"></div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
-        <script type="module">
-            // ...
+        <script>
+            const things =
+            [
+                {name:"abc", data:1},
+                {name:"Mike", data:2},
+                {name:"superlative", data:3},
+                {name:"superfluous", data:4},
+                {name:"subcutaneous", data:5},
+                {name:"Minecraft", data:6},
+                {name:"three-bedroom apartment", data:7},
+                {name:"Off", data:8},
+                {name:"On", data:9},
+                {name:"Sub", data:10},
+                {name:"Deg", data:11},
+            ];
+
+            function update_search(event)
+            {
+                const currentSearchString = document.getElementById("search").value;
+                
+                const searchResults = [];
+
+                if (currentSearchString.length)
+                {
+                    things.forEach(thing=>
+                    {
+                        if (thing.name.toLowerCase().includes(currentSearchString.toLowerCase()))
+                        {
+                            searchResults.push(React.createElement("div", {key:thing.data}, thing.name));
+                        }
+                    });
+                }
+
+                searchResults.length = Math.max(6, searchResults.length);
+
+                ReactDOM.render(searchResults, document.getElementById("results"));
+            }
         </script>
     </body>
 </html>
