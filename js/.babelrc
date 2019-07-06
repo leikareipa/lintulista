@@ -1,0 +1,16 @@
+{
+    "presets":
+    [
+        [
+            "@babel/preset-react",
+            {
+            }
+        ],
+        [
+            "minify",
+            {
+            }
+        ]
+    ],
+    "comments": false
+}
