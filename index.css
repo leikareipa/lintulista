@@ -6,3 +6,33 @@ body
     color: lightgray;
     text-align: center;
 }
+
+#search-widget
+{
+    display: inline-block;
+}
+
+#search-widget .BirdSearchField
+{
+    width: 300px;
+}
+
+#search-widget .BirdSearchResultElement
+{
+    color: lightgray;
+    background-color: gray;
+    padding: 10px;
+}
+
+#search-widget .BirdSearchResultElement:nth-child(2n)
+{
+    background-color: dimgray;
+}
+
+#search-widget .BirdSearchField
+{
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: none;
+}
