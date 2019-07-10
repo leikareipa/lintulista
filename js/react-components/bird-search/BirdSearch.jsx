@@ -31,7 +31,10 @@ export function BirdSearch(props = {})
             {
                 if (bird.name.toLowerCase().includes(searchString.toLowerCase()))
                 {
-                    searchResults.push(<BirdSearchResultElement key={idx} birdName={bird.name}></BirdSearchResultElement>);
+                    searchResults.push(<BirdSearchResultElement key={idx}
+                                                                birdName={bird.name}
+                                                                birdImageUrl={bird.imageUrl}>
+                                       </BirdSearchResultElement>);
                 }
             });
         }
@@ -47,7 +50,7 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 6,
+    maxResultElements: 4,
 
     // A list of the birds to search.
     birds:

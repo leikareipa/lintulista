@@ -2,7 +2,7 @@
 
 body
 {
-    background-color: black;
+    background-color: #303030;
     color: lightgray;
     text-align: center;
 }
@@ -14,19 +14,31 @@ body
 
 #search-widget .BirdSearchField
 {
-    width: 300px;
+    width: 400px;
+    outline: none;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
 #search-widget .BirdSearchResultElement
 {
-    color: lightgray;
-    background-color: gray;
-    padding: 10px;
+    color: dimgray;
+    background-color: #f2f2f2;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 110%;
+}
+
+#search-widget .BirdSearchResultElement img
+{
+    width: 50px;
+    margin-right: 17px;
+    border-radius: 50%;
 }
 
 #search-widget .BirdSearchResultElement:nth-child(2n)
 {
-    background-color: dimgray;
+    background-color: #eaeaea;
 }
 
 #search-widget .BirdSearchField

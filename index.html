@@ -24,7 +24,11 @@
 
                 const searchElement = React.createElement(BirdSearch,
                 {
-                    birds: birdList.birds,
+                    birds: birdList.birds.map(bird=>(
+                        {
+                            name: bird.name,
+                            imageUrl: `http://www.luontoportti.com/suomi/images/${bird.image}`,
+                        })),
                 });
 
                 ReactDOM.render(searchElement, document.getElementById("search-widget"));
