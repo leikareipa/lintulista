@@ -15,16 +15,23 @@
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
         <script type="module">
             import {BirdSearch} from "./dist/react-components/bird-search/BirdSearch.js";
+            import {observation_list} from "./dist/observation/observation-list.js"
+
+            const birdList = observation_list();
+            birdList.add_observation("Haikara", new Date());
+            birdList.add_observation("Kuhankeittäjä", new Date());
+            birdList.add_observation("Naakka", new Date());
+            console.log(birdList.observations);
 
             (async()=>
             {
-                const birdList = await fetch("birds.json")
-                                       .then(response=>response.json())
-                                       .catch(error=>{ /*TODO*/ });
+                const knownBirds = await fetch("birds.json")
+                                         .then(response=>response.json())
+                                         .catch(error=>{ /*TODO*/ });
 
                 const searchElement = React.createElement(BirdSearch,
                 {
-                    birds: birdList.birds.map(bird=>(
+                    birds: knownBirds.birds.map(bird=>(
                         {
                             name: bird.name,
                             imageUrl: `http://www.luontoportti.com/suomi/images/${bird.image}`,
