@@ -11,7 +11,7 @@
         <p>Hello there.</p>
 
         <div id="search-widget"></div>
-        <div id="observation-table"></div>
+        <div id="observation-list"></div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
@@ -31,7 +31,7 @@
                                              return responseJson.birds.map(b=>bird(
                                              {
                                                  name: b.name,
-                                                 thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.image}`,
+                                                 thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
                                              }));
                                          })
                                          .catch(error=>panic(`Failed to load the list of known birds.\n\n${error}`));
@@ -54,7 +54,7 @@
                         observations: observationList.observations,
                     });
 
-                    ReactDOM.render(listElement, document.getElementById("observation-table"));
+                    ReactDOM.render(listElement, document.getElementById("observation-list"));
                 }
 
                 /// Add bird search functionality, for testing purposes.
