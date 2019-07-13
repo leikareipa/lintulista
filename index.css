@@ -43,6 +43,7 @@ body
     width: 50px;
     margin-right: 17px;
     border-radius: 50%;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
 .BirdSearchResultElement .name
@@ -117,6 +118,7 @@ body
     width: 50px;
     margin-right: 15px;
     border-radius: 50%;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
 .ObservationListElement .name
