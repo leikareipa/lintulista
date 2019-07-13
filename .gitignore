@@ -1,4 +1,4 @@
 misc/
 .vscode/
 node_modules/
-dist/
+client/dist/

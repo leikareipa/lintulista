@@ -16,14 +16,14 @@ export function BirdSearchResultElement(props = {})
         {
             return {
                 hasBeenPreviouslyObserved: true,
-                dateObserved: <>{props.dateObserved}</>,
+                dateObserved: <>Havaittu {props.dateObserved}</>,
             };
         }
         else
         {
             return {
                 hasBeenPreviouslyObserved: false,
-                dateObserved: <><i className="fas fa-plus-circle" style={{fontVariant:"small-caps",color:"#b0b0b0"}}></i> uusi laji</>,
+                dateObserved: <><i className="fas fa-plus-circle" style={{fontVariant:"small-caps",color:"#b0b0b0"}}></i> Lisää havainto</>,
             };
         }
     })();

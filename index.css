@@ -22,7 +22,7 @@ body
 
 .BirdSearchResultElement
 {
-    color: dimgray;
+    color: black;
     background-color: #f2f2f2;
     padding: 15px;
     padding-top: 10px;
@@ -88,7 +88,7 @@ body
 
 .ObservationListElement
 {
-    color: dimgray;
+    color: black;
     background-color: #f2f2f2;
     padding: 15px;
     padding-top: 10px;
