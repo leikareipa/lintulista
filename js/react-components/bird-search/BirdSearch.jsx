@@ -31,10 +31,7 @@ export function BirdSearch(props = {})
             {
                 if (bird.name.toLowerCase().includes(searchString.toLowerCase()))
                 {
-                    searchResults.push(<BirdSearchResultElement key={idx}
-                                                                birdName={bird.name}
-                                                                birdImageUrl={bird.imageUrl}>
-                                       </BirdSearchResultElement>);
+                    searchResults.push(<BirdSearchResultElement key={idx} bird={bird} />);
                 }
             });
         }

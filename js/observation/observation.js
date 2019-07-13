@@ -9,38 +9,18 @@
 import {warn} from "../assert.js";
 import {bird} from "../bird/bird.js";
 
-export function observation(birdName, dateObserved, dateAdded)
+export function observation(bird, date)
 {
-    if (!(dateAdded instanceof Date))
+    if (!(date instanceof Date))
     {
-        warn("Invalid creation date for an observation.");
-        return false;
-    }
-
-    if (!(dateObserved instanceof Date))
-    {
-        warn("Invalid obsevation date. Resetting it.");
-        return false;
-    }
-
-    if (typeof birdName !== "string")
-    {
-        warn("Expected the bird name to be a string.");
-        return false;
-    }
-
-    const observedBird = bird(birdName);
-
-    if (!observedBird)
-    {
+        warn("Invalid date for the observation.");
         return false;
     }
 
     const publicInterface = Object.freeze(
     {
-        bird: observedBird,
-        dateObserved,
-        dateAdded,
+        bird,
+        date,
     });
     
     return publicInterface;

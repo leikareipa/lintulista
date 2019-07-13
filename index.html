@@ -4,41 +4,68 @@
         <title>Bird list search</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
         <p>Hello there.</p>
 
         <div id="search-widget"></div>
+        <div id="observation-table"></div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
         <script type="module">
             import {BirdSearch} from "./dist/react-components/bird-search/BirdSearch.js";
+            import {ObservationList} from "./dist/react-components/observation-list/ObservationList.js";
             import {observation_list} from "./dist/observation/observation-list.js"
-
-            const birdList = observation_list();
-            birdList.add_observation("Haikara", new Date());
-            birdList.add_observation("Kuhankeittäjä", new Date());
-            birdList.add_observation("Naakka", new Date());
-            console.log(birdList.observations);
+            import {panic} from "./dist/assert.js"
+            import {bird} from "./dist/bird/bird.js"
 
             (async()=>
             {
                 const knownBirds = await fetch("birds.json")
                                          .then(response=>response.json())
-                                         .catch(error=>{ /*TODO*/ });
+                                         .then(responseJson=>
+                                         {
+                                             return responseJson.birds.map(b=>bird(
+                                             {
+                                                 name: b.name,
+                                                 thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.image}`,
+                                             }));
+                                         })
+                                         .catch(error=>panic(`Failed to load the list of known birds.\n\n${error}`));
 
-                const searchElement = React.createElement(BirdSearch,
+                /// Create an observation list, for testing purposes.
                 {
-                    birds: knownBirds.birds.map(bird=>(
-                        {
-                            name: bird.name,
-                            imageUrl: `http://www.luontoportti.com/suomi/images/${bird.image}`,
-                        })),
-                });
+                    const observationList = observation_list(knownBirds);
 
-                ReactDOM.render(searchElement, document.getElementById("search-widget"));
+                    observationList.add_observation("Pikkuvarpunen", new Date());
+                    observationList.add_observation("Kuhankeittäjä", new Date());
+                    observationList.add_observation("Naakka", new Date());
+                    observationList.add_observation("Lyhytnokkahanhi", new Date());
+                    observationList.add_observation("Punavarpunen", new Date());
+                    observationList.add_observation("Varpunen", new Date());
+                    observationList.add_observation("Kanadanhanhi", new Date());
+                    observationList.add_observation("Alli", new Date());
+
+                    const listElement = React.createElement(ObservationList,
+                    {
+                        observations: observationList.observations,
+                    });
+
+                    ReactDOM.render(listElement, document.getElementById("observation-table"));
+                }
+
+                /// Add bird search functionality, for testing purposes.
+                {
+                    const searchElement = React.createElement(BirdSearch,
+                    {
+                        birds: knownBirds,
+                    });
+
+                    ReactDOM.render(searchElement, document.getElementById("search-widget"));
+                }
             })();
         </script>
     </body>

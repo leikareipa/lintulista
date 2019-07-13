@@ -50,3 +50,47 @@ body
     padding-bottom: 15px;
     border: none;
 }
+
+.ObservationList
+{
+    display: inline-block;
+    width: 550px;
+}
+
+.ObservationListElement
+{
+    color: dimgray;
+    background-color: #f2f2f2;
+    padding: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 110%;
+}
+
+.ObservationListElement:nth-of-type(2n)
+{
+    background-color: #eaeaea;
+}
+
+.ObservationListElement .image
+{
+    width: 50px;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+
+.ObservationListElement .name
+{
+    text-align: left;
+}
+
+.ObservationListElement .observation-details
+{
+    margin-left: auto;
+    padding-right: 5px;
+    font-size: 75%;
+    color: #959595;
+    text-align: right;
+}

@@ -6,14 +6,21 @@
 
 "use strict";
 
-export function bird(birdName = "")
+export function bird(args = {})
 {
-    /// TODO: Check to make sure the bird's name is valid.
+    args = {...bird.defaultArgs, ...args}
 
     const publicInterface = Object.freeze(
     {
-        birdName,
+        name: args.name,
+        thumbnailUrl: args.thumbnailUrl,
     });
     
     return publicInterface;
+}
+
+bird.defaultArgs = 
+{
+    name: "?",
+    thumbnailUrl: "",
 }
