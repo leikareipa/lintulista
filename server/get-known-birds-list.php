@@ -19,14 +19,14 @@ if (!$knownBirdsData)
 
 exit(success($knownBirdsData));
 
-function failure($errorMessage = "")
-{
-    echo json_encode(["valid" => false, "message" => $errorMessage]);
-}
-
 function success($data)
 {
-    echo json_encode(["valid" => true, "data" => $data]);
+    echo json_encode(["valid"=>true, "data"=>$data]);
+}
+
+function failure($errorMessage = "")
+{
+    echo json_encode(["valid"=>false, "message"=>$errorMessage]);
 }
 
 ?>

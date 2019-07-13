@@ -2,3 +2,4 @@ misc/
 .vscode/
 node_modules/
 client/dist/
+server/assets/lists/
