@@ -8,8 +8,3 @@ export function ObservationList(props = {})
                {props.observations.map((obs, idx)=><ObservationListElement observation={obs} key={idx} />)}
            </div>
 }
-
-ObservationList.defaultProps =
-{
-    observations: []
-}

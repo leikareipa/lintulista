@@ -2,7 +2,7 @@
 
 body
 {
-    background-color: #303030;
+    background-color: #404040;
     color: lightgray;
     text-align: center;
 }
@@ -12,14 +12,14 @@ body
     display: inline-block;
 }
 
-#search-widget .BirdSearchField
+.BirdSearchField
 {
     width: 400px;
     outline: none;
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
-#search-widget .BirdSearchResultElement
+.BirdSearchResultElement
 {
     color: dimgray;
     background-color: #f2f2f2;
@@ -29,21 +29,41 @@ body
     display: flex;
     align-items: center;
     font-size: 110%;
+
+    -o-user-select: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-#search-widget .BirdSearchResultElement img
+.BirdSearchResultElement img
 {
     width: 50px;
     margin-right: 17px;
     border-radius: 50%;
 }
 
-#search-widget .BirdSearchResultElement:nth-child(2n)
+.BirdSearchResultElement .name
+{
+    text-align: left;
+}
+
+.BirdSearchResultElement .subtitle
+{
+    margin-left: auto;
+    padding-right: 5px;
+    font-size: 75%;
+    color: #959595;
+    text-align: right;
+}
+
+.BirdSearchResultElement:nth-child(2n)
 {
     background-color: #eaeaea;
 }
 
-#search-widget .BirdSearchField
+.BirdSearchField
 {
     padding: 10px;
     padding-top: 15px;
@@ -54,7 +74,7 @@ body
 .ObservationList
 {
     display: inline-block;
-    width: 550px;
+    width: 600px;
 }
 
 .ObservationListElement

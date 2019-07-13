@@ -1,17 +1,23 @@
 "use strict";
 
-import {bird} from "../../bird/bird.js"
+import {warn, panic} from "../../assert.js"
 
 // An element displaying information about an individual search result.
 export function BirdSearchResultElement(props = {})
 {
-    return <div className="BirdSearchResultElement">
-               <img src={props.bird.thumbnailUrl}></img>
-               {props.bird.name}
-           </div>
-}
+    if (typeof props.clickCallback !== "function")
+    {
+        panic("Expected a click handler function.");
+    }
 
-BirdSearchResultElement.defaultProps =
-{
-    bird: bird(),
+    return <div className="BirdSearchResultElement" style={{cursor: "pointer"}}
+                                                    onClick={()=>props.clickCallback(props.bird)}>
+               <img className="image" src={props.bird.thumbnailUrl}></img>
+               <span className="name">
+                   {props.bird.name}<br />
+                   <span className="subtitle">
+                       Uusi laji
+                   </span>
+               </span>
+           </div>
 }

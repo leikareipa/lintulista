@@ -7,9 +7,3 @@ export function BirdSearchResultsDisplay(props = {})
                {props.resultElements}
            </div>
 }
-
-BirdSearchResultsDisplay.defaultProps =
-{
-    // The React elements to show in the display; each element being one search result.
-    resultElements: [],
-}

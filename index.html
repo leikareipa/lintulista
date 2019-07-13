@@ -8,10 +8,8 @@
         <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
-        <p>Hello there.</p>
-
-        <div id="search-widget"></div>
-        <div id="observation-list"></div>
+        <div id="search-widget" style="margin-top: 20px;"></div>
+        <div id="observation-list" style="margin-top: 20px;"></div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
@@ -36,37 +34,48 @@
                                          })
                                          .catch(error=>panic(`Failed to load the list of known birds.\n\n${error}`));
 
-                /// Create an observation list, for testing purposes.
+                /// Create an observation list for testing purposes.
+                const observationList = (()=>
                 {
-                    const observationList = observation_list(knownBirds);
+                    const list = observation_list(knownBirds);
 
-                    observationList.add_observation("Pikkuvarpunen", new Date());
-                    observationList.add_observation("Kuhankeittäjä", new Date());
-                    observationList.add_observation("Naakka", new Date());
-                    observationList.add_observation("Lyhytnokkahanhi", new Date());
-                    observationList.add_observation("Punavarpunen", new Date());
-                    observationList.add_observation("Varpunen", new Date());
-                    observationList.add_observation("Kanadanhanhi", new Date());
-                    observationList.add_observation("Alli", new Date());
+                    list.add_observation("Pikkuvarpunen", new Date());
+                    list.add_observation("Kuhankeittäjä", new Date());
+                    list.add_observation("Naakka", new Date());
+                    list.add_observation("Lyhytnokkahanhi", new Date());
+                    list.add_observation("Punavarpunen", new Date());
+                    list.add_observation("Varpunen", new Date());
+                    list.add_observation("Kanadanhanhi", new Date());
+                    list.add_observation("Alli", new Date());
 
-                    const listElement = React.createElement(ObservationList,
-                    {
-                        observations: observationList.observations,
-                    });
+                    render_observation_list(list);
 
-                    ReactDOM.render(listElement, document.getElementById("observation-list"));
-                }
+                    return list;
+                })();
 
-                /// Add bird search functionality, for testing purposes.
+                /// Add bird search functionality for testing purposes.
                 {
                     const searchElement = React.createElement(BirdSearch,
                     {
                         birds: knownBirds,
+                        
+                        selectionCallback: (bird)=>
+                        {
+                            observationList.add_observation(bird.name, new Date());
+                            
+                            render_observation_list(observationList);
+                        },
                     });
 
                     ReactDOM.render(searchElement, document.getElementById("search-widget"));
                 }
             })();
+
+            function render_observation_list(observationList)
+            {
+                ReactDOM.render(React.createElement(ObservationList, {observations: observationList.observations}),
+                                document.getElementById("observation-list"));
+            }
         </script>
     </body>
 </html>

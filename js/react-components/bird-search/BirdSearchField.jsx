@@ -12,8 +12,3 @@ export function BirdSearchField(props = {})
                   onChange={props.onChange}>
            </input>
 }
-
-BirdSearchField.defaultProps =
-{
-    onChange: (event)=>{console.warn("Unhandled onChange event.")},
-}
