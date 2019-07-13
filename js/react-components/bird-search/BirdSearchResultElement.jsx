@@ -16,7 +16,7 @@ export function BirdSearchResultElement(props = {})
                <span className="name">
                    {props.bird.name}<br />
                    <span className="subtitle">
-                       Uusi laji
+                       Ei aiempaa havaintoa
                    </span>
                </span>
            </div>

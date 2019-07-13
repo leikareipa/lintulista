@@ -6,9 +6,11 @@
 
 "use strict";
 
+import {panic_if_undefined} from "../assert.js";
+
 export function bird(args = {})
 {
-    args = {...bird.defaultArgs, ...args}
+    panic_if_undefined(args.name, args.thumbnailUrl);
 
     const publicInterface = Object.freeze(
     {
@@ -17,10 +19,4 @@ export function bird(args = {})
     });
     
     return publicInterface;
-}
-
-bird.defaultArgs = 
-{
-    name: "?",
-    thumbnailUrl: "",
 }

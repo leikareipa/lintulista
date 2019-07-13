@@ -9,7 +9,7 @@
     </head>
     <body>
         <div id="search-widget" style="margin-top: 20px;"></div>
-        <div id="observation-list" style="margin-top: 20px;"></div>
+        <div id="observation-list" style="margin-top: 20px; margin-bottom: 50px;"></div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin></script>
@@ -23,7 +23,15 @@
             (async()=>
             {
                 const knownBirds = await fetch("birds.json")
-                                         .then(response=>response.json())
+                                         .then(response=>
+                                         {
+                                             if (!response.ok)
+                                             {
+                                                 panic("Failed to load the master bird list from the server.");
+                                             }
+                                             
+                                             return response.json();
+                                         })
                                          .then(responseJson=>
                                          {
                                              return responseJson.birds.map(b=>bird(
@@ -31,8 +39,7 @@
                                                  name: b.name,
                                                  thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
                                              }));
-                                         })
-                                         .catch(error=>panic(`Failed to load the list of known birds.\n\n${error}`));
+                                         });
 
                 /// Create an observation list for testing purposes.
                 const observationList = (()=>
@@ -47,6 +54,7 @@
                     list.add_observation("Varpunen", new Date());
                     list.add_observation("Kanadanhanhi", new Date());
                     list.add_observation("Alli", new Date());
+                    list.add_observation("Naakka", new Date());
 
                     render_observation_list(list);
 

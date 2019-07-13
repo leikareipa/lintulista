@@ -6,12 +6,13 @@
 
 "use strict";
 
-import {warn} from "../assert.js";
-import {bird} from "../bird/bird.js";
+import {warn, panic_if_undefined} from "../assert.js";
 
-export function observation(bird, date)
+export function observation(args = {})
 {
-    if (!(date instanceof Date))
+    panic_if_undefined(args.date, args.bird);
+    
+    if (!(args.date instanceof Date))
     {
         warn("Invalid date for the observation.");
         return false;
@@ -19,8 +20,8 @@ export function observation(bird, date)
 
     const publicInterface = Object.freeze(
     {
-        bird,
-        date,
+        bird: args.bird,
+        date: args.date,
     });
     
     return publicInterface;

@@ -14,8 +14,7 @@ export function ObservationListElement(props = {})
                <span className="name">
                    {props.observation.bird.name}<br />
                    <span className="observation-details">
-                       <i className="far fa-calendar-check" style={{color:"#c0c0c0"}}></i> 1/1
-                       <i className="far fa-clock" style={{marginLeft:"10px", color:"#c0c0c0"}}></i> {dateString}, {timeString}
+                       <i className="far fa-calendar-check" style={{color:"#c0c0c0"}}></i> {dateString}
                    </span>
                </span>
            </div>

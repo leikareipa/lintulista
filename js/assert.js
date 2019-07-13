@@ -12,6 +12,17 @@ export function panic(errorMessage = "")
     throw Error(`Lintulista: ${errorMessage}`);
 }
 
+export function panic_if_undefined(...properties)
+{
+    properties.forEach(property=>
+    {
+        if (typeof property === "undefined")
+        {
+            panic("A required property was undefined.");
+        }
+    });
+}
+
 export function warn(errorMessage = "")
 {
     console.warn(`Lintulista: ${errorMessage}`);

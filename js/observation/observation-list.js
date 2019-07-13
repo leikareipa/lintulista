@@ -7,25 +7,29 @@
 "use strict";
 
 import {observation} from "./observation.js";
-import {warn} from "../assert.js";
+import {warn, panic_if_undefined} from "../assert.js";
 
 export function observation_list(knownBirds)
 {
-    if (typeof knownBirds === "undefined")
-    {
-        warn("No list of known birds provided.");
-        knownBirds = [];
-    }
+    panic_if_undefined(knownBirds);
 
-    const list = [];
+    const knownBirdNames = Object.freeze(knownBirds.map(bird=>bird.name.toLowerCase()));
+
+    const observationList = [/*observation(), observation(), ...*/];
 
     const publicInterface =
     {
-        observations: [],
+        observations: Object.freeze([]),
 
         add_observation: function(birdName, observationDate)
         {
-            const birdIdx = knownBirds.map(bird=>bird.name.toLowerCase()).indexOf(birdName.toLowerCase());
+            // If this bird already exists in the list.
+            if (this.observations.map(obs=>obs.bird.name.toLowerCase()).indexOf(birdName.toLowerCase()) !== -1)
+            {
+                return true;
+            }
+
+            const birdIdx = knownBirdNames.indexOf(birdName.toLowerCase());
 
             if (birdIdx === -1)
             {
@@ -33,8 +37,11 @@ export function observation_list(knownBirds)
                 return false;
             }
 
-            const currentDate = new Date();
-            const newObservation = observation(knownBirds[birdIdx], observationDate, currentDate)
+            const newObservation = observation(
+            {
+                bird: knownBirds[birdIdx],
+                date: new Date(),
+            });
 
             if (!newObservation)
             {
@@ -42,8 +49,8 @@ export function observation_list(knownBirds)
                 return false;
             }
 
-            list.push(newObservation);
-            this.observations = list.slice();
+            observationList.push(newObservation);
+            this.observations = Object.freeze(observationList.slice());
 
             return true;
         }
