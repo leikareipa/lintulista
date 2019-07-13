@@ -1,1 +1,1 @@
-./node_modules/.bin/babel ./client/js/ --out-dir ./client/dist/
+./node_modules/.bin/babel ./client/src/ --out-dir ./client/dist/
