@@ -23,7 +23,7 @@ export function BirdSearchResultElement(props = {})
         {
             return {
                 hasBeenPreviouslyObserved: false,
-                dateObserved: <><i className="fas fa-plus-circle" style={{color:"gray"}}></i> Merkitse listaan</>,
+                dateObserved: <><i className="fas fa-plus-circle" style={{color:"gray"}}></i> Uusi havainto</>,
             };
         }
     })();

@@ -55,23 +55,39 @@
                                     .catch(error=>panic(`Error while fetching the master bird list.\n\n${error}`));
 
                 /// Create an observation list for testing purposes.
-                const observationList = (()=>
+                const observationList = await (async()=>
                 {
-                    const list = observation_list(knownBirds);
+                    const serverSideObservations = await fetch("./server/get-observations.php?list=Dy1p1i5C1BO!d")
+                                                         .then(response=>
+                                                         {
+                                                             if (!response.ok)
+                                                             {
+                                                                 throw "Failed to load server-side observation data.";
+                                                             }
 
-                    list.add_observation("Pikkuvarpunen", new Date());
-                    list.add_observation("Kuhankeittäjä", new Date());
-                    list.add_observation("Naakka", new Date());
-                    list.add_observation("Lyhytnokkahanhi", new Date());
-                    list.add_observation("Punavarpunen", new Date());
-                    list.add_observation("Varpunen", new Date());
-                    list.add_observation("Kanadanhanhi", new Date());
-                    list.add_observation("Alli", new Date());
-                    list.add_observation("Naakka", new Date());
+                                                            return response.json();
+                                                         })
+                                                         .then(ticket=>
+                                                         {
+                                                             if (!ticket.valid || (typeof ticket.data === "undefined"))
+                                                             {
+                                                                 throw (`A GET ticket from the server was marked as invalid. It said: ${ticket.message}`);
+                                                             }
 
-                    render_observation_list(list);
+                                                             return JSON.parse(ticket.data);
+                                                         })
+                                                         .catch(error=>panic(`Error while fetching server-side observation data.\n\n${error}`));
 
-                    return list;
+                    const observationList = observation_list(knownBirds);
+
+                    serverSideObservations.forEach(observation=>
+                    {
+                        observationList.add_observation(observation.birdName, new Date(observation.timestamp*1000));
+                    })
+
+                    render_observation_list(observationList);
+
+                    return observationList;
                 })();
 
                 /// Add bird search functionality for testing purposes.

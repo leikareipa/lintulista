@@ -50,7 +50,7 @@ foreach ($observationData["observations"] as $observation)
         exit(failure("Server-side IO failure: The observation list is missing the required \"timestamp\" property."));
     }
 
-    $returnData[] = ["bird"=>$observation["birdName"], "timestamp"=>$observation["timestamp"]];
+    $returnData[] = ["birdName"=>$observation["birdName"], "timestamp"=>$observation["timestamp"]];
 }
 
 exit(success(json_encode($returnData)));
