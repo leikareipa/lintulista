@@ -1,4 +1,8 @@
 {
+	"comments":["A list of the birds recognized in Lintulista. The user can add observations of any bird that",
+				"occurs on this list, but not of others. The 'thumbnail' property gives the name of that bird's",
+			    "thumbnail image on Luontoportti; e.g. 12374t.jpg expands to luontoportti.com/suomi/images/12374t.jpg."],
+				
 	"birds":
 	[
 		{"name":"Alli","thumbnail":"12374t.jpg"},

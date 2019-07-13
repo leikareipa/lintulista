@@ -22,24 +22,37 @@
 
             (async()=>
             {
-                const knownBirds = await fetch("birds.json")
-                                         .then(response=>
-                                         {
-                                             if (!response.ok)
-                                             {
-                                                 panic("Failed to load the master bird list from the server.");
-                                             }
+                const knownBirds = await fetch("./server/get-known-birds-list.php")
+                                    .then(response=>
+                                    {
+                                        if (!response.ok)
+                                        {
+                                            throw "Failed to load the master bird list from the server.";
+                                        }
 
-                                             return response.json();
-                                         })
-                                         .then(responseJson=>
-                                         {
-                                             return responseJson.birds.map(b=>bird(
-                                             {
-                                                 name: b.name,
-                                                 thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
-                                             }));
-                                         });
+                                        return response.json();
+                                    })
+                                    .then(ticket=>
+                                    {
+                                        if (!ticket.valid || (typeof ticket.data === "undefined"))
+                                        {
+                                            throw (`A GET ticket from the server was marked as invalid. It said: ${ticket.message}`);
+                                        }
+
+                                        const birdData = JSON.parse(ticket.data);
+
+                                        if (typeof birdData.birds === "undefined")
+                                        {
+                                            throw "Missing required data in the master bird list.";
+                                        }
+
+                                        return birdData.birds.map(b=>bird(
+                                        {
+                                            name: b.name,
+                                            thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
+                                        }));
+                                    })
+                                    .catch(error=>panic(`Error while fetching the master bird list.\n\n${error}`));
 
                 /// Create an observation list for testing purposes.
                 const observationList = (()=>
