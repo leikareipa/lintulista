@@ -10,26 +10,30 @@ export function BirdSearchResultElement(props = {})
         panic("Expected a click handler function.");
     }
 
-    const whenObserved = (()=>
+    const {hasBeenPreviouslyObserved, dateObserved} = (()=>
     {
         if (props.dateObserved)
         {
-            return <><i className="far fa-calendar-check" style={{color:"#c0c0c0"}}></i> {props.dateObserved}</>
+            return {
+                hasBeenPreviouslyObserved: true,
+                dateObserved: <>{props.dateObserved}</>,
+            };
         }
         else
         {
-            return <span style={{fontStyle: "italic"}}>ei havaittu aiemmin</span>
+            return {
+                hasBeenPreviouslyObserved: false,
+                dateObserved: <><i className="fas fa-plus-circle" style={{fontVariant:"small-caps",color:"#b0b0b0"}}></i> uusi laji</>,
+            };
         }
     })();
 
-    return <div className="BirdSearchResultElement" style={{cursor: "pointer"}}
-                                                    onClick={()=>props.clickCallback(props.bird)}>
+    return <div className="BirdSearchResultElement" style={{cursor: (hasBeenPreviouslyObserved? "default" : "pointer")}}
+                                                    onClick={()=>{!hasBeenPreviouslyObserved? props.clickCallback(props.bird) : 1;}}>
                <img className="image" src={props.bird.thumbnailUrl}></img>
                <span className="name">
                    {props.bird.name}<br />
-                   <span className="observed-date">
-                       {whenObserved}
-                   </span>
+                   <span className="observed-date">{dateObserved}</span>
                </span>
            </div>
 }

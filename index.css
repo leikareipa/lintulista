@@ -17,6 +17,7 @@ body
     width: 400px;
     outline: none;
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
+    background-color: #e5e5e5;
 }
 
 .BirdSearchResultElement
@@ -42,11 +43,19 @@ body
     width: 50px;
     margin-right: 17px;
     border-radius: 50%;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
 .BirdSearchResultElement .name
 {
     text-align: left;
+    padding-left: 10px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.BirdSearchResultElement:last-child
+{
+    border-radius: 0 0 2px 2px;
 }
 
 .BirdSearchResultElement .observed-date
@@ -89,6 +98,16 @@ body
     font-size: 110%;
 }
 
+.ObservationListElement:first-child
+{
+    border-radius: 2px 2px 0 0;
+}
+
+.ObservationListElement:last-child
+{
+    border-radius: 0 0 2px 2px;
+}
+
 .ObservationListElement:nth-of-type(2n)
 {
     background-color: #eaeaea;
@@ -99,11 +118,14 @@ body
     width: 50px;
     margin-right: 15px;
     border-radius: 50%;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
 .ObservationListElement .name
 {
     text-align: left;
+    padding-left: 10px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .ObservationListElement .observation-details
