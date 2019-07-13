@@ -17,7 +17,7 @@
             import {BirdSearch} from "./client/dist/react-components/bird-search/BirdSearch.js";
             import {ObservationList} from "./client/dist/react-components/observation-list/ObservationList.js";
             import {observation_list} from "./client/dist/observation/observation-list.js"
-            import {panic} from "./client/dist/assert.js"
+            import {panic, warn} from "./client/dist/assert.js"
             import {bird} from "./client/dist/bird/bird.js"
 
             (async()=>
@@ -96,10 +96,46 @@
                     {
                         birds: knownBirds,
                         observationList: observationList,
-                        selectionCallback: (bird)=>
+                        selectionCallback: async(bird)=>
                         {
-                            observationList.add_observation(bird.name, new Date());
-                            render_observation_list(observationList);
+                            const success = await fetch("./server/add-observation.php?list=Dy1p1i5C1BO!d",
+                                                    {
+                                                        method: "POST",
+                                                        cache: "no-store",
+                                                        headers: { "Content-Type": "application/json" },
+                                                        body: JSON.stringify({birdName:bird.name, timestamp:(Date.now().valueOf()/1000)})
+                                                    })
+                                                    .then(response=>
+                                                    {
+                                                        if (!response.ok)
+                                                        {
+                                                            return false;
+                                                        }
+                                        
+                                                        return response.json();
+                                                    })
+                                                    .then(ticket=>
+                                                    {
+                                                        if (!ticket)
+                                                        {
+                                                            return false;
+                                                        }
+
+                                                        if (!ticket.valid)
+                                                        {
+                                                            warn(`Failed to add a new observation: ${ticket.message}`);
+                                                            return false;
+                                                        }
+
+                                                        return true;
+                                                    })
+                                                    .catch(error=>panic(`Error while posting a new observation to the server.\n\n${error}`));
+
+                            if (success)
+                            {
+                                observationList.add_observation(bird.name, new Date());
+                                render_observation_list(observationList);
+                            }
                         },
                     });
 
