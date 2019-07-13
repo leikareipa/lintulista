@@ -1,6 +1,6 @@
 "use strict";
 
-import {warn, panic} from "../../assert.js"
+import {warn, panic, panic_if_undefined} from "../../assert.js"
 import {BirdSearchField} from "./BirdSearchField.js";
 import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
 import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
@@ -37,9 +37,12 @@ export function BirdSearch(props = {})
             {
                 if (bird.name.toLowerCase().includes(searchString.toLowerCase()))
                 {
+                    const observation = props.observationList.observation(bird.name);
+
                     searchResults.push(<BirdSearchResultElement key={idx}
                                                                 bird={bird}
-                                                                clickCallback={result_clicked} />);
+                                                                clickCallback={result_clicked}
+                                                                dateObserved={observation? observation.dateString : null} />);
                 }
             });
         }

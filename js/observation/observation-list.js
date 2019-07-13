@@ -21,10 +21,39 @@ export function observation_list(knownBirds)
     {
         observations: Object.freeze([]),
 
+        // Returns true if the list contains one or more observations of the given type
+        // of bird.
+        contains: function(birdName)
+        {
+            return Boolean(this.observations.map(obs=>obs.bird.name.toLowerCase()).indexOf(birdName.toLowerCase()) !== -1);
+        },
+
+        // Returns the first observation corresponding to the given type of bird.
+        observation: function(birdName)
+        {
+            const observationIdx = this.observations.map(obs=>obs.bird.name.toLowerCase()).indexOf(birdName.toLowerCase());
+
+            if ((observationIdx === -1) ||
+                (!this.contains(birdName)))
+            {
+                return null;
+            }
+
+            return this.observations[observationIdx];
+        },
+
+        // Returns the date of the first observation of the given type of bird.
+        date: function(birdName)
+        {
+            const observation = this.observation(birdName);
+
+            return (observation? observation.date : null);
+        },
+
         add_observation: function(birdName, observationDate)
         {
-            // If this bird already exists in the list.
-            if (this.observations.map(obs=>obs.bird.name.toLowerCase()).indexOf(birdName.toLowerCase()) !== -1)
+            // Don't allow duplicate observations of the same kind of bird.
+            if (this.contains(birdName))
             {
                 return true;
             }
@@ -40,7 +69,7 @@ export function observation_list(knownBirds)
             const newObservation = observation(
             {
                 bird: knownBirds[birdIdx],
-                date: new Date(),
+                date: observationDate,
             });
 
             if (!newObservation)
