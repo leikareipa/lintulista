@@ -7,9 +7,10 @@ export function ObservationListElement(props = {})
     const [thumbnailSrc, setThumbnailSrc] = React.useState("./client/assets/images/placeholder-bird-thumbnail.png");
     const intersectionObserver = new IntersectionObserver(([element])=>
     {
-        if (element.isIntersecting && (thumbnailSrc !== props.observation.bird.thumbnailUrl))
+        if (element.isIntersecting)
         {
             setThumbnailSrc(props.observation.bird.thumbnailUrl);
+            intersectionObserver.disconnect();
         }
     });
 
