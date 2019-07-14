@@ -85,18 +85,18 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
     $observationData["observations"][] = ["birdName"=>$newObservation["birdName"], "timestamp"=>$newObservation["timestamp"]];
 }
 
-file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData));
+file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
 
 exit(success());
 
 function success()
 {
-    echo json_encode(["valid"=>true]);
+    echo json_encode(["valid"=>true], JSON_UNESCAPED_UNICODE);
 }
 
 function failure($errorMessage = "")
 {
-    echo json_encode(["valid"=>false, "message"=>$errorMessage]);
+    echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
 }
 
 ?>

@@ -53,16 +53,16 @@ foreach ($observationData["observations"] as $observation)
     $returnData[] = ["birdName"=>$observation["birdName"], "timestamp"=>$observation["timestamp"]];
 }
 
-exit(success(json_encode($returnData)));
+exit(success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
 
 function success($data)
 {
-    echo json_encode(["valid"=>true, "data"=>$data]);
+    echo json_encode(["valid"=>true, "data"=>$data], JSON_UNESCAPED_UNICODE);
 }
 
 function failure($errorMessage = "")
 {
-    echo json_encode(["valid"=>false, "message"=>$errorMessage]);
+    echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
 }
 
 ?>
