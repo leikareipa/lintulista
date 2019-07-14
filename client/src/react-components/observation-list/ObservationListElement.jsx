@@ -2,8 +2,26 @@
 
 export function ObservationListElement(props = {})
 {
+    // For lazy image loading.
+    const thumbnailRef = React.createRef();
+    const [thumbnailSrc, setThumbnailSrc] = React.useState("./client/assets/images/placeholder-bird-thumbnail.png");
+    const intersectionObserver = new IntersectionObserver(([element])=>
+    {
+        if (element.isIntersecting && (thumbnailSrc !== props.observation.bird.thumbnailUrl))
+        {
+            setThumbnailSrc(props.observation.bird.thumbnailUrl);
+        }
+    });
+
+    React.useEffect(()=>
+    {
+        intersectionObserver.observe(thumbnailRef.current);
+    });
+
     return <div className="ObservationListElement">
-               <img className="image" title={props.observation.bird.name} src={props.observation.bird.thumbnailUrl} />
+               <img className="image" title={props.observation.bird.name}
+                                      src={thumbnailSrc}
+                                      ref={thumbnailRef} />
                <span className="name">
                    {props.observation.bird.name}<br />
                    <span className="observation-details">ensihavainto {props.observation.dateString}</span>

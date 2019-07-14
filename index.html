@@ -57,7 +57,7 @@
                 /// Create an observation list for testing purposes.
                 const observationList = await (async()=>
                 {
-                    const serverSideObservations = await fetch("./server/get-observations.php?list=Dy1p1i5C1BO!d")
+                    const serverSideObservations = await fetch("./server/get-observations.php?list=u6p!8GS8Nm74dJPk")
                                                          .then(response=>
                                                          {
                                                              if (!response.ok)
@@ -98,7 +98,7 @@
                         observationList: observationList,
                         selectionCallback: async(bird)=>
                         {
-                            const success = await fetch("./server/add-observation.php?list=Dy1p1i5C1BO!d",
+                            const success = await fetch("./server/add-observation.php?list=u6p!8GS8Nm74dJPk",
                                                     {
                                                         method: "POST",
                                                         cache: "no-store",
