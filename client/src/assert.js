@@ -23,7 +23,17 @@ export function panic_if_undefined(...properties)
     });
 }
 
+export function error(errorMessage = "")
+{
+    console.error(`Lintulista: ${errorMessage}`);
+}
+
 export function warn(errorMessage = "")
 {
     console.warn(`Lintulista: ${errorMessage}`);
+}
+
+export function debug(debugMessage = "")
+{
+    console.debug(`Lintulista: ${debugMessage}`);
 }

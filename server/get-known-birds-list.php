@@ -14,7 +14,7 @@ $knownBirdsData = file_get_contents("./assets/metadata/known-birds.json");
 
 if (!$knownBirdsData)
 {
-    exit(failure("Server-side IO failure: Could not read the list of known birds."));
+    exit(failure("Server-side IO failure. Could not read the list of known birds."));
 }
 
 exit(success($knownBirdsData));

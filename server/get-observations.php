@@ -16,10 +16,10 @@ if (!isset($_GET["list"]))
 
 // Sanitize the list id.
 if (strlen($_GET["list"]) < 10 ||
-    strlen($_GET["list"]) > 30 ||
-    !preg_match('/^[0-9a-zA-Z!]+$/', $_GET["list"]))
+    strlen($_GET["list"]) > 40 ||
+    !preg_match("/^[0-9a-zA-Z!]+$/", $_GET["list"]))
 {
-    exit(failure("Malformed \"list\" parameter."));
+    exit(failure("Invalid \"list\" parameter."));
 }
 
 $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
@@ -28,12 +28,12 @@ $observationData = json_decode(file_get_contents($baseFilePath . "observations.j
 
 if (!$observationData)
 {
-    exit(failure("Server-side IO failure: Could not read the list of observations."));
+    exit(failure("Server-side IO failure. Could not read the list of observations."));
 }
 
 if (!isset($observationData["observations"]))
 {
-    exit(failure("Server-side IO failure: The observation list is missing the required \"observations\" property."));
+    exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
 }
 
 // Pick out the relevant properties to be returned.
@@ -42,12 +42,12 @@ foreach ($observationData["observations"] as $observation)
 {
     if (!isset($observation["birdName"]))
     {
-        exit(failure("Server-side IO failure: The observation list is missing the required \"birdName\" property."));
+        exit(failure("Server-side IO failure. The observation list is missing the required \"birdName\" property."));
     }
 
     if (!isset($observation["timestamp"]))
     {
-        exit(failure("Server-side IO failure: The observation list is missing the required \"timestamp\" property."));
+        exit(failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
     }
 
     $returnData[] = ["birdName"=>$observation["birdName"], "timestamp"=>$observation["timestamp"]];

@@ -28,7 +28,7 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 
     // Sanitize the list id.
     if (strlen($_GET["list"]) < 10 ||
-        strlen($_GET["list"]) > 30 ||
+        strlen($_GET["list"]) > 40 ||
         !preg_match('/^[0-9a-zA-Z!]+$/', $_GET["list"]))
     {
         exit(failure("Malformed \"list\" parameter."));
@@ -56,12 +56,12 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($knownBirdsData["birds"]))
         {
-            exit(failure("Server-side IO failure: The known birds list is missing the required \"birds\" property."));
+            exit(failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
         }
 
         if (!in_array($newObservation["birdName"], array_map(function($bird){return $bird["name"];}, $knownBirdsData["birds"])))
         {
-            exit(failure("The given observation contains an invalid bird name."));
+            exit(failure("The given observation is of an unrecognized bird \"" . $newObservation["birdName"] . "\"."));
         }
     }
 }
@@ -74,12 +74,12 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
     if (!$observationData)
     {
-        exit(failure("Server-side IO failure: Could not read the list of observations."));
+        exit(failure("Server-side IO failure. Could not read the list of observations."));
     }
 
     if (!isset($observationData["observations"]))
     {
-        exit(failure("Server-side IO failure: The observation list is missing the required \"observations\" property."));
+        exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
     }
 
     $observationData["observations"][] = ["birdName"=>$newObservation["birdName"], "timestamp"=>$newObservation["timestamp"]];

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Bird list search</title>
+        <title>Lintulista</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
@@ -16,67 +16,20 @@
         <script type="module">
             import {BirdSearch} from "./client/dist/react-components/bird-search/BirdSearch.js";
             import {ObservationList} from "./client/dist/react-components/observation-list/ObservationList.js";
-            import {observation_list} from "./client/dist/observation/observation-list.js"
-            import {panic, warn} from "./client/dist/assert.js"
-            import {bird} from "./client/dist/bird/bird.js"
+            import {observation_list} from "./client/dist/observation/observation-list.js";
+            import {panic, warn} from "./client/dist/assert.js";
+            import {backend_api} from "./client/dist/backend-api/backend-api.js";
+
+            const backend = backend_api({listId:"Hj!95lxC!p8Qf1WCm4!!QlHz!3!9v0!!6!XE"});
 
             (async()=>
             {
-                const knownBirds = await fetch("./server/get-known-birds-list.php")
-                                    .then(response=>
-                                    {
-                                        if (!response.ok)
-                                        {
-                                            throw "Failed to load the master bird list from the server.";
-                                        }
-
-                                        return response.json();
-                                    })
-                                    .then(ticket=>
-                                    {
-                                        if (!ticket.valid || (typeof ticket.data === "undefined"))
-                                        {
-                                            throw (`A GET ticket from the server was marked as invalid. It said: ${ticket.message}`);
-                                        }
-
-                                        const birdData = JSON.parse(ticket.data);
-
-                                        if (typeof birdData.birds === "undefined")
-                                        {
-                                            throw "Missing required data in the master bird list.";
-                                        }
-
-                                        return birdData.birds.map(b=>bird(
-                                        {
-                                            name: b.name,
-                                            thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
-                                        }));
-                                    })
-                                    .catch(error=>panic(`Error while fetching the master bird list.\n\n${error}`));
+                const knownBirds = await backend.fetch_known_birds_list();
 
                 /// Create an observation list for testing purposes.
                 const observationList = await (async()=>
                 {
-                    const serverSideObservations = await fetch("./server/get-observations.php?list=u6p!8GS8Nm74dJPk")
-                                                         .then(response=>
-                                                         {
-                                                             if (!response.ok)
-                                                             {
-                                                                 throw "Failed to load server-side observation data.";
-                                                             }
-
-                                                            return response.json();
-                                                         })
-                                                         .then(ticket=>
-                                                         {
-                                                             if (!ticket.valid || (typeof ticket.data === "undefined"))
-                                                             {
-                                                                 throw (`A GET ticket from the server was marked as invalid. It said: ${ticket.message}`);
-                                                             }
-
-                                                             return JSON.parse(ticket.data);
-                                                         })
-                                                         .catch(error=>panic(`Error while fetching server-side observation data.\n\n${error}`));
+                    const serverSideObservations = await backend.fetch_observations();
 
                     const observationList = observation_list(knownBirds);
 
@@ -96,44 +49,22 @@
                     {
                         birds: knownBirds,
                         observationList: observationList,
+
+                        // Called when the user clicks on a search result. Will add the corresponding
+                        // bird to the list as a new observation.
                         selectionCallback: async(bird)=>
                         {
-                            const success = await fetch("./server/add-observation.php?list=u6p!8GS8Nm74dJPk",
-                                                    {
-                                                        method: "POST",
-                                                        cache: "no-store",
-                                                        headers: {"Content-Type": "application/json"},
-                                                        body: JSON.stringify({birdName:bird.name, timestamp:Math.round(Date.now().valueOf()/1000)})
-                                                    })
-                                                    .then(response=>
-                                                    {
-                                                        if (!response.ok)
-                                                        {
-                                                            return false;
-                                                        }
-                                        
-                                                        return response.json();
-                                                    })
-                                                    .then(ticket=>
-                                                    {
-                                                        if (!ticket)
-                                                        {
-                                                            return false;
-                                                        }
-
-                                                        if (!ticket.valid)
-                                                        {
-                                                            warn(`Failed to add a new observation: ${ticket.message}`);
-                                                            return false;
-                                                        }
-
-                                                        return true;
-                                                    })
-                                                    .catch(error=>panic(`Error while posting a new observation to the server.\n\n${error}`));
-
-                            if (success)
+                            const observation = await backend.post_observation(
                             {
-                                observationList.add_observation(bird.name, new Date());
+                                // The time of the observation, in seconds of Unix time.
+                                timestamp: Math.round(Date.now().valueOf() / 1000),
+                                birdName: bird.name,
+                            });
+
+                            if (observation.addedSuccessfully)
+                            {
+                                // Note: Date() takes in the Unix time in milliseconds.
+                                observationList.add_observation(observation.birdName, new Date(observation.timestamp * 1000));
                                 render_observation_list(observationList);
                             }
                         },
