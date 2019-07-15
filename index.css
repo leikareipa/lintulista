@@ -128,9 +128,24 @@ body
 
 .ObservationListElement .observation-details
 {
-    margin-left: auto;
     padding-right: 5px;
     font-size: 75%;
     color: dimgray;
     text-align: right;
+}
+
+.SymbolButton
+{
+    margin-left: auto;
+    margin-right: 20px;
+    color: rgb(216, 63, 63);
+    cursor: pointer;
+    font-size: 95%;
+    border-radius: 20%;
+    padding: 10px;
+}
+
+.SymbolButton:active
+{
+    transform: translateY(2px);
 }

@@ -1,3 +1,9 @@
+/*
+ * 2019 Tarpeeksi Hyvae Soft
+ * Lintulista
+ * 
+ */
+
 "use strict";
 
 import {ObservationListElement} from "./ObservationListElement.js";
