@@ -1,6 +1,6 @@
 "use strict";
 
-import {warn, panic, panic_if_undefined} from "../../assert.js"
+import {panic_if_undefined} from "../../assert.js"
 import {BirdSearchField} from "./BirdSearchField.js";
 import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
 import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
@@ -11,10 +11,7 @@ import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 // full or partial match will be displayed as a list in association with the search bar.
 export function BirdSearch(props = {})
 {
-    if (typeof props.selectionCallback !== "function")
-    {
-        panic("Expected a selection callback handler function.");
-    }
+    panic_if_undefined(props.backend, props.selectionCallback);
 
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
@@ -33,11 +30,11 @@ export function BirdSearch(props = {})
 
         if (searchString.length)
         {
-            props.birds.forEach((bird, idx)=>
+            props.backend.known_birds().forEach((bird, idx)=>
             {
                 if (bird.name.toLowerCase().includes(searchString.toLowerCase()))
                 {
-                    const observation = props.observationList.observation(bird.name);
+                    const observation = props.backend.observations().find(obs=>obs.bird.name === bird.name);
 
                     searchResults.push(<BirdSearchResultElement key={idx}
                                                                 bird={bird}

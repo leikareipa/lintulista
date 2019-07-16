@@ -45,7 +45,7 @@ export function ObservationListElement(props = {})
                <AsyncIconButton symbol="fas fa-eraser"
                                 clickCallback={()=>setButtonRemoveClicked(true)}
                                 style={{display:((mouseHovering || buttonRemoveClicked)? "inherit" : "none")}}
-                                title={`Poista ${props.observation.bird.name} listasta`}
+                                title={`Poista ${props.observation.bird.name} listalta`}
                                 titleClicked={`Poistetaan ${props.observation.bird.name}...`} />
            </div>
 }

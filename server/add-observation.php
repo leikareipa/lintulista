@@ -82,6 +82,14 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
         exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
     }
 
+    // If the bird has already been added to the list. Note that we don't need to worry about
+    // case, since we've already confirmed above that the given bird name is included in our
+    // list of known birds as-is.
+    if (in_array($newObservation["birdName"], array_map(function($observation){return $observation["birdName"];}, $observationData["observations"])))
+    {
+        exit(success());
+    }
+
     $observationData["observations"][] = ["birdName"=>$newObservation["birdName"], "timestamp"=>$newObservation["timestamp"]];
 }
 

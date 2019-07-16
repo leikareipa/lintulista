@@ -16,68 +16,51 @@
         <script type="module">
             import {BirdSearch} from "./client/dist/react-components/bird-search/BirdSearch.js";
             import {ObservationList} from "./client/dist/react-components/observation-list/ObservationList.js";
-            import {observation_list} from "./client/dist/observation/observation-list.js";
-            import {panic, warn} from "./client/dist/assert.js";
-            import {backend_api} from "./client/dist/backend-api/backend-api.js";
-
-            const backend = backend_api({listId:"Hj!95lxC!p8Qf1WCm4!!QlHz!3!9v0!!6!XE"});
+            import {backend_access} from "./client/dist/backend-api/backend-api.js";
+            import {observation} from "./client/dist/observation/observation.js";
+            import {panic_if_undefined} from "./client/dist/assert.js";
 
             (async()=>
             {
-                const knownBirds = await backend.fetch_known_birds_list();
+                const backend = await backend_access({listId:"Hj!95lxC!p8Qf1WCm4!!QlHz!3!9v0!!6!XE"});
 
-                /// Create an observation list for testing purposes.
-                const observationList = await (async()=>
-                {
-                    const serverSideObservations = await backend.fetch_observations();
-
-                    const observationList = observation_list(knownBirds);
-
-                    serverSideObservations.forEach(observation=>
-                    {
-                        observationList.add_observation(observation.birdName, new Date(observation.timestamp*1000));
-                    })
-
-                    render_observation_list(observationList);
-
-                    return observationList;
-                })();
-
-                /// Add bird search functionality for testing purposes.
-                {
-                    const searchElement = React.createElement(BirdSearch,
-                    {
-                        birds: knownBirds,
-                        observationList: observationList,
-
-                        // Called when the user clicks on a search result. Will add the corresponding
-                        // bird to the list as a new observation.
-                        selectionCallback: async(bird)=>
-                        {
-                            const observation = await backend.post_observation(
-                            {
-                                // The time of the observation, in seconds of Unix time.
-                                timestamp: Math.round(Date.now().valueOf() / 1000),
-                                birdName: bird.name,
-                            });
-
-                            if (observation.addedSuccessfully)
-                            {
-                                // Note: Date() takes in the Unix time in milliseconds.
-                                observationList.add_observation(observation.birdName, new Date(observation.timestamp * 1000));
-                                render_observation_list(observationList);
-                            }
-                        },
-                    });
-
-                    ReactDOM.render(searchElement, document.getElementById("search-widget"));
-                }
+                render_observation_list(backend);
+                render_bird_search(backend);
             })();
 
-            function render_observation_list(observationList)
+            function render_observation_list(backend)
             {
-                ReactDOM.render(React.createElement(ObservationList, {observations: observationList.observations}),
-                                document.getElementById("observation-list"));
+                panic_if_undefined(backend);
+
+                const observationListElement = React.createElement(ObservationList,
+                {
+                    backend,
+                });
+
+                ReactDOM.render(observationListElement, document.getElementById("observation-list"));
+            }
+
+            function render_bird_search(backend)
+            {
+                panic_if_undefined(backend);
+
+                const searchElement = React.createElement(BirdSearch,
+                {
+                    backend,
+
+                    // Called when the user clicks on a search result. Will add the corresponding
+                    // bird to the list as a new observation.
+                    selectionCallback: async(bird)=>
+                    {
+                        const newObservation = observation({bird, date:new Date()});
+
+                        await backend.post_observation(newObservation);
+
+                        render_observation_list(backend);
+                    },
+                });
+                
+                ReactDOM.render(searchElement, document.getElementById("search-widget"));
             }
         </script>
     </body>
