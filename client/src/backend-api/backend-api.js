@@ -19,6 +19,7 @@ export async function backend_access({listId})
         knownBirds: "./server/get-known-birds-list.php",
         observations: "./server/get-observations.php",
         postObservation: "./server/add-observation.php",
+        deleteObservation: "./server/remove-observation.php",
     });
 
     const localCache =
@@ -52,16 +53,30 @@ export async function backend_access({listId})
 
         is_known_bird_name,
 
-        // Returns true if succeeded; false otherwise.
-        post_observation: async function(newObservation)
+        // Removes the given observation from the server-side list of observations. Updates
+        // the local cache of observations, accordingly. Returns true if successful; false
+        // otherwise.
+        delete_observation: async(existingObservation)=>
         {
-            panic_if_undefined(newObservation, newObservation.bird, newObservation.unixTimestamp);
+            const deletedSuccessfully = await http_delete_observation(existingObservation);
 
-            if (!is_known_bird_name(newObservation.bird.name))
+            if (!deletedSuccessfully)
             {
-                error(`Attempted to add an observation of an unknown kind of bird (${newObservation.bird.name}).`);
+                error("Failed to delete an observation.");
                 return false;
             }
+
+            await localCache.refresh_observations();
+
+            return true;
+        },
+
+        // Appends the given observation to the server-side list of observations. Updates
+        // the local cache of observations, accordingly. Returns true if successful; false
+        // otherwise.
+        post_observation: async(newObservation)=>
+        {
+            panic_if_undefined(newObservation, newObservation.bird, newObservation.unixTimestamp);
 
             const addedSuccessfully = await http_post_observation(newObservation);
             
@@ -83,6 +98,47 @@ export async function backend_access({listId})
     function is_known_bird_name(birdName)
     {
         return Boolean(localCache.knownBirds.map(b=>b.name.toLowerCase()).includes(birdName.toLowerCase()));
+    }
+
+    async function http_delete_observation(observation)
+    {
+        panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
+
+        const postData =
+        {
+            birdName: observation.bird.name,
+        }
+
+        return fetch(`${backendAddress.deleteObservation}?list=${listId}`,
+                {
+                    method: "POST",
+                    cache: "no-store",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(postData),
+                })
+                .then(response=>
+                {
+                    return (response.ok? response.json() : false);
+                })
+                .then(ticket=>
+                {
+                    if (!ticket)
+                    {
+                        return false;
+                    }
+
+                    if (!ticket.valid)
+                    {
+                        throw (ticket.message? ticket.message : "unknown");
+                    }
+
+                    return true;
+                })
+                .catch(errorMessage=>
+                {
+                    error(`Client-to-server query for "${backendAddress.deleteObservation}" failed. Cause: ${errorMessage}`);
+                    return false;
+                });
     }
 
     // Submits the given bird as an observation to be appended to the given list. Returns

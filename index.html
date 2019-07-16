@@ -32,17 +32,22 @@
             {
                 panic_if_undefined(backend);
 
+                const container = document.getElementById("observation-list");
+
                 const observationListElement = React.createElement(ObservationList,
                 {
                     backend,
                 });
 
-                ReactDOM.render(observationListElement, document.getElementById("observation-list"));
+                ReactDOM.unmountComponentAtNode(container)
+                ReactDOM.render(observationListElement, container);
             }
 
             function render_bird_search(backend)
             {
                 panic_if_undefined(backend);
+
+                const container = document.getElementById("search-widget");
 
                 const searchElement = React.createElement(BirdSearch,
                 {
@@ -60,7 +65,8 @@
                     },
                 });
                 
-                ReactDOM.render(searchElement, document.getElementById("search-widget"));
+                ReactDOM.unmountComponentAtNode(container)
+                ReactDOM.render(searchElement, container);
             }
         </script>
     </body>

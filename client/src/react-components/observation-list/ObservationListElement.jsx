@@ -25,8 +25,8 @@ export function ObservationListElement(props = {})
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
 
-    // For keeping track of whether the 'remove observation' button has been clicked.
-    const [buttonRemoveClicked, setButtonRemoveClicked] = React.useState(false);
+    // For keeping track of whether the 'delete observation' button has been clicked.
+    const [buttonDeleteClicked, setButtonDeleteClicked] = React.useState(false);
 
     React.useEffect(()=>
     {
@@ -43,9 +43,18 @@ export function ObservationListElement(props = {})
                    <span className="observation-details">{props.observation.dateString}</span>
                </span>
                <AsyncIconButton symbol="fas fa-eraser"
-                                clickCallback={()=>setButtonRemoveClicked(true)}
-                                style={{display:((mouseHovering || buttonRemoveClicked)? "inherit" : "none")}}
+                                clickCallback={delete_this_element}
+                                style={{display:((mouseHovering || buttonDeleteClicked)? "inherit" : "none")}}
                                 title={`Poista ${props.observation.bird.name} listalta`}
                                 titleClicked={`Poistetaan ${props.observation.bird.name}...`} />
            </div>
+
+    function delete_this_element()
+    {
+        if (!buttonDeleteClicked)
+        {
+            setButtonDeleteClicked(true);
+            props.requestDeletion();
+        }
+    }
 }
