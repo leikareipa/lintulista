@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" type="text/css" href="edit.css">
+        <base href="/">
     </head>
     <body>
         <div id="search-widget" style="margin-top: 20px;"></div>
@@ -22,10 +23,25 @@
 
             (async()=>
             {
-                const backend = await backend_access({listId:"Hj!95lxC!p8Qf1WCm4!!QlHz!3!9v0!!6!XE"});
+                const listId = (()=>
+                {
+                    const params = new URLSearchParams(window.location.search);
 
-                render_observation_list(backend);
-                render_bird_search(backend);
+                    if (!params.has("list"))
+                    {
+                        return null;
+                    }
+
+                    return params.get("list");
+                })();
+
+                if (listId)
+                {
+                    const backend = await backend_access({listId});
+
+                    render_observation_list(backend);
+                    render_bird_search(backend);
+                }
             })();
 
             function render_observation_list(backend)

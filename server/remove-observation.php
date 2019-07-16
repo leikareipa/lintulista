@@ -29,7 +29,7 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
     // Sanitize the list id.
     if (strlen($_GET["list"]) < 10 ||
         strlen($_GET["list"]) > 40 ||
-        !preg_match('/^[0-9a-zA-Z!]+$/', $_GET["list"]))
+        !preg_match('/^[0-9a-zA-Z]+$/', $_GET["list"]))
     {
         exit(failure("Malformed \"list\" parameter."));
     }

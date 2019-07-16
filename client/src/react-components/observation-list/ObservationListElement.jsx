@@ -40,20 +40,29 @@ export function ObservationListElement(props = {})
                                       ref={thumbnailRef} />
                <span className="name">
                    {props.observation.bird.name}<br />
-                   <span className="observation-details">{props.observation.dateString}</span>
+                   <span className="observation-details">
+                       {props.observation.dateString}
+                   </span>
                </span>
                <AsyncIconButton symbol="fas fa-eraser"
                                 clickCallback={delete_this_element}
                                 style={{display:((mouseHovering || buttonDeleteClicked)? "inherit" : "none")}}
-                                title={`Poista ${props.observation.bird.name} listalta`}
+                                title={`Poista havainto: ${props.observation.bird.name}`}
                                 titleClicked={`Poistetaan ${props.observation.bird.name}...`} />
            </div>
 
-    function delete_this_element()
+    async function delete_this_element()
     {
+        const delay = (ms)=>new Promise(resolve => setTimeout(resolve, ms));
+
         if (!buttonDeleteClicked)
         {
             setButtonDeleteClicked(true);
+
+            // Add an artificial delay to give the user time to appreciate the action
+            // taking place.
+            await delay(300);
+
             props.requestDeletion();
         }
     }

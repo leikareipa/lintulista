@@ -17,7 +17,7 @@ if (!isset($_GET["list"]))
 // Sanitize the list id.
 if (strlen($_GET["list"]) < 10 ||
     strlen($_GET["list"]) > 40 ||
-    !preg_match("/^[0-9a-zA-Z!]+$/", $_GET["list"]))
+    !preg_match("/^[0-9a-zA-Z]+$/", $_GET["list"]))
 {
     exit(failure("Invalid \"list\" parameter."));
 }
