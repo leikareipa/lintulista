@@ -36,8 +36,8 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                                  top: 0;
                                  left: 0;
                                  width: 100%;
-                                 height: 100%;
-                                 display: none;
+                                 height: 0;
+                                 transition: all 0.3s ease-in-out;
                                  z-index: ${args.z};`
 
         args.container.appendChild(element);
@@ -56,7 +56,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            shadeElement.style.display = "inline-block";
+            shadeElement.style.height = "100%";
         },
 
         pull_off: ()=>
@@ -66,7 +66,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            shadeElement.style.display = "none";
+            shadeElement.style.height = "0";
         },
     });
 
