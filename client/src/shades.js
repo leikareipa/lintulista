@@ -36,8 +36,10 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                                  top: 0;
                                  left: 0;
                                  width: 100%;
-                                 height: 0;
-                                 transition: all 0.3s ease-in-out;
+                                 height: 100%;
+                                 opacity: 0;
+                                 visibility: hidden;
+                                 transition: visibility 0s, opacity 0.3s linear;
                                  z-index: ${args.z};`
 
         args.container.appendChild(element);
@@ -56,7 +58,8 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            shadeElement.style.height = "100%";
+            shadeElement.style.visibility = "visible";
+            shadeElement.style.opacity = "1";
         },
 
         pull_off: ()=>
@@ -66,7 +69,11 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            shadeElement.style.height = "0";
+            shadeElement.style.opacity = "0";
+            shadeElement.addEventListener("transitionend", ()=>
+            {
+                shadeElement.style.visibility = "hidden";
+            }, {once:true});
         },
     });
 
