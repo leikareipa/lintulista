@@ -20,6 +20,11 @@
             import {backend_access} from "./client/dist/backend-api/backend-api.js";
             import {observation} from "./client/dist/observation/observation.js";
             import {panic_if_undefined} from "./client/dist/assert.js";
+            import {shades} from "./client/dist/shades.js";
+
+            const testShades = shades({container:document.body, onClick:()=>{console.log("hello", testShades)}});
+            testShades.put_on();
+            setTimeout(()=>testShades.pull_off(), 3000);
 
             (async()=>
             {

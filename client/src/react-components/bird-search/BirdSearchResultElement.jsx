@@ -25,7 +25,7 @@ export function BirdSearchResultElement(props = {})
                 hasBeenPreviouslyObserved: false,
                 dateObserved: <>
                                   <i className="fas fa-plus-circle" style={{color:"#b0b0b0"}}></i> 
-                                  <span style={{fontStyle:"italic"}}> uusi havainto</span>
+                                  <span style={{fontStyle:"italic"}}> lisää uudeksi havainnoksi</span>
                               </>,
             };
         }

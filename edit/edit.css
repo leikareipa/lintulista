@@ -16,12 +16,21 @@ body
 {
     width: 400px;
     outline: none;
-    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
-    background-color: #e5e5e5;
+    background-color: #eaeaea;
+    position: relative;
+    z-index: 100;
+}
+
+.BirdSearchResultsDisplay
+{
+    box-shadow: 0 1px 5px -3px rgba(0, 0, 0, 0.8);
+    position: absolute;
+    z-index: 101;
 }
 
 .BirdSearchResultElement
 {
+    width: 370px; /* Width of the parent container minus padding.*/
     color: black;
     background-color: #f2f2f2;
     padding: 15px;
@@ -36,6 +45,8 @@ body
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+
+    transition: all 0.04s ease-in-out;
 }
 
 .BirdSearchResultElement img
@@ -58,6 +69,11 @@ body
     border-radius: 0 0 2px 2px;
 }
 
+.BirdSearchResultElement:nth-child(2n)
+{
+    background-color: #eaeaea;
+}
+
 .BirdSearchResultElement .observed-date
 {
     margin-left: auto;
@@ -65,11 +81,6 @@ body
     font-size: 75%;
     color: dimgray;
     text-align: right;
-}
-
-.BirdSearchResultElement:nth-child(2n)
-{
-    background-color: #eaeaea;
 }
 
 .BirdSearchField
@@ -138,7 +149,7 @@ body
 {
     margin-left: auto;
     margin-right: 10px;
-    color: rgb(63, 173, 216);
+    color: rgb(65, 155, 228);
     cursor: pointer;
     font-size: 95%;
     border-radius: 20%;
