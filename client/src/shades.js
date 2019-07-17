@@ -62,8 +62,16 @@ export function shades(args = {/*z, onClick, opacity, container*/})
             shadeElement.style.opacity = "1";
         },
 
-        pull_off: ()=>
+        pull_off: (args = {})=>
         {
+            args = 
+            {
+                ...{
+                    removeWhenDone: false,
+                },
+                ...args,
+            };
+
             if (!shadeId)
             {
                 return;
@@ -73,6 +81,11 @@ export function shades(args = {/*z, onClick, opacity, container*/})
             shadeElement.addEventListener("transitionend", ()=>
             {
                 shadeElement.style.visibility = "hidden";
+
+                if (args.removeWhenDone)
+                {
+                    shadeElement.remove();
+                }
             }, {once:true});
         },
     });
@@ -106,7 +119,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 seed[0] = "b";
             }
 
-            id = `shades-${seed.join("")}`;
+            id = `shades-generated-kpAOerCd4-${seed.join("")}`;
         } while(document.getElementById(id));
 
         return id;

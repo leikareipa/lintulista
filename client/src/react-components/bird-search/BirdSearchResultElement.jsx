@@ -25,7 +25,7 @@ export function BirdSearchResultElement(props = {})
                 hasBeenPreviouslyObserved: false,
                 dateObserved: <>
                                   <i className="fas fa-pen" style={{color:"mediumseagreen"}}></i> 
-                                  <span style={{fontStyle:"italic"}}> Merkitse havainto</span>
+                                  <span style={{fontStyle:"italic"}}> Merkitse havaituksi</span>
                               </>,
             };
         }

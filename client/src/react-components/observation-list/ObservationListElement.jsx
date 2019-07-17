@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
+import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 
 export function ObservationListElement(props = {})
 {
@@ -25,6 +25,9 @@ export function ObservationListElement(props = {})
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
 
+    // While set to true, the element's button bar will be displayed at all times.
+    const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
+
     // For keeping track of whether the 'delete observation' button has been clicked.
     const [buttonDeleteClicked, setButtonDeleteClicked] = React.useState(false);
 
@@ -35,25 +38,43 @@ export function ObservationListElement(props = {})
 
     return <div className="ObservationListElement" onMouseEnter={()=>{setMouseHovering(true)}}
                                                    onMouseLeave={()=>{setMouseHovering(false)}}>
-               <img className="image" title={props.observation.bird.name}
-                                      src={thumbnailSrc}
-                                      ref={thumbnailRef} />
-               <span className="name">
-                   {props.observation.bird.name}<br />
-                   <span className="observation-details">
-                       {props.observation.dateString}
-                   </span>
-               </span>
-               <AsyncIconButton symbol="fas fa-eraser"
-                                clickCallback={delete_this_element}
-                                style={{display:((mouseHovering || buttonDeleteClicked)? "inherit" : "none")}}
-                                title={`Poista havainto: ${props.observation.bird.name}`}
-                                titleClicked={`Poistetaan ${props.observation.bird.name}...`} />
-           </div>
+                <img className="image" title={props.observation.bird.name}
+                                       src={thumbnailSrc}
+                                       ref={thumbnailRef} />
+                <span className="name">
+                    {props.observation.bird.name}<br />
+                    <span className="observation-details">
+                        {props.observation.dateString}
+                    </span>
+                </span>
+                <AsyncIconButtonBar visible={(mouseHovering || keepButtonBarVisible)? 1 : 0}
+                                    buttons={[
+                    {
+                        icon: "fas fa-eraser",
+                        title: `Poista havainto`,
+                        titleWhenClicked: `Poistetaan havaintoa...`,
+                        clickCallback: delete_this_element,
+                    },
+                    {
+                        icon: "fas fa-map-marked-alt",
+                        title: `Merkitse havaintopaikka`,
+                        titleWhenClicked: `Merkitään havaintopaikkaa...`,
+                        clickCallback: null,
+                    },
+                    {
+                        icon: "fas fa-clock",
+                        title: `Merkitse havaintoaika`,
+                        titleWhenClicked: `Merkitään havaintoaikaa...`,
+                        clickCallback: null,
+                    },
+                ]} />
+            </div>
 
-    async function delete_this_element()
+    async function delete_this_element(shades)
     {
         const delay = (ms)=>new Promise(resolve => setTimeout(resolve, ms));
+
+        setKeepButtonBarVisible(true);
 
         if (!buttonDeleteClicked)
         {
@@ -61,9 +82,14 @@ export function ObservationListElement(props = {})
 
             // Add an artificial delay to give the user time to appreciate the action
             // taking place.
-            await delay(300);
+            /// Also for temporary testing and debugging purposes while developing.
+            await delay(1300);
 
             props.requestDeletion();
+
+            shades.pull_off({removeWhenDone:true});
+
+            setKeepButtonBarVisible(false);
         }
     }
 }

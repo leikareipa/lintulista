@@ -52,6 +52,7 @@ body
 .BirdSearchResultElement img
 {
     width: 50px;
+    height: 50px;
     margin-right: 10px;
     border-radius: 50%;
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
@@ -125,6 +126,7 @@ body
 .ObservationListElement .image
 {
     width: 50px;
+    height: 50px;
     margin-right: 10px;
     border-radius: 50%;
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.5);
@@ -145,10 +147,16 @@ body
     text-align: right;
 }
 
-.SymbolButton
+.ObservationListElement .AsyncIconButtonBar
 {
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
     margin-left: auto;
-    margin-right: 10px;
+    display: flex;
+    margin-right: 5px;
+}
+
+.AsyncIconButton
+{
     color: rgb(65, 155, 228);
     cursor: pointer;
     font-size: 95%;
@@ -156,7 +164,12 @@ body
     padding: 10px;
 }
 
-.SymbolButton:active
+.AsyncIconButton.enabled:active
 {
     transform: translateY(2px);
+}
+
+.AsyncIconButton.disabled
+{
+    color: rgba(0, 0, 0, 0.2);
 }
