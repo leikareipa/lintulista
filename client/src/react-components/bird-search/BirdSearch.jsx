@@ -11,21 +11,30 @@ import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 // full or partial match will be displayed as a list in association with the search bar.
 export function BirdSearch(props = {})
 {
-    panic_if_undefined(props.backend, props.selectionCallback);
+    panic_if_undefined(props.backend, props.selectionCallback, props.shades);
 
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
-    const [searchFieldKey, setSearchFieldKey] = React.useState(0);
-
     return <>
-               <BirdSearchField key={searchFieldKey} onChange={(event)=>regenerate_search_results(event.target.value.trim())} />
+               <BirdSearchField onFocus={props.shades.put_on}
+                                onChange={regenerate_search_results}
+                                onBlur={remove_shades_if_lost_focus} />
                <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"
                                          resultElements={currentSearchResultElements} />
            </>
 
-    // Refresh the list of search results that match the given string.
-    function regenerate_search_results(searchString)
+    function remove_shades_if_lost_focus()
     {
+        if (!currentSearchResultElements.length)
+        {
+            props.shades.pull_off();
+        }
+    }
+
+    // Refresh the list of search results that match the current text in the search field.
+    function regenerate_search_results(inputEvent)
+    {
+        const searchString = inputEvent.target.value.trim();
         const searchResults = [];
 
         if (searchString.length)
@@ -49,25 +58,11 @@ export function BirdSearch(props = {})
         setCurrentSearchResultElements(searchResults);
     }
 
-    // Removes any text from the search field.
-    function reset_search_field()
-    {
-        setSearchFieldKey(searchFieldKey+1);
-    }
-
-    // Removes any search results from being displayed.
-    function reset_search_results()
-    {
-        setCurrentSearchResultElements([]);
-    }
-
-    // Called when the user clicks on one of the search results, and gets passed the corresponding
-    // bird.
+    // Called when the user clicks on one of the search results, and gets passed the
+    // corresponding bird.
     function result_clicked(bird)
     {
-        reset_search_results();
-        reset_search_field();
-
+        props.shades.pull_off();
         props.selectionCallback(bird);
     }
 }
@@ -75,5 +70,5 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 4,
+    maxResultElements: 5,
 };

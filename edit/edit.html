@@ -22,73 +22,91 @@
             import {panic_if_undefined} from "./client/dist/assert.js";
             import {shades} from "./client/dist/shades.js";
 
-            const testShades = shades({container:document.body, onClick:()=>{console.log("hello", testShades)}});
-            testShades.put_on();
-            setTimeout(()=>testShades.pull_off(), 3000);
-
-            (async()=>
+            // Grab from the address bar the id of the observation list to be operated on.
+            const listId = (()=>
             {
-                const listId = (()=>
+                const params = new URLSearchParams(window.location.search);
+
+                if (!params.has("list"))
                 {
-                    const params = new URLSearchParams(window.location.search);
-
-                    if (!params.has("list"))
-                    {
-                        return null;
-                    }
-
-                    return params.get("list");
-                })();
-
-                if (listId)
-                {
-                    const backend = await backend_access({listId});
-
-                    render_observation_list(backend);
-                    render_bird_search(backend);
+                    return null;
                 }
+
+                return params.get("list");
             })();
 
-            function render_observation_list(backend)
+            // Start the app.
+            (async()=>
             {
-                panic_if_undefined(backend);
-
-                const container = document.getElementById("observation-list");
-
-                const observationListElement = React.createElement(ObservationList,
+                if (!listId)
                 {
-                    backend,
-                });
+                    return;
+                }
 
-                ReactDOM.unmountComponentAtNode(container)
-                ReactDOM.render(observationListElement, container);
-            }
+                const backend = await backend_access({listId});
 
-            function render_bird_search(backend)
-            {
-                panic_if_undefined(backend);
-
-                const container = document.getElementById("search-widget");
-
-                const searchElement = React.createElement(BirdSearch,
+                // Darken all other elements on the page while the bird search has focus.
+                const searchDarken = shades(
                 {
-                    backend,
-
-                    // Called when the user clicks on a search result. Will add the corresponding
-                    // bird to the list as a new observation.
-                    selectionCallback: async(bird)=>
+                    z: 99,
+                    opacity: 0.3,
+                    container: document.body,
+                    onClick: ()=>
                     {
-                        const newObservation = observation({bird, date:new Date()});
+                        searchDarken.pull_off();
 
-                        await backend.post_observation(newObservation);
-
-                        render_observation_list(backend);
-                    },
+                        // Clear the search bar and its results.
+                        render_bird_search();
+                    }
                 });
-                
-                ReactDOM.unmountComponentAtNode(container)
-                ReactDOM.render(searchElement, container);
-            }
+
+                render_observation_list();
+                render_bird_search();
+
+                function render_observation_list()
+                {
+                    panic_if_undefined(backend);
+
+                    const container = document.getElementById("observation-list");
+                    const observationListElement = React.createElement(ObservationList,
+                    {
+                        backend,
+                    });
+
+                    ReactDOM.unmountComponentAtNode(container)
+                    ReactDOM.render(observationListElement, container);
+                }
+
+                function render_bird_search()
+                {
+                    panic_if_undefined(backend);
+
+                    const container = document.getElementById("search-widget");
+                    const searchElement = React.createElement(BirdSearch,
+                    {
+                        backend,
+                        shades: searchDarken,
+
+                        // Called when the user clicks on a search result. Will add the corresponding
+                        // bird to the list as a new observation.
+                        selectionCallback: async(bird)=>
+                        {
+                            // Clear the search bar and its results.
+                            render_bird_search(backend, searchDarken);
+
+                            const newObservation = observation({bird, date:new Date()});
+
+                            await backend.post_observation(newObservation);
+
+                            // Refresh the observation list.
+                            render_observation_list(backend);
+                        },
+                    });
+                    
+                    ReactDOM.unmountComponentAtNode(container)
+                    ReactDOM.render(searchElement, container);
+                }
+            })();
         </script>
     </body>
 </html>

@@ -24,6 +24,27 @@ export function shades(args = {/*z, onClick, opacity, container*/})
         error("Failed to generate a valid DOM id for a shade element.");
     }
 
+    // Insert the shade into the DOM. Note that by default, it's not yet displayed.
+    const shadeElement = (()=>
+    {
+        const element = document.createElement("div");
+
+        element.id = shadeId;
+        element.onclick = args.onClick;
+        element.style.cssText = `background-color: rgba(0, 0, 0, ${args.opacity});
+                                 position: fixed;
+                                 top: 0;
+                                 left: 0;
+                                 width: 100%;
+                                 height: 100%;
+                                 display: none;
+                                 z-index: ${args.z};`
+
+        args.container.appendChild(element);
+
+        return element;
+    })();
+
     const publicInterface = Object.freeze(
     {
         id: shadeId,
@@ -35,19 +56,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            const shadeElement = document.createElement("div");
-
-            shadeElement.id = shadeId;
-            shadeElement.onclick = args.onClick;
-            shadeElement.style.cssText = `background-color: rgba(0, 0, 0, ${args.opacity});
-                                          position: fixed;
-                                          top: 0;
-                                          left: 0;
-                                          width: 100%;
-                                          height: 100%;
-                                          z-index: ${args.z};`
-
-            args.container.appendChild(shadeElement);
+            shadeElement.style.display = "inline-block";
         },
 
         pull_off: ()=>
@@ -57,7 +66,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 return;
             }
 
-            document.getElementById(shadeId).remove();
+            shadeElement.style.display = "none";
         },
     });
 

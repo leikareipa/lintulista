@@ -9,6 +9,8 @@ export function BirdSearchField(props = {})
                   placeholder=""
                   spellCheck="false"
                   autoComplete="off"
+                  onBlur={props.onBlur}
+                  onFocus={props.onFocus}
                   onChange={props.onChange}>
            </input>
 }
