@@ -108,6 +108,11 @@ body
     font-size: 110%;
 }
 
+.ObservationListElement:nth-of-type(2n)
+{
+    background-color: #eaeaea;
+}
+
 .ObservationListElement:first-child
 {
     border-radius: 2px 2px 0 0;
@@ -118,9 +123,9 @@ body
     border-radius: 0 0 2px 2px;
 }
 
-.ObservationListElement:nth-of-type(2n)
+.ObservationListElement:only-child
 {
-    background-color: #eaeaea;
+    border-radius: 2px;
 }
 
 .ObservationListElement .image
