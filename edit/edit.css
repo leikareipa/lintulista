@@ -173,11 +173,13 @@ body
 {
     color: white;
     z-index: 200; /* Lift the button above any shades.*/
+    cursor: auto;
 }
 
 .AsyncIconButton.disabled
 {
     color: rgba(0, 0, 0, 0.2);
+    cursor: auto;
 }
 
 .GeoTag
