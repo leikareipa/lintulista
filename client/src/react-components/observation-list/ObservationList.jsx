@@ -32,11 +32,14 @@ export function ObservationList(props = {})
     {
         return props.backend.observations().map((obs, idx)=>
         {
-            const deleter = ()=>delete_observation(obs);
-    
             return <ObservationListElement observation={obs}
                                            key={elementKey++}
                                            requestDeletion={deleter} />
+
+            async function deleter()
+            {
+                await delete_observation(obs)
+            }
         });
     }
 }

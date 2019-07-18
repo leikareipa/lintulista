@@ -79,7 +79,8 @@ export function ObservationListElement(props = {})
         const delay = (ms)=>new Promise(resolve => setTimeout(resolve, ms));
 
         // We want the user to see the spinning 'delete' button in the element's button bar.
-        // Without this, putting on the shades would cause the button bar to go hidden.
+        // Without forcing the button bar to remain visible, putting on the shades would cause
+        // the bar to become hidden.
         setKeepButtonBarVisible(true);
 
         if (!buttonDeleteClicked)
@@ -91,11 +92,9 @@ export function ObservationListElement(props = {})
             /// Also for temporary testing and debugging purposes while developing.
             await delay(1300);
 
-            props.requestDeletion();
+            await props.requestDeletion();
 
             shades.pull_off({removeWhenDone:true});
-
-            setKeepButtonBarVisible(false);
         }
     }
 
