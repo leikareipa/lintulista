@@ -7,8 +7,9 @@
 "use strict";
 
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
-import {GeoTag} from "../misc/GeoTag.js";
 import {panic_if_undefined} from "../../assert.js";
+import {GeoTag} from "../misc/GeoTag.js";
+import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
 {
@@ -91,13 +92,19 @@ export function ObservationListElement(props = {})
                         icon: "fas fa-clock",
                         title: `Aseta havaintoaika`,
                         titleWhenClicked: `Asetetaan havaintoaikaa...`,
-                        task: null,
+                        task: async({resetButtonState})=>
+                        {
+                            props.shades.put_on();
+                            setKeepButtonBarVisible(true);
+
+                            prompt("Time");
+                            await delay(500);
+                            await props.shades.pull_off();
+
+                            resetButtonState("enabled");
+                            setKeepButtonBarVisible(false);
+                        },
                     },
                 ]} />
             </div>
-
-    function delay(ms)
-    {
-        return new Promise(resolve=>setTimeout(resolve, ms));
-    }
 }
