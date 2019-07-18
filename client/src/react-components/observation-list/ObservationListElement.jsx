@@ -32,9 +32,6 @@ export function ObservationListElement(props = {})
     // While set to true, the element's button bar will be displayed at all times.
     const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
 
-    // For keeping track of whether the 'delete observation' button has been clicked.
-    const [buttonDeleteClicked, setButtonDeleteClicked] = React.useState(false);
-
     React.useEffect(()=>
     {
         intersectionObserver.observe(thumbnailRef.current);
@@ -56,54 +53,52 @@ export function ObservationListElement(props = {})
                         {props.observation.dateString}
                     </span>
                 </span>
-                <AsyncIconButtonBar visible={(mouseHovering || keepButtonBarVisible)? 1 : 0}
+                <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
                                     shades={props.shades}
                                     buttons={[
                     {
                         icon: "fas fa-eraser",
                         title: `Poista havainto`,
                         titleWhenClicked: `Poistetaan havaintoa...`,
-                        clickCallback: delete_this_element,
+                        task: async()=>
+                        {
+                            props.shades.put_on();
+                            setKeepButtonBarVisible(true);
+
+                            await delay(1300);
+                            await props.requestDeletion();
+
+                            props.shades.pull_off();
+                        }
                     },
                     {
                         icon: "fas fa-map-marked-alt",
                         title: `Merkitse havaintopaikka`,
                         titleWhenClicked: `Merkitään havaintopaikkaa...`,
-                        clickCallback: null,
+                        task: async({resetButtonState})=>
+                        {
+                            props.shades.put_on();
+                            setKeepButtonBarVisible(true);
+
+                            await delay(800);
+                            await props.shades.pull_off();
+
+                            resetButtonState("disabled");
+                            setKeepButtonBarVisible(false);
+                        },
                     },
                     {
                         icon: "fas fa-clock",
-                        title: `Merkitse havaintoaika`,
-                        titleWhenClicked: `Merkitään havaintoaikaa...`,
-                        clickCallback: null,
+                        title: `Aseta havaintoaika`,
+                        titleWhenClicked: `Asetetaan havaintoaikaa...`,
+                        task: null,
                     },
                 ]} />
             </div>
 
-    async function delete_this_element(shades)
+    function delay(ms)
     {
-        panic_if_undefined(shades);
-
-        const delay = (ms)=>new Promise(resolve=>setTimeout(resolve, ms));
-
-        // We want the user to see the spinning 'delete' button in the element's button bar.
-        // Without forcing the button bar to remain visible, putting on the shades would cause
-        // the bar to become hidden.
-        setKeepButtonBarVisible(true);
-
-        if (!buttonDeleteClicked)
-        {
-            setButtonDeleteClicked(true);
-
-            // Add an artificial delay to give the user time to appreciate the action
-            // taking place.
-            /// Also for temporary testing and debugging purposes while developing.
-            await delay(1300);
-
-            await props.requestDeletion();
-
-            shades.pull_off();
-        }
+        return new Promise(resolve=>setTimeout(resolve, ms));
     }
 
     // Wrappers to avoid arrow functions in props.

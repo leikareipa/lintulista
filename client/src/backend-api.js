@@ -223,7 +223,6 @@ export async function backend_access({listId})
                 })
                 .then(ticket=>
                 {
-                    console.log("SDzf")
                     if (!ticket.valid || (typeof ticket.data === "undefined"))
                     {
                         throw (ticket.message? ticket.message : "unknown");

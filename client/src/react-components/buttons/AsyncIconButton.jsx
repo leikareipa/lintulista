@@ -6,6 +6,8 @@
 
 "use strict";
 
+import {panic_if_undefined, error, warn, panic} from "../../assert.js";
+
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
 //
@@ -14,18 +16,32 @@
 // mark (or "fas fa-question fa-lg" for a larger question mark, etc.).
 //
 // The function to be called when the user clicks on the button should be provided via
-// props.clickCallback. It will be passed no parameters.
+// props.task. This function will be passed a single parameter, {resetButtonState}, which
+// is a function the parent of props.task can call to have the button reset its state to
+// the given value (a string, e.g. "enabled" or "disabled"); for instance when the parent
+// considers the button's tasks to have been completed.
+//
+//     Note: If props.task is undefined or set to a falsy value, the button's state will
+//     automatically be set to "disabled" and clicking on it will have no effect.
 //
 // Text to be shown when the cursor hovers over the button can be provided in props.title;
 // no text will be displayed if set to null. An alternate title text can be provided via
 // props.titleWhenClicked for when the button has been clicked.
 //
-// Whether to render the button in an enabled or disabled state can be set via props.enabled.
-// Clicks on a disabled button will not be registered, and as such the corresponding callback
-// function will not be called.
+// To have the button be rendered in a disabled state and not respond to user input, set
+// the props.task prop to a falsy value.
 //
 export function AsyncIconButton(props = {})
 {
+    if (!props.task)
+    {
+        warn("Encountered a button that had not been assigned a task.");
+    }
+    else if (typeof props.task !== "function")
+    {
+        panic("Expected a button's \"task\" parameter to be a function.");
+    }
+
     const [currentIcon, setCurrentIcon] = React.useState(props.icon);
     const [currentTitle, setCurrentTitle] = React.useState(props.title);
 
@@ -33,29 +49,61 @@ export function AsyncIconButton(props = {})
     //   "enabled" = the button can be clicked
     //   "disabled" = the button can't be interacted with
     //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
-    const [currentState, setCurrentState] = React.useState(props.enabled? "enabled" : "disabled");
-
+    const [currentState, setCurrentState] = React.useState(props.task? "enabled" : "disabled");
+    
     return <span className={`AsyncIconButton ${currentState}`}
-                 enabled={props.enabled}
                  onClick={click_handler}
                  title={currentTitle}>
                      <i className={currentIcon}></i>
            </span>
 
     // Called when the button is clicked.
-    function click_handler()
+    async function click_handler()
     {
-        if (!props.enabled ||
-            !props.clickCallback)
+        if ((currentState !== "enabled") ||
+            !props.task)
         {
             return;
         }
 
-        setCurrentState("waiting");
-        setCurrentIcon("fas fa-spinner fa-spin");
-        setCurrentTitle(props.titleWhenClicked);
+        set_button_state("waiting");
+        await props.task({resetButtonState:(state = "enabled")=>set_button_state(state)});
+    }
 
-        props.clickCallback();
+    function set_button_state(newState)
+    {
+        panic_if_undefined(newState);
+
+        if (!props.task && (newState === "enabled"))
+        {
+            newState = "disabled";
+        }
+
+        switch (newState)
+        {
+            case "enabled":
+            {
+                setCurrentState("enabled");
+                setCurrentIcon(props.icon);
+                setCurrentTitle(props.title);
+                break;
+            }
+            case "waiting":
+            {
+                setCurrentState("waiting");
+                setCurrentIcon("fas fa-spinner fa-spin");
+                setCurrentTitle(props.titleWhenClicked);
+                break;
+            }
+            case "disabled":
+            {
+                setCurrentState("disabled");
+                setCurrentIcon(props.icon);
+                setCurrentTitle(props.title);
+                break;
+            }
+            default: error("Unknown state.");
+        }
     }
 }
 
@@ -64,5 +112,4 @@ AsyncIconButton.defaultProps =
     title: null,
     titleClicked: null,
     symbol: "fas fa-question",
-    clickCallback: null,
 }
