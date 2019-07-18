@@ -39,7 +39,8 @@ export function ObservationListElement(props = {})
 
     return <div className="ObservationListElement" onMouseEnter={signal_mouse_enter}
                                                    onMouseLeave={signal_mouse_leave}>
-                <img className="image" title={props.observation.bird.name}
+                <img className="image" referrerPolicy="no-referrer"
+                                       title={props.observation.bird.name}
                                        src={thumbnailSrc}
                                        ref={thumbnailRef} />
                 <span className="name">
