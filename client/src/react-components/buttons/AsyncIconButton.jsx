@@ -29,7 +29,13 @@ export function AsyncIconButton(props = {})
     const [currentIcon, setCurrentIcon] = React.useState(props.icon);
     const [currentTitle, setCurrentTitle] = React.useState(props.title);
 
-    return <span className={`AsyncIconButton ${props.enabled? "enabled" : "disabled"}`}
+    // Possible states:
+    //   "enabled" = the button can be clicked
+    //   "disabled" = the button can't be interacted with
+    //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
+    const [currentState, setCurrentState] = React.useState(props.enabled? "enabled" : "disabled");
+
+    return <span className={`AsyncIconButton ${currentState}`}
                  enabled={props.enabled}
                  onClick={click_handler}
                  title={currentTitle}>
@@ -45,6 +51,7 @@ export function AsyncIconButton(props = {})
             return;
         }
 
+        setCurrentState("waiting");
         setCurrentIcon("fas fa-spinner fa-spin");
         setCurrentTitle(props.titleWhenClicked);
 

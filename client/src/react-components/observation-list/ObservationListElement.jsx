@@ -7,6 +7,7 @@
 "use strict";
 
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
+import {GeoTag} from "../misc/GeoTag.js";
 
 export function ObservationListElement(props = {})
 {
@@ -36,13 +37,15 @@ export function ObservationListElement(props = {})
         intersectionObserver.observe(thumbnailRef.current);
     });
 
-    return <div className="ObservationListElement" onMouseEnter={()=>{setMouseHovering(true)}}
-                                                   onMouseLeave={()=>{setMouseHovering(false)}}>
+    return <div className="ObservationListElement" onMouseEnter={signal_mouse_enter}
+                                                   onMouseLeave={signal_mouse_leave}>
                 <img className="image" title={props.observation.bird.name}
                                        src={thumbnailSrc}
                                        ref={thumbnailRef} />
                 <span className="name">
-                    {props.observation.bird.name}<br />
+                    {props.observation.bird.name}
+                    <GeoTag place={"Lauttasaari, Helsinki"} />
+                    <br />
                     <span className="observation-details">
                         {props.observation.dateString}
                     </span>
@@ -74,6 +77,8 @@ export function ObservationListElement(props = {})
     {
         const delay = (ms)=>new Promise(resolve => setTimeout(resolve, ms));
 
+        // We want the user to see the spinning 'delete' button in the element's button bar.
+        // Without this, putting on the shades would cause the button bar to go hidden.
         setKeepButtonBarVisible(true);
 
         if (!buttonDeleteClicked)
@@ -91,5 +96,15 @@ export function ObservationListElement(props = {})
 
             setKeepButtonBarVisible(false);
         }
+    }
+
+    // Wrappers to avoid arrow functions in props.
+    function signal_mouse_enter()
+    {
+        setMouseHovering(true);
+    }
+    function signal_mouse_leave()
+    {
+        setMouseHovering(false);
     }
 }

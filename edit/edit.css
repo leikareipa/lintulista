@@ -169,7 +169,28 @@ body
     transform: translateY(2px);
 }
 
+.AsyncIconButton.waiting
+{
+    color: white;
+    z-index: 200; /* Lift the button above any shades.*/
+}
+
 .AsyncIconButton.disabled
 {
     color: rgba(0, 0, 0, 0.2);
+}
+
+.GeoTag
+{
+    display: inline-block;
+    transform: translateY(-6px);
+    color: rgba(200, 50, 0, 0.7);
+    padding: 3px;
+}
+
+.GeoTag a
+{
+    color: inherit;
+    outline: none;
+    text-decoration: none;
 }

@@ -39,7 +39,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                                  height: 100%;
                                  opacity: 0;
                                  visibility: hidden;
-                                 transition: visibility 0s, opacity 0.3s linear;
+                                 transition: visibility 0s, opacity 0.15s linear;
                                  z-index: ${args.z};`
 
         args.container.appendChild(element);
