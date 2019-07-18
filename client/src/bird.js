@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined} from "../assert.js";
+import {panic_if_undefined} from "./assert.js";
 
 export function bird(args = {})
 {

@@ -50,7 +50,11 @@ foreach ($observationData["observations"] as $observation)
         exit(failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
     }
 
-    $returnData[] = ["birdName"=>$observation["birdName"], "timestamp"=>$observation["timestamp"]];
+    // Note: The 'place' property is optional and doesn't need to be checked for.
+
+    $returnData[] = ["birdName"=>$observation["birdName"],
+                     "timestamp"=>$observation["timestamp"],
+                     "place"=>(isset($observation["place"])? $observation["place"] : null)];
 }
 
 exit(success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));

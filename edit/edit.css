@@ -192,7 +192,7 @@ body
     display: inline-block;
     transform: translateY(-6px);
     color: rgba(200, 50, 0, 0.7);
-    padding: 3px;
+    padding-left: 3px;
 }
 
 .GeoTag a

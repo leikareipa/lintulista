@@ -8,9 +8,9 @@
 
 "use strict";
 
-import {observation} from "../observation/observation.js";
-import {error, panic_if_undefined} from "../assert.js";
-import {bird} from "../bird/bird.js";
+import {observation} from "./observation.js";
+import {error, panic_if_undefined} from "./assert.js";
+import {bird} from "./bird.js";
 
 export async function backend_access({listId})
 {
@@ -219,10 +219,11 @@ export async function backend_access({listId})
                         throw "Failed to load server-side observation data.";
                     }
 
-                return response.json();
+                    return response.json();
                 })
                 .then(ticket=>
                 {
+                    console.log("SDzf")
                     if (!ticket.valid || (typeof ticket.data === "undefined"))
                     {
                         throw (ticket.message? ticket.message : "unknown");
@@ -241,6 +242,7 @@ export async function backend_access({listId})
                     {
                         bird: localCache.knownBirds.find(b=>b.name === obs.birdName),
                         date: new Date(obs.timestamp*1000),
+                        place: obs.place,
                     }));
                 })
                 .catch(errorMessage=>

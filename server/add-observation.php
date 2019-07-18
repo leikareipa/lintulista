@@ -8,10 +8,12 @@
  * Adds an observation to the given list. The observation data to be added is expected
  * as a JSON object of the following form:
  * 
- *     {birdName:"Naakka", timestamp:5058748}
+ *     {birdName:"Naakka", timestamp:5058748, place:"Tampereen keskusta"}
  * 
- * The birdName property gives the name of the bird that this observation is of, and the
- * timestamp the Unix epoch, in seconds, of when the observation was made.
+ * The 'birdName' property gives the name of the bird that this observation is of, and
+ * 'timestamp' the Unix epoch, in seconds, of when the observation was made. The 'place'
+ * property is optional, and gives as a free-form string the place where the observation
+ * took place.
  * 
  * Note that you are expected to add only one observation per request.
  * 
@@ -46,6 +48,8 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
     {
         exit(failure("The given observation data is missing the required \"timestamp\" property."));
     }
+
+    // Note: The 'place' property is optional and doesn't need to be checked for.
 }
 
 // See whether the new observation is valid.
@@ -90,7 +94,9 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
         exit(success());
     }
 
-    $observationData["observations"][] = ["birdName"=>$newObservation["birdName"], "timestamp"=>$newObservation["timestamp"]];
+    $observationData["observations"][] = ["birdName"=>$newObservation["birdName"],
+                                          "timestamp"=>$newObservation["timestamp"]] +
+                                         (isset($newObservation["place"])? ["place"=>$newObservation["place"]] : []);
 }
 
 file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));

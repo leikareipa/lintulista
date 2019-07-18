@@ -40,6 +40,8 @@ export function ObservationListElement(props = {})
         intersectionObserver.observe(thumbnailRef.current);
     });
 
+    const geoTag = (props.observation.place? <GeoTag place={props.observation.place} /> : <></>);
+
     return <div className="ObservationListElement" onMouseEnter={signal_mouse_enter}
                                                    onMouseLeave={signal_mouse_leave}>
                 <img className="image" referrerPolicy="no-referrer"
@@ -48,7 +50,7 @@ export function ObservationListElement(props = {})
                                        ref={thumbnailRef} />
                 <span className="name">
                     {props.observation.bird.name}
-                    <GeoTag place={"Lauttasaari, Helsinki"} />
+                    {geoTag}
                     <br />
                     <span className="observation-details">
                         {props.observation.dateString}
