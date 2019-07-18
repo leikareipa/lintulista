@@ -8,7 +8,6 @@
 
 import {panic_if_undefined} from "../../assert.js";
 import {AsyncIconButton} from "./AsyncIconButton.js";
-import {shades} from "../../shades.js";
 
 // Displays a collection of AsyncIconButton elements. When one of the buttons is clicked,
 // the rest in the collection are visually disabled (e.g. grayed out), and the user is
@@ -45,10 +44,14 @@ import {shades} from "../../shades.js";
 //     finished performing the actions associated with clicking the button.
 //
 // The props.visible property defines whether the button bar should be rendered or not.
+//
+// Shades used to darken the rest of the page while a button is in a waiting state (having
+// been clicked but its corresponding action having not yet completed) are passed via
+// props.shades.
 // 
 export function AsyncIconButtonBar(props = {})
 {
-    panic_if_undefined(props, props.buttons);
+    panic_if_undefined(props, props.buttons, props.shades);
 
     // Indices in the array of buttons of those buttons that are currently active, i.e.
     // which react to clicks etc. Buttons not on this list at a given time are considered
@@ -89,22 +92,17 @@ export function AsyncIconButtonBar(props = {})
 
     // Called when a button is clicked. Acts as a router to the button's actual callback,
     // with some additional UI tweaking in-between.
-    function button_clicked(button)
+    async function button_clicked(button)
     {
         if (!is_button_enabled(button))
         {
             return;
         }
 
-        // A shade put on when the user clicks on one of the buttons. The shade will be sent
-        // to the parent element via the button's click callback function, and the parent can
-        // then remove the shade when it considers the button's action to have been finished.
-        const clickShade = shades({container:document.body, opacity:0.3});
-
-        clickShade.put_on();
-
         setEnabledButtons([index_of_button(button)]);
 
-        button.clickCallback(clickShade);
+        props.shades.put_on();
+
+        button.clickCallback(props.shades);
     }
 }

@@ -8,9 +8,12 @@
 
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {GeoTag} from "../misc/GeoTag.js";
+import {panic_if_undefined} from "../../assert.js";
 
 export function ObservationListElement(props = {})
 {
+    panic_if_undefined(props, props.shades);
+
     // For lazy image loading.
     const thumbnailRef = React.createRef();
     const [thumbnailSrc, setThumbnailSrc] = React.useState("./client/assets/images/placeholder-bird-thumbnail.png");
@@ -52,6 +55,7 @@ export function ObservationListElement(props = {})
                     </span>
                 </span>
                 <AsyncIconButtonBar visible={(mouseHovering || keepButtonBarVisible)? 1 : 0}
+                                    shades={props.shades}
                                     buttons={[
                     {
                         icon: "fas fa-eraser",
@@ -76,7 +80,9 @@ export function ObservationListElement(props = {})
 
     async function delete_this_element(shades)
     {
-        const delay = (ms)=>new Promise(resolve => setTimeout(resolve, ms));
+        panic_if_undefined(shades);
+
+        const delay = (ms)=>new Promise(resolve=>setTimeout(resolve, ms));
 
         // We want the user to see the spinning 'delete' button in the element's button bar.
         // Without forcing the button bar to remain visible, putting on the shades would cause
@@ -94,7 +100,7 @@ export function ObservationListElement(props = {})
 
             await props.requestDeletion();
 
-            shades.pull_off({removeWhenDone:true});
+            shades.pull_off();
         }
     }
 

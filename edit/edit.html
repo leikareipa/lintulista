@@ -47,18 +47,28 @@
                 const backend = await backend_access({listId});
 
                 // Darken all other elements on the page while the bird search has focus.
-                const searchDarken = shades(
+                const searchShades = shades(
                 {
                     z: 99,
                     opacity: 0.3,
                     container: document.body,
                     onClick: ()=>
                     {
-                        searchDarken.pull_off();
+                        searchShades.pull_off();
 
                         // Clear the search bar and its results.
                         render_bird_search();
                     }
+                });
+
+                // Darken all elements on the page while actions are undertaken about the
+                // observation list (like deleting an observation).
+                const observationListActivityShades = shades(
+                {
+                    z: 110,
+                    opacity: 0.3,
+                    container: document.body,
+                    onClick: null,
                 });
 
                 render_observation_list();
@@ -72,6 +82,7 @@
                     const observationListElement = React.createElement(ObservationList,
                     {
                         backend,
+                        shades: observationListActivityShades,
                     });
 
                     ReactDOM.unmountComponentAtNode(container)
@@ -86,14 +97,14 @@
                     const searchElement = React.createElement(BirdSearch,
                     {
                         backend,
-                        shades: searchDarken,
+                        shades: searchShades,
 
                         // Called when the user clicks on a search result. Will add the corresponding
                         // bird to the list as a new observation.
                         selectionCallback: async(bird)=>
                         {
                             // Clear the search bar and its results.
-                            render_bird_search(backend, searchDarken);
+                            render_bird_search(backend, searchShades);
 
                             const newObservation = observation({bird, date:new Date()});
 

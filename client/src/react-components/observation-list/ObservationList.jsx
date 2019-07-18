@@ -11,7 +11,7 @@ import {panic_if_undefined} from "../../assert.js";
 
 export function ObservationList(props = {})
 {
-    panic_if_undefined(props.backend);
+    panic_if_undefined(props.backend, props.shades);
 
     /// Temporary hack. Use a successively incrementing key for the elements, so that when
     /// an element is deleted, the list updates cleanly.
@@ -34,6 +34,7 @@ export function ObservationList(props = {})
         {
             return <ObservationListElement observation={obs}
                                            key={elementKey++}
+                                           shades={props.shades}
                                            requestDeletion={deleter} />
 
             async function deleter()
