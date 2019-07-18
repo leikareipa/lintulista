@@ -47,7 +47,10 @@ export function BirdSearch(props = {})
 
                     searchResults.push(<BirdSearchResultElement key={idx}
                                                                 bird={bird}
-                                                                clickCallback={result_clicked}
+                                                                clickCallback={(bird)=>{
+                                                                    props.shades.pull_off();
+                                                                    props.selectionCallback(bird);
+                                                                }}
                                                                 dateObserved={observation? observation.dateString : null} />);
                 }
             });
@@ -56,14 +59,6 @@ export function BirdSearch(props = {})
         searchResults.length = Math.min(props.maxResultElements, searchResults.length);
 
         setCurrentSearchResultElements(searchResults);
-    }
-
-    // Called when the user clicks on one of the search results, and gets passed the
-    // corresponding bird.
-    function result_clicked(bird)
-    {
-        props.shades.pull_off();
-        props.selectionCallback(bird);
     }
 }
 

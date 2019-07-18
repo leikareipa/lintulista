@@ -35,12 +35,7 @@ export function ObservationList(props = {})
             return <ObservationListElement observation={obs}
                                            key={elementKey++}
                                            shades={props.shades}
-                                           requestDeletion={deleter} />
-
-            async function deleter()
-            {
-                await delete_observation(obs)
-            }
+                                           requestDeletion={async()=>await delete_observation(obs)} />
         });
     }
 }

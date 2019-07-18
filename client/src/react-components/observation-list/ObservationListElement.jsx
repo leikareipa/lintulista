@@ -39,8 +39,8 @@ export function ObservationListElement(props = {})
 
     const geoTag = (props.observation.place? <GeoTag place={props.observation.place} /> : <></>);
 
-    return <div className="ObservationListElement" onMouseEnter={signal_mouse_enter}
-                                                   onMouseLeave={signal_mouse_leave}>
+    return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
+                                                   onMouseLeave={()=>setMouseHovering(false)}>
                 <img className="image" referrerPolicy="no-referrer"
                                        title={props.observation.bird.name}
                                        src={thumbnailSrc}
@@ -99,15 +99,5 @@ export function ObservationListElement(props = {})
     function delay(ms)
     {
         return new Promise(resolve=>setTimeout(resolve, ms));
-    }
-
-    // Wrappers to avoid arrow functions in props.
-    function signal_mouse_enter()
-    {
-        setMouseHovering(true);
-    }
-    function signal_mouse_leave()
-    {
-        setMouseHovering(false);
     }
 }
