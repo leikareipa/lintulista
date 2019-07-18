@@ -53,40 +53,54 @@ export function shades(args = {/*z, onClick, opacity, container*/})
 
         put_on: ()=>
         {
-            if (!shadeId)
+            return new Promise(resolve=>
             {
-                return;
-            }
+                if (!shadeId)
+                {
+                    resolve();
+                    return;
+                }
 
-            shadeElement.style.visibility = "visible";
-            shadeElement.style.opacity = "1";
+                shadeElement.style.visibility = "visible";
+                shadeElement.style.opacity = "1";
+                shadeElement.addEventListener("transitionend", ()=>
+                {
+                    resolve();
+                }, {once:true});
+            });
         },
 
         pull_off: (args = {})=>
         {
-            args = 
+            return new Promise(resolve=>
             {
-                ...{
-                    removeWhenDone: false,
-                },
-                ...args,
-            };
-
-            if (!shadeId)
-            {
-                return;
-            }
-
-            shadeElement.style.opacity = "0";
-            shadeElement.addEventListener("transitionend", ()=>
-            {
-                shadeElement.style.visibility = "hidden";
-
-                if (args.removeWhenDone)
+                args = 
                 {
-                    shadeElement.remove();
+                    ...{
+                        removeWhenDone: false,
+                    },
+                    ...args,
+                };
+
+                if (!shadeId)
+                {
+                    resolve();
+                    return;
                 }
-            }, {once:true});
+
+                shadeElement.style.opacity = "0";
+                shadeElement.addEventListener("transitionend", ()=>
+                {
+                    shadeElement.style.visibility = "hidden";
+
+                    if (args.removeWhenDone)
+                    {
+                        shadeElement.remove();
+                    }
+
+                    resolve();
+                }, {once:true});
+            });
         },
     });
 
