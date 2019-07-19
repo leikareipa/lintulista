@@ -18,7 +18,18 @@ export function panic_if_undefined(...properties)
     {
         if (typeof property === "undefined")
         {
-            panic("A required property was undefined.");
+            panic("A required property is undefined.");
+        }
+    });
+}
+
+export function panic_if_not_type(typeName, ...properties)
+{
+    properties.forEach(property=>
+    {
+        if (typeof property !== typeName)
+        {
+            panic(`A property is of the wrong type; expected a ${typeName}.`);
         }
     });
 }
