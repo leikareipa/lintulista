@@ -21,11 +21,11 @@ import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../a
 // The following types are accepted:
 //
 //     "integer" = an integer value, like 1, 10, 8744, etc.
-//     "month" = a string giving the name of a month, whose index is given by props.value
-//               such that e.g. props.value = 2 displays the name of March.
+//     "month-name" = a string giving the name of a month, whose index is given by props.value
+//                    such that e.g. props.value = 2 displays the name of March.
 //
-// If the "month" type is used, a language hint can be given via props.language for which
-// language to display the month's name in.
+// If the "month-name" type is used, a language hint can be given via props.language for
+// which language to display the month's name in.
 //
 // A function to be called when the value changes can be provided via props.onChange. It
 // will receive as a parameter the current value.
@@ -81,7 +81,7 @@ export function ScrollerLabel(props = {})
         switch (props.type)
         {
             case "integer": return underlyingValue;
-            case "month": return month_name(underlyingValue-1, props.language);
+            case "month-name": return month_name(underlyingValue-1, props.language);
             default: error("Unknown value type."); return "?";
         }
     }
