@@ -44,20 +44,12 @@ export function ScrollerLabel(props = {})
         panic("Expected the onChange property to be a function.");
     }
 
-    const [rawValue, setRawValue] = React.useState(props.value);
-    const [displayValue, setDisplayValue] = React.useState(0);
+    const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
 
     React.useEffect(()=>
     {
-        props.onChange(rawValue);
-
-        switch (props.type)
-        {
-            case "integer": setDisplayValue(rawValue); break;
-            case "month": setDisplayValue(month_name(rawValue-1, props.language)); break;
-            default: error("Unknown value type.");
-        }
-    }, [rawValue]);
+        props.onChange(underlyingValue);
+    }, [underlyingValue]);
 
     /// TODO: Automatic scrolling while holding down the mouse button.
     return <div className="ScrollerLabel">
@@ -66,7 +58,7 @@ export function ScrollerLabel(props = {})
                </div>
 
                <div className="value">
-                   {`${displayValue}${props.suffix || ""}`}
+                   {`${displayable_value()}${props.suffix || ""}`}
                </div>
 
                <div className="scroller decrease" onClick={()=>scroll_value(-1)}>
@@ -76,9 +68,22 @@ export function ScrollerLabel(props = {})
 
     function scroll_value(direction = 1)
     {
-        setRawValue((rawValue + direction) < props.min? props.max :
-                    (rawValue + direction) > props.max? props.min :
-                    (rawValue + direction));
+        setUnderlyingValue((underlyingValue + direction) < props.min? props.max :
+                    (underlyingValue + direction) > props.max? props.min :
+                    (underlyingValue + direction));
+    }
+
+    // Returns a version of the underlying value that can be displayed to the user. For
+    // instance, when the user has requested month names, the underlying value 5 will
+    // return the name of the 5th month, May.
+    function displayable_value()
+    {
+        switch (props.type)
+        {
+            case "integer": return underlyingValue;
+            case "month": return month_name(underlyingValue-1, props.language);
+            default: error("Unknown value type."); return "?";
+        }
     }
 
     // Returns as a string the name of the month with the given index (0-11), such that
