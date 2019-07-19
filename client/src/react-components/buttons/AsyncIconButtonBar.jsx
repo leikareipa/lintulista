@@ -47,7 +47,7 @@ import {AsyncIconButton} from "./AsyncIconButton.js";
 // 
 export function AsyncIconButtonBar(props = {})
 {
-    panic_if_undefined(props, props.buttons, props.shades);
+    AsyncIconButtonBar.validate_props(props);
 
     // Create a list of the button elements to be rendered in this button bar.
     const elements = props.buttons.map((button, idx)=>
@@ -62,4 +62,11 @@ export function AsyncIconButtonBar(props = {})
     return  <div className="AsyncIconButtonBar" style={{visibility:(props.visible? "visible" : "hidden")}}>
                 {elements}
             </div>
+}
+
+AsyncIconButtonBar.validate_props = function(props)
+{
+    panic_if_undefined(props, props.buttons, props.shades);
+
+    return;
 }

@@ -13,7 +13,7 @@ import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
 {
-    panic_if_undefined(props, props.shades);
+    ObservationListElement.validate_props(props);
 
     // For lazy image loading.
     const thumbnailRef = React.createRef();
@@ -110,4 +110,11 @@ export function ObservationListElement(props = {})
                     },
                 ]} />
             </div>
+}
+
+ObservationListElement.validate_props = function(props)
+{
+    panic_if_undefined(props, props.shades);
+
+    return;
 }

@@ -15,7 +15,7 @@ import {panic_if_undefined} from "../../assert.js";
 // the GeoTag is clicked, a relevant map resource is loaded to display that location on a map.
 export function GeoTag(props = {})
 {
-    panic_if_undefined(props.place);
+    GeoTag.validate_props(props);
 
     /// TODO: Support place strings provided as a latitude/longitude pair.
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${props.place.replace(" ", "+")}`;
@@ -25,4 +25,11 @@ export function GeoTag(props = {})
                     <i className="fas fa-map-marker-alt"></i>
                 </a>
            </div>
+}
+
+GeoTag.validate_props = function(props)
+{
+    panic_if_undefined(props.place);
+
+    return;
 }

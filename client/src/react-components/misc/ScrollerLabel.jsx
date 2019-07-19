@@ -32,17 +32,7 @@ import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../a
 //
 export function ScrollerLabel(props = {})
 {
-    panic_if_undefined(props.type, props.min, props.max);
-    panic_if_not_type("number", props.min, props.max, props.value);
-
-    if (!props.onChange)
-    {
-        warn("No onChange callback function passed to this scroller label.");
-    }
-    else if (typeof props.onChange !== "function")
-    {
-        panic("Expected the onChange property to be a function.");
-    }
+    ScrollerLabel.validate_props(props);
     
     const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
 
@@ -97,4 +87,21 @@ export function ScrollerLabel(props = {})
 ScrollerLabel.defaultProps =
 {
     language: "fi",
+}
+
+ScrollerLabel.validate_props = function(props)
+{
+    panic_if_undefined(props.type, props.min, props.max);
+    panic_if_not_type("number", props.min, props.max, props.value);
+
+    if (!props.onChange)
+    {
+        warn("No onChange callback function passed to this scroller label.");
+    }
+    else if (typeof props.onChange !== "function")
+    {
+        panic("Expected the onChange property to be a function.");
+    }
+
+    return;
 }

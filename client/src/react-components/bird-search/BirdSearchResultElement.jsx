@@ -5,10 +5,7 @@ import {warn, panic} from "../../assert.js"
 // An element displaying information about an individual search result.
 export function BirdSearchResultElement(props = {})
 {
-    if (typeof props.clickCallback !== "function")
-    {
-        panic("Expected a click handler function.");
-    }
+    BirdSearchResultElement.validate_props(props);
 
     const {hasBeenPreviouslyObserved, dateObserved} = (()=>
     {
@@ -41,4 +38,14 @@ export function BirdSearchResultElement(props = {})
                    <span className="observed-date">{dateObserved}</span>
                </span>
            </div>
+}
+
+BirdSearchResultElement.validate_props = function(props)
+{
+    if (typeof props.clickCallback !== "function")
+    {
+        panic("Expected a click handler function.");
+    }
+
+    return;
 }

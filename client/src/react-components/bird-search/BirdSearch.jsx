@@ -11,7 +11,7 @@ import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 // full or partial match will be displayed as a list in association with the search bar.
 export function BirdSearch(props = {})
 {
-    panic_if_undefined(props.backend, props.selectionCallback, props.shades);
+    BirdSearch.validate_props(props);
 
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
@@ -67,3 +67,10 @@ BirdSearch.defaultProps =
     // How many search results to display, at most.
     maxResultElements: 4,
 };
+
+BirdSearch.validate_props = function(props)
+{
+    panic_if_undefined(props.backend, props.selectionCallback, props.shades);
+
+    return;
+}

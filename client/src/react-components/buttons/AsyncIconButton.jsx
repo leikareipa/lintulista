@@ -33,14 +33,7 @@ import {panic_if_undefined, error, warn, panic} from "../../assert.js";
 //
 export function AsyncIconButton(props = {})
 {
-    if (!props.task)
-    {
-        warn("Encountered a button that had not been assigned a task.");
-    }
-    else if (typeof props.task !== "function")
-    {
-        panic("Expected a button's \"task\" parameter to be a function.");
-    }
+    AsyncIconButton.validate_props(props);
 
     const [currentIcon, setCurrentIcon] = React.useState(props.icon);
     const [currentTitle, setCurrentTitle] = React.useState(props.title);
@@ -112,4 +105,18 @@ AsyncIconButton.defaultProps =
     title: null,
     titleClicked: null,
     symbol: "fas fa-question",
+}
+
+AsyncIconButton.validate_props = function(props)
+{
+    if (!props.task)
+    {
+        warn("Encountered a button that had not been assigned a task.");
+    }
+    else if (typeof props.task !== "function")
+    {
+        panic("Expected a button's \"task\" parameter to be a function.");
+    }
+
+    return;
 }
