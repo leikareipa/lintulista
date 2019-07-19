@@ -24,6 +24,8 @@ export function shades(args = {/*z, onClick, opacity, container*/})
         error("Failed to generate a valid DOM id for a shade element.");
     }
 
+    const transitionDuration = 0.15;
+
     // Insert the shade into the DOM. Note that by default, it's not yet displayed.
     const shadeElement = (()=>
     {
@@ -39,7 +41,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                                  height: 100%;
                                  opacity: 0;
                                  visibility: hidden;
-                                 transition: visibility 0s, opacity 0.15s linear;
+                                 transition: visibility 0s, opacity ${transitionDuration}s linear;
                                  z-index: ${args.z};`
 
         args.container.appendChild(element);
@@ -63,10 +65,13 @@ export function shades(args = {/*z, onClick, opacity, container*/})
 
                 shadeElement.style.visibility = "visible";
                 shadeElement.style.opacity = "1";
-                shadeElement.addEventListener("transitionend", ()=>
+
+                // Use a timeout instead of a transition event listener to prevent a missing
+                // transition from holding up the app.
+                setTimeout(()=>
                 {
                     resolve();
-                }, {once:true});
+                }, (transitionDuration * 1000));
             });
         },
 
@@ -89,7 +94,10 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 }
 
                 shadeElement.style.opacity = "0";
-                shadeElement.addEventListener("transitionend", ()=>
+
+                // Use a timeout instead of a transition event listener to prevent a missing
+                // transition from holding up the app.
+                setTimeout(()=>
                 {
                     shadeElement.style.visibility = "hidden";
 
@@ -99,7 +107,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                     }
 
                     resolve();
-                }, {once:true});
+                }, (transitionDuration * 1000));
             });
         },
     });
