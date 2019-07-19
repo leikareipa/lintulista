@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type, error} from "../../assert.js";
+import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../assert.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
 // instance, you might have a label containing "1", and the arrows can be used to scroll
@@ -27,16 +27,30 @@ import {panic_if_undefined, panic_if_not_type, error} from "../../assert.js";
 // If the "month" type is used, a language hint can be given via props.language for which
 // language to display the month's name in.
 //
+// The function to be called when the value changes can be provided via props.onChange. It
+// will receive as a parameter the current value.
+//
 export function ScrollerLabel(props = {})
 {
     panic_if_undefined(props.type, props.min, props.max);
     panic_if_not_type("number", props.min, props.max, props.value);
+
+    if (!props.onChange)
+    {
+        warn("No onChange callback function passed to this scroller label.");
+    }
+    else if (typeof props.onChange !== "function")
+    {
+        panic("Expected the onChange property to be a function.");
+    }
 
     const [rawValue, setRawValue] = React.useState(props.value);
     const [displayValue, setDisplayValue] = React.useState(0);
 
     React.useEffect(()=>
     {
+        props.onChange(rawValue);
+
         switch (props.type)
         {
             case "integer": setDisplayValue(rawValue); break;
