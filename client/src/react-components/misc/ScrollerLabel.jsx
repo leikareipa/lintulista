@@ -27,7 +27,7 @@ import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../a
 // If the "month" type is used, a language hint can be given via props.language for which
 // language to display the month's name in.
 //
-// The function to be called when the value changes can be provided via props.onChange. It
+// A function to be called when the value changes can be provided via props.onChange. It
 // will receive as a parameter the current value.
 //
 export function ScrollerLabel(props = {})
@@ -60,7 +60,7 @@ export function ScrollerLabel(props = {})
     }, [rawValue]);
 
     /// TODO: Automatic scrolling while holding down the mouse button.
-    return <div className="ScrollerField">
+    return <div className="ScrollerLabel">
                <div className="scroller increase" onClick={()=>scroll_value(1)}>
                    <i className="fas fa-caret-up fa-2x"></i>
                </div>
