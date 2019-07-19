@@ -94,15 +94,18 @@ export function ObservationListElement(props = {})
                         titleWhenClicked: `Asetetaan havaintoaikaa...`,
                         task: async({resetButtonState})=>
                         {
-                            props.shades.put_on();
                             setKeepButtonBarVisible(true);
+                            resetButtonState();
 
-                            prompt("Time");
-                            await delay(500);
+                            props.shades.put_on();
+                            await delay(400);
+                            await props.openSetDateDialog();
+
                             await props.shades.pull_off();
 
-                            resetButtonState("enabled");
-                            setKeepButtonBarVisible(false);
+                            //resetButtonState();
+                            resetButtonState("waiting")
+                            //setKeepButtonBarVisible(false);
                         },
                     },
                 ]} />

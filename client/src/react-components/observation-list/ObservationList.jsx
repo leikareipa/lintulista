@@ -35,6 +35,7 @@ export function ObservationList(props = {})
             return <ObservationListElement observation={obs}
                                            key={elementKey++}
                                            shades={props.shades}
+                                           openSetDateDialog={()=>props.openSetDateDialog(obs)}
                                            requestDeletion={async()=>await delete_observation(obs)} />
         });
     }

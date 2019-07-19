@@ -43,7 +43,7 @@ export function ScrollerLabel(props = {})
     {
         panic("Expected the onChange property to be a function.");
     }
-
+    
     const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
 
     React.useEffect(()=>

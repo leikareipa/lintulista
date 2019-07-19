@@ -65,5 +65,5 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 5,
+    maxResultElements: 4,
 };

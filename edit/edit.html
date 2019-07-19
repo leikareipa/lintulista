@@ -13,6 +13,9 @@
         <div id="search-widget" style="margin-top: 20px;"></div>
         <div id="observation-list" style="margin-top: 50px; margin-bottom: 50px;"></div>
 
+        <div id="set-date-dialog"></div>
+        <div id="set-place-dialog"></div>
+
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
         <script type="module">
@@ -20,8 +23,10 @@
             import {ObservationList} from "./client/dist/react-components/observation-list/ObservationList.js";
             import {backend_access} from "./client/dist/backend-api.js";
             import {observation} from "./client/dist/observation.js";
+            import {bird} from "./client/dist/bird.js";
             import {panic_if_undefined} from "./client/dist/assert.js";
             import {shades} from "./client/dist/shades.js";
+            import {ObservationDatePrompt} from "./client/dist/react-components/observation-date-prompt/ObservationDatePrompt.js";
 
             // Grab from the address bar the id of the observation list to be operated on.
             const listId = (()=>
@@ -50,7 +55,7 @@
                 const searchShades = shades(
                 {
                     z: 99,
-                    opacity: 0.3,
+                    opacity: 0.6,
                     container: document.body,
                     onClick: ()=>
                     {
@@ -71,6 +76,7 @@
                     onClick: null,
                 });
 
+                // render_set_date_dialog(observation(backend.observations()[1]));
                 render_observation_list();
                 render_bird_search();
 
@@ -83,6 +89,7 @@
                     {
                         backend,
                         shades: observationListActivityShades,
+                        openSetDateDialog: render_set_date_dialog,
                     });
 
                     ReactDOM.unmountComponentAtNode(container)
@@ -117,6 +124,42 @@
                     
                     ReactDOM.unmountComponentAtNode(container)
                     ReactDOM.render(searchElement, container);
+                }
+
+                // Draws a modal dialog that prompts the user to enter a new date for
+                // the given observation. Returns a promise that resolves once the user
+                // has closed the dialog.
+                function render_set_date_dialog(observation)
+                {
+                    return new Promise(resolve=>
+                    {
+                        const container = document.getElementById("set-date-dialog");
+                        const dialogShades = shades(
+                        {
+                            z: 110,
+                            opacity: 0.8,
+                            container: document.body,
+                            onClick: async()=>
+                            {
+                                ReactDOM.unmountComponentAtNode(container);
+
+                                await dialogShades.pull_off();
+
+                                resolve();
+                            }
+                        });
+                        const dialog = React.createElement(ObservationDatePrompt,
+                        {
+                            observation,
+                            shades: dialogShades,
+                            receiveDate: ({year, month, day})=>{console.log(day, month, year)},
+                        });
+
+                        dialogShades.put_on();
+
+                        ReactDOM.unmountComponentAtNode(container)
+                        ReactDOM.render(dialog, container);
+                    });
                 }
             })();
         </script>
