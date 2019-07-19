@@ -1,6 +1,6 @@
 "use strict";
 
-import {warn, panic} from "../../assert.js"
+import {panic} from "../../assert.js"
 
 // An element displaying information about an individual search result.
 export function BirdSearchResultElement(props = {})

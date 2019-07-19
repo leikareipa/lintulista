@@ -1,9 +1,9 @@
 "use strict";
 
+import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
+import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
 import {panic_if_undefined} from "../../assert.js"
 import {BirdSearchField} from "./BirdSearchField.js";
-import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
-import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 
 // Displays a search bar and corresponding search results on bird names. Expects the names
 // to be provided in props.birds, being an array of bird() objects. The 'name' property of

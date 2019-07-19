@@ -12,6 +12,7 @@ import {observation} from "./observation.js";
 import {error, panic_if_undefined} from "./assert.js";
 import {bird} from "./bird.js";
 
+// Provides mediated access to the given list's data in Lintulista's backend.
 export async function backend_access({listId})
 {
     const backendAddress = Object.freeze(
