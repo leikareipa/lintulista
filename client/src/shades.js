@@ -33,7 +33,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
 
         element.id = shadeId;
         element.onclick = args.onClick;
-        element.style.cssText = `background-color: rgba(0, 0, 0, ${args.opacity});
+        element.style.cssText = `background-color: black;
                                  position: fixed;
                                  top: 0;
                                  left: 0;
@@ -53,7 +53,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
     {
         id: shadeId,
 
-        put_on: ()=>
+        put_on: (overrideArgs = {/*z, onClick, opacity*/})=>
         {
             return new Promise(resolve=>
             {
@@ -63,9 +63,11 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                     return;
                 }
 
+                shadeElement.style.zIndex = (overrideArgs.z || args.z);
+                shadeElement.onclick = (overrideArgs.onClick || args.onClick);
+                shadeElement.style.opacity = `${overrideArgs.opacity || args.opacity}`;
                 shadeElement.style.visibility = "visible";
-                shadeElement.style.opacity = "1";
-
+                
                 // Use a timeout instead of a transition event listener to prevent a missing
                 // transition from holding up the app.
                 setTimeout(()=>
