@@ -1,5 +1,3 @@
-/* Placeholder stylings.*/
-
 body
 {
     background-color: #404040;
@@ -187,7 +185,7 @@ body
     cursor: auto;
 }
 
-.ObservationListElement .GeoTag
+.GeoTag
 {
     display: inline-block;
     transform: translateY(-6px);
@@ -196,11 +194,25 @@ body
     font-size: 110%;
 }
 
-.ObservationListElement .GeoTag a
+.GeoTag a
 {
     color: inherit;
     outline: none;
     text-decoration: none;
+}
+
+.ObservationDatePrompt .GeoTag
+{
+    padding-left: 0;
+    margin-left: auto;
+    transform: translateY(0px);
+    font-size: 105%;
+    color: rgb(224, 56, 0);
+    left: 55px;
+    top: 52px;
+    position: absolute;
+    font-size: 200%;
+    z-index: 10; /* Above the bird thumbnail image.*/
 }
 
 .ObservationDatePrompt
