@@ -15,6 +15,9 @@ import {panic_if_undefined, error, warn, panic} from "../../assert.js";
 // Awesome class names defining the desired icon; e.g. "fas fa-question" for a question
 // mark (or "fas fa-question fa-lg" for a larger question mark, etc.).
 //
+// The button's icon color can be set via CSS or the props.color override that provides a
+// string to be passed to the CSS 'color' property.
+//
 // The function to be called when the user clicks on the button should be provided via
 // props.task. This function will be passed a single parameter, {resetButtonState}, which
 // is a function the parent of props.task can call to have the button reset its state to
@@ -46,7 +49,8 @@ export function AsyncIconButton(props = {})
     
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={click_handler}
-                 title={currentTitle}>
+                 title={currentTitle}
+                 style={{[props.color? "color" : "ignoreThisPropertyValue"]:props.color}}>
                      <i className={currentIcon}></i>
            </span>
 
