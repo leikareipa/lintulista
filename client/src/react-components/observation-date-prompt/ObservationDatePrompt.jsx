@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {ScrollerLabel} from "../misc/ScrollerLabel.js";
+import {ScrollerLabel} from "../scroller-label/ScrollerLabel.js";
 
 // Displays a modal dialog with which the user can input a date for an observation.
 //

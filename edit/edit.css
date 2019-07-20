@@ -282,13 +282,13 @@ body
     -webkit-user-select: none;
 }
 
-.ScrollerLabel .scroller
+.ScrollerLabel .Scroller
 {
     cursor: pointer;
     color: rgba(0, 0, 0, 0.2);
 }
 
-.ScrollerLabel .scroller:hover
+.ScrollerLabel .Scroller:hover
 {
     color: rgb(65, 155, 228);
 }

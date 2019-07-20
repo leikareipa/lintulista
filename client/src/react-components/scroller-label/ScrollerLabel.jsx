@@ -7,6 +7,7 @@
 "use strict";
 
 import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../assert.js";
+import {Scroller} from "./Scroller.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
 // instance, you might have a label containing "1", and the arrows can be used to scroll
@@ -36,31 +37,34 @@ export function ScrollerLabel(props = {})
     
     const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
 
+    let value = underlyingValue;
+
     React.useEffect(()=>
     {
         props.onChange(underlyingValue);
+        return ()=>props.onChange(underlyingValue);
     }, [underlyingValue]);
 
     /// TODO: Automatic scrolling while holding down the mouse button.
     return <div className="ScrollerLabel">
-               <div className="scroller increase" onClick={()=>scroll_value(1)}>
-                   <i className="fas fa-caret-up fa-2x"></i>
-               </div>
+               <Scroller icon="fas fa-caret-up fa-2x"
+                         callback={()=>scroll_value(1)}/>
 
                <div className="value">
                    {`${displayable_value()}${props.suffix || ""}`}
                </div>
 
-               <div className="scroller decrease" onClick={()=>scroll_value(-1)}>
-                   <i className="fas fa-caret-down fa-2x"></i>
-               </div>
+               <Scroller icon="fas fa-caret-down fa-2x"
+                         callback={()=>scroll_value(-1)}/>
            </div>
 
     function scroll_value(direction = 1)
     {
-        setUnderlyingValue((underlyingValue + direction) < props.min? props.max :
-                    (underlyingValue + direction) > props.max? props.min :
-                    (underlyingValue + direction));
+        value = (value + direction) < props.min? props.max :
+                (value + direction) > props.max? props.min :
+                (value + direction);
+
+        setUnderlyingValue(value);
     }
 
     // Returns a version of the underlying value that can be displayed to the user. For
