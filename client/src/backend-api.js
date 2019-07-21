@@ -305,7 +305,7 @@ export async function backend_access({listId})
 
                     return birdData.birds.map(b=>bird(
                     {
-                        name: b.name,
+                        name: b.species,
                         thumbnailUrl: `http://www.luontoportti.com/suomi/images/${b.thumbnail}`,
                     }));
                 })

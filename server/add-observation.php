@@ -63,7 +63,7 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
             exit(failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
         }
 
-        if (!in_array($newObservation["birdName"], array_map(function($bird){return $bird["name"];}, $knownBirdsData["birds"])))
+        if (!in_array($newObservation["birdName"], array_map(function($bird){return $bird["species"];}, $knownBirdsData["birds"])))
         {
             exit(failure("The given observation is of an unrecognized bird \"" . $newObservation["birdName"] . "\"."));
         }
