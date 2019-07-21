@@ -308,7 +308,8 @@ export async function backend_access({listId})
                         name: b.species,
                         order: b.order,
                         family: b.family,
-                        thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}` : null),
+                        thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
+                                                  : "./client/assets/images/null-bird-thumbnail.png"),
                     }));
                 })
                 .catch(errorMessage=>
