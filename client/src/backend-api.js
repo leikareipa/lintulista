@@ -8,8 +8,8 @@
 
 "use strict";
 
+import {error, panic_if_undefined, warn} from "./assert.js";
 import {observation} from "./observation.js";
-import {error, panic_if_undefined} from "./assert.js";
 import {bird} from "./bird.js";
 
 // Provides mediated access to the given list's data in Lintulista's backend.
@@ -234,7 +234,7 @@ export async function backend_access({listId})
                     observationData.filter(obs=>!is_known_bird_name(obs.birdName))
                                    .forEach(unknownObs=>
                     {
-                        warn(`Unknown bird in the observation list: ${unknownObs.birdName}. Ignoring it.`); 
+                        warn(`Unknown bird in the observation list: ${unknownObs.birdName}. Skipping it.`); 
                     });
 
                     return observationData.filter(obs=>is_known_bird_name(obs.birdName))
