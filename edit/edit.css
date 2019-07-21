@@ -125,12 +125,12 @@ body
     border-radius: 2px;
 }
 
-.ObservationListElement .image
+.ObservationListElement .BirdThumbnail
 {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     margin-left: 2px;
-    margin-right: 15px;
+    margin-right: 14px;
     border-radius: 50%;
 }
 
@@ -152,18 +152,25 @@ body
 {
     margin-left: auto;
     display: flex;
-    margin-right: 10px;
-    font-size: 110%;
+    margin-right: 35px;
+    font-size: 100%;
+    transition: all 0.2s ease-in-out;
+    border-bottom: 6px dotted rgba(0, 0, 0, 0.45);
 }
 
 .AsyncIconButton
 {
-    color: rgb(65, 155, 228);
+    color: rgba(0, 0, 0, 0.45);
     cursor: pointer;
-    font-size: 95%;
-    border-radius: 20%;
-    padding: 10px;
+    font-size: 100%;
+    padding: 5px;
+    margin: 5px;
     width: 20px;
+}
+
+.AsyncIconButton:hover
+{
+    color: rgba(0, 0, 0, 0.8);
 }
 
 .AsyncIconButton.enabled:active
@@ -189,7 +196,7 @@ body
     display: inline-block;
     transform: translateY(-6px);
     color: rgb(224, 56, 0);
-    padding-left: 6px;
+    padding-left: 4px;
     font-size: 110%;
 }
 
@@ -207,8 +214,8 @@ body
     transform: translateY(0px);
     font-size: 105%;
     color: rgb(224, 56, 0);
-    left: 55px;
-    top: 52px;
+    left: 87px;
+    top: 63px;
     position: absolute;
     font-size: 200%;
     z-index: 10; /* Above the bird thumbnail image.*/
@@ -220,9 +227,7 @@ body
     padding-top: 0px;
     padding-bottom: 1px;
     background-color: #f2f2f2;
-    border-radius: 2px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 6px;
     display: inline-block;
     color: black;
     z-index: 200;
@@ -274,9 +279,10 @@ body
 .ObservationDatePrompt .title
 {
     text-align: left;
-    padding: 16px;
+    padding: 18px;
     color: #f2f2f2;
-    background-color: rgb(65, 155, 228);
+    border-radius: 0;
+    background-color: #11b6a0;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
 }
@@ -301,7 +307,12 @@ body
 
 .ScrollerLabel .Scroller:hover
 {
-    color: rgb(65, 155, 228);
+    color: #11b6a0;
+}
+
+.ScrollerLabel .Scroller:active
+{
+    color: #11b6a0;
 }
 
 .ObservationDatePrompt .bird-image
@@ -315,9 +326,10 @@ body
 .ObservationDatePrompt .form
 {
     padding: 15px;
-    padding-top: 16px;
+    padding-top: 19px;
     padding-left: 17px;
     padding-right: 20px;
+    padding-bottom: 15px;
     display: flex;
 }
 
