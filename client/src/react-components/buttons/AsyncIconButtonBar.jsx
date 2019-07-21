@@ -20,6 +20,7 @@ import {AsyncIconButton} from "./AsyncIconButton.js";
 //     [
 //         {
 //             icon: "fas fa-eraser",
+//             color: "red", // Optional property; can be set via CSS as well.
 //             title: `Poista havainto`,
 //             titleWhenClicked: `Poistetaan havaintoa...`,
 //             task: async({resetButtonState})=>
@@ -55,11 +56,14 @@ export function AsyncIconButtonBar(props = {})
         return <AsyncIconButton key={idx}
                                 icon={button.icon}
                                 task={button.task}
+                                color={button.color}
                                 title={button.title}
                                 titleWhenClicked={button.titleWhenClicked} />
     });
 
-    return  <div className="AsyncIconButtonBar" style={{visibility:(props.visible? "visible" : "hidden")}}>
+    return  <div className="AsyncIconButtonBar" style={{transform:(props.visible? "translateY(-2px)" : "translateY(18px)"),
+                                                        opacity:(props.visible? "1" : "0"),
+                                                        visibility:(props.visible? "visible" : "hidden")}}>
                 {elements}
             </div>
 }
