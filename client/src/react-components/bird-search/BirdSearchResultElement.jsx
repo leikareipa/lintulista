@@ -14,7 +14,10 @@ export function BirdSearchResultElement(props = {})
         {
             return {
                 hasBeenPreviouslyObserved: true,
-                dateObserved: <>Havaittu {props.dateObserved}</>,
+                dateObserved: <>
+                                  <i className="fas fa-check"></i> 
+                                  <span> Havaittu {props.dateObserved}</span>
+                              </>,
             };
         }
         else
@@ -23,7 +26,7 @@ export function BirdSearchResultElement(props = {})
                 hasBeenPreviouslyObserved: false,
                 dateObserved: <>
                                   <i className="fas fa-pen" style={{color:"mediumseagreen"}}></i> 
-                                  <span style={{fontStyle:"italic"}}> Merkitse havaituksi</span>
+                                  <span> Merkitse havaituksi</span>
                               </>,
             };
         }
