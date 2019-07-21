@@ -1,6 +1,6 @@
 body
 {
-    background-color: #d6d6d6;
+    background-color: #d3d3d3;
     color: lightgray;
     text-align: center;
 }
@@ -92,73 +92,86 @@ body
 .ObservationList
 {
     display: inline-block;
-    width: 570px;
+    width: 560px;
 }
 
 .ObservationListElement
 {
-
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     color: black;
-    background-color: #ececec;
+    background-color: #f0f0f0;
     padding: 20px;
     padding-left: 15px;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 13px;
+    padding-bottom: 13px;
     display: flex;
     align-items: center;
-    font-size: 110%;
-    margin-top: 7px;
-    border-radius: 5px;
-    /*border-top: 1px solid rgb(238, 238, 238);*/
-    box-shadow: 0 10px 5px -10px rgba(0, 0, 0, 0.3);
+    margin-top: 0px;
+    border-radius: 0px;
+}
+
+.ObservationListElement:first-child
+{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.ObservationListElement:last-child
+{
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.ObservationListElement:only-child
+{
+    border-radius: 3px;
+}
+
+.ObservationListElement:nth-child(2n)
+{
+    background-color: #f7f7f7;
 }
 
 .ObservationListElement .BirdThumbnail
 {
     width: 70px;
     height: 70px;
-    margin-right: 19px;
+    margin-right: 14px;
     border-radius: 50%;
 }
 
 .ObservationListElement .name
 {
+    font-size: 110%;
     text-align: left;
-    padding-left: 15px;
-    width: 300px;
+    padding-left: 13px;
+    width: 290px;
     border-left: 5px dotted rgb(159, 183, 189);
 }
 
 .ObservationListElement .observation-details
 {
     padding-right: 5px;
-    font-size: 75%;
-    color: rgba(0, 0, 0, 0.56);
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.65);
 }
 
 .ObservationListElement .AsyncIconButtonBar
 {
     margin-left: auto;
     display: flex;
-    margin-right: 0px;
+    margin-right: 7px;
     font-size: 100%;
     transition: all 0.2s ease-in-out;
 }
 
 .AsyncIconButton
 {
-    color: rgb(159, 183, 189);
+    color: rgb(127, 179, 192);
     cursor: pointer;
-    font-size: 100%;
+    font-size: 110%;
     padding: 5px;
     margin: 5px;
     width: 20px;
-}
-
-.AsyncIconButton:hover
-{
-    color: rgb(84, 168, 189);
 }
 
 .AsyncIconButton.enabled:active
@@ -179,12 +192,17 @@ body
     cursor: auto;
 }
 
+.AsyncIconButton:hover
+{
+    color: rgb(84, 168, 189);
+}
+
 .GeoTag
 {
     display: inline-block;
-    transform: translateY(-6px);
-    color: rgb(159, 183, 189);
-    padding-left: 6px;
+    transform: translateY(-3px);
+    color: rgb(127, 179, 192);
+    padding-left: 8px;
     font-size: 100%;
 }
 
@@ -268,9 +286,9 @@ body
 {
     text-align: left;
     padding: 18px;
-    color: #f2f2f2;
+    color: white;
     border-radius: 0;
-    background-color: #11b6a0;
+    background-color:rgb(159, 183, 189);
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
 }
@@ -291,7 +309,7 @@ body
 .ObservationDatePrompt .form
 {
     padding: 15px;
-    padding-top: 19px;
+    padding-top: 18px;
     padding-left: 17px;
     padding-right: 20px;
     padding-bottom: 15px;
@@ -324,10 +342,10 @@ body
 
 .ScrollerLabel .Scroller:hover
 {
-    color: #14ceb5;
+    color: rgb(84, 168, 189);
 }
 
 .ScrollerLabel .Scroller:active
 {
-    color: #14ceb5;
+    color: rgb(84, 168, 189);
 }
