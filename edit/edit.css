@@ -1,6 +1,6 @@
 body
 {
-    background-color: #404040;
+    background-color: #d6d6d6;
     color: lightgray;
     text-align: center;
 }
@@ -92,53 +92,42 @@ body
 .ObservationList
 {
     display: inline-block;
-    width: 550px;
+    width: 570px;
 }
 
 .ObservationListElement
 {
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     color: black;
-    background-color: #f2f2f2;
-    padding: 10px;
+    background-color: #ececec;
+    padding: 20px;
+    padding-left: 15px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     display: flex;
     align-items: center;
     font-size: 110%;
-}
-
-.ObservationListElement:nth-of-type(2n)
-{
-    background-color: #e5e5e5;
-}
-
-.ObservationListElement:first-child
-{
-    border-radius: 2px 2px 0 0;
-}
-
-.ObservationListElement:last-child
-{
-    border-radius: 0 0 2px 2px;
-}
-
-.ObservationListElement:only-child
-{
-    border-radius: 2px;
+    margin-top: 7px;
+    border-radius: 5px;
+    /*border-top: 1px solid rgb(238, 238, 238);*/
+    box-shadow: 0 10px 5px -10px rgba(0, 0, 0, 0.3);
 }
 
 .ObservationListElement .BirdThumbnail
 {
     width: 70px;
     height: 70px;
-    margin-left: 2px;
-    margin-right: 15px;
+    margin-right: 19px;
     border-radius: 50%;
 }
 
 .ObservationListElement .name
 {
     text-align: left;
-    padding-left: 0px;
+    padding-left: 15px;
     width: 280px;
+    border-left: 5px dotted rgb(159, 183, 189);
 }
 
 .ObservationListElement .observation-details
@@ -146,7 +135,6 @@ body
     padding-right: 5px;
     font-size: 75%;
     color: rgba(0, 0, 0, 0.56);
-    text-align: right;
 }
 
 .ObservationListElement .AsyncIconButtonBar
@@ -160,7 +148,7 @@ body
 
 .AsyncIconButton
 {
-    color: rgba(0, 0, 0, 0.4);
+    color: rgb(159, 183, 189);
     cursor: pointer;
     font-size: 100%;
     padding: 5px;
@@ -170,7 +158,7 @@ body
 
 .AsyncIconButton:hover
 {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgb(84, 168, 189);
 }
 
 .AsyncIconButton.enabled:active
@@ -195,9 +183,9 @@ body
 {
     display: inline-block;
     transform: translateY(-6px);
-    color: rgb(224, 56, 0);
-    padding-left: 4px;
-    font-size: 110%;
+    color: rgb(159, 183, 189);
+    padding-left: 6px;
+    font-size: 100%;
 }
 
 .GeoTag a

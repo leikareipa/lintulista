@@ -37,7 +37,7 @@ export function ObservationListElement(props = {})
                         </span>
                         <br/>
                         <span className="classification">
-                            {props.observation.bird.order}
+                            Luokka: {props.observation.bird.order}
                             <i className="fas fa-caret-right fa-xs" style={{margin:"6px"}}></i>
                             {props.observation.bird.family}
                         </span>
