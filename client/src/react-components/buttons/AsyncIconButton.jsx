@@ -64,7 +64,14 @@ export function AsyncIconButton(props = {})
         }
 
         set_button_state("waiting");
-        await props.task({resetButtonState:(state = "enabled")=>set_button_state(state)});
+
+        await props.task(
+        {
+            resetButtonState: (state = "enabled")=>
+            {
+                set_button_state(state);
+            }
+        });
     }
 
     function set_button_state(newState)

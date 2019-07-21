@@ -8,6 +8,7 @@
 
 import {ObservationListElement} from "./ObservationListElement.js";
 import {panic_if_undefined} from "../../assert.js";
+import {observation} from "../../observation.js";
 
 export function ObservationList(props = {})
 {
@@ -21,10 +22,21 @@ export function ObservationList(props = {})
 
     return <div className="ObservationList">{observationElements}</div>
 
-    async function delete_observation(observation)
+    async function delete_observation(targetObservation)
     {
-        await props.backend.delete_observation(observation);
+        await props.backend.delete_observation(targetObservation);
+        setObservationElements(generate_observation_elements());
+    }
 
+    async function set_observation_date(existingObservation, {year, month, day})
+    {
+        const modifiedObservation = observation(
+        {
+            bird: existingObservation.bird,
+            date: new Date(year, month-1, day),
+        });
+
+        await props.backend.post_observation(modifiedObservation);
         setObservationElements(generate_observation_elements());
     }
 
@@ -36,7 +48,8 @@ export function ObservationList(props = {})
                                            key={elementKey++}
                                            shades={props.shades}
                                            openSetDateDialog={()=>props.openSetDateDialog(obs)}
-                                           requestDeletion={async()=>await delete_observation(obs)} />
+                                           requestDeletion={async()=>await delete_observation(obs)}
+                                           requestSetDate={async(newDate)=>await set_observation_date(obs, newDate)}/>
         });
     }
 }

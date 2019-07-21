@@ -6,6 +6,7 @@
 
 "use strict";
 
+import {render_observation_date_prompt, unrender_observation_date_prompt} from "../../render/render-observation-date-prompt.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
@@ -32,13 +33,13 @@ export function ObservationListElement(props = {})
                     {geoTag}
                     <br/>
                     <span className="observation-details">
-                        <span className="date" title={props.observation.date.toLocaleString()}>
+                        <span className="date">
                             {props.observation.dateString}
                         </span>
                         <br/>
                         <span className="classification">
-                            Luokka: {props.observation.bird.order}
-                            <i className="fas fa-caret-right fa-xs" style={{margin:"6px"}}></i>
+                            {props.observation.bird.order}
+                            <i className="fas fa-caret-right fa-sm" style={{margin:"6px"}}></i>
                             {props.observation.bird.family}
                         </span>
                     </span>
@@ -47,24 +48,19 @@ export function ObservationListElement(props = {})
                                     shades={props.shades}
                                     buttons={[
                     {
-                        icon: "fas fa-clock",
-                        title: "Aseta havainnon päivämäärä",
-                        titleWhenClicked: "Asetetaan havainnon päivämäärää",
-                        task: async({resetButtonState})=>
+                        icon: "fas fa-eraser",
+                        title: "Poista havainto",
+                        titleWhenClicked: "Poistetaan havaintoa",
+                        task: async()=>
                         {
-                            setKeepButtonBarVisible(true);
-                            resetButtonState();
-
                             props.shades.put_on();
-                            await delay(400);
-                            await props.openSetDateDialog();
+                            setKeepButtonBarVisible(true);
 
-                            await props.shades.pull_off();
+                            await delay(1300);
+                            await props.requestDeletion();
 
-                            //resetButtonState();
-                            resetButtonState("waiting")
-                            //setKeepButtonBarVisible(false);
-                        },
+                            props.shades.pull_off();
+                        }
                     },
                     {
                         icon: "fas fa-map-marked-alt",
@@ -83,19 +79,30 @@ export function ObservationListElement(props = {})
                         },
                     },
                     {
-                        icon: "fas fa-eraser",
-                        title: "Poista havainto",
-                        titleWhenClicked: "Poistetaan havaintoa",
-                        task: async()=>
+                        icon: "fas fa-clock",
+                        title: "Aseta havainnon päivämäärä",
+                        titleWhenClicked: "Asetetaan havainnon päivämäärää",
+
+                        // Prompt the user to enter a new date for the observation, then
+                        // submit the given date to the server to be saved.
+                        task: async({resetButtonState})=>
                         {
-                            props.shades.put_on();
                             setKeepButtonBarVisible(true);
+                           // resetButtonState();
 
-                            await delay(1300);
-                            await props.requestDeletion();
+                            // Prompt the user to enter a new date.
+                            await props.shades.put_on({onClick: unrender_observation_date_prompt});
+                            const newDate = await render_observation_date_prompt(props.observation);
 
-                            props.shades.pull_off();
-                        }
+                            // Send the new date to the server.
+                            //resetButtonState("waiting");
+                            await props.requestSetDate(newDate);
+
+                            await props.shades.pull_off({onClick: null});
+
+                           // resetButtonState();
+                           // setKeepButtonBarVisible(false);
+                        },
                     },
                 ]} />
             </div>

@@ -6,7 +6,6 @@
 
 "use strict";
 
-import {render_observation_date_prompt} from "../render/render-observation-date-prompt.js";
 import {panic, panic_if_undefined} from "../assert.js";
 import {ObservationList} from "../react-components/observation-list/ObservationList.js";
 import {shades} from "../shades.js";
@@ -39,7 +38,6 @@ export function render_observation_list(backend)
     {
         backend,
         shades: observationShades,
-        openSetDateDialog: render_observation_date_prompt,
     });
 
     ReactDOM.unmountComponentAtNode(container)

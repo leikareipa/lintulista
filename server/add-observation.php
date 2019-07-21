@@ -86,17 +86,30 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
         exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
     }
 
-    // If the bird has already been added to the list. Note that we don't need to worry about
-    // case sensitivity, since we've already confirmed above that the given bird name is included
-    // in our list of known birds as-is.
-    if (in_array($newObservation["species"], array_map(function($observation){return $observation["species"];}, $observationData["observations"])))
-    {
-        exit(success());
-    }
+    // Find if an observation of this species already exists in the list.
+    $idx = array_search($newObservation["species"],
+                        array_map(function($observation){return $observation["species"];}, $observationData["observations"]));
 
-    $observationData["observations"][] = ["species"=>$newObservation["species"],
-                                          "timestamp"=>$newObservation["timestamp"]] +
-                                         (isset($newObservation["place"])? ["place"=>$newObservation["place"]] : []);
+    // If the species is already on the list, we'll modify the existing entry rather than
+    // adding a new one.
+    if ($idx !== false)
+    {
+        if (isset($newObservation["place"]))
+        {
+            $observationData["observations"][$idx]["place"] = $newObservation["place"];
+        }
+
+        if (isset($newObservation["timestamp"]))
+        {
+            $observationData["observations"][$idx]["timestamp"] = $newObservation["timestamp"];
+        }
+    }
+    // Otherwise, add the observation into the list as a new entry.
+    else
+    {
+        $observationData["observations"][] = ["species"=>$newObservation["species"], "timestamp"=>$newObservation["timestamp"]] +
+                                             (isset($newObservation["place"])? ["place"=>$newObservation["place"]] : []);
+    }
 }
 
 file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
