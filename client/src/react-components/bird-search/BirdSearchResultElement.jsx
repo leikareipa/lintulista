@@ -1,5 +1,6 @@
 "use strict";
 
+import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {panic} from "../../assert.js"
 
 // An element displaying information about an individual search result.
@@ -30,9 +31,7 @@ export function BirdSearchResultElement(props = {})
 
     return <div className="BirdSearchResultElement" style={{cursor: (hasBeenPreviouslyObserved? "default" : "pointer")}}
                                                     onClick={()=>{!hasBeenPreviouslyObserved? props.clickCallback(props.bird) : 1;}}>
-               <img className="image"
-                    referrerPolicy="no-referrer"
-                    src={props.bird.thumbnailUrl}/>
+               <BirdThumbnail bird={props.bird}/>
                <span className="name">
                    {props.bird.name}<br/>
                    <span className="observed-date">{dateObserved}</span>

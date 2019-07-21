@@ -7,7 +7,7 @@
 "use strict";
 
 import {ScrollerLabel} from "../scroller-label/ScrollerLabel.js";
-import {GeoTag} from "../misc/GeoTag.js";
+import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 
 // Displays a modal dialog with which the user can input a date for an observation.
 //
@@ -37,7 +37,7 @@ export function ObservationDatePrompt(props = {})
                    <i className="fas fa-clock"></i> Aseta havainnon päivämäärä
                </div>
                <div className="form">
-                    <img className="bird-image" referrerPolicy="no-referrer" src={props.observation.bird.thumbnailUrl}/>
+                    <BirdThumbnail bird={props.observation.bird}/>
                     <div className="fields">
                         <div className="bird-name">
                             {props.observation.bird.name}:
