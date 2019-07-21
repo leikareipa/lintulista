@@ -52,7 +52,7 @@ export async function backend_access({listId})
         known_birds: ()=>localCache.knownBirds,
         observations: ()=>localCache.observations,
 
-        is_known_bird_name,
+        is_known_bird_species,
 
         // Removes the given observation from the server-side list of observations. Updates
         // the local cache of observations, accordingly. Returns true if successful; false
@@ -95,10 +95,10 @@ export async function backend_access({listId})
 
     return publicInterface;
 
-    // Returns true if the given bird name is recognized and valid; false otherwise.
-    function is_known_bird_name(birdName)
+    // Returns true if the given bird species name is recognized and valid; false otherwise.
+    function is_known_bird_species(species)
     {
-        return Boolean(localCache.knownBirds.map(b=>b.name.toLowerCase()).includes(birdName.toLowerCase()));
+        return Boolean(localCache.knownBirds.map(b=>b.species.toLowerCase()).includes(species.toLowerCase()));
     }
 
     async function http_delete_observation(observation)
@@ -107,7 +107,7 @@ export async function backend_access({listId})
 
         const postData =
         {
-            birdName: observation.bird.name,
+            species: observation.bird.species,
         }
 
         return fetch(`${backendAddress.deleteObservation}?list=${listId}`,
@@ -150,7 +150,7 @@ export async function backend_access({listId})
 
         const postData =
         {
-            birdName: observation.bird.name,
+            species: observation.bird.species,
             timestamp: observation.unixTimestamp,
         }
 
@@ -186,30 +186,8 @@ export async function backend_access({listId})
                 });
     }
 
-    // Returns the observations associated with the given list. The observations will
-    // be returned as an array of objects, like so:
-    //
-    //     [
-    //         {birdName, timestamp},
-    //         {birdName, timestamp},
-    //         ...
-    //     ]
-    //
-    // The 'birdName' property gives the name of the bird observed; and the 'timestamp'
-    // property the time of the observation as a Unix epoch value.
-    //
-    // As such, the array returned might be akin to the following:
-    //
-    //     [
-    //         {
-    //             birdName: "Harakka",
-    //             timestamp: 1563090679
-    //         },
-    //         ...
-    //     ]
-    //
-    // If the fetching fails, an empty array will be returned.
-    //
+    // Returns as an array of observation() objects the observations associated with the
+    // current list; or, on failure, an empty array.
     async function http_fetch_observations()
     {
         return fetch(`${backendAddress.observations}?list=${listId}`, {cache: "no-store"})
@@ -231,16 +209,16 @@ export async function backend_access({listId})
 
                     const observationData = JSON.parse(ticket.data);
 
-                    observationData.filter(obs=>!is_known_bird_name(obs.birdName))
+                    observationData.filter(obs=>!is_known_bird_species(obs.species))
                                    .forEach(unknownObs=>
                     {
-                        warn(`Unknown bird in the observation list: ${unknownObs.birdName}. Skipping it.`); 
+                        warn(`Unknown bird in the observation list: ${unknownObs.species}. Skipping it.`); 
                     });
 
-                    return observationData.filter(obs=>is_known_bird_name(obs.birdName))
+                    return observationData.filter(obs=>is_known_bird_species(obs.species))
                                           .map(obs=>observation(
                     {
-                        bird: localCache.knownBirds.find(b=>b.name === obs.birdName),
+                        bird: localCache.knownBirds.find(b=>b.species === obs.species),
                         date: new Date(obs.timestamp*1000),
                         place: obs.place,
                     }));
@@ -252,31 +230,9 @@ export async function backend_access({listId})
                 });
     }
 
-    // Returns a list of the bird names Lintulista recognizes. The list will be returned
-    // as an array of objects, like so:
-    //
-    //     [
-    //         {name, thumbnailUrl},
-    //         {name, thumbnailUrl},
-    //         ...
-    //     ]
-    //
-    // The 'name' property gives the name of the bird as a string; and the 'thumbnailUrl'
-    // a full URL pointing to an image file that can be displayed as a user-facing thumb-
-    // nail for that bird.
-    //
-    // As such, you might expect the return array to resemble something like this:
-    //
-    //     [
-    //         {
-    //             name: "Harakka",
-    //             thumbnailUrl: "https://www.somewebsite.ch/birds/harakka.jpg"
-    //         },
-    //         ...
-    //     ]
-    //
-    // If the fetching fails, an empty array will be returned.
-    //
+    // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
+    // be added as observations. The list will be returned as an array of bird() objects;
+    // or, on failure, as an empty array.
     async function http_fetch_known_birds_list()
     {
         return fetch(backendAddress.knownBirds, {cache: "no-store"})
@@ -305,9 +261,9 @@ export async function backend_access({listId})
 
                     return birdData.birds.map(b=>bird(
                     {
-                        name: b.species,
                         order: b.order,
                         family: b.family,
+                        species: b.species,
                         thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
                                                   : "./client/assets/images/null-bird-thumbnail.png"),
                     }));

@@ -5,13 +5,13 @@
  * 2019 Tarpeeksi Hyvae Soft /
  * Lintulista
  * 
- * Adds an observation to the given list. The observation data to be added is expected
- * as a JSON object of the following form:
+ * Adds an observation of the bird species to the given list. The observation data to be
+ * added is expected as a JSON object of the following general form:
  * 
- *     {birdName:"Naakka", timestamp:5058748, place:"Tampereen keskusta"}
+ *     {species:"Naakka", timestamp:5058748, place:"Tampereen keskusta"}
  * 
- * The 'birdName' property gives the name of the bird that this observation is of, and
- * 'timestamp' the Unix epoch, in seconds, of when the observation was made. The 'place'
+ * The 'species' property gives the species name of the bird that this observation is of,
+ * and 'timestamp' the Unix epoch, in seconds, of when the observation was made. The 'place'
  * property is optional, and gives as a free-form string the place where the observation
  * took place.
  * 
@@ -39,9 +39,9 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 
 // Validate the input data.
 {
-    if (!isset($newObservation["birdName"]))
+    if (!isset($newObservation["species"]))
     {
-        exit(failure("The given observation data is missing the required \"birdName\" property."));
+        exit(failure("The given observation data is missing the required \"species\" property."));
     }
 
     if (!isset($newObservation["timestamp"]))
@@ -63,9 +63,9 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
             exit(failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
         }
 
-        if (!in_array($newObservation["birdName"], array_map(function($bird){return $bird["species"];}, $knownBirdsData["birds"])))
+        if (!in_array($newObservation["species"], array_map(function($bird){return $bird["species"];}, $knownBirdsData["birds"])))
         {
-            exit(failure("The given observation is of an unrecognized bird \"" . $newObservation["birdName"] . "\"."));
+            exit(failure("The given observation is of an unrecognized bird \"" . $newObservation["species"] . "\"."));
         }
     }
 }
@@ -89,12 +89,12 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
     // If the bird has already been added to the list. Note that we don't need to worry about
     // case sensitivity, since we've already confirmed above that the given bird name is included
     // in our list of known birds as-is.
-    if (in_array($newObservation["birdName"], array_map(function($observation){return $observation["birdName"];}, $observationData["observations"])))
+    if (in_array($newObservation["species"], array_map(function($observation){return $observation["species"];}, $observationData["observations"])))
     {
         exit(success());
     }
 
-    $observationData["observations"][] = ["birdName"=>$newObservation["birdName"],
+    $observationData["observations"][] = ["species"=>$newObservation["species"],
                                           "timestamp"=>$newObservation["timestamp"]] +
                                          (isset($newObservation["place"])? ["place"=>$newObservation["place"]] : []);
 }

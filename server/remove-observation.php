@@ -6,12 +6,13 @@
  * Lintulista
  * 
  * Removes an observation from the given list. Expects the request body to contain a
- * JSON object giving the name of the bird of whom to remove the observation, like so:
+ * JSON object giving the species name of the bird of whom to remove the observation,
+ * like so:
  * 
- *     {birdName:"Naakka"}
+ *     {species: "Naakka"}
  * 
- * The above will remove an observation of the bird called Naakka. If no observation
- * of that bird exists in the list, success will be returned without further action.
+ * The above will remove an observation of the species "Naakka". If no observation of
+ * that bird exists in the list, success will be returned without further action.
  * 
  * Note that you are expected to remove only one observation per request.
  * 
@@ -37,9 +38,9 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
 
 // Validate the input data.
 {
-    if (!isset($targetObservation["birdName"]))
+    if (!isset($targetObservation["species"]))
     {
-        exit(failure("The given observation data is missing the required \"birdName\" property."));
+        exit(failure("The given observation data is missing the required \"species\" property."));
     }
 }
 
@@ -61,8 +62,8 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
     // Find the observation in the list, and remove it.
     {
-        $idx = array_search($targetObservation["birdName"],
-                            array_map(function($observation){return $observation["birdName"];}, $observationData["observations"]));
+        $idx = array_search($targetObservation["species"],
+                            array_map(function($observation){return $observation["species"];}, $observationData["observations"]));
 
         if ($idx !== false)
         {

@@ -40,9 +40,9 @@ if (!isset($observationData["observations"]))
 $returnData = [];
 foreach ($observationData["observations"] as $observation)
 {
-    if (!isset($observation["birdName"]))
+    if (!isset($observation["species"]))
     {
-        exit(failure("Server-side IO failure. The observation list is missing the required \"birdName\" property."));
+        exit(failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
     }
 
     if (!isset($observation["timestamp"]))
@@ -52,7 +52,7 @@ foreach ($observationData["observations"] as $observation)
 
     // Note: The 'place' property is optional and doesn't need to be checked for.
 
-    $returnData[] = ["birdName"=>$observation["birdName"],
+    $returnData[] = ["species"=>$observation["species"],
                      "timestamp"=>$observation["timestamp"],
                      "place"=>(isset($observation["place"])? $observation["place"] : null)];
 }

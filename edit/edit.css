@@ -126,7 +126,7 @@ body
 {
     text-align: left;
     padding-left: 15px;
-    width: 280px;
+    width: 300px;
     border-left: 5px dotted rgb(159, 183, 189);
 }
 
@@ -141,7 +141,7 @@ body
 {
     margin-left: auto;
     display: flex;
-    margin-right: 15px;
+    margin-right: 0px;
     font-size: 100%;
     transition: all 0.2s ease-in-out;
 }

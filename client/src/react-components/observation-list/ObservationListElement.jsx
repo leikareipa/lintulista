@@ -28,7 +28,7 @@ export function ObservationListElement(props = {})
                                                    onMouseLeave={()=>setMouseHovering(false)}>
                 <BirdThumbnail bird={props.observation.bird}/>
                 <span className="name">
-                    {props.observation.bird.name}
+                    {props.observation.bird.species}
                     {geoTag}
                     <br/>
                     <span className="observation-details">

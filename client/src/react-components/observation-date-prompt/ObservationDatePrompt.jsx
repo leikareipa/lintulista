@@ -40,7 +40,7 @@ export function ObservationDatePrompt(props = {})
                     <BirdThumbnail bird={props.observation.bird}/>
                     <div className="fields">
                         <div className="bird-name">
-                            {props.observation.bird.name}:
+                            {props.observation.bird.species}:
                         </div>
                         <div className="date-bar">
                             <div className="day">

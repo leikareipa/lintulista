@@ -38,7 +38,7 @@ export function BirdThumbnail(props = {})
 
     return <img className="BirdThumbnail"
                 referrerPolicy="no-referrer"
-                title={props.bird.name}
+                title={props.bird.species}
                 src={thumbnailSrc}
                 ref={thumbnailRef}/>
 }

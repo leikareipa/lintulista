@@ -36,7 +36,7 @@ export function BirdSearchResultElement(props = {})
                                                     onClick={()=>{!hasBeenPreviouslyObserved? props.clickCallback(props.bird) : 1;}}>
                <BirdThumbnail bird={props.bird}/>
                <span className="name">
-                   {props.bird.name}<br/>
+                   {props.bird.species}<br/>
                    <span className="observed-date">{dateObserved}</span>
                </span>
            </div>
