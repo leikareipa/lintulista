@@ -23,7 +23,7 @@ export function ObservationListElement(props = {})
     // While set to true, the element's button bar will be displayed at all times.
     const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
 
-    const geoTag = (props.observation.place? <GeoTag place={props.observation.place} /> : <></>);
+    const geoTag = (props.observation.place? <GeoTag place={props.observation.place}/> : <></>);
 
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>

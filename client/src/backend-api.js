@@ -19,7 +19,7 @@ export async function backend_access({listId})
     {
         knownBirds: "./server/get-known-birds-list.php",
         observations: "./server/get-observations.php",
-        postObservation: "./server/add-observation.php",
+        postObservation: "./server/post-observation.php",
         deleteObservation: "./server/remove-observation.php",
     });
 
