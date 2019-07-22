@@ -1,0 +1,29 @@
+.animation-bulge
+{
+    animation-name: animation-bulge-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.25s;
+}
+
+.animation-jump
+{
+    animation-name: animation-jump-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.35s;
+}
+
+@keyframes animation-bulge-frames
+{
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes animation-jump-frames
+{
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0px); }
+}

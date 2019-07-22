@@ -12,6 +12,7 @@ import {panic_if_undefined} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {GeoTag} from "../misc/GeoTag.js";
 import {delay} from "../../delay.js";
+import { animate } from "../../animate.js";
 
 export function ObservationListElement(props = {})
 {
@@ -27,6 +28,28 @@ export function ObservationListElement(props = {})
     // While set to true, the element's button bar will be displayed at all times.
     const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
 
+    // Used to start an animation on a particular element. Will take in an object of the
+    // form {ref, name, callback}, where 'ref' is a React reference to the element on which
+    // to play the animation; 'name' is the name of the animation; and 'callback' is an
+    // optional callback for when the animation finishes. For more information, see the
+    // documentation for animate(). Set to null to play no animation.
+    const [animation, nextAnimation] = React.useState(null);
+
+    const refs =
+    {
+        date: React.useRef(),
+        /* TODO: Get the GeoTag animated, as well.*/
+    }
+
+    React.useEffect(()=>
+    {
+        if (animation)
+        {
+            animate(animation.ref.current, animation.name, (animation.callback || (()=>{})));
+            nextAnimation(null);
+        }
+    }, [animation])
+
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
                 <BirdThumbnail bird={observationData.bird}/>
@@ -35,15 +58,15 @@ export function ObservationListElement(props = {})
                     <GeoTag place={observationData.place}/>
                     <br/>
                     <span className="observation-details">
-                        <span className="date">
+                        <div className="date" ref={refs.date}>
                             {observationData.dateString}
-                        </span>
+                        </div>
                         <br/>
-                        <span className="classification">
+                        <div className="classification">
                             {observationData.bird.order}
                             <i className="fas fa-caret-right fa-sm" style={{margin:"6px"}}></i>
                             {observationData.bird.family}
-                        </span>
+                        </div>
                     </span>
                 </span>
                 <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
@@ -125,6 +148,7 @@ export function ObservationListElement(props = {})
                             {
                                 await delay(1500);
                                 setObservationData(updatedObservation);
+                                nextAnimation({ref:refs.date, name:"jump"});
                             }
 
                             resetButtonState("enabled");

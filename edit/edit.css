@@ -141,11 +141,22 @@ body
 
 .ObservationListElement .name
 {
+    display: inline-block;
     font-size: 110%;
     text-align: left;
     padding-left: 15px;
     width: 290px;
     border-left: 5px dotted rgb(159, 183, 189);
+}
+
+.ObservationListElement .name .date
+{
+    display: inline-block;
+}
+
+.ObservationListElement .name .classification
+{
+    display: inline-block;
 }
 
 .ObservationListElement .observation-details
