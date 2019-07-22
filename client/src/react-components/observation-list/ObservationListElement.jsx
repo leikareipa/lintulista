@@ -78,89 +78,101 @@ export function ObservationListElement(props = {})
                         icon: "fas fa-eraser",
                         title: "Poista havainto",
                         titleWhenClicked: "Poistetaan havaintoa",
-                        task: async()=>
-                        {
-                            setKeepButtonBarVisible(true);
-                            await props.shades.put_on();
-
-                            await delay(1300);
-                            await props.requestDeleteObservation(observationData);
-
-                            await props.shades.pull_off();
-                        }
+                        task: button_remove_observation,
                     },
                     {
                         icon: "fas fa-map-marked-alt",
                         title: "Merkitse havainnon paikka",
                         titleWhenClicked: "Merkitään havainnon paikkaa",
-                        task: async({resetButtonState})=>
-                        {
-                            setKeepButtonBarVisible(true);
-                            resetButtonState();
-
-                            // Prompt the user to enter a new place.
-                            await props.shades.put_on();
-                            /* TODO*/
-                            const newPlace = prompt("Enter a place name");
-
-                            // Send the new place to the server.
-                            resetButtonState("waiting");
-                            const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
-
-                            if (!updatedObservation)
-                            {
-                                panic("Failed to update the place of an observation.");
-                            }
-                            else
-                            {
-                                await delay(1500);
-                                setObservationData(updatedObservation);
-                                nextAnimation({ref:refs.geotag, name:"jump"});
-                            }
-
-                            resetButtonState("enabled");
-                            setKeepButtonBarVisible(false);
-                            await props.shades.pull_off();
-                        },
+                        task: button_change_observation_place,
                     },
                     {
                         icon: "fas fa-clock",
                         title: "Aseta havainnon päivämäärä",
                         titleWhenClicked: "Asetetaan havainnon päivämäärää",
-
-                        // Prompt the user to enter a new date for the observation, then
-                        // submit the given date to the server to be saved.
-                        task: async({resetButtonState})=>
-                        {
-                            setKeepButtonBarVisible(true);
-                            resetButtonState();
-
-                            // Prompt the user to enter a new date.
-                            await props.shades.put_on({onClick: unrender_observation_date_prompt});
-                            const newDate = await render_observation_date_prompt(observationData);
-
-                            // Send the new date to the server.
-                            resetButtonState("waiting");
-                            const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
-
-                            if (!updatedObservation)
-                            {
-                                panic("Failed to update the date of an observation.");
-                            }
-                            else
-                            {
-                                await delay(1500);
-                                setObservationData(updatedObservation);
-                                nextAnimation({ref:refs.date, name:"jump"});
-                            }
-
-                            resetButtonState("enabled");
-                            setKeepButtonBarVisible(false);
-                            await props.shades.pull_off();
-                        },
+                        task: button_change_observation_date,
                     },
                 ]} />
             </div>
+
+    // When a button is pressed to delete the observation. Will requests the backend to
+    // remove this observation from the user's list of observations. Takes in a callback
+    // to reset the button's state.
+    async function button_remove_observation({resetButtonState})
+    {
+        setKeepButtonBarVisible(true);
+        await props.shades.put_on();
+
+        await delay(1300);
+        await props.requestDeleteObservation(observationData);
+
+        await props.shades.pull_off();
+    }
+
+    // When a button is pressed to change the observation's date. Will prompt the user to
+    // enter a new date, then submits the given date to the server to be saved. Takes in a
+    // callback to reset the button's state.
+    async function button_change_observation_date({resetButtonState})
+    {
+        setKeepButtonBarVisible(true);
+        resetButtonState();
+
+        // Prompt the user to enter a new date.
+        await props.shades.put_on({onClick: unrender_observation_date_prompt});
+        const newDate = await render_observation_date_prompt(observationData);
+
+        // Send the new date to the server.
+        resetButtonState("waiting");
+        const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
+
+        if (!updatedObservation)
+        {
+            panic("Failed to update the date of an observation.");
+        }
+        else
+        {
+            await delay(1500);
+            setObservationData(updatedObservation);
+            nextAnimation({ref:refs.date, name:"jump"});
+        }
+
+        resetButtonState("enabled");
+        setKeepButtonBarVisible(false);
+        await props.shades.pull_off();
+    }
+
+    // When a button is pressed to change the observation's place. Will prompt the user to
+    // enter a new place name, then submits the given place name to the server to be saved.
+    // Takes in a callback to reset the button's state.
+    async function button_change_observation_place({resetButtonState})
+    {
+        setKeepButtonBarVisible(true);
+        resetButtonState();
+
+        // Prompt the user to enter a new place.
+        await props.shades.put_on();
+        /* TODO*/
+        const newPlace = prompt("Enter a place name");
+
+        // Send the new place to the server.
+        resetButtonState("waiting");
+        const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
+
+        if (!updatedObservation)
+        {
+            panic("Failed to update the place of an observation.");
+        }
+        else
+        {
+            await delay(1500);
+            setObservationData(updatedObservation);
+            nextAnimation({ref:refs.geotag, name:"jump"});
+        }
+
+        resetButtonState("enabled");
+        setKeepButtonBarVisible(false);
+        await props.shades.pull_off();
+    }
 }
 
 ObservationListElement.validate_props = function(props)
