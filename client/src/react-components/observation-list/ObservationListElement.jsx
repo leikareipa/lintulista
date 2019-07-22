@@ -20,27 +20,29 @@ export function ObservationListElement(props = {})
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
 
+    // The data used to populate the element's fields. May be altered e.g. when the
+    // user requests to change the observation date or place.
+    const [observationData, setObservationData] = React.useState(props.observation);
+
     // While set to true, the element's button bar will be displayed at all times.
     const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
 
-    const geoTag = (props.observation.place? <GeoTag place={props.observation.place}/> : <></>);
-
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
-                <BirdThumbnail bird={props.observation.bird}/>
+                <BirdThumbnail bird={observationData.bird}/>
                 <span className="name">
-                    {props.observation.bird.species}
-                    {geoTag}
+                    {observationData.bird.species}
+                    <GeoTag place={observationData.place}/>
                     <br/>
                     <span className="observation-details">
                         <span className="date">
-                            {props.observation.dateString}
+                            {observationData.dateString}
                         </span>
                         <br/>
                         <span className="classification">
-                            {props.observation.bird.order}
+                            {observationData.bird.order}
                             <i className="fas fa-caret-right fa-sm" style={{margin:"6px"}}></i>
-                            {props.observation.bird.family}
+                            {observationData.bird.family}
                         </span>
                     </span>
                 </span>
@@ -53,13 +55,13 @@ export function ObservationListElement(props = {})
                         titleWhenClicked: "Poistetaan havaintoa",
                         task: async()=>
                         {
-                            props.shades.put_on();
                             setKeepButtonBarVisible(true);
+                            await props.shades.put_on();
 
                             await delay(1300);
                             await props.requestDeletion();
 
-                            props.shades.pull_off();
+                            await props.shades.pull_off();
                         }
                     },
                     {
@@ -88,20 +90,22 @@ export function ObservationListElement(props = {})
                         task: async({resetButtonState})=>
                         {
                             setKeepButtonBarVisible(true);
-                           // resetButtonState();
+                            resetButtonState();
 
                             // Prompt the user to enter a new date.
                             await props.shades.put_on({onClick: unrender_observation_date_prompt});
-                            const newDate = await render_observation_date_prompt(props.observation);
+                            const newDate = await render_observation_date_prompt(observationData);
 
                             // Send the new date to the server.
-                            //resetButtonState("waiting");
-                            await props.requestSetDate(newDate);
+                            resetButtonState("waiting");
+                            const updatedObservation = await props.requestSetDate(newDate);
 
+                            await delay(1500);
+                            setObservationData(updatedObservation);
+
+                            resetButtonState("enabled");
+                            setKeepButtonBarVisible(false);
                             await props.shades.pull_off({onClick: null});
-
-                           // resetButtonState();
-                           // setKeepButtonBarVisible(false);
                         },
                     },
                 ]} />
@@ -110,7 +114,7 @@ export function ObservationListElement(props = {})
 
 ObservationListElement.validate_props = function(props)
 {
-    panic_if_undefined(props, props.shades);
+    panic_if_undefined(props, props.shades, props.observation);
 
     return;
 }

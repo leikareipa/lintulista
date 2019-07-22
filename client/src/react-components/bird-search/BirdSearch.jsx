@@ -39,13 +39,13 @@ export function BirdSearch(props = {})
 
         if (searchString.length)
         {
-            props.backend.known_birds().forEach((bird, idx)=>
+            props.backend.known_birds().forEach(bird=>
             {
                 if (bird.species.toLowerCase().includes(searchString.toLowerCase()))
                 {
                     const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
 
-                    searchResults.push(<BirdSearchResultElement key={idx}
+                    searchResults.push(<BirdSearchResultElement key={bird.species}
                                                                 bird={bird}
                                                                 clickCallback={(bird)=>{
                                                                     props.shades.pull_off();

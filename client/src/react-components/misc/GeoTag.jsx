@@ -17,6 +17,11 @@ export function GeoTag(props = {})
 {
     GeoTag.validate_props(props);
 
+    if (!props.place)
+    {
+        return <></>
+    }
+
     /// TODO: Support place strings provided as a latitude/longitude pair.
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${props.place.replace(" ", "+")}`;
 
