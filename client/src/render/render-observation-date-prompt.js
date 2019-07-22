@@ -6,9 +6,8 @@
 
 "use strict";
 
-import {ObservationDatePrompt} from "../react-components/observation-date-prompt/ObservationDatePrompt.js";
-import {shades} from "../shades.js";
-import { panic_if_undefined } from "../assert.js";
+import {ObservationDatePrompt} from "../react-components/dialogs/ObservationDatePrompt.js";
+import {panic_if_undefined} from "../assert.js";
 
 // The DOM container to render the dialog into.
 const containerId = "set-date-dialog";
