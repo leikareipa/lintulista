@@ -139,30 +139,33 @@ body
     border-radius: 50%;
 }
 
-.ObservationListElement .name
+.ObservationInfo
 {
+    line-height: 137%;
     display: inline-block;
-    font-size: 110%;
     text-align: left;
     padding-left: 15px;
     width: 290px;
     border-left: 5px dotted rgb(159, 183, 189);
 }
 
-.ObservationListElement .name .date
+.ObservationInfo .title
 {
+    font-size: 110%;
     display: inline-block;
 }
 
-.ObservationListElement .name .classification
-{
-    display: inline-block;
-}
-
-.ObservationListElement .observation-details
+.ObservationInfo .date
 {
     padding-right: 5px;
-    font-size: 80%;
+    font-size: 90%;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.ObservationInfo .classification
+{
+    padding-right: 5px;
+    font-size: 90%;
     color: rgba(0, 0, 0, 0.65);
 }
 

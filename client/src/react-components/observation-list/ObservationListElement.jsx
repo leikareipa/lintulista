@@ -9,9 +9,8 @@
 import {render_observation_date_prompt, unrender_observation_date_prompt} from "../../render/render-observation-date-prompt.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
+import {ObservationInfo} from "../misc/ObservationInfo.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {animate} from "../../animate.js";
-import {GeoTag} from "../misc/GeoTag.js";
 import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
@@ -27,13 +26,6 @@ export function ObservationListElement(props = {})
 
     // While set to true, the element's button bar will be displayed at all times.
     const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
-
-    // Used to start an animation on a particular element. Will take in an object of the
-    // form {ref, name, callback}, where 'ref' is a React reference to the element on which
-    // to play the animation; 'name' is the name of the animation; and 'callback' is an
-    // optional callback for when the animation finishes. For more information, see the
-    // documentation for animate(). Set to null to play no animation.
-    const [animation, nextAnimation] = React.useState(null);
 
     // A list of the buttons to be displayed on the element's button bar.
     const buttonBarButtons = Object.freeze([
@@ -57,43 +49,20 @@ export function ObservationListElement(props = {})
         },
     ]);
 
-    const refs =
+    // Functions that can be called to cause animative effects on particular elements.
+    // These will be callbacks to the ObservationInfo component, initialized to their
+    // proper values when that component initializes.
+    let animation =
     {
-        date: React.useRef(),
-        geotag: React.useRef(),
+        pulseDateElement: ()=>{},
+        pulseGeoTagElement: ()=>{},
     }
-
-    React.useEffect(()=>
-    {
-        if (animation)
-        {
-            animate(animation.ref.current, animation.name, (animation.callback || (()=>{})));
-            nextAnimation(null);
-        }
-    }, [animation])
 
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
                 <BirdThumbnail bird={observationData.bird}/>
-                <span className="name">
-                    {observationData.bird.species}
-                    <div ref={refs.geotag} style={{display:"inline-block"}}>
-                        {/* The GeoTag is encased in a div to allow animations via a local React ref.*/}
-                        <GeoTag place={observationData.place}/>
-                    </div>
-                    <br/>
-                    <span className="observation-details">
-                        <div className="date" ref={refs.date}>
-                            {observationData.dateString}
-                        </div>
-                        <br/>
-                        <div className="classification">
-                            {observationData.bird.order}
-                            <i className="fas fa-caret-right fa-sm" style={{margin:"6px"}}></i>
-                            {observationData.bird.family}
-                        </div>
-                    </span>
-                </span>
+                <ObservationInfo observation={observationData}
+                                 setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
                 <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
                                     buttons={buttonBarButtons} />
             </div>
@@ -136,7 +105,7 @@ export function ObservationListElement(props = {})
         {
             await delay(1500);
             setObservationData(updatedObservation);
-            nextAnimation({ref:refs.date, name:"jump"});
+            animation.pulseDateElement();
         }
 
         resetButtonState("enabled");
@@ -169,7 +138,7 @@ export function ObservationListElement(props = {})
         {
             await delay(1500);
             setObservationData(updatedObservation);
-            nextAnimation({ref:refs.geotag, name:"jump"});
+            animation.pulseGeoTagElement();
         }
 
         resetButtonState("enabled");
