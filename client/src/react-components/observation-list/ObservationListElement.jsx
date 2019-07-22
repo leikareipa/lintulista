@@ -38,7 +38,7 @@ export function ObservationListElement(props = {})
     const refs =
     {
         date: React.useRef(),
-        /* TODO: Get the GeoTag animated, as well.*/
+        geotag: React.useRef(),
     }
 
     React.useEffect(()=>
@@ -55,7 +55,9 @@ export function ObservationListElement(props = {})
                 <BirdThumbnail bird={observationData.bird}/>
                 <span className="name">
                     {observationData.bird.species}
-                    <GeoTag place={observationData.place}/>
+                    <div ref={refs.geotag} style={{display:"inline-block"}}>
+                        <GeoTag place={observationData.place}/>
+                    </div>
                     <br/>
                     <span className="observation-details">
                         <div className="date" ref={refs.date}>
@@ -113,6 +115,7 @@ export function ObservationListElement(props = {})
                             {
                                 await delay(1500);
                                 setObservationData(updatedObservation);
+                                nextAnimation({ref:refs.geotag, name:"jump"});
                             }
 
                             resetButtonState("enabled");
