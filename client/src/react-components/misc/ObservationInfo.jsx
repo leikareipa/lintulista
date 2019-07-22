@@ -65,7 +65,7 @@ export function ObservationInfo(props = {})
                </div>
                <div className="classification">
                    {props.observation.bird.order}
-                   <i className="fas fa-caret-right fa-sm" style={{margin:"6px"}}></i>
+                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", margin:"6px"}}></i>
                    {props.observation.bird.family}
                </div>
            </div>

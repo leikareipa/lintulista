@@ -157,16 +157,14 @@ body
 
 .ObservationInfo .date
 {
-    padding-right: 5px;
-    font-size: 90%;
-    color: rgba(0, 0, 0, 0.65);
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.55);
 }
 
 .ObservationInfo .classification
 {
-    padding-right: 5px;
-    font-size: 90%;
-    color: rgba(0, 0, 0, 0.65);
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.55);
 }
 
 .ObservationListElement .AsyncIconButtonBar
