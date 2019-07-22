@@ -56,6 +56,7 @@ export function ObservationListElement(props = {})
                 <span className="name">
                     {observationData.bird.species}
                     <div ref={refs.geotag} style={{display:"inline-block"}}>
+                        {/* The GeoTag is encased in a div to allow animations via a local React ref.*/}
                         <GeoTag place={observationData.place}/>
                     </div>
                     <br/>
@@ -84,7 +85,7 @@ export function ObservationListElement(props = {})
                             await props.shades.put_on();
 
                             await delay(1300);
-                            await props.requestDeletion();
+                            await props.requestDeleteObservation(observationData);
 
                             await props.shades.pull_off();
                         }
@@ -105,7 +106,7 @@ export function ObservationListElement(props = {})
 
                             // Send the new place to the server.
                             resetButtonState("waiting");
-                            const updatedObservation = await props.requestSetPlace(newPlace);
+                            const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
 
                             if (!updatedObservation)
                             {
@@ -141,7 +142,7 @@ export function ObservationListElement(props = {})
 
                             // Send the new date to the server.
                             resetButtonState("waiting");
-                            const updatedObservation = await props.requestSetDate(newDate);
+                            const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
 
                             if (!updatedObservation)
                             {

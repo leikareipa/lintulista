@@ -71,10 +71,9 @@ export function ObservationList(props = {})
             return <ObservationListElement observation={obs}
                                            key={obs.bird.species}
                                            shades={props.shades}
-                                           requestRefresh={()=>setObservationElements(generate_observation_elements())}
-                                           requestDeletion={async()=>await delete_observation(obs)}
-                                           requestSetDate={async(newDate)=>await set_observation_date(obs, newDate)}
-                                           requestSetPlace={async(newPlace)=>await set_observation_place(obs, newPlace)}/>
+                                           requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                           requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                           requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
         });
     }
 }
@@ -85,4 +84,3 @@ ObservationList.validate_props = function(props)
 
     return;
 }
-
