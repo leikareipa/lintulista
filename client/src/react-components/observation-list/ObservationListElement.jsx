@@ -10,9 +10,9 @@ import {render_observation_date_prompt, unrender_observation_date_prompt} from "
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {animate} from "../../animate.js";
 import {GeoTag} from "../misc/GeoTag.js";
 import {delay} from "../../delay.js";
-import { animate } from "../../animate.js";
 
 export function ObservationListElement(props = {})
 {
@@ -73,7 +73,6 @@ export function ObservationListElement(props = {})
                     </span>
                 </span>
                 <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
-                                    shades={props.shades}
                                     buttons={[
                     {
                         icon: "fas fa-eraser",

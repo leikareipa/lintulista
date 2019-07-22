@@ -41,10 +41,6 @@ import {AsyncIconButton} from "./AsyncIconButton.js";
 // elements.
 //
 // The props.visible property defines whether the button bar should be rendered or not.
-//
-// Shades used to darken the rest of the page while a button is in a waiting state (having
-// been clicked but its corresponding action having not yet completed) are passed via
-// props.shades.
 // 
 export function AsyncIconButtonBar(props = {})
 {
@@ -70,7 +66,7 @@ export function AsyncIconButtonBar(props = {})
 
 AsyncIconButtonBar.validate_props = function(props)
 {
-    panic_if_undefined(props, props.buttons, props.shades);
+    panic_if_undefined(props, props.buttons);
 
     return;
 }

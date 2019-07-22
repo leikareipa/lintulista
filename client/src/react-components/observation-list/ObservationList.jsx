@@ -7,7 +7,7 @@
 "use strict";
 
 import {ObservationListElement} from "./ObservationListElement.js";
-import {panic_if_undefined, panic} from "../../assert.js";
+import {panic_if_undefined} from "../../assert.js";
 import {observation} from "../../observation.js";
 
 export function ObservationList(props = {})
@@ -16,7 +16,22 @@ export function ObservationList(props = {})
 
     const [observationElements, setObservationElements] = React.useState(generate_observation_elements());
 
-    return <div className="ObservationList">{observationElements}</div>
+    return <div className="ObservationList">
+               {observationElements}
+           </div>
+
+    function generate_observation_elements()
+    {
+        return props.backend.observations().map(obs=>
+        {
+            return <ObservationListElement observation={obs}
+                                           key={obs.bird.species}
+                                           shades={props.shades}
+                                           requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                           requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                           requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
+        });
+    }
 
     async function delete_observation(targetObservation)
     {
@@ -62,19 +77,6 @@ export function ObservationList(props = {})
         }
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
-    }
-
-    function generate_observation_elements()
-    {
-        return props.backend.observations().map(obs=>
-        {
-            return <ObservationListElement observation={obs}
-                                           key={obs.bird.species}
-                                           shades={props.shades}
-                                           requestDeleteObservation={async(self)=>await delete_observation(self)}
-                                           requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
-                                           requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
-        });
     }
 }
 
