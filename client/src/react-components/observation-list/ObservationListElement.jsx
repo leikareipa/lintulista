@@ -70,14 +70,31 @@ export function ObservationListElement(props = {})
                         titleWhenClicked: "Merkitään havainnon paikkaa",
                         task: async({resetButtonState})=>
                         {
-                            props.shades.put_on();
                             setKeepButtonBarVisible(true);
+                            resetButtonState();
 
-                            await delay(800);
-                            await props.shades.pull_off();
+                            // Prompt the user to enter a new place.
+                            await props.shades.put_on();
+                            /* TODO*/
+                            const newPlace = prompt("Enter a place name");
 
-                            resetButtonState("disabled");
+                            // Send the new place to the server.
+                            resetButtonState("waiting");
+                            const updatedObservation = await props.requestSetPlace(newPlace);
+
+                            if (!updatedObservation)
+                            {
+                                panic("Failed to update the place of an observation.");
+                            }
+                            else
+                            {
+                                await delay(1500);
+                                setObservationData(updatedObservation);
+                            }
+
+                            resetButtonState("enabled");
                             setKeepButtonBarVisible(false);
+                            await props.shades.pull_off();
                         },
                     },
                     {
@@ -100,12 +117,19 @@ export function ObservationListElement(props = {})
                             resetButtonState("waiting");
                             const updatedObservation = await props.requestSetDate(newDate);
 
-                            await delay(1500);
-                            setObservationData(updatedObservation);
+                            if (!updatedObservation)
+                            {
+                                panic("Failed to update the date of an observation.");
+                            }
+                            else
+                            {
+                                await delay(1500);
+                                setObservationData(updatedObservation);
+                            }
 
                             resetButtonState("enabled");
                             setKeepButtonBarVisible(false);
-                            await props.shades.pull_off({onClick: null});
+                            await props.shades.pull_off();
                         },
                     },
                 ]} />

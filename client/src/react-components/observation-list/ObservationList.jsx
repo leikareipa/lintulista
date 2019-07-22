@@ -25,8 +25,7 @@ export function ObservationList(props = {})
     }
 
     // Alters an existing observation's date to match the given year, month (1-12), and
-    // day (1-31). Note that the list won't be regenerated automatically, but rather the
-    // originating element is expected to call requestRefresh() once this function resolves.
+    // day (1-31). Returns the updated observation; or null on error.
     async function set_observation_date(existingObservation, {year, month, day})
     {
         panic_if_undefined(existingObservation, year, month, day);
@@ -37,9 +36,32 @@ export function ObservationList(props = {})
             date: new Date(year, month-1, day),
         });
 
-        await props.backend.post_observation(modifiedObservation);
+        if (!(await props.backend.post_observation(modifiedObservation)))
+        {
+            return null;
+        }
 
-        return props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species);
+        return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
+    }
+
+    // Alters an existing observation's place. Returns the updated observation; or null
+    // on error.
+    async function set_observation_place(existingObservation, newPlace)
+    {
+        panic_if_undefined(existingObservation, newPlace);
+
+        const modifiedObservation = observation(
+        {
+            ...existingObservation,
+            place: newPlace,
+        });
+
+        if (!(await props.backend.post_observation(modifiedObservation)))
+        {
+            return null;
+        }
+
+        return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }
 
     function generate_observation_elements()
@@ -51,7 +73,8 @@ export function ObservationList(props = {})
                                            shades={props.shades}
                                            requestRefresh={()=>setObservationElements(generate_observation_elements())}
                                            requestDeletion={async()=>await delete_observation(obs)}
-                                           requestSetDate={async(newDate)=>await set_observation_date(obs, newDate)}/>
+                                           requestSetDate={async(newDate)=>await set_observation_date(obs, newDate)}
+                                           requestSetPlace={async(newPlace)=>await set_observation_place(obs, newPlace)}/>
         });
     }
 }

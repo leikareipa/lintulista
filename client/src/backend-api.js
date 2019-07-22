@@ -152,6 +152,7 @@ export async function backend_access({listId})
         {
             species: observation.bird.species,
             timestamp: observation.unixTimestamp,
+            place: (observation.place? observation.place : null),
         }
 
         return fetch(`${backendAddress.postObservation}?list=${listId}`,

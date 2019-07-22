@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined} from "../../assert.js";
+import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
 
 // Displays a map marker with a link to a map asset.
 //
@@ -17,7 +17,9 @@ export function GeoTag(props = {})
 {
     GeoTag.validate_props(props);
 
-    if (!props.place)
+    if (!props.place ||
+        (typeof props.place !== "string") ||
+        !props.place.trim().length)
     {
         return <></>
     }
