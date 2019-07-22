@@ -35,6 +35,28 @@ export function ObservationListElement(props = {})
     // documentation for animate(). Set to null to play no animation.
     const [animation, nextAnimation] = React.useState(null);
 
+    // A list of the buttons to be displayed on the element's button bar.
+    const buttonBarButtons = Object.freeze([
+        {
+            icon: "fas fa-eraser",
+            title: "Poista havainto",
+            titleWhenClicked: "Poistetaan havaintoa",
+            task: button_remove_observation,
+        },
+        {
+            icon: "fas fa-map-marked-alt",
+            title: "Merkitse havainnon paikka",
+            titleWhenClicked: "Merkitään havainnon paikkaa",
+            task: button_change_observation_place,
+        },
+        {
+            icon: "fas fa-clock",
+            title: "Aseta havainnon päivämäärä",
+            titleWhenClicked: "Asetetaan havainnon päivämäärää",
+            task: button_change_observation_date,
+        },
+    ]);
+
     const refs =
     {
         date: React.useRef(),
@@ -73,26 +95,7 @@ export function ObservationListElement(props = {})
                     </span>
                 </span>
                 <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
-                                    buttons={[
-                    {
-                        icon: "fas fa-eraser",
-                        title: "Poista havainto",
-                        titleWhenClicked: "Poistetaan havaintoa",
-                        task: button_remove_observation,
-                    },
-                    {
-                        icon: "fas fa-map-marked-alt",
-                        title: "Merkitse havainnon paikka",
-                        titleWhenClicked: "Merkitään havainnon paikkaa",
-                        task: button_change_observation_place,
-                    },
-                    {
-                        icon: "fas fa-clock",
-                        title: "Aseta havainnon päivämäärä",
-                        titleWhenClicked: "Asetetaan havainnon päivämäärää",
-                        task: button_change_observation_date,
-                    },
-                ]} />
+                                    buttons={buttonBarButtons} />
             </div>
 
     // When a button is pressed to delete the observation. Will requests the backend to
