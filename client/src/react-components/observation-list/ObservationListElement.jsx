@@ -6,12 +6,13 @@
 
 "use strict";
 
-import {render_observation_place_prompt, unrender_observation_place_prompt} from "../../render/render-observation-place-prompt.js";
 import {render_observation_date_prompt, unrender_observation_date_prompt} from "../../render/render-observation-date-prompt.js";
+import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
 import {ObservationInfo} from "../misc/ObservationInfo.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {open_dialog} from "../../open-dialog.js";
 import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
@@ -123,8 +124,11 @@ export function ObservationListElement(props = {})
         resetButtonState();
 
         /// Prompt the user to enter a new place.
-        await props.shades.put_on({onClick: unrender_observation_place_prompt});
-        const newPlace = await render_observation_place_prompt(observationData);
+        await props.shades.put_on();
+        const newPlace = await open_dialog(QueryObservationPlace,
+        {
+            observation: observationData,
+        });
 
         await(1000);
 

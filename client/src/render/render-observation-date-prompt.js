@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {ObservationDatePrompt} from "../react-components/dialogs/ObservationDatePrompt.js";
+import {QueryObservationDate} from "../react-components/dialogs/QueryObservationDate.js";
 import {panic_if_undefined} from "../assert.js";
 
 // The DOM container to render the dialog into.
@@ -28,7 +28,7 @@ export function render_observation_date_prompt(observation)
             return;
         }
 
-        const datePrompt = React.createElement(ObservationDatePrompt,
+        const datePrompt = React.createElement(QueryObservationDate,
         {
             observation,
             receiveDate: (date)=>

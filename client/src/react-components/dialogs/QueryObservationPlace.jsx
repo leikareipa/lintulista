@@ -22,16 +22,16 @@ import {GeoTag} from "../../react-components/misc/GeoTag.js";
 // A callback function called in case the user rejects the dialog should be provided via
 // props.onDialogReject. It will receive no parameters.
 //
-export function ObservationPlacePrompt(props = {})
+export function QueryObservationPlace(props = {})
 {
-    ObservationPlacePrompt.validateProps(props);
+    QueryObservationPlace.validateProps(props);
 
     const [placeString, setPlaceString] = React.useState(props.observation.place || "");
 
     const mapUrl = GeoTag.map_link_from_string(placeString);
     const maxPlacenameLength = 60;
 
-    return <div className="ObservationPlacePrompt">
+    return <div className="Dialog QueryObservationPlace">
                <div className="title">
                    <i className="fas fa-map-marker-alt"></i> Merkitse havainnon sijainti
                </div>
@@ -43,16 +43,11 @@ export function ObservationPlacePrompt(props = {})
                         </div>
                         <input className="place-name"
                                type="text"
-                               onKeyPress={(event)=>
-                               {
-                                   if (event.key === "Enter")
-                                   {
-                                       close_dialog(true);
-                                   }
-                               }}
+                               onKeyPress={(event)=>{if (event.key === "Enter") close_dialog(true)}}
                                onChange={(event)=>setPlaceString(event.target.value)}
                                value={placeString? placeString : ""}
                                placeholder="Esim. Lauttasaari, Helsinki"
+                               spellCheck="false"
                                maxLength={maxPlacenameLength}
                                autoFocus/>
                         <div className="map-link">
@@ -83,7 +78,7 @@ export function ObservationPlacePrompt(props = {})
     }
 }
 
-ObservationPlacePrompt.validateProps = function(props)
+QueryObservationPlace.validateProps = function(props)
 {
     panic_if_undefined(props, props.onDialogAccept, props.onDialogReject);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);

@@ -225,8 +225,7 @@ body
     text-decoration: none;
 }
 
-.ObservationDatePrompt,
-.ObservationPlacePrompt
+.Dialog
 {
     min-width: 400px;
     padding-top: 0px;
@@ -249,56 +248,7 @@ body
     left: 50%;
 }
 
-.ObservationPlacePrompt
-{
-    min-width: 470px;
-    padding-bottom: 2px;
-}
-
-.ObservationPlacePrompt input
-{
-    padding-left: 10px;
-    padding-right: 10px
-}
-
-.ObservationDatePrompt .date-bar
-{
-    display: flex;
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-}
-
-.ObservationDatePrompt .date-bar input,
-.ObservationDatePrompt .date-bar select
-{
-    padding: 5px;
-    margin: 3px;
-}
-
-.ObservationDatePrompt .date-bar .day,
-.ObservationDatePrompt .date-bar .month,
-.ObservationDatePrompt .date-bar .year
-{
-    flex: 1;
-    min-width: 0;
-}
-
-.ObservationDatePrompt .date-bar .month
-{
-    flex: 2;
-}
-
-.ObservationDatePrompt .button-box
-{
-    display: flex;
-    justify-content: flex-end;
-    border-bottom-left-radius: inherit;
-    border-bottom-right-radius: inherit;
-}
-
-.ObservationDatePrompt .title,
-.ObservationPlacePrompt .title
+.Dialog > .title
 {
     text-align: left;
     padding: 18px;
@@ -309,24 +259,8 @@ body
     border-top-right-radius: 6px;
 }
 
-.ObservationDatePrompt .ScrollerLabel
+.Dialog > .form
 {
-    text-align: center;
-}
-
-.ObservationDatePrompt .BirdThumbnail,
-.ObservationPlacePrompt .BirdThumbnail
-{
-    width: 100px;
-    height: 100px;
-    margin-right: 20px;
-    border-radius: 50%;
-}
-
-.ObservationDatePrompt .form,
-.ObservationPlacePrompt .form
-{
-    padding: 15px;
     padding-top: 18px;
     padding-left: 17px;
     padding-right: 20px;
@@ -334,49 +268,78 @@ body
     display: flex;
 }
 
-.ObservationDatePrompt .fields,
-.ObservationPlacePrompt .fields
+.Dialog > .form > .fields
 {
     flex: 1;
 }
 
-.ObservationPlacePrompt .fields
+.Dialog > .form > .BirdThumbnail
+{
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar
+{
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar *
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar > .month
+{
+    flex: 2;
+}
+
+.Dialog.QueryObservationDate > .form > .fields .ScrollerLabel
+{
+    text-align: center;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .bird-name
+{
+    color: black;
+    text-align: left;
+}
+
+.Dialog.QueryObservationPlace
+{
+    min-width: 450px;
+    padding-bottom: 2px;
+}
+
+.Dialog.QueryObservationPlace > .form > .fields
 {
     display: flex;
     flex-direction: column;
     align-items: left;
 }
 
-.ObservationDatePrompt .bird-name
-{
-    color: black;
-    text-align: left;
-}
-
-.ObservationPlacePrompt .bird-name
+.Dialog.QueryObservationPlace > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;
     margin-bottom: 12px;
 }
 
-.ObservationPlacePrompt input
+.Dialog.QueryObservationPlace > .form > .fields input
 {
     border: 1px solid rgb(159, 183, 189);
     border-radius: 3px;
-    padding-left: 42px; /* Make room for the embedded GeoTag.*/
+    padding-left: 43px; /* Make room for the embedded GeoTag.*/
+    outline: none;
 }
 
-.ObservationPlacePrompt .toolbar
-{
-    display: flex;
-    margin-top: 4px;
-    font-size: 80%;
-    color: rgba(0, 0, 0, 0.4);
-    text-align: left;
-}
-
-.ObservationPlacePrompt .map-link
+.Dialog.QueryObservationPlace > .form > .fields .map-link
 {
     font-size: 175%;
     position: absolute;
@@ -385,29 +348,38 @@ body
     display: inline-block;
 }
 
-.ObservationPlacePrompt .map-link a
+.Dialog.QueryObservationPlace > .form > .fields .map-link a
 {
     color: rgb(127, 179, 192);
     text-decoration: none;
 }
 
-.ObservationPlacePrompt .map-link a.disabled
+.Dialog.QueryObservationPlace > .form > .fields .map-link a.disabled
 {
     color: rgb(191, 191, 191);
 }
 
-.ObservationPlacePrompt .toolbar > *
+.Dialog.QueryObservationPlace > .form > .fields > .toolbar
+{
+    display: flex;
+    margin-top: 4px;
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: left;
+}
+
+.Dialog.QueryObservationPlace .toolbar > *
 {
     flex: grow;
 }
 
-.ObservationPlacePrompt .toolbar > *:last-child
+.Dialog.QueryObservationPlace .toolbar > *:last-child
 {
     margin-left: auto;
     margin-right: 4px;
 }
 
-.ObservationPlacePrompt .place-name
+.Dialog.QueryObservationPlace > .form > .fields > .place-name
 {
     flex: 1;
 }

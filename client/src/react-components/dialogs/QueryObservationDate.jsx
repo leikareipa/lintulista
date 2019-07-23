@@ -18,7 +18,7 @@ import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 // a parameter: {day, month, year}. Note especially that month will be given as 1-indexed,
 // such that 1 is January and 12 is December.
 //
-export function ObservationDatePrompt(props = {})
+export function QueryObservationDate(props = {})
 {
     // Using local variables with the assumption that the dialog won't get re-rendered
     // prior to the user closing it. These values will be returned when the dialog is
@@ -32,7 +32,7 @@ export function ObservationDatePrompt(props = {})
         return ()=>props.receiveDate({day, month, year});
     })
 
-    return <div className="ObservationDatePrompt">
+    return <div className="Dialog QueryObservationDate">
                <div className="title">
                    <i className="fas fa-clock"></i> Aseta havainnon päivämäärä
                </div>
