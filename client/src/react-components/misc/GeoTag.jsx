@@ -24,14 +24,23 @@ export function GeoTag(props = {})
         return <></>
     }
 
-    /// TODO: Support place strings provided as a latitude/longitude pair.
-    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${props.place.replace(" ", "+")}`;
-
     return <div className="GeoTag" title={props.place}>
-                <a href={mapUrl} target="_blank" rel="noopener noreferrer">
+                <a href={GeoTag.map_link_from_string(props.place)} target="_blank" rel="noopener noreferrer">
                     <i className="fas fa-map-marker-alt"></i>
                 </a>
            </div>
+}
+
+GeoTag.map_link_from_string = function(string = "")
+{
+    if ((typeof string !== "string") ||
+        !string.trim().length)
+    {
+        return null;
+    }
+
+    /// TODO: Support place strings provided as a latitude/longitude pair.
+    return `https://www.google.com/maps/search/?api=1&query=${string.trim().replace(/\s/g, "+")}`;
 }
 
 GeoTag.validate_props = function(props)
