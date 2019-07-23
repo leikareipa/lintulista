@@ -120,7 +120,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
     function random_id()
     {
         let loops = 0;
-        let seed = [..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._".repeat(2)];
+        let seed = [..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._"];
         let id = null;
         
         do
