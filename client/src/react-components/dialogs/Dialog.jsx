@@ -59,12 +59,12 @@ export function Dialog(props = {})
                    {props.children}
                </div>
                <div className="button-bar">
-                   <div className="reject">
-                       <i className="fas fa-check fa-2x" onClick={props.onDialogAccept}/>
+                   <div className="accept" onClick={props.onDialogAccept}>
+                       <i className="fas fa-check fa-2x"/>
                        <br/>Tallenna
                    </div>
-                   <div className="accept">
-                       <i className="fas fa-times fa-2x" onClick={props.onDialogReject}/>
+                   <div className="reject" onClick={props.onDialogReject}>
+                       <i className="fas fa-times fa-2x"/>
                        <br/>Peruuta
                    </div>
                </div>
