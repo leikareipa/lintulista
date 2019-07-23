@@ -101,7 +101,7 @@ body
     background-color: #f0f0f0;
     padding: 20px;
     padding-left: 15px;
-    padding-top: 13px;
+    padding-top: 12px;
     padding-bottom: 13px;
     display: flex;
     align-items: center;
@@ -359,24 +359,13 @@ body
     color: rgb(191, 191, 191);
 }
 
-.Dialog.QueryObservationPlace > .form > .fields > .toolbar
-{
-    display: flex;
-    margin-top: 4px;
-    font-size: 80%;
-    color: rgba(0, 0, 0, 0.4);
-    text-align: left;
-}
-
-.Dialog.QueryObservationPlace .toolbar > *
-{
-    flex: grow;
-}
-
-.Dialog.QueryObservationPlace .toolbar > *:last-child
+.Dialog.QueryObservationPlace > .form > .fields > .character-count
 {
     margin-left: auto;
     margin-right: 4px;
+    margin-top: 4px;
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.4);
 }
 
 .Dialog.QueryObservationPlace > .form > .fields > .place-name
