@@ -130,24 +130,27 @@ export function ObservationListElement(props = {})
             observation: observationData,
         });
 
-        await(1000);
-
         // Send the new place to the server.
-        resetButtonState("waiting");
-        const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
-
-        if (!updatedObservation)
+        if (newPlace !== null)
         {
-            panic("Failed to update the place of an observation.");
-        }
-        else
-        {
-            await delay(1500);
-            setObservationData(updatedObservation);
-            animation.pulseGeoTagElement();
+            resetButtonState("waiting");
+            
+            const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
+
+            if (!updatedObservation)
+            {
+                panic("Failed to update the place of an observation.");
+            }
+            else
+            {
+                await delay(1500);
+                setObservationData(updatedObservation);
+                animation.pulseGeoTagElement();
+            }
+
+            resetButtonState("enabled");
         }
 
-        resetButtonState("enabled");
         setKeepButtonBarVisible(false);
         await props.shades.pull_off();
     }

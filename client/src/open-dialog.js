@@ -12,6 +12,9 @@ import {animate} from "./animate.js";
 // Renders a dialog component into a new <div> container. Closes the dialog and deletes the
 // container when the user accepts or rejects the dialog via onDialogAccept/onDialogReject.
 //
+// If the user rejects the dialog, null is returned via resolve(); otherwise resolve() directs
+// to the caller the return data provided by the dialog.
+//
 // The dialog component to be rendered should be provided via dialog. It should be a
 // React component that calls props.onDialogAccept/props.onDialogReject when the dialog is
 // ready to be closed and unrendered.

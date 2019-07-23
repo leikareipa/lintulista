@@ -21,8 +21,8 @@ export function panic(errorMessage = "")
 
     blackScreen.put_on();
 
-    alert(`Lintulista is in panic: ${errorMessage}`);
-    throw Error(`Lintulista is in panic: ${errorMessage}`);
+    alert(`Lintulista is in a panic: ${errorMessage}`);
+    throw Error(`Lintulista is in a panic: ${errorMessage}`);
 }
 
 export function panic_if_undefined(...properties)

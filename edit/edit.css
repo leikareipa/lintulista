@@ -244,7 +244,7 @@ body
     /* Center in the viewport.*/
     position: fixed;
     transform: translateX(-50%);
-    top: 5%;
+    top: 20px;
     left: 50%;
 }
 
@@ -257,6 +257,33 @@ body
     background-color:rgb(159, 183, 189);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+}
+
+.Dialog > .button-bar
+{
+    width: 205px;
+    position: absolute;
+    bottom: -87px;
+    right: 0;
+    display: flex;
+}
+
+.Dialog > .button-bar > *
+{
+    user-select: none;
+    margin: 7px;
+    padding: 0px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+    font-size: 90%;
+    color: #f6f6f6;
+    cursor: pointer;
+    flex: 1;
+}
+
+.Dialog > .button-bar > *:active
+{
+    filter: drop-shadow(0 0px 2px rgba(0, 0, 0, 0.3));
+    transform: translateY(2px);
 }
 
 .Dialog > .form

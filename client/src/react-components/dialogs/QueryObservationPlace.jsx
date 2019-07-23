@@ -34,7 +34,9 @@ export function QueryObservationPlace(props = {})
 
     return <Dialog component="QueryObservationPlace"
                    title="Merkitse havainnon sijainti"
-                   titleIcon="fas fa-map-marker-alt">
+                   titleIcon="fas fa-map-marker-alt"
+                   onDialogAccept={()=>close_dialog(true)}
+                   onDialogReject={()=>close_dialog(false)}>
                <BirdThumbnail bird={props.observation.bird}/>
                <div className="fields">
                    <div className="bird-name">

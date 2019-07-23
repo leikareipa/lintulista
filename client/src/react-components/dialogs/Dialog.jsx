@@ -20,9 +20,16 @@ import {panic_if_not_type} from "../../assert.js";
 // which both should be strings, the latter giving the Font Awesome class names for the desired
 // icon (e.g. props.titleIcon = "fas fa-map-marker-alt" for a map marker icon).
 //
+// Functions to be called when the user accepts or rejects the dialog should be provided via
+// props.onDialogAccept and props.onDialogReject.
+//
 // To build a dialog called MyDialog using Dialog as a base, you might have the following JSX:
 //
-//     <Dialog component="MyDialog" title="It's my dialog" titleIcon="fas fa-question">
+//     <Dialog component="MyDialog"
+//             title="It's my dialog"
+//             titleIcon="fas fa-question"
+//             onDialogAccept={()=>...}
+//             onDialogReject={()=>...}>
 //         <span className="sub-title">
 //             Hello!
 //         </span>
@@ -42,6 +49,8 @@ import {panic_if_not_type} from "../../assert.js";
 //
 export function Dialog(props = {})
 {
+    Dialog.validateProps(props);
+
     return <div className={`Dialog ${props.component}`}>
                <div className="title">
                    <i className={props.titleIcon}/> {props.title}
@@ -49,13 +58,24 @@ export function Dialog(props = {})
                <div className="form">
                    {props.children}
                </div>
+               <div className="button-bar">
+                   <div className="reject">
+                       <i className="fas fa-check fa-3x" onClick={props.onDialogAccept}/>
+                       <br/>Tallenna
+                   </div>
+                   <div className="accept">
+                       <i className="fas fa-times fa-3x" onClick={props.onDialogReject}/>
+                       <br/>Peruuta
+                   </div>
+               </div>
            </div>
 }
 
 Dialog.validateProps = function(props)
 {
     panic_if_not_type("object", props);
-    panic_if_not_type("string", props.componentName, props.titleIcon, props.title);
+    panic_if_not_type("string", props.component, props.titleIcon, props.title);
+    panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }
