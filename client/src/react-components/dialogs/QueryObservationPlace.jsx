@@ -33,7 +33,7 @@ export function QueryObservationPlace(props = {})
 
     return <div className="Dialog QueryObservationPlace">
                <div className="title">
-                   <i className="fas fa-map-marker-alt"></i> Merkitse havainnon sijainti
+                   <i className="fas fa-map-marker-alt"/> Merkitse havainnon sijainti
                </div>
                <div className="form">
                     <BirdThumbnail bird={props.observation.bird}/>

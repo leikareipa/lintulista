@@ -51,7 +51,7 @@ export function AsyncIconButton(props = {})
                  onClick={click_handler}
                  title={currentTitle}
                  style={{[props.color? "color" : "ignoreThisPropertyValue"]:props.color}}>
-                     <i className={currentIcon}></i>
+                     <i className={currentIcon}/>
            </span>
 
     // Called when the button is clicked.

@@ -54,7 +54,7 @@ export function AsyncIconButtonBar(props = {})
                                 task={button.task}
                                 color={button.color}
                                 title={button.title}
-                                titleWhenClicked={button.titleWhenClicked} />
+                                titleWhenClicked={button.titleWhenClicked}/>
     });
 
     return  <div className="AsyncIconButtonBar" style={{transform:(props.visible? "translateY(-2px)" : "translateY(18px)"),

@@ -49,11 +49,9 @@ export function ScrollerLabel(props = {})
     return <div className="ScrollerLabel">
                <Scroller icon="fas fa-caret-up fa-2x"
                          callback={()=>scroll_value(1)}/>
-
                <div className="value">
                    {`${displayable_value()}${props.suffix || ""}`}
                </div>
-
                <Scroller icon="fas fa-caret-down fa-2x"
                          callback={()=>scroll_value(-1)}/>
            </div>

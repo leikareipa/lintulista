@@ -22,7 +22,7 @@ export function BirdSearchResultElement(props = {})
             return {
                 hasBeenPreviouslyObserved: false,
                 dateObserved: <>
-                                  <i className="fas fa-pen" style={{color:"mediumseagreen"}}></i> 
+                                  <i className="fas fa-pen" style={{color:"mediumseagreen"}}/>
                                   <span> Merkitse uudeksi havainnoksi</span>
                               </>,
             };

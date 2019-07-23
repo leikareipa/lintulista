@@ -18,9 +18,9 @@ export function BirdSearch(props = {})
     return <>
                <BirdSearchField onFocus={props.shades.put_on}
                                 onChange={regenerate_search_results}
-                                onBlur={remove_shades_if_lost_focus} />
+                                onBlur={remove_shades_if_lost_focus}/>
                <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"
-                                         resultElements={currentSearchResultElements} />
+                                         resultElements={currentSearchResultElements}/>
            </>
 
     function remove_shades_if_lost_focus()

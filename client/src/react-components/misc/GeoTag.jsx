@@ -26,7 +26,7 @@ export function GeoTag(props = {})
 
     return <div className="GeoTag" title={props.place}>
                 <a href={GeoTag.map_link_from_string(props.place)} target="_blank" rel="noopener noreferrer">
-                    <i className="fas fa-map-marker-alt"></i>
+                    <i className="fas fa-map-marker-alt"/>
                 </a>
            </div>
 }

@@ -34,7 +34,7 @@ export function QueryObservationDate(props = {})
 
     return <div className="Dialog QueryObservationDate">
                <div className="title">
-                   <i className="fas fa-clock"></i> Aseta havainnon päivämäärä
+                   <i className="fas fa-clock"/> Aseta havainnon päivämäärä
                </div>
                <div className="form">
                     <BirdThumbnail bird={props.observation.bird}/>

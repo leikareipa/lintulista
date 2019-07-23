@@ -11,6 +11,5 @@ export function BirdSearchField(props = {})
                   autoComplete="off"
                   onBlur={props.onBlur}
                   onFocus={props.onFocus}
-                  onChange={props.onChange}>
-           </input>
+                  onChange={props.onChange}/>
 }

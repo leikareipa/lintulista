@@ -52,7 +52,7 @@ export function Scroller(props = {})
                 onMouseDown={()=>setMouseDown(true)}
                 onMouseUp={()=>setMouseDown(false)}
                 onMouseLeave={()=>setMouseDown(false)}>
-                    <i className={props.icon}></i>
+                    <i className={props.icon}/>
            </div>
 
     function start_firing_loop()
