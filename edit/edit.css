@@ -38,10 +38,7 @@ body
     align-items: center;
     font-size: 110%;
 
-    -o-user-select: none;
     -moz-user-select: -moz-none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
     user-select: none;
 
     transition: all 0.04s ease-in-out;
@@ -261,9 +258,9 @@ body
 
 .Dialog > .button-bar
 {
-    width: 205px;
+    width: 200px;
     position: absolute;
-    bottom: -87px;
+    bottom: -73px;
     right: 0;
     display: flex;
 }
@@ -271,13 +268,20 @@ body
 .Dialog > .button-bar > *
 {
     user-select: none;
-    margin: 7px;
+    -moz-user-select: none;
+
+    margin: 5px;
     padding: 0px;
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
-    font-size: 90%;
+    font-size: 95%;
     color: #f6f6f6;
     cursor: pointer;
     flex: 1;
+}
+
+.Dialog > .button-bar > *:hover
+{
+    color: white
 }
 
 .Dialog > .button-bar > *:active
@@ -404,7 +408,6 @@ body
 {
     user-select: none;
     -moz-user-select: none;
-    -webkit-user-select: none;
 }
 
 .ScrollerLabel .Scroller
