@@ -6,6 +6,7 @@
 
 "use strict";
 
+import {render_observation_place_prompt, unrender_observation_place_prompt} from "../../render/render-observation-place-prompt.js";
 import {render_observation_date_prompt, unrender_observation_date_prompt} from "../../render/render-observation-date-prompt.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
@@ -37,8 +38,8 @@ export function ObservationListElement(props = {})
         },
         {
             icon: "fas fa-map-marked-alt",
-            title: "Merkitse havainnon paikka",
-            titleWhenClicked: "Merkitään havainnon paikkaa",
+            title: "Aseta havainnon sijainti",
+            titleWhenClicked: "Merkitään havainnon sijaintia",
             task: button_change_observation_place,
         },
         {
@@ -121,10 +122,11 @@ export function ObservationListElement(props = {})
         setKeepButtonBarVisible(true);
         resetButtonState();
 
-        // Prompt the user to enter a new place.
-        await props.shades.put_on();
-        /* TODO*/
-        const newPlace = prompt("Enter a place name");
+        /// Prompt the user to enter a new place.
+        await props.shades.put_on({onClick: unrender_observation_place_prompt});
+        const newPlace = await render_observation_place_prompt(observationData);
+
+        await(1000);
 
         // Send the new place to the server.
         resetButtonState("waiting");

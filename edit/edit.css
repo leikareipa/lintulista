@@ -225,23 +225,10 @@ body
     text-decoration: none;
 }
 
-.ObservationDatePrompt .GeoTag
+.ObservationDatePrompt,
+.ObservationPlacePrompt
 {
-    padding-left: 0;
-    margin-left: auto;
-    transform: translateY(0px);
-    font-size: 105%;
-    color: rgb(224, 56, 0);
-    left: 87px;
-    top: 63px;
-    position: absolute;
-    font-size: 200%;
-    z-index: 10; /* Above the bird thumbnail image.*/
-}
-
-.ObservationDatePrompt
-{
-    width: 400px;
+    min-width: 400px;
     padding-top: 0px;
     padding-bottom: 1px;
     background-color: #f2f2f2;
@@ -251,11 +238,27 @@ body
     z-index: 200;
     box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 
+    /* Temp hack. Fixes the background border showing through the title's corners.*/
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+
     /* Center in the viewport.*/
     position: fixed;
     transform: translateX(-50%);
     top: 5%;
     left: 50%;
+}
+
+.ObservationPlacePrompt
+{
+    min-width: 470px;
+    padding-bottom: 2px;
+}
+
+.ObservationPlacePrompt input
+{
+    padding-left: 10px;
+    padding-right: 10px
 }
 
 .ObservationDatePrompt .date-bar
@@ -294,15 +297,16 @@ body
     border-bottom-right-radius: inherit;
 }
 
-.ObservationDatePrompt .title
+.ObservationDatePrompt .title,
+.ObservationPlacePrompt .title
 {
     text-align: left;
     padding: 18px;
     color: white;
     border-radius: 0;
     background-color:rgb(159, 183, 189);
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
 .ObservationDatePrompt .ScrollerLabel
@@ -310,7 +314,8 @@ body
     text-align: center;
 }
 
-.ObservationDatePrompt .BirdThumbnail
+.ObservationDatePrompt .BirdThumbnail,
+.ObservationPlacePrompt .BirdThumbnail
 {
     width: 100px;
     height: 100px;
@@ -318,7 +323,8 @@ body
     border-radius: 50%;
 }
 
-.ObservationDatePrompt .form
+.ObservationDatePrompt .form,
+.ObservationPlacePrompt .form
 {
     padding: 15px;
     padding-top: 18px;
@@ -328,15 +334,82 @@ body
     display: flex;
 }
 
-.ObservationDatePrompt .fields
+.ObservationDatePrompt .fields,
+.ObservationPlacePrompt .fields
 {
     flex: 1;
+}
+
+.ObservationPlacePrompt .fields
+{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 
 .ObservationDatePrompt .bird-name
 {
     color: black;
     text-align: left;
+}
+
+.ObservationPlacePrompt .bird-name
+{
+    color: black;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.ObservationPlacePrompt input
+{
+    border: 1px solid rgb(159, 183, 189);
+    border-radius: 3px;
+    padding-left: 42px; /* Make room for the embedded GeoTag.*/
+}
+
+.ObservationPlacePrompt .toolbar
+{
+    display: flex;
+    margin-top: 4px;
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: left;
+}
+
+.ObservationPlacePrompt .map-link
+{
+    font-size: 175%;
+    position: absolute;
+    left: 150px;
+    bottom: 44px;
+    display: inline-block;
+}
+
+.ObservationPlacePrompt .map-link a
+{
+    color: rgb(127, 179, 192);
+    text-decoration: none;
+}
+
+.ObservationPlacePrompt .map-link a.disabled
+{
+    color: rgb(191, 191, 191);
+}
+
+.ObservationPlacePrompt .toolbar > *
+{
+    flex: grow;
+}
+
+.ObservationPlacePrompt .toolbar > *:last-child
+{
+    margin-left: auto;
+    margin-right: 4px;
+}
+
+.ObservationPlacePrompt .place-name
+{
+    flex: 1;
 }
 
 .ScrollerLabel
