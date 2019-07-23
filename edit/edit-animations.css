@@ -11,7 +11,7 @@
     animation-name: animation-jump-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.25s;
+    animation-duration: 0.27s;
 }
 
 .animation-fadeout
@@ -32,7 +32,7 @@
 @keyframes animation-jump-frames
 {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-3px); }
+    50% { transform: translateY(-4px); }
     100% { transform: translateY(0px); }
 }
 
