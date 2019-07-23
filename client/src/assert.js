@@ -6,10 +6,23 @@
 
 "use strict";
 
+import {shades} from "./shades.js"
+
 export function panic(errorMessage = "")
 {
-    alert(`Lintulista: ${errorMessage}`);
-    throw Error(`Lintulista: ${errorMessage}`);
+    // Draw a black screen over the entire page, blocking user interaction.
+    const blackScreen = shades(
+    {
+        container: document.body,
+        opacity: 1,
+        onClick: ()=>{},
+        z: 1000, // Should be above everything else on the page.
+    });
+
+    blackScreen.put_on();
+
+    alert(`Lintulista is in panic: ${errorMessage}`);
+    throw Error(`Lintulista is in panic: ${errorMessage}`);
 }
 
 export function panic_if_undefined(...properties)
@@ -18,7 +31,7 @@ export function panic_if_undefined(...properties)
     {
         if (typeof property === "undefined")
         {
-            panic("Panic! A required property is undefined.");
+            panic("A required property is undefined.");
         }
     });
 }
@@ -29,7 +42,7 @@ export function panic_if_not_type(typeName, ...properties)
     {
         if (typeof property !== typeName)
         {
-            panic(`Panic! A property is of the wrong type; expected a ${typeName}.`);
+            panic(`A property is of the wrong type; expected a ${typeName}.`);
         }
     });
 }
