@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, error, warn, panic} from "../../assert.js";
+import {error, warn, panic, panic_if_not_type} from "../../assert.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -76,7 +76,7 @@ export function AsyncIconButton(props = {})
 
     function set_button_state(newState)
     {
-        panic_if_undefined(newState);
+        panic_if_not_type("string", newState);
 
         if (!props.task && (newState === "enabled"))
         {
@@ -106,7 +106,7 @@ export function AsyncIconButton(props = {})
                 setCurrentTitle(props.title);
                 break;
             }
-            default: error("Unknown state.");
+            default: error("Unknown button state.");
         }
     }
 }

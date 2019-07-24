@@ -252,7 +252,7 @@ body
 {
     width: 200px;
     position: absolute;
-    bottom: -69px;
+    bottom: -70px;
     right: 0;
     display: flex;
 }
@@ -265,7 +265,7 @@ body
     margin: 5px;
     padding: 0px;
     font-size: 95%;
-    color: #f6f6f6;
+    color: #f2f2f2;
     cursor: pointer;
     flex: 1;
 }
@@ -355,7 +355,7 @@ body
 
 .Dialog.QueryObservationPlace > .form > .fields input
 {
-    border: 1px solid rgb(159, 183, 189);
+    border: 1px solid rgb(180, 184, 134);
     border-radius: 3px;
     padding-left: 43px; /* Make room for the embedded GeoTag.*/
     outline: none;
@@ -387,7 +387,6 @@ body
     margin-right: 4px;
     margin-top: 4px;
     font-size: 80%;
-    color: rgba(0, 0, 0, 0.4);
 }
 
 .Dialog.QueryObservationPlace > .form > .fields > .place-name

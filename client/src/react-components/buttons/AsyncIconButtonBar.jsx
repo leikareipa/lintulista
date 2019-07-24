@@ -57,7 +57,7 @@ export function AsyncIconButtonBar(props = {})
                                 titleWhenClicked={button.titleWhenClicked}/>
     });
 
-    return  <div className="AsyncIconButtonBar" style={{transform:(props.visible? "translateY(-2px)" : "translateY(18px)"),
+    return  <div className="AsyncIconButtonBar" style={{transform:(props.visible? "translateY(-2px)" : "translateY(8px)"),
                                                         opacity:(props.visible? "1" : "0"),
                                                         visibility:(props.visible? "visible" : "hidden")}}>
                 {elements}

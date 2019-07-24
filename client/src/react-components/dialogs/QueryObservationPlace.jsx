@@ -61,7 +61,7 @@ export function QueryObservationPlace(props = {})
                        </a>
                    </div>
                    <div className="character-count">
-                       {placeString.length}/{maxPlacenameLength} merkkiä
+                       {maxPlacenameLength - placeString.length} merkkiä jäljellä
                    </div>
                </div>
            </Dialog>
@@ -78,7 +78,7 @@ export function QueryObservationPlace(props = {})
 
 QueryObservationPlace.validateProps = function(props)
 {
-    panic_if_undefined(props, props.onDialogAccept, props.onDialogReject);
+    panic_if_undefined(props);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;

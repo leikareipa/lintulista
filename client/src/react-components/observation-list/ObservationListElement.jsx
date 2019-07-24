@@ -6,8 +6,8 @@
 
 "use strict";
 
-import {render_observation_date_prompt, unrender_observation_date_prompt} from "../../render/render-observation-date-prompt.js";
 import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
+import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
 import {ObservationInfo} from "../misc/ObservationInfo.js";
@@ -66,7 +66,7 @@ export function ObservationListElement(props = {})
                 <ObservationInfo observation={observationData}
                                  setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
                 <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
-                                    buttons={buttonBarButtons} />
+                                    buttons={buttonBarButtons}/>
             </div>
 
     // When a button is pressed to delete the observation. Will requests the backend to
@@ -92,27 +92,36 @@ export function ObservationListElement(props = {})
         resetButtonState();
 
         // Prompt the user to enter a new date.
-        await props.shades.put_on({onClick: unrender_observation_date_prompt});
-        const newDate = await render_observation_date_prompt(observationData);
-
-        // Send the new date to the server.
-        resetButtonState("waiting");
-        const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
-
-        if (!updatedObservation)
+        await props.shades.put_on();
+        const newDate = await open_dialog(QueryObservationDate,
         {
-            panic("Failed to update the date of an observation.");
-        }
-        else
-        {
-            await delay(1500);
-            setObservationData(updatedObservation);
-            animation.pulseDateElement();
-        }
-
-        resetButtonState("enabled");
-        setKeepButtonBarVisible(false);
+            observation: observationData,
+        });
         await props.shades.pull_off();
+
+        // Send the new place to the server.
+        if (newDate !== null)
+        {
+            resetButtonState("waiting");
+            
+            const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
+
+            if (updatedObservation)
+            {
+                await delay(1500);
+                
+                setObservationData(updatedObservation);
+                animation.pulseDateElement();
+            }
+            else
+            {
+                panic("Failed to update the date of an observation.");
+            }
+
+            resetButtonState("enabled");
+        }
+
+        setKeepButtonBarVisible(false); /// FIXME: Should hide the button bar only is the cursor isn't hovering over it at this point.
     }
 
     // When a button is pressed to change the observation's place. Will prompt the user to
@@ -129,6 +138,7 @@ export function ObservationListElement(props = {})
         {
             observation: observationData,
         });
+        await props.shades.pull_off();
 
         // Send the new place to the server.
         if (newPlace !== null)
@@ -137,22 +147,22 @@ export function ObservationListElement(props = {})
             
             const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
 
-            if (!updatedObservation)
+            if (updatedObservation)
             {
-                panic("Failed to update the place of an observation.");
+                await delay(1500);
+                
+                setObservationData(updatedObservation);
+                animation.pulseGeoTagElement();
             }
             else
             {
-                await delay(1500);
-                setObservationData(updatedObservation);
-                animation.pulseGeoTagElement();
+                panic("Failed to update the place of an observation.");
             }
 
             resetButtonState("enabled");
         }
 
-        setKeepButtonBarVisible(false);
-        await props.shades.pull_off();
+        setKeepButtonBarVisible(false); /// FIXME: Should hide the button bar only is the cursor isn't hovering over it at this point.
     }
 }
 
