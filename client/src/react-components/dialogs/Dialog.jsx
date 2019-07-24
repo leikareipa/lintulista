@@ -6,6 +6,7 @@
 
 "use strict";
 
+import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {panic_if_not_type} from "../../assert.js";
 
 // A base for dialog elements. Displays a title bar with an icon text, and embeds the provided
@@ -59,10 +60,12 @@ export function Dialog(props = {})
                    {props.children}
                </div>
                <div className="button-bar">
-                   <div className="accept" onClick={props.onDialogAccept}>
-                       <i className="fas fa-check fa-2x"/>
-                       <br/>Tallenna
-                   </div>
+                   <AsyncIconButton className="accept"
+                                    task={props.onDialogAccept}
+                                    icon="fas fa-check fa-2x"
+                                    printTitle="1"
+                                    title="Tallenna"
+                                    titleWhenClicked="Tallennetaan..."/>
                    <div className="reject" onClick={props.onDialogReject}>
                        <i className="fas fa-times fa-2x"/>
                        <br/>Peruuta

@@ -94,6 +94,7 @@ body
 
 .ObservationListElement
 {
+    position: relative;
     color: black;
     background-color: #f0f0f0;
     padding: 20px;
@@ -173,7 +174,7 @@ body
     transition: all 0.2s ease-in-out;
 }
 
-.AsyncIconButton
+.ObservationListElement .AsyncIconButton
 {
     color: rgb(180, 184, 134);
     cursor: pointer;
@@ -183,17 +184,17 @@ body
     width: 20px;
 }
 
-.AsyncIconButton.enabled:active
+.ObservationListElement .AsyncIconButton.enabled:active
 {
     transform: translateY(2px);
 }
 
-.AsyncIconButton.enabled:hover
+.ObservationListElement .AsyncIconButton.enabled:hover
 {
     color: rgb(161, 167, 104);
 }
 
-.AsyncIconButton.disabled
+.ObservationListElement .AsyncIconButton.disabled
 {
     color: rgba(0, 0, 0, 0.2);
     cursor: auto;
@@ -246,6 +247,9 @@ body
     background-color:rgb(180, 184, 134);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+
+    user-select: none;
+    -moz-user-select: none;
 }
 
 .Dialog > .button-bar
@@ -277,8 +281,7 @@ body
 
 .Dialog > .button-bar > *:active
 {
-    filter: drop-shadow(0 0px 2px rgba(0, 0, 0, 0.3));
-    transform: translateY(2px);
+    transform: translateY(1px);
 }
 
 .Dialog > .form
@@ -408,10 +411,10 @@ body
 
 .ScrollerLabel .Scroller:hover
 {
-    color: rgb(180, 184, 134);
+    color: rgb(163, 168, 109);
 }
 
 .ScrollerLabel .Scroller:active
 {
-    color: rgb(180, 184, 134);
+    color: rgb(163, 168, 109);
 }

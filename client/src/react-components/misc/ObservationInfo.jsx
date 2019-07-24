@@ -45,7 +45,7 @@ export function ObservationInfo(props = {})
             animate(animation.ref.current, animation.animationName, (animation.callback || (()=>{})));
             queueAnimation(null);
         }
-    }, [animation])
+    }, [animation]);
 
     props.setAnimationCallbacks(
     {

@@ -44,7 +44,6 @@ export function QueryObservationPlace(props = {})
                    </div>
                    <input className="place-name"
                           type="text"
-                          onKeyPress={(event)=>{if (event.key === "Enter") close_dialog(true)}}
                           onChange={(event)=>setPlaceString(event.target.value)}
                           value={placeString? placeString : ""}
                           placeholder="Esim. Lauttasaari, Helsinki"

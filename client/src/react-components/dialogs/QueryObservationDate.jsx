@@ -32,7 +32,7 @@ export function QueryObservationDate(props = {})
     let year = props.observation.date.getFullYear();
 
     return <Dialog component="QueryObservationDate"
-                   title="Merkitse havainnon päiväys"
+                   title="Merkitse havainnon päivämäärä"
                    titleIcon="fas fa-clock"
                    onDialogAccept={()=>close_dialog(true)}
                    onDialogReject={()=>close_dialog(false)}>

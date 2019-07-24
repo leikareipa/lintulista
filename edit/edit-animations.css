@@ -18,8 +18,32 @@
 {
     animation-name: animation-fadeout-frames;
     animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: linear;
     animation-duration: 0.25s;
+}
+
+.animation-spin
+{
+    animation-name: animation-spin-frames;
+    animation-iteration-count: 100;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+}
+
+.animation-flip
+{
+    animation-name: animation-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 1s;
+}
+
+.animation-jumping
+{
+    animation-name: animation-jump-frames;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.45s;
 }
 
 @keyframes animation-bulge-frames
@@ -40,4 +64,16 @@
 {
     0% { opacity: inherit; }
     100% { opacity: 0; }
+}
+
+@keyframes animation-spin-frames
+{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
+}
+
+@keyframes animation-flip-frames
+{
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(359deg); }
 }
