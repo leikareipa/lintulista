@@ -41,6 +41,16 @@ export function AsyncIconButton(props = {})
     const [currentIcon, setCurrentIcon] = React.useState(props.icon);
     const [currentTitle, setCurrentTitle] = React.useState(props.title);
 
+    // Font Awesome allows the user to customize an icon's relative size via extra class
+    // name options; e.g. "fa-2x" for 200% icon size. Let's make note of any such options
+    // that may be provided in the given icon's class name string, so we can reproduce
+    // them for its spinner, later.
+    const iconSize = (()=>
+    {
+        const sizeStrings = props.icon.match(/fa-([0-9]+x|xs|sm|lg)/g);
+        return (sizeStrings? sizeStrings.join(" ") : "");
+    })();
+
     // Possible states:
     //   "enabled" = the button can be clicked
     //   "disabled" = the button can't be interacted with
@@ -95,7 +105,7 @@ export function AsyncIconButton(props = {})
             case "waiting":
             {
                 setCurrentState("waiting");
-                setCurrentIcon("fas fa-spinner fa-spin");
+                setCurrentIcon(`fas fa-spinner fa-spin ${iconSize}`.trim());
                 setCurrentTitle(props.titleWhenClicked);
                 break;
             }
@@ -115,7 +125,7 @@ AsyncIconButton.defaultProps =
 {
     title: null,
     titleClicked: null,
-    symbol: "fas fa-question",
+    icon: "fas fa-question",
 }
 
 AsyncIconButton.validate_props = function(props)
