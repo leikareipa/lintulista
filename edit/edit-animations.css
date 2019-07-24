@@ -11,7 +11,7 @@
     animation-name: animation-jump-frames;
     animation-iteration-count: 2;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.27s;
+    animation-duration: 0.26s;
 }
 
 .animation-fadeout

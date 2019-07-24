@@ -1,7 +1,7 @@
 body
 {
-    background-color: #d3d3d3;
-    color: lightgray;
+    background-color: #b9b9b9;
+    color: white;
     text-align: center;
 }
 
@@ -12,7 +12,8 @@ body
 
 .BirdSearchField
 {
-    width: 400px;
+    width: 350px;
+    height: 40px;
     outline: none;
     background-color: #eaeaea;
     position: relative;
@@ -28,7 +29,7 @@ body
 
 .BirdSearchResultElement
 {
-    width: 370px; /* Width of the parent container minus padding.*/
+    width: 320px; /* Width of the parent container minus padding.*/
     color: black;
     background-color: #f2f2f2;
     padding: 15px;
@@ -38,7 +39,7 @@ body
     align-items: center;
     font-size: 110%;
 
-    -moz-user-select: -moz-none;
+    -moz-user-select: none;
     user-select: none;
 
     transition: all 0.04s ease-in-out;
@@ -89,7 +90,7 @@ body
 .ObservationList
 {
     display: inline-block;
-    width: 560px;
+    width: 520px;
 }
 
 .ObservationListElement
@@ -99,8 +100,8 @@ body
     background-color: #f0f0f0;
     padding: 20px;
     padding-left: 15px;
-    padding-top: 12px;
-    padding-bottom: 13px;
+    padding-top: 11px;
+    padding-bottom: 11px;
     display: flex;
     align-items: center;
     margin-top: 0px;
@@ -135,22 +136,24 @@ body
     height: 70px;
     margin-right: 14px;
     border-radius: 50%;
+    box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.55);
 }
 
 .ObservationInfo
 {
+    height: 70px; /* Match the height of the bird thumbnail.*/
     line-height: 137%;
     display: inline-block;
     text-align: left;
     padding-left: 15px;
-    width: 270px;
-    border-left: 5px dotted rgba(187, 189, 159, 0.8);
+    border-left: 5px dotted rgba(0, 0, 0, 0.2);
 }
 
 .ObservationInfo .title
 {
     font-size: 110%;
     display: inline-block;
+    margin-bottom: 1px;
 }
 
 .ObservationInfo .date
@@ -165,20 +168,31 @@ body
     color: rgba(0, 0, 0, 0.55);
 }
 
+.AsyncIconButtonBar > .buttons
+{
+    display: flex;
+    padding-left: 7px;
+    border-radius: 8px;
+}
+
+.AsyncIconButtonBar > .buttons > *
+{
+    flex: 1;
+}
+
 .ObservationListElement .AsyncIconButtonBar
 {
-    margin-left: auto;
-    display: flex;
-    margin-right: 15px;
     font-size: 100%;
     transition: all 0.2s ease-in-out;
+    position: absolute;
+    right: 30px;
+    font-size: 110%;
 }
 
 .ObservationListElement .AsyncIconButton
 {
-    color: rgb(180, 184, 134);
+    color: rgba(53, 145, 231, 0.5);
     cursor: pointer;
-    font-size: 110%;
     padding: 5px;
     margin: 5px;
     width: 20px;
@@ -191,7 +205,7 @@ body
 
 .ObservationListElement .AsyncIconButton.enabled:hover
 {
-    color: rgb(161, 167, 104);
+    color: rgb(53, 145, 231);
 }
 
 .ObservationListElement .AsyncIconButton.disabled
@@ -204,7 +218,7 @@ body
 {
     display: inline-block;
     transform: translateY(-3px);
-    color: rgba(184, 134, 134, 0.8);
+    color: rgba(0, 0, 0, 0.25);
     padding-left: 6px;
     font-size: 100%;
 }
@@ -226,6 +240,7 @@ body
     display: inline-block;
     color: black;
     z-index: 200;
+    box-shadow: 0 6px 10px -7px rgba(0, 0, 0, 0.55);
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -241,10 +256,10 @@ body
 .Dialog > .title
 {
     text-align: left;
-    padding: 18px;
+    padding: 23px;
     color: white;
     border-radius: 0;
-    background-color:rgb(180, 184, 134);
+    background-color:rgb(53, 145, 231);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 
@@ -256,7 +271,7 @@ body
 {
     width: 200px;
     position: absolute;
-    bottom: -70px;
+    bottom: -75px;
     right: 0;
     display: flex;
 }
@@ -272,16 +287,24 @@ body
     color: #f2f2f2;
     cursor: pointer;
     flex: 1;
+
+    transition: transform 0.025s ease-in-out;
 }
 
 .Dialog > .button-bar > *:hover
 {
-    color: white
+    color: white;
 }
 
-.Dialog > .button-bar > *:active
+.Dialog > .button-bar > *.disabled
 {
-    transform: translateY(1px);
+    color: rgb(168, 168, 168);
+    cursor: inherit;
+}
+
+.Dialog > .button-bar > *.waiting
+{
+    color: white;
 }
 
 .Dialog > .form
@@ -358,7 +381,7 @@ body
 
 .Dialog.QueryObservationPlace > .form > .fields input
 {
-    border: 1px solid rgb(180, 184, 134);
+    border: 1px solid rgba(53, 145, 231, 0.8);
     border-radius: 3px;
     padding-left: 43px; /* Make room for the embedded GeoTag.*/
     outline: none;
@@ -375,7 +398,7 @@ body
 
 .Dialog.QueryObservationPlace > .form > .fields .map-link a
 {
-    color: rgba(184, 134, 134, 1);
+    color: rgba(53, 145, 231, 0.8);
     text-decoration: none;
 }
 
@@ -411,10 +434,10 @@ body
 
 .ScrollerLabel .Scroller:hover
 {
-    color: rgb(163, 168, 109);
+    color: rgba(53, 145, 231, 0.8);
 }
 
 .ScrollerLabel .Scroller:active
 {
-    color: rgb(163, 168, 109);
+    color: rgb(53, 145, 231);
 }

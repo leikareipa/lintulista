@@ -62,6 +62,7 @@ export function ObservationListElement(props = {})
 
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
+                <i className="fas fa-unlock-alt fa-sm" style={{color:"rgba(53, 145, 231, 0.5)", position:"absolute", right:"20px",top:"40px"}}/>
                 <BirdThumbnail bird={observationData.bird}/>
                 <ObservationInfo observation={observationData}
                                  setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>

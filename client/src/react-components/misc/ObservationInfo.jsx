@@ -60,13 +60,13 @@ export function ObservationInfo(props = {})
                        <GeoTag place={props.observation.place}/>
                    </div>
                </div>
-               <div className="date" ref={refs.date}>
-                   {props.observation.dateString}
-               </div>
                <div className="classification">
                    {props.observation.bird.order}
-                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", margin:"6px"}}/>
+                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", marginLeft:"6px", marginRight:"6px"}}/>
                    {props.observation.bird.family}
+               </div>
+               <div className="date" ref={refs.date}>
+                   {props.observation.dateString}
                </div>
            </div>
 }

@@ -33,7 +33,7 @@ export function QueryObservationPlace(props = {})
     const maxPlacenameLength = 60;
 
     return <Dialog component="QueryObservationPlace"
-                   title="Merkitse havainnon sijainti"
+                   title="Aseta havainnon sijainti"
                    titleIcon="fas fa-map-marker-alt"
                    onDialogAccept={()=>close_dialog(true)}
                    onDialogReject={()=>close_dialog(false)}>

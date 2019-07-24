@@ -6,8 +6,8 @@
 
 "use strict";
 
-import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {panic_if_not_type} from "../../assert.js";
+import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 
 // A base for dialog elements. Displays a title bar with an icon text, and embeds the provided
 // child elements into a <div class="form"> container following the title.
@@ -52,7 +52,12 @@ export function Dialog(props = {})
 {
     Dialog.validateProps(props);
 
-    return <div className={`Dialog ${props.component}`}>
+    const ref = React.useRef();
+
+    const [acceptDisabled, setAcceptDisabled] = React.useState(false);
+    const [rejectDisabled, setRejectDisabled] = React.useState(false);
+
+    return <div className={`Dialog ${props.component}`} ref={ref}>
                <div className="title">
                    <i className={props.titleIcon}/> {props.title}
                </div>
@@ -60,15 +65,22 @@ export function Dialog(props = {})
                    {props.children}
                </div>
                <div className="button-bar">
-                   <AsyncIconButton className="accept"
-                                    task={props.onDialogAccept}
+                   <AsyncIconButton className={`accept ${acceptDisabled? "disabled" : ""}`.trim()}
+                                    task={acceptDisabled? null : (returnData)=>{
+                                        setRejectDisabled(true);
+                                        props.onDialogAccept(returnData);
+                                    }}
                                     icon="fas fa-check fa-2x"
                                     printTitle="1"
                                     title="Tallenna"
                                     titleWhenClicked="Tallennetaan..."/>
-                   <div className="reject" onClick={props.onDialogReject}>
-                       <i className="fas fa-times fa-2x"/>
-                       <br/>Peruuta
+                   <div className={`reject ${rejectDisabled? "disabled" : ""}`.trim()}
+                        onClick={rejectDisabled? null : ()=>{
+                            setAcceptDisabled(true);
+                            props.onDialogReject();
+                        }}>
+                            <i className="fas fa-times fa-2x"/>
+                            <br/>Peruuta
                    </div>
                </div>
            </div>

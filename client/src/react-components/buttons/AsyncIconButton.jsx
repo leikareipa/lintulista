@@ -62,7 +62,7 @@ export function AsyncIconButton(props = {})
     
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={click_handler}
-                 title={currentTitle}
+                 title={props.printTitle? "" : currentTitle}
                  style={{[props.color? "color" : "ignoreThisPropertyValue"]:props.color}}>
                      <i className={currentIcon}/>
                      {props.printTitle? <><br/>{props.title}</> : <></>}

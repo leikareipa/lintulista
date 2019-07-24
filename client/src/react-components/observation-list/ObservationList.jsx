@@ -17,7 +17,9 @@ export function ObservationList(props = {})
     const [observationElements, setObservationElements] = React.useState(generate_observation_elements());
 
     return <div className="ObservationList">
-               {observationElements}
+               <div className="elements">
+                   {observationElements}
+               </div>
            </div>
 
     function generate_observation_elements()
