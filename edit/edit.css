@@ -142,8 +142,8 @@ body
     display: inline-block;
     text-align: left;
     padding-left: 15px;
-    width: 290px;
-    border-left: 5px dotted rgb(159, 183, 189);
+    width: 270px;
+    border-left: 5px dotted rgba(187, 189, 159, 0.8);
 }
 
 .ObservationInfo .title
@@ -168,14 +168,14 @@ body
 {
     margin-left: auto;
     display: flex;
-    margin-right: 7px;
+    margin-right: 15px;
     font-size: 100%;
     transition: all 0.2s ease-in-out;
 }
 
 .AsyncIconButton
 {
-    color: rgb(127, 179, 192);
+    color: rgb(180, 184, 134);
     cursor: pointer;
     font-size: 110%;
     padding: 5px;
@@ -188,11 +188,9 @@ body
     transform: translateY(2px);
 }
 
-.AsyncIconButton.waiting
+.AsyncIconButton.enabled:hover
 {
-    color: white;
-    z-index: 200; /* Lift the button above any shades.*/
-    cursor: auto;
+    color: rgb(161, 167, 104);
 }
 
 .AsyncIconButton.disabled
@@ -201,16 +199,11 @@ body
     cursor: auto;
 }
 
-.AsyncIconButton:hover
-{
-    color: rgb(84, 168, 189);
-}
-
 .GeoTag
 {
     display: inline-block;
     transform: translateY(-3px);
-    color: rgb(127, 179, 192);
+    color: rgba(184, 134, 134, 0.8);
     padding-left: 6px;
     font-size: 100%;
 }
@@ -232,7 +225,6 @@ body
     display: inline-block;
     color: black;
     z-index: 200;
-    box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -251,7 +243,7 @@ body
     padding: 18px;
     color: white;
     border-radius: 0;
-    background-color:rgb(159, 183, 189);
+    background-color:rgb(180, 184, 134);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
@@ -260,7 +252,7 @@ body
 {
     width: 200px;
     position: absolute;
-    bottom: -73px;
+    bottom: -69px;
     right: 0;
     display: flex;
 }
@@ -272,7 +264,6 @@ body
 
     margin: 5px;
     padding: 0px;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
     font-size: 95%;
     color: #f6f6f6;
     cursor: pointer;
@@ -381,7 +372,7 @@ body
 
 .Dialog.QueryObservationPlace > .form > .fields .map-link a
 {
-    color: rgb(127, 179, 192);
+    color: rgba(184, 134, 134, 1);
     text-decoration: none;
 }
 
@@ -418,10 +409,10 @@ body
 
 .ScrollerLabel .Scroller:hover
 {
-    color: rgb(84, 168, 189);
+    color: rgb(180, 184, 134);
 }
 
 .ScrollerLabel .Scroller:active
 {
-    color: rgb(84, 168, 189);
+    color: rgb(180, 184, 134);
 }
