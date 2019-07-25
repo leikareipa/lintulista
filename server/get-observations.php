@@ -9,16 +9,17 @@
  * 
  */
 
+include "return.php";
 include "list-id.php";
 
 if (!isset($_GET["list"]))
 {
-    exit(failure("Missing the required \"list\" parameter."));
+    exit(return_failure("Missing the required \"list\" parameter."));
 }
 
 if (!is_valid_list_id($_GET["list"]))
 {
-    exit(failure("Invalid \"list\" parameter."));
+    exit(return_failure("Invalid \"list\" parameter."));
 }
 
 $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
@@ -27,12 +28,12 @@ $observationData = json_decode(file_get_contents($baseFilePath . "observations.j
 
 if (!$observationData)
 {
-    exit(failure("Server-side IO failure. Could not read the list of observations."));
+    exit(return_failure("Server-side IO failure. Could not read the list of observations."));
 }
 
 if (!isset($observationData["observations"]))
 {
-    exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
+    exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
 }
 
 // Pick out the relevant properties to be returned.
@@ -41,12 +42,12 @@ foreach ($observationData["observations"] as $observation)
 {
     if (!isset($observation["species"]))
     {
-        exit(failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
+        exit(return_failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
     }
 
     if (!isset($observation["timestamp"]))
     {
-        exit(failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
+        exit(return_failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
     }
 
     // Note: The 'place' property is optional and doesn't need to be checked for.
@@ -56,16 +57,6 @@ foreach ($observationData["observations"] as $observation)
                      "place"=>(isset($observation["place"])? $observation["place"] : null)];
 }
 
-exit(success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
-
-function success($data)
-{
-    echo json_encode(["valid"=>true, "data"=>$data], JSON_UNESCAPED_UNICODE);
-}
-
-function failure($errorMessage = "")
-{
-    echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
-}
+exit(return_success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
 
 ?>

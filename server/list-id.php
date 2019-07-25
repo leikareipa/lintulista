@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *
+ * 2019 Tarpeeksi Hyvae Soft /
+ * Lintulista
+ * 
+ */
+
 function is_valid_list_id(string $id)
 {
     return (strlen($id) >= 10 &&

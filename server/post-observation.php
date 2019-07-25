@@ -19,6 +19,7 @@
  * 
  */
 
+include "return.php";
 include "list-id.php";
 
 $newObservation = json_decode(file_get_contents("php://input"), true);
@@ -27,12 +28,12 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 {
     if (!isset($_GET["list"]))
     {
-        exit(failure("Missing the required \"list\" parameter."));
+        exit(return_failure("Missing the required \"list\" parameter."));
     }
 
     if (!is_valid_list_id($_GET["list"]))
     {
-        exit(failure("Invalid \"list\" parameter."));
+        exit(return_failure("Invalid \"list\" parameter."));
     }
 }
 
@@ -40,12 +41,12 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 {
     if (!isset($newObservation["species"]))
     {
-        exit(failure("The given observation data is missing the required \"species\" property."));
+        exit(return_failure("The given observation data is missing the required \"species\" property."));
     }
 
     if (!isset($newObservation["timestamp"]))
     {
-        exit(failure("The given observation data is missing the required \"timestamp\" property."));
+        exit(return_failure("The given observation data is missing the required \"timestamp\" property."));
     }
 
     // Note: The 'place' property is optional and doesn't need to be checked for.
@@ -59,12 +60,12 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($knownBirdsData["birds"]))
         {
-            exit(failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
+            exit(return_failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
         }
 
         if (!in_array($newObservation["species"], array_map(function($bird){return $bird["species"];}, $knownBirdsData["birds"])))
         {
-            exit(failure("The given observation is of an unrecognized bird \"" . $newObservation["species"] . "\"."));
+            exit(return_failure("The given observation is of an unrecognized bird \"" . $newObservation["species"] . "\"."));
         }
     }
 }
@@ -77,12 +78,12 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
     if (!$observationData)
     {
-        exit(failure("Server-side IO failure. Could not read the list of observations."));
+        exit(return_failure("Server-side IO failure. Could not read the list of observations."));
     }
 
     if (!isset($observationData["observations"]))
     {
-        exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
+        exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
     }
 
     // Find if an observation of this species already exists in the list.
@@ -113,16 +114,6 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
 file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
 
-exit(success());
-
-function success()
-{
-    echo json_encode(["valid"=>true], JSON_UNESCAPED_UNICODE);
-}
-
-function failure($errorMessage = "")
-{
-    echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
-}
+exit(return_success());
 
 ?>

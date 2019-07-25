@@ -301,6 +301,11 @@ body
     color: white;
 }
 
+.Dialog > .button-bar > *:active
+{
+    transform: translateY(2px);
+}
+
 .Dialog > .button-bar > *.disabled
 {
     color: rgb(168, 168, 168);

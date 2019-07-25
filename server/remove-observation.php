@@ -18,6 +18,7 @@
  * 
  */
 
+include "return.php";
 include "list-id.php";
 
 $targetObservation = json_decode(file_get_contents("php://input"), true);
@@ -26,12 +27,12 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
 {
     if (!isset($_GET["list"]))
     {
-        exit(failure("Missing the required \"list\" parameter."));
+        exit(return_failure("Missing the required \"list\" parameter."));
     }
 
     if (!is_valid_list_id($_GET["list"]))
     {
-        exit(failure("Invalid \"list\" parameter."));
+        exit(return_failure("Invalid \"list\" parameter."));
     }
 }
 
@@ -39,7 +40,7 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
 {
     if (!isset($targetObservation["species"]))
     {
-        exit(failure("The given observation data is missing the required \"species\" property."));
+        exit(return_failure("The given observation data is missing the required \"species\" property."));
     }
 }
 
@@ -51,12 +52,12 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
     if (!$observationData)
     {
-        exit(failure("Server-side IO failure. Could not read the list of observations."));
+        exit(return_failure("Server-side IO failure. Could not read the list of observations."));
     }
 
     if (!isset($observationData["observations"]))
     {
-        exit(failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
+        exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
     }
 
     // Find the observation in the list, and remove it.
@@ -74,16 +75,6 @@ $baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
 
 file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
 
-exit(success());
-
-function success()
-{
-    echo json_encode(["valid"=>true], JSON_UNESCAPED_UNICODE);
-}
-
-function failure($errorMessage = "")
-{
-    echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
-}
+exit(return_success());
 
 ?>

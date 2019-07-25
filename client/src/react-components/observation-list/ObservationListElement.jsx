@@ -40,13 +40,13 @@ export function ObservationListElement(props = {})
         },
         {
             icon: "fas fa-map-marked-alt",
-            title: "Aseta havainnon sijainti",
+            title: "Merkitse havainnon sijainti",
             titleWhenClicked: "Merkitään havainnon sijaintia",
             task: button_change_observation_place,
         },
         {
             icon: "fas fa-clock",
-            title: "Aseta havainnon päivämäärä",
+            title: "Merkitse havainnon päivämäärä",
             titleWhenClicked: "Asetetaan havainnon päivämäärää",
             task: button_change_observation_date,
         },
