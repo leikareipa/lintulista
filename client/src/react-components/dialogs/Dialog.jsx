@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {panic_if_not_type, panic, is_defined, is_function} from "../../assert.js";
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 
 // A base for dialog elements. Displays a title bar with an icon text, and embeds the provided
@@ -52,12 +52,26 @@ export function Dialog(props = {})
 {
     Dialog.validateProps(props);
 
-    const ref = React.useRef();
+    const [acceptButtonEnabled, setAcceptButtonEnabled] = React.useState(props.acceptButtonEnabled);
+    const [rejectButtonEnabled, setRejectButtonEnabled] = React.useState(props.rejectButtonEnabled);
 
-    const [acceptDisabled, setAcceptDisabled] = React.useState(false);
-    const [rejectDisabled, setRejectDisabled] = React.useState(false);
+    // Provide the caller a function with which to set the state of the accept/reject
+    // buttons, since React doesn't seem to be updating their state properly via prop
+    // changes on Dialog initialization.
+    if (is_function(props.callbackSetButtonEnabled))
+    {
+        props.callbackSetButtonEnabled((button, state)=>
+        {
+            switch (button)
+            {
+                case "accept": setAcceptButtonEnabled(state); break;
+                case "reject": setRejectButtonEnabled(state); break;
+                default: panic("Unknown button."); break;
+            }
+        });
+    }
 
-    return <div className={`Dialog ${props.component}`} ref={ref}>
+    return <div className={`Dialog ${props.component}`}>
                <div className="title">
                    <i className={props.titleIcon}/> {props.title}
                </div>
@@ -65,22 +79,24 @@ export function Dialog(props = {})
                    {props.children}
                </div>
                <div className="button-bar">
-                   <AsyncIconButton className={`accept ${acceptDisabled? "disabled" : ""}`.trim()}
-                                    task={acceptDisabled? null : (returnData)=>{
-                                        setRejectDisabled(true);
-                                        props.onDialogAccept(returnData);
-                                    }}
-                                    icon="fas fa-check fa-2x"
-                                    printTitle="1"
-                                    title="Tallenna"
-                                    titleWhenClicked="Tallennetaan..."/>
-                   <div className={`reject ${rejectDisabled? "disabled" : ""}`.trim()}
-                        onClick={rejectDisabled? null : ()=>{
-                            setAcceptDisabled(true);
+                   <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
+                       <AsyncIconButton task={(returnData)=>{
+                                            setRejectButtonEnabled(false);
+                                            props.onDialogAccept(returnData);
+                                        }}
+                                        icon={`${props.acceptButtonIcon} fa-2x`}
+                                        printTitle={true}
+                                        title={props.acceptButtonText}
+                                        titleWhenClicked="Tallennetaan..."/>
+                   </div>
+                   <div className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
+                        onClick={!rejectButtonEnabled? null : ()=>{
+                            setAcceptButtonEnabled(false);
+                            setRejectButtonEnabled(false);
                             props.onDialogReject();
                         }}>
-                            <i className="fas fa-times fa-2x"/>
-                            <br/>Peruuta
+                            <i className={`${props.rejectButtonIcon} fa-2x`}/>
+                            <br/>{props.rejectButtonText}
                    </div>
                </div>
            </div>
@@ -92,5 +108,21 @@ Dialog.validateProps = function(props)
     panic_if_not_type("string", props.component, props.titleIcon, props.title);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
 
+    if (is_defined(props.callbackSetButtonEnabled) &&
+        !is_function(props.callbackSetButtonEnabled))
+    {
+        warn("Expected callbackSetButtonEnabled to be a function.");
+    }
+
     return;
+}
+
+Dialog.defaultProps =
+{
+    acceptButtonEnabled: true,
+    rejectButtonEnabled: true,
+    acceptButtonIcon: "fas fa-check",
+    acceptButtonText: "Tallenna",
+    rejectButtonIcon: "fas fa-times",
+    rejectButtonText: "Peruuta",
 }

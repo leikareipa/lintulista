@@ -6,6 +6,7 @@
 
 "use strict";
 
+import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
@@ -62,7 +63,7 @@ export function ObservationListElement(props = {})
 
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
-                <i className="fas fa-unlock-alt fa-sm" style={{color:"rgba(53, 145, 231, 0.5)", position:"absolute", right:"20px",top:"40px"}}/>
+                <i className="fas fa-unlock-alt fa-sm" style={{color:"rgba(53, 145, 231, 0.5)", position:"absolute", right:"20px",top:"39px"}}/>
                 <BirdThumbnail bird={observationData.bird}/>
                 <ObservationInfo observation={observationData}
                                  setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
@@ -75,13 +76,27 @@ export function ObservationListElement(props = {})
     // to reset the button's state.
     async function button_remove_observation({resetButtonState})
     {
-        setKeepButtonBarVisible(true);
+        resetButtonState();
+
         await props.shades.put_on();
 
-        await delay(1300);
-        await props.requestDeleteObservation(observationData);
+        let pulseElement = false;
+        await open_modal_dialog(QueryObservationDeletion,
+        {
+            observation: observationData,
+            onAccept: async()=>
+            {
+                await delay(1500);
+                await props.requestDeleteObservation(observationData);
+            }
+        });
 
         await props.shades.pull_off();
+        if (pulseElement)
+        {
+            await delay(100);
+            animation.pulseDateElement();
+        }
     }
 
     // When a button is pressed to change the observation's date. Will prompt the user to
@@ -102,12 +117,11 @@ export function ObservationListElement(props = {})
                 // Send the new place string to the server.
                 if (newDate !== null)
                 {
+                    await delay(1500);
                     const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
 
                     if (updatedObservation)
                     {
-                        await delay(1500);
-                        
                         setObservationData(updatedObservation);
                         pulseElement = true;
                     }
@@ -145,12 +159,11 @@ export function ObservationListElement(props = {})
                 // Send the new place string to the server.
                 if (newPlace !== null)
                 {
+                    await delay(1500);
                     const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
 
                     if (updatedObservation)
                     {
-                        await delay(1500);
-                        
                         setObservationData(updatedObservation);
                         pulseElement = true;
                     }

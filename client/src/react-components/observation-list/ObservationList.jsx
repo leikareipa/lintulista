@@ -33,7 +33,8 @@ export function ObservationList(props = {})
     return <div className="ObservationList">
                <div className="sorter">
                    Listan järjestys:
-                   <select defaultValue={sortObservationsBy} onChange={(event)=>setSortObservationsBy(event.target.value)}>
+                   <select defaultValue={sortObservationsBy}
+                           onChange={(event)=>setSortObservationsBy(event.target.value)}>
                        <option value="species">Laji</option>
                        <option value="order">Lahko ja heimo</option>
                        <option value="date">Havaintopäivä (laskeva)</option>

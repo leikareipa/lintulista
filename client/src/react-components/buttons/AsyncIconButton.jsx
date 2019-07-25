@@ -58,7 +58,7 @@ export function AsyncIconButton(props = {})
     //   "enabled" = the button can be clicked
     //   "disabled" = the button can't be interacted with
     //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
-    const [currentState, setCurrentState] = React.useState(props.task? "enabled" : "disabled");
+    const [currentState, setCurrentState] = React.useState((props.task && props.enabled)? "enabled" : "disabled");
     
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={click_handler}
@@ -127,6 +127,7 @@ export function AsyncIconButton(props = {})
 
 AsyncIconButton.defaultProps =
 {
+    enabled: true,
     title: null,
     titleClicked: null,
     printTitle: false,
@@ -135,14 +136,5 @@ AsyncIconButton.defaultProps =
 
 AsyncIconButton.validate_props = function(props)
 {
-    if (!props.task)
-    {
-        warn("Encountered a button that had not been assigned a task.");
-    }
-    else if (typeof props.task !== "function")
-    {
-        panic("Expected a button's \"task\" parameter to be a function.");
-    }
-
     return;
 }
