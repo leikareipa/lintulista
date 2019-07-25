@@ -29,7 +29,7 @@ export function panic_if_undefined(...properties)
 {
     properties.forEach(property=>
     {
-        if (typeof property === "undefined")
+        if (!is_defined(property))
         {
             panic("A required property is undefined.");
         }
@@ -45,6 +45,16 @@ export function panic_if_not_type(typeName, ...properties)
             panic(`A property is of the wrong type; expected a ${typeName}.`);
         }
     });
+}
+
+export function is_function(property)
+{
+    return (typeof property === "function");
+}
+
+export function is_defined(property)
+{
+    return (typeof property !== "undefined");
 }
 
 export function error(errorMessage = "")
