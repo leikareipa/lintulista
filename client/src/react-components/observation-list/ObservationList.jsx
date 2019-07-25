@@ -109,7 +109,7 @@ export function ObservationList(props = {})
             ...existingObservation,
             place: newPlace,
         });
-
+        
         if (!(await props.backend.post_observation(modifiedObservation)))
         {
             return null;

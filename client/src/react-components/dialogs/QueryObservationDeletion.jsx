@@ -39,7 +39,7 @@ export function QueryObservationDeletion(props = {})
     return <Dialog component="QueryObservationDeletion"
                    title="Poistetaanko havainto?"
                    titleIcon="fas fa-eraser"
-                   rejectButtonText="Älä poista"
+                   rejectButtonText="Peruuta"
                    acceptButtonText="Poista"
                    acceptButtonEnabled={false}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}

@@ -62,7 +62,7 @@ export function ObservationInfo(props = {})
                </div>
                <div className="classification">
                    {props.observation.bird.order}
-                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", marginLeft:"6px", marginRight:"6px"}}/>
+                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", marginLeft:"5px", marginRight:"5px"}}/>
                    {props.observation.bird.family}
                </div>
                <div className="date" ref={refs.date}>

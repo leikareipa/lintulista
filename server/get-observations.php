@@ -9,15 +9,14 @@
  * 
  */
 
+include "list-id.php";
+
 if (!isset($_GET["list"]))
 {
     exit(failure("Missing the required \"list\" parameter."));
 }
 
-// Sanitize the list id.
-if (strlen($_GET["list"]) < 10 ||
-    strlen($_GET["list"]) > 40 ||
-    !preg_match("/^[0-9a-zA-Z]+$/", $_GET["list"]))
+if (!is_valid_list_id($_GET["list"]))
 {
     exit(failure("Invalid \"list\" parameter."));
 }
