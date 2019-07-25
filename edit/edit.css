@@ -335,6 +335,18 @@ body
     border-radius: 50%;
 }
 
+.Dialog > .form > .fields input
+{
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+}
+
+.Dialog > .form > .fields input:focus
+{
+    border: 1px solid rgba(53, 145, 231, 0.8);
+}
+
 .Dialog.QueryObservationDate > .form > .fields > .date-bar
 {
     display: flex;
@@ -387,10 +399,7 @@ body
 
 .Dialog.QueryObservationDeletion > .form > .fields input
 {
-    border: 1px solid rgba(53, 145, 231, 0.8);
-    border-radius: 3px;
     padding-left: 43px; /* Make room for the embedded icon.*/
-    outline: none;
 }
 
 .Dialog.QueryObservationDeletion > .form > .fields > .list-id
@@ -419,7 +428,7 @@ body
     left: 146px;
     bottom: 51px;
     display: inline-block;
-    color: rgb(184, 184, 184);
+    color: rgb(185, 185, 185);
 }
 
 .Dialog.QueryObservationDeletion > .form > .fields .input-icon.good-input
@@ -449,10 +458,7 @@ body
 
 .Dialog.QueryObservationPlace > .form > .fields input
 {
-    border: 1px solid rgba(53, 145, 231, 0.8);
-    border-radius: 3px;
     padding-left: 43px; /* Make room for the embedded GeoTag.*/
-    outline: none;
 }
 
 .Dialog.QueryObservationPlace > .form > .fields .map-link
