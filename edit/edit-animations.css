@@ -22,6 +22,15 @@
     animation-duration: 0.25s;
 }
 
+.animation-fadein
+{
+    animation-name: animation-fadeout-frames;
+    animation-direction: reverse;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-duration: 0.15s;
+}
+
 .animation-spin
 {
     animation-name: animation-spin-frames;
@@ -44,6 +53,20 @@
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-duration: 0.45s;
+}
+
+.animation-dialog-flip
+{
+    animation-name: animation-dialog-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
+}
+
+@keyframes animation-dialog-flip-frames
+{
+    0% { opacity: 0; transform: translateX(-50%) rotateX(30deg); }
+    100% { opacity: 1; transform: translateX(-50%) rotateX(0deg); }
 }
 
 @keyframes animation-bulge-frames

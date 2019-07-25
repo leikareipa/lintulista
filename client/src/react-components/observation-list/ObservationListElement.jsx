@@ -94,7 +94,6 @@ export function ObservationListElement(props = {})
         await props.shades.put_on();
 
         let pulseElement = false;
-
         await open_modal_dialog(QueryObservationDate,
         {
             observation: observationData,
@@ -138,7 +137,6 @@ export function ObservationListElement(props = {})
         await props.shades.put_on();
 
         let pulseElement = false;
-
         await open_modal_dialog(QueryObservationPlace,
         {
             observation: observationData,

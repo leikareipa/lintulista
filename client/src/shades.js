@@ -24,7 +24,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
         error("Failed to generate a valid DOM id for a shade element.");
     }
 
-    const transitionDuration = 0.15;
+    const transitionDuration = 0.25;
 
     // Insert the shade into the DOM. Note that by default, it's not yet displayed.
     const shadeElement = (()=>
