@@ -71,6 +71,23 @@ export function Dialog(props = {})
         });
     }
 
+    // Have the dialog close with the 'reject' status if the user presses ESC.
+    React.useEffect(()=>
+    {
+        window.addEventListener("keydown", close_on_esc);
+        return ()=>window.removeEventListener("keydown", close_on_esc);
+
+        function close_on_esc(keyPressEvent)
+        {
+            if (keyPressEvent.key === "Escape")
+            {
+                setRejectButtonEnabled(false);
+                setAcceptButtonEnabled(false);
+                props.onDialogReject();
+            }
+        }
+    }, [])
+
     return <div className={`Dialog ${props.component}`}>
                <div className="title">
                    <i className={props.titleIcon}/> {props.title}
