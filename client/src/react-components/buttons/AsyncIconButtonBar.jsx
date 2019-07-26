@@ -41,6 +41,8 @@ import {AsyncIconButton} from "./AsyncIconButton.js";
 // elements.
 //
 // The props.visible property defines whether the button bar should be rendered or not.
+// If props.visible = false, the component's class names list will include 'hidden', and
+// you would then style your CSS accordingly.
 // 
 export function AsyncIconButtonBar(props = {})
 {
@@ -57,18 +59,7 @@ export function AsyncIconButtonBar(props = {})
                                 titleWhenClicked={button.titleWhenClicked}/>
     });
 
-    // Styling for revealing and hiding the button bar.
-    const revealStyle = props.visible? {
-        opacity: "1",
-        transform: "translateX(-10px)",
-        visibility: "visible",
-    } : {
-        opacity: "0",
-        transform: "translateX(10px)",
-        visibility: "hidden",
-    };
-
-    return  <div className="AsyncIconButtonBar" style={revealStyle}>
+    return  <div className={`AsyncIconButtonBar ${props.visible? "" : "hidden"}`.trim()}>
                 <div className="buttons">
                     {elements}
                 </div>
