@@ -17,11 +17,14 @@ export async function backend_access({listId})
 {
     const backendAddress = Object.freeze(
     {
-        knownBirds: "./server/get-known-birds-list.php",
-        observations: "./server/get-observations.php",
-        postObservation: "./server/post-observation.php",
         deleteObservation: "./server/remove-observation.php",
+        postObservation: "./server/post-observation.php",
+        backendLimits: "./server/get-backend-limits.php",
+        observations: "./server/get-observations.php",
+        knownBirds: "./server/get-known-birds-list.php",
     });
+
+    const backendLimits = Object.freeze(await http_fetch_backend_limits());
 
     const localCache =
     {
@@ -44,13 +47,13 @@ export async function backend_access({listId})
             this.knownBirds = Object.freeze(await http_fetch_known_birds_list());
         }
     };
-
     await localCache.refresh();
 
     const publicInterface =
     {
         known_birds: ()=>localCache.knownBirds,
         observations: ()=>localCache.observations,
+        backend_limits: ()=>backendLimits,
 
         is_known_bird_species,
 
@@ -272,6 +275,46 @@ export async function backend_access({listId})
                 .catch(errorMessage=>
                 {
                     error(`Client-to-server query for "${backendAddress.knownBirds}" failed. Cause: ${errorMessage}`);
+                    return [];
+                });
+    }
+
+    // Returns as an object backend-enforced limits on certain things; e.g. the length of
+    // the string describing the place of an observation.
+    //
+    // The return object will be of the following form:
+    // 
+    //     {
+    //         limitA: ...,
+    //         limitB: ...,
+    //         limitC: ...,
+    //         ...,
+    //     }
+    //
+    async function http_fetch_backend_limits()
+    {
+        return fetch(backendAddress.backendLimits, {cache: "no-store"})
+                .then(response=>
+                {
+                    if (!response.ok)
+                    {
+                        throw `Failed to fetch backend limits from the server. "${response.statusText}".`;
+                    }
+
+                    return response.json();
+                })
+                .then(ticket=>
+                {
+                    if (!ticket.valid || (typeof ticket.data === "undefined"))
+                    {
+                        throw (ticket.message? ticket.message : "unknown");
+                    }
+
+                    return JSON.parse(ticket.data);
+                })
+                .catch(errorMessage=>
+                {
+                    error(`Client-to-server query for "${backendAddress.backendLimits}" failed. Cause: ${errorMessage}`);
                     return [];
                 });
     }

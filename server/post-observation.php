@@ -53,7 +53,14 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
     // The 'place' property is optional, but we enforce a length limit on it.
     if (isset($newObservation["place"]))
     {
-        $newObservation["place"] = substr($newObservation["place"], 0, backend_limits("maxPlaceNameLength"));
+        $maxPlaceNameLength = backend_limits("maxPlaceNameLength");
+
+        if ($maxPlaceNameLength === null)
+        {
+            exit(return_failure("Server-side IO failure. Can't find a limit for \"maxPlaceNameLength\""));
+        }
+
+        $newObservation["place"] = substr($newObservation["place"], 0, $maxPlaceNameLength);
     }
 }
 

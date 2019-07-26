@@ -9,8 +9,9 @@
  * 
  */
 
-include "return.php";
+include "backend-limits.php";
 include "list-id.php";
+include "return.php";
 
 if (!isset($_GET["list"]))
 {
@@ -37,26 +38,39 @@ if (!isset($observationData["observations"]))
 }
 
 // Pick out the relevant properties to be returned.
-$returnData = [];
-foreach ($observationData["observations"] as $observation)
 {
-    if (!isset($observation["species"]))
+    $maxPlaceNameLength = backend_limits("maxPlaceNameLength");
+    if ($maxPlaceNameLength === null)
     {
-        exit(return_failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
+        exit(return_failure("Server-side IO failure. Can't find a limit for \"maxPlaceNameLength\""));
     }
 
-    if (!isset($observation["timestamp"]))
+    $returnData = [];
+    foreach ($observationData["observations"] as $observation)
     {
-        exit(return_failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
+        if (!isset($observation["species"]))
+        {
+            exit(return_failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
+        }
+
+        if (!isset($observation["timestamp"]))
+        {
+            exit(return_failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
+        }
+
+        $place = null;
+        if (isset($observation["place"]))
+        {
+            $place = substr($observation["place"], 0, $maxPlaceNameLength);
+        }
+
+        $returnData[] = ["species"=>$observation["species"],
+                        "timestamp"=>$observation["timestamp"],
+                        "place"=>$place];
     }
-
-    // Note: The 'place' property is optional and doesn't need to be checked for.
-
-    $returnData[] = ["species"=>$observation["species"],
-                     "timestamp"=>$observation["timestamp"],
-                     "place"=>(isset($observation["place"])? $observation["place"] : null)];
 }
 
+/// FIXME: Odd bug here - if $maxPlaceNameLength is 2, $returnData evaluates to 'false'.
 exit(return_success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
 
 ?>
