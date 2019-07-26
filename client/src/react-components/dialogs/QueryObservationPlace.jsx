@@ -23,6 +23,9 @@ import {Dialog} from "./Dialog.js"
 // A callback function called in case the user rejects the dialog should be provided via
 // props.onDialogReject. It will receive no parameters.
 //
+// The dialog will enforce a length limit on the place name string that the user enters.
+// This limit can be set via props.maxPlaceNameLength.
+//
 export function QueryObservationPlace(props = {})
 {
     QueryObservationPlace.validateProps(props);
@@ -30,10 +33,9 @@ export function QueryObservationPlace(props = {})
     const [placeString, setPlaceString] = React.useState(props.observation.place || "");
 
     const mapUrl = GeoTag.map_link_from_string(placeString);
-    const maxPlacenameLength = 60;
 
     return <Dialog component="QueryObservationPlace"
-                   title="Merkitse havainnon sijainti"
+                   title="Merkitse havaintopaikka"
                    titleIcon="fas fa-map-marker-alt"
                    onDialogAccept={()=>close_dialog(true)}
                    onDialogReject={()=>close_dialog(false)}>
@@ -48,7 +50,7 @@ export function QueryObservationPlace(props = {})
                           value={placeString? placeString : ""}
                           placeholder="Esim. Lauttasaari, Helsinki"
                           spellCheck="false"
-                          maxLength={maxPlacenameLength}
+                          maxLength={props.maxPlaceNameLength}
                           autoFocus/>
                    <div className="map-link">
                        <a className={!mapUrl? "disabled" : undefined}
@@ -60,7 +62,7 @@ export function QueryObservationPlace(props = {})
                        </a>
                    </div>
                    <div className="character-count">
-                       {maxPlacenameLength - placeString.length} merkkiä jäljellä
+                       {props.maxPlaceNameLength - placeString.length} merkkiä jäljellä
                    </div>
                </div>
            </Dialog>
@@ -77,7 +79,7 @@ export function QueryObservationPlace(props = {})
 
 QueryObservationPlace.validateProps = function(props)
 {
-    panic_if_undefined(props);
+    panic_if_undefined(props, props.maxPlaceNameLength);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;

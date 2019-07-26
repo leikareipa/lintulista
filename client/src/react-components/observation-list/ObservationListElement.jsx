@@ -137,6 +137,7 @@ export function ObservationListElement(props = {})
 
         await open_modal_dialog(QueryObservationPlace,
         {
+            maxPlaceNameLength: props.maxPlaceNameLength,
             observation: observationData,
             onAccept: async(newPlace)=>
             {

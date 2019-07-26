@@ -52,6 +52,7 @@ export function ObservationList(props = {})
             return <ObservationListElement observation={obs}
                                            key={obs.bird.species}
                                            shades={props.shades}
+                                           maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
                                            requestDeleteObservation={async(self)=>await delete_observation(self)}
                                            requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
                                            requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
