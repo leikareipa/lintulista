@@ -6,11 +6,11 @@
 
 "use strict";
 
+import {panic_if_undefined, panic} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
-import {panic_if_undefined} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationInfo} from "./ObservationInfo.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
@@ -37,13 +37,13 @@ export function ObservationListElement(props = {})
         },
         {
             icon: "fas fa-map-marked-alt",
-            title: "Merkitse havainnon sijainti",
+            title: "Merkitse havaintopaikka",
             titleWhenClicked: "Merkitään havainnon sijaintia",
             task: button_change_observation_place,
         },
         {
             icon: "fas fa-clock",
-            title: "Merkitse havainnon päivämäärä",
+            title: "Merkitse havaintopäivä",
             titleWhenClicked: "Asetetaan havainnon päivämäärää",
             task: button_change_observation_date,
         },
