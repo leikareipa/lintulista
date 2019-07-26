@@ -21,8 +21,7 @@
 
 include "return.php";
 include "list-id.php";
-
-$newObservation = json_decode(file_get_contents("php://input"), true);
+include "backend-limits.php";
 
 // Validate the input parameters.
 {
@@ -37,7 +36,9 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
     }
 }
 
-// Validate the input data.
+$newObservation = json_decode(file_get_contents("php://input"), true);
+
+// Validate the input observation data.
 {
     if (!isset($newObservation["species"]))
     {
@@ -49,7 +50,11 @@ $newObservation = json_decode(file_get_contents("php://input"), true);
         exit(return_failure("The given observation data is missing the required \"timestamp\" property."));
     }
 
-    // Note: The 'place' property is optional and doesn't need to be checked for.
+    // The 'place' property is optional, but we enforce a length limit on it.
+    if (isset($newObservation["place"]))
+    {
+        $newObservation["place"] = substr($newObservation["place"], 0, backend_limits("maxPlaceNameLength"));
+    }
 }
 
 // See whether the new observation is valid.
