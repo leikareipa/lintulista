@@ -1,6 +1,6 @@
 body
 {
-    background-color: #b9b9b9;
+    background-color: #dbdbdb;
     color: white;
     text-align: center;
 }
@@ -8,6 +8,13 @@ body
 #search-widget
 {
     display: inline-block;
+}
+
+.BirdThumbnail
+{
+    user-select: none;
+    -moz-user-select: none;
+    pointer-events: none;
 }
 
 .BirdSearchField
@@ -31,7 +38,7 @@ body
 {
     width: 320px; /* Width of the parent container minus padding.*/
     color: black;
-    background-color: #f2f2f2;
+    background-color: #f5f5f5;
     padding: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -67,7 +74,7 @@ body
 
 .BirdSearchResultElement:nth-child(2n)
 {
-    background-color: #eaeaea;
+    background-color: #f5f5f5;
 }
 
 .BirdSearchResultElement .observed-date
@@ -90,7 +97,14 @@ body
 .ObservationList
 {
     display: inline-block;
-    width: 520px;
+}
+
+.ObservationList > .elements
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .ObservationList .sorter
@@ -102,118 +116,140 @@ body
 {
     position: relative;
     color: black;
-    background-color: #f0f0f0;
-    padding: 20px;
-    padding-left: 15px;
-    padding-top: 11px;
-    padding-bottom: 11px;
-    display: flex;
+    background-color: transparent;
     align-items: center;
-    margin-top: 0px;
-    border-radius: 0px;
-}
-
-.ObservationListElement:first-child
-{
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-
-.ObservationListElement:last-child
-{
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-
-.ObservationListElement:only-child
-{
     border-radius: 3px;
-}
+    margin: 9px;
 
-.ObservationListElement:nth-child(2n)
-{
-    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
 }
 
 .ObservationListElement .BirdThumbnail
 {
-    width: 70px;
-    height: 70px;
-    margin-right: 14px;
+    position: relative;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.55);
+    border: 18px solid #efefef;
+    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.4);
+    z-index: 2;
 }
 
-.ObservationInfo
+.ObservationListElement > .card
 {
-    height: 70px; /* Match the height of the bird thumbnail.*/
-    line-height: 137%;
-    display: inline-block;
-    text-align: left;
-    padding-left: 15px;
-    border-left: 5px dotted rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    width: 196px;
+    margin-top: -15px;
+    padding-top: 21px;
+    padding-bottom: 13px;
+    background-color: #eaeaea;
+    line-height: 130%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
-.ObservationInfo .title
+.ObservationListElement > .card > .ObservationInfo
 {
-    font-size: 110%;
-    display: inline-block;
-    margin-bottom: 1px;
+    opacity: 1;
+    transform: rotateY(0);
+    visibility: visible;
+    z-index: 3;
+    transition: all 0.2s linear;
 }
 
-.ObservationInfo .date
+.ObservationListElement > .card > .ObservationInfo.hidden
+{
+    opacity: 0;
+    transform: rotateX(80deg);
+    visibility: hidden;
+}
+
+.ObservationListElement > .card > .ObservationInfo > .bird-name
+{
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.ObservationListElement > .card > .ObservationInfo > .date
 {
     font-size: 80%;
-    color: rgba(0, 0, 0, 0.55);
+    color: rgba(0, 0, 0, 0.6);
 }
 
-.ObservationInfo .classification
+.ObservationListElement > .AsyncIconButtonBar
 {
-    font-size: 80%;
-    color: rgba(0, 0, 0, 0.55);
+    opacity: 1;
+    visibility: visible;
+    font-size: 130%;
+    z-index: 3;
+    transition: all 0.35s ease-in-out;
+    border-radius: 0 6px 6px 6px;
+    background-color: #fbfbfb;
+    box-shadow: 0 4px 7px -2px rgba(0, 0, 0, 0.15);
+
+    position: absolute;
+    top: 0;
+    right: -15px;
+    
+    z-index: 5;
 }
 
-.AsyncIconButtonBar > .buttons
+/* A triangle.*/
+.ObservationListElement > .AsyncIconButtonBar:after
+{
+    position: absolute;
+    top: 0;
+    left: -10px;
+    content: " ";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 0;
+    border-color: transparent #fbfbfb transparent transparent;
+}
+
+.ObservationListElement > .AsyncIconButtonBar.hidden
+{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-15px);
+}
+
+.ObservationListElement > .AsyncIconButtonBar > .buttons
 {
     display: flex;
-    padding-left: 7px;
-    border-radius: 8px;
+    flex-direction: column;
 }
 
-.AsyncIconButtonBar > .buttons > *
+.ObservationListElement > .AsyncIconButtonBar > .buttons > *
 {
     flex: 1;
 }
 
-.ObservationListElement .AsyncIconButtonBar
+.ObservationListElement > .AsyncIconButtonBar > .buttons > *
 {
-    font-size: 100%;
-    transition: all 0.3s ease-in-out;
-    position: absolute;
-    right: 30px;
-    font-size: 110%;
-}
-
-.ObservationListElement .AsyncIconButton
-{
-    color: rgba(53, 145, 231, 0.5);
+    color: rgb(53, 145, 231);
     cursor: pointer;
-    padding: 5px;
+    padding: 7px;
     margin: 5px;
-    width: 20px;
 }
 
-.ObservationListElement .AsyncIconButton.enabled:active
+.ObservationListElement > .AsyncIconButtonBar > .buttons > .AsyncIconButton.enabled:hover
+{
+    color: rgb(53, 145, 231);
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+}
+
+.AsyncIconButtonBar > .buttons > .AsyncIconButton.enabled:active
 {
     transform: translateY(2px);
 }
 
-.ObservationListElement .AsyncIconButton.enabled:hover
-{
-    color: rgb(53, 145, 231);
-}
-
-.ObservationListElement .AsyncIconButton.disabled
+.AsyncIconButtonBar > .buttons > .AsyncIconButton.disabled
 {
     color: rgba(0, 0, 0, 0.2);
     cursor: auto;
@@ -221,10 +257,9 @@ body
 
 .GeoTag
 {
-    display: inline-block;
     transform: translateY(-3px);
     color: rgba(0, 0, 0, 0.25);
-    padding-left: 6px;
+    padding-left: 3px;
     font-size: 100%;
 }
 
@@ -233,6 +268,13 @@ body
     color: inherit;
     outline: none;
     text-decoration: none;
+    border: none;
+}
+
+.ObservationListElement .GeoTag
+{
+    color: rgb(226, 42, 36);
+    font-size: 80%;
 }
 
 .Dialog

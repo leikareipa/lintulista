@@ -12,7 +12,7 @@ import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {panic_if_undefined} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
-import {ObservationInfo} from "../misc/ObservationInfo.js";
+import {ObservationInfo} from "./ObservationInfo.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {delay} from "../../delay.js";
 
@@ -26,9 +26,6 @@ export function ObservationListElement(props = {})
     // The data used to populate the element's fields. May be altered e.g. when the
     // user requests to change the observation date or place.
     const [observationData, setObservationData] = React.useState(props.observation);
-
-    // While set to true, the element's button bar will be displayed at all times.
-    const [keepButtonBarVisible, setKeepButtonBarVisible] = React.useState(false);
 
     // A list of the buttons to be displayed on the element's button bar.
     const buttonBarButtons = Object.freeze([
@@ -63,12 +60,12 @@ export function ObservationListElement(props = {})
 
     return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
                                                    onMouseLeave={()=>setMouseHovering(false)}>
-                <i className="fas fa-unlock-alt fa-sm" style={{color:"rgba(53, 145, 231, 0.5)", position:"absolute", right:"20px",top:"39px"}}/>
                 <BirdThumbnail bird={observationData.bird}/>
-                <ObservationInfo observation={observationData}
-                                 setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
-                <AsyncIconButtonBar visible={mouseHovering || keepButtonBarVisible}
-                                    buttons={buttonBarButtons}/>
+                <div className="card">
+                    <ObservationInfo observation={observationData}
+                                     setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
+                </div>
+                <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/>
             </div>
 
     // When a button is pressed to delete the observation. Will requests the backend to
@@ -80,7 +77,6 @@ export function ObservationListElement(props = {})
 
         await props.shades.put_on();
 
-        let pulseElement = false;
         await open_modal_dialog(QueryObservationDeletion,
         {
             observation: observationData,
@@ -92,11 +88,6 @@ export function ObservationListElement(props = {})
         });
 
         await props.shades.pull_off();
-        if (pulseElement)
-        {
-            await delay(100);
-            animation.pulseDateElement();
-        }
     }
 
     // When a button is pressed to change the observation's date. Will prompt the user to
@@ -108,7 +99,6 @@ export function ObservationListElement(props = {})
 
         await props.shades.put_on();
 
-        let pulseElement = false;
         await open_modal_dialog(QueryObservationDate,
         {
             observation: observationData,
@@ -122,8 +112,8 @@ export function ObservationListElement(props = {})
 
                     if (updatedObservation)
                     {
+                        pulse_changed_elements(observationData, updatedObservation);
                         setObservationData(updatedObservation);
-                        pulseElement = true;
                     }
                     else
                     {
@@ -134,11 +124,6 @@ export function ObservationListElement(props = {})
         });
 
         await props.shades.pull_off();
-        if (pulseElement)
-        {
-            await delay(100);
-            animation.pulseDateElement();
-        }
     }
 
     // When a button is pressed to change the observation's place. Will prompt the user to
@@ -150,7 +135,6 @@ export function ObservationListElement(props = {})
 
         await props.shades.put_on();
 
-        let pulseElement = false;
         await open_modal_dialog(QueryObservationPlace,
         {
             observation: observationData,
@@ -164,8 +148,8 @@ export function ObservationListElement(props = {})
 
                     if (updatedObservation)
                     {
+                        pulse_changed_elements(observationData, updatedObservation);
                         setObservationData(updatedObservation);
-                        pulseElement = true;
                     }
                     else
                     {
@@ -176,10 +160,22 @@ export function ObservationListElement(props = {})
         });
 
         await props.shades.pull_off();
-        if (pulseElement)
+    }
+
+    // Compares the old data (the current observation parameters) with proposed new ones;
+    // any new parameters that differ from the existing ones will cause the corresponding
+    // DOM elements to be given a brief animation to indicate to the user that their values
+    // have changed.
+    function pulse_changed_elements(oldData, newData)
+    {
+        if (newData.place !== oldData.place)
         {
-            await delay(100);
             animation.pulseGeoTagElement();
+        }
+
+        if (newData.unixTimestamp !== oldData.unixTimestamp)
+        {
+            animation.pulseDateElement();
         }
     }
 }

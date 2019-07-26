@@ -35,9 +35,9 @@ export function ObservationList(props = {})
                    Listan järjestys:
                    <select defaultValue={sortObservationsBy}
                            onChange={(event)=>setSortObservationsBy(event.target.value)}>
-                       <option value="species">Laji</option>
+                       <option value="species">Lajinimi</option>
                        <option value="order">Lahko ja heimo</option>
-                       <option value="date">Havaintopäivä (laskeva)</option>
+                       <option value="date">Havaintopäivä</option>
                    </select>
                </div>
                <div className="elements">

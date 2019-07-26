@@ -29,7 +29,7 @@ export function render_observation_list(backend)
     const observationShades = shades(
     {
         z: 110,
-        opacity: 0.4,
+        opacity: 0.5,
         container: document.body,
         onClick: null,
     });

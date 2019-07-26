@@ -54,20 +54,18 @@ export function ObservationInfo(props = {})
     });
 
     return <div className="ObservationInfo">
-               <div className="title">
-                   {props.observation.bird.species}
-                   <div ref={refs.geotag} style={{display:"inline-block"}}>
-                       <GeoTag place={props.observation.place}/>
-                   </div>
-               </div>
-               <div className="classification">
-                   {props.observation.bird.order}
-                   <i className="fas fa-caret-right fa-sm" style={{color: "rgba(0, 0, 0, 0.3)", marginLeft:"5px", marginRight:"5px"}}/>
-                   {props.observation.bird.family}
-               </div>
-               <div className="date" ref={refs.date}>
-                   {props.observation.dateString}
-               </div>
+                <div className="bird-name">
+                    {props.observation.bird.species}
+                    <div ref={refs.geotag} style={{display:"inline-block"}}>
+                        <GeoTag place={props.observation.place}/>
+                    </div>
+                </div>
+                <div className="date" ref={refs.date} style={{marginTop: props.observation.place? "-1px" : ""}}>
+                    {/* Note: We move the date string up by 1 pixel if the GeoTag is shown, to counter
+                      * the GeoTag pushing the line down by that much. It only does so when its font-size
+                      * property is set below 85% or so; which it is, hence this kludge.*/}
+                    {props.observation.dateString}
+                </div>
            </div>
 }
 
