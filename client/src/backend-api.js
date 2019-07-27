@@ -8,7 +8,7 @@
 
 "use strict";
 
-import {error, panic_if_undefined, warn} from "./assert.js";
+import {error, panic_if_undefined, warn, panic_if_not_type} from "./assert.js";
 import {observation} from "./observation.js";
 import {bird} from "./bird.js";
 
@@ -104,31 +104,29 @@ export async function backend_access({listId})
         return Boolean(localCache.knownBirds.map(b=>b.species.toLowerCase()).includes(species.toLowerCase()));
     }
 
-    async function http_delete_observation(observation)
+    // Performs the given async fetch and returns an array of the following kind:
+    //
+    //     [wasSuccessful, data]
+    //
+    // The 'wasSuccessful' variable is a boolean describing whether the fetch succeeded;
+    // and the 'data' variable returns the response data, if any. If the fetch failed,
+    // 'data' will be null, and an error message may be printed into the console.
+    //
+    async function http_fetch(url, params)
     {
-        panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
+        panic_if_not_type("string", url);
+        panic_if_not_type("object", params);
 
-        const postData =
-        {
-            species: observation.bird.species,
-        }
-
-        return fetch(`${backendAddress.deleteObservation}?list=${listId}`,
-                {
-                    method: "POST",
-                    cache: "no-store",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(postData),
-                })
+        return fetch(url, params)
                 .then(response=>
                 {
-                    return (response.ok? response.json() : false);
+                    return (response.ok? response.json() : undefined);
                 })
                 .then(ticket=>
                 {
                     if (!ticket)
                     {
-                        return false;
+                        return [false, null];
                     }
 
                     if (!ticket.valid)
@@ -136,13 +134,33 @@ export async function backend_access({listId})
                         throw (ticket.message? ticket.message : "unknown");
                     }
 
-                    return true;
+                    return [true, ticket.data];
                 })
                 .catch(errorMessage=>
                 {
-                    error(`Client-to-server query for "${backendAddress.deleteObservation}" failed. Cause: ${errorMessage}`);
-                    return false;
+                    error(`Client-to-server query for "${url}" failed. Cause: ${errorMessage}`);
+                    return [false, null];
                 });
+    }
+
+    async function http_delete_observation(observation)
+    {
+        panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
+
+        const postData =
+        {
+            species: observation.bird.species,
+        };
+
+        const [wasSuccessful,] = await http_fetch(`${backendAddress.deleteObservation}?list=${listId}`,
+        {
+            method: "POST",
+            cache: "no-store",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(postData),
+        });
+
+        return wasSuccessful;
     }
 
     // Submits the given bird as an observation to be appended to the given list. Returns
@@ -156,82 +174,50 @@ export async function backend_access({listId})
             species: observation.bird.species,
             timestamp: observation.unixTimestamp,
             place: observation.place,
-        }
+        };
 
-        return fetch(`${backendAddress.postObservation}?list=${listId}`,
-                {
-                    method: "POST",
-                    cache: "no-store",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(postData),
-                })
-                .then(response=>
-                {
-                    return (response.ok? response.json() : false);
-                })
-                .then(ticket=>
-                {
-                    if (!ticket)
-                    {
-                        return false;
-                    }
+        const [wasSuccessful,] = await http_fetch(`${backendAddress.postObservation}?list=${listId}`,
+        {
+            method: "POST",
+            cache: "no-store",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(postData),
+        });
 
-                    if (!ticket.valid)
-                    {
-                        throw (ticket.message? ticket.message : "unknown");
-                    }
-
-                    return true;
-                })
-                .catch(errorMessage=>
-                {
-                    error(`Client-to-server query for "${backendAddress.postObservation}" failed. Cause: ${errorMessage}`);
-                    return false;
-                });
+        return wasSuccessful;
     }
 
     // Returns as an array of observation() objects the observations associated with the
     // current list; or, on failure, an empty array.
     async function http_fetch_observations()
     {
-        return fetch(`${backendAddress.observations}?list=${listId}`, {cache: "no-store"})
-                .then(response=>
-                {
-                    if (!response.ok)
-                    {
-                        throw "Failed to load server-side observation data.";
-                    }
+        const [wasSuccessful, responseData] = await http_fetch(`${backendAddress.observations}?list=${listId}`,
+        {
+            cache: "no-store",
+        });
 
-                    return response.json();
-                })
-                .then(ticket=>
-                {
-                    if (!ticket.valid || (typeof ticket.data === "undefined"))
-                    {
-                        throw (ticket.message? ticket.message : "unknown");
-                    }
+        if (wasSuccessful)
+        {
+            const observationData = JSON.parse(responseData);
 
-                    const observationData = JSON.parse(ticket.data);
+            observationData.filter(obs=>!is_known_bird_species(obs.species))
+                           .forEach(unknownObs=>
+            {
+                warn(`Unknown bird in the observation list: ${unknownObs.species}. Skipping it.`); 
+            });
 
-                    observationData.filter(obs=>!is_known_bird_species(obs.species))
-                                   .forEach(unknownObs=>
-                    {
-                        warn(`Unknown bird in the observation list: ${unknownObs.species}. Skipping it.`); 
-                    });
-
-                    return observationData.filter(obs=>is_known_bird_species(obs.species))
-                                          .map(obs=>observation(
-                    {
-                        bird: localCache.knownBirds.find(b=>b.species === obs.species),
-                        date: new Date(obs.timestamp*1000),
-                        place: obs.place,
-                    }));
-                })
-                .catch(errorMessage=>
-                {
-                    error(`Client-to-server query for "${backendAddress.observations}" failed. Cause: ${errorMessage}`);
-                    return [];
-                });
+            return observationData.filter(obs=>is_known_bird_species(obs.species))
+                                  .map(obs=>observation(
+            {
+                bird: localCache.knownBirds.find(b=>b.species === obs.species),
+                date: new Date(obs.timestamp*1000),
+                place: obs.place,
+            }));
+        }
+        else
+        {
+            return [];
+        }
     }
 
     // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
@@ -239,44 +225,33 @@ export async function backend_access({listId})
     // or, on failure, as an empty array.
     async function http_fetch_known_birds_list()
     {
-        return fetch(backendAddress.knownBirds, {cache: "no-store"})
-                .then(response=>
-                {
-                    if (!response.ok)
-                    {
-                        throw "Failed to load the master bird list from the server.";
-                    }
+        const [wasSuccessful, responseData] = await http_fetch(backendAddress.knownBirds,
+        {
+            cache: "no-store",
+        });
 
-                    return response.json();
-                })
-                .then(ticket=>
-                {
-                    if (!ticket.valid || (typeof ticket.data === "undefined"))
-                    {
-                        throw (ticket.message? ticket.message : "unknown");
-                    }
+        if (wasSuccessful)
+        {
+            const birdData = JSON.parse(responseData);
 
-                    const birdData = JSON.parse(ticket.data);
+            if (typeof birdData.birds === "undefined")
+            {
+                throw "Missing required data in the master bird list.";
+            }
 
-                    if (typeof birdData.birds === "undefined")
-                    {
-                        throw "Missing required data in the master bird list.";
-                    }
-
-                    return birdData.birds.map(b=>bird(
-                    {
-                        order: b.order,
-                        family: b.family,
-                        species: b.species,
-                        thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
-                                                  : "./client/assets/images/null-bird-thumbnail.png"),
-                    }));
-                })
-                .catch(errorMessage=>
-                {
-                    error(`Client-to-server query for "${backendAddress.knownBirds}" failed. Cause: ${errorMessage}`);
-                    return [];
-                });
+            return birdData.birds.map(b=>bird(
+            {
+                order: b.order,
+                family: b.family,
+                species: b.species,
+                thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
+                                          : "./client/assets/images/null-bird-thumbnail.png"),
+            }));
+        }
+        else
+        {
+            return [];
+        }
     }
 
     // Returns as an object backend-enforced limits on certain things; e.g. the length of
@@ -293,29 +268,18 @@ export async function backend_access({listId})
     //
     async function http_fetch_backend_limits()
     {
-        return fetch(backendAddress.backendLimits, {cache: "no-store"})
-                .then(response=>
-                {
-                    if (!response.ok)
-                    {
-                        throw `Failed to fetch backend limits from the server. "${response.statusText}".`;
-                    }
+        const [wasSuccessful, responseData] = await http_fetch(backendAddress.backendLimits,
+        {
+            cache: "no-store",
+        });
 
-                    return response.json();
-                })
-                .then(ticket=>
-                {
-                    if (!ticket.valid || (typeof ticket.data === "undefined"))
-                    {
-                        throw (ticket.message? ticket.message : "unknown");
-                    }
-
-                    return JSON.parse(ticket.data);
-                })
-                .catch(errorMessage=>
-                {
-                    error(`Client-to-server query for "${backendAddress.backendLimits}" failed. Cause: ${errorMessage}`);
-                    return [];
-                });
+        if (wasSuccessful)
+        {
+            return JSON.parse(responseData);
+        }
+        else
+        {
+            return {};
+        }
     }
 }
