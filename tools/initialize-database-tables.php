@@ -35,10 +35,12 @@ database_command("CREATE TABLE lintulista_lists(
 // be modified when a user adds or deletes an observation from their list, or otherwise
 // alters an observation's time, place, etc.
 database_command("CREATE TABLE lintulista_observations(
-                    list_id INT unsigned NOT NULL PRIMARY KEY,
+                    id INT unsigned AUTO_INCREMENT PRIMARY KEY,
+                    list_id MEDIUMINT unsigned NOT NULL,
                     `timestamp` BIGINT NOT NULL,
                     species TEXT NOT NULL,
-                    place TEXT
+                    place TEXT,
+                    INDEX `list_id` (`list_id`)
                  )");
 
 echo "Done.";
