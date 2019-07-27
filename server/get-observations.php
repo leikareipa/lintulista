@@ -10,39 +10,33 @@
  */
 
 require_once "backend-limits.php";
+require_once "database.php";
 require_once "list-id.php";
 require_once "return.php";
 
-if (!isset($_GET["list"]))
+// Validate the input parameters.
 {
-    exit(return_failure("Missing the required \"list\" parameter."));
+    if (!isset($_GET["list"]))
+    {
+        exit(return_failure("Missing the required \"list\" parameter."));
+    }
+
+    if (!is_valid_list_id($_GET["list"]))
+    {
+        exit(return_failure("Invalid \"list\" parameter."));
+    }
 }
 
-if (!is_valid_list_id($_GET["list"]))
-{
-    exit(return_failure("Invalid \"list\" parameter."));
-}
+$listId = database_get_list_id_of_edit_key($_GET["list"]);
 
-$baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
-
-$observationData = json_decode(file_get_contents($baseFilePath . "observations.json"), true);
-
-if (!$observationData)
-{
-    exit(return_failure("Server-side IO failure. Could not read the list of observations."));
-}
-
-if (!isset($observationData["observations"]))
-{
-    exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
-}
+$observations = database_get_observations_in_list($listId);
 
 // Pick out the relevant properties to be returned.
 {
     $maxPlaceNameLength = backend_limits("maxPlaceNameLength");
 
     $returnData = [];
-    foreach ($observationData["observations"] as $observation)
+    foreach ($observations as $observation)
     {
         if (!isset($observation["species"]))
         {
@@ -57,12 +51,12 @@ if (!isset($observationData["observations"]))
         $place = null;
         if (isset($observation["place"]))
         {
-            $place = substr($observation["place"], 0, $maxPlaceNameLength);
+            $place = mb_substr($observation["place"], 0, $maxPlaceNameLength, "utf-8");
         }
 
         $returnData[] = ["species"=>$observation["species"],
-                        "timestamp"=>$observation["timestamp"],
-                        "place"=>$place];
+                         "timestamp"=>$observation["timestamp"],
+                         "place"=>$place];
     }
 }
 

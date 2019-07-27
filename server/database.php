@@ -11,6 +11,7 @@
  * 
  */
 
+require_once "backend-limits.php";
 require_once "known-birds.php";
 require_once "return.php";
 
@@ -68,7 +69,7 @@ function database_command(string $commandString)
 }
 
 // Returns all observations associated with the given list.
-function database_get_observations(int $listId)
+function database_get_observations_in_list(int $listId)
 {
     $result = database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId}");
 
@@ -133,7 +134,7 @@ function database_store_observation(int $listId, array $observation)
     $timestamp = isset($observation["timestamp"])? $observation["timestamp"]
                                                  : exit(return_failure("The given observation is missing the required \"timestamp\" property."));
 
-    $place = isset($observation["place"])? substr($observation["place"], 0, backend_limits("maxPlaceNameLength"))
+    $place = isset($observation["place"])? mb_substr($observation["place"], 0, backend_limits("maxPlaceNameLength"), "utf-8")
                                          : null;
 
     if (!known_birds_is_valid_species($species))
@@ -144,9 +145,15 @@ function database_store_observation(int $listId, array $observation)
     $existingObservation = database_get_observation_of_species($listId, $species);
     if ($existingObservation)
     {
-        if ($species) database_command("UPDATE lintulista_observations SET species = '{$species}' WHERE list_id = {$listId}");
-        if ($timestamp) database_command("UPDATE lintulista_observations SET `timestamp` = {$timestamp} WHERE list_id = {$listId}");
-        if (isset($place)) database_command("UPDATE lintulista_observations SET place = '{$place}' WHERE list_id = {$listId}");
+        if (isset($timestamp))
+        {
+            database_command("UPDATE lintulista_observations SET `timestamp` = {$timestamp} WHERE list_id = {$listId} AND species = '{$species}'");
+        }
+
+        if (isset($place))
+        {
+            database_command("UPDATE lintulista_observations SET place = '{$place}' WHERE list_id = {$listId} AND species = '{$species}'");
+        }
     }
     else
     {
