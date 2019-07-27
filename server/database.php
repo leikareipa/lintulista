@@ -46,7 +46,7 @@ function database_query(string $queryString)
     $response = mysqli_query($database, $queryString);
     if (!$response)
     {
-        exit(return_failure("Server-side IO failure. Failed to query the database with \"{$queryString}\""));
+        exit(return_failure("Server-side IO failure. Failed to query the database with \"{$queryString}\" (" . mysqli_error($database) . ")."));
     }
 
     return mysqli_fetch_all($response, MYSQLI_ASSOC);
@@ -62,7 +62,7 @@ function database_command(string $commandString)
     $response = mysqli_query($database, $commandString);
     if (!$response)
     {
-        exit(return_failure("Server-side IO failure. Failed to command the database with \"{$commandString}\""));
+        exit(return_failure("Server-side IO failure. Failed to command the database with \"{$commandString}\" (" . mysqli_error($database) . ")."));
     }
 
     return;
@@ -145,14 +145,24 @@ function database_store_observation(int $listId, array $observation)
     $existingObservation = database_get_observation_of_species($listId, $species);
     if ($existingObservation)
     {
-        if (isset($timestamp))
+        $combinedValues = [];
+
+        // Collect together the values that need to be updated.
         {
-            database_command("UPDATE lintulista_observations SET `timestamp` = {$timestamp} WHERE list_id = {$listId} AND species = '{$species}'");
+            if (isset($timestamp))
+            {
+                $combinedValues[] = "`timestamp` = {$timestamp}";
+            }
+
+            if (isset($place))
+            {
+                $combinedValues[] = "place = '{$place}'";
+            }
         }
 
-        if (isset($place))
+        if (count($combinedValues))
         {
-            database_command("UPDATE lintulista_observations SET place = '{$place}' WHERE list_id = {$listId} AND species = '{$species}'");
+            database_command("UPDATE lintulista_observations SET " . join(", ", $combinedValues) . " WHERE list_id = {$listId} AND species = '{$species}'");
         }
     }
     else
