@@ -10,7 +10,7 @@
  * 
  */
 
-include "return.php";
+require_once "return.php";
 
 $knownBirdsData = file_get_contents("./assets/metadata/known-birds.json");
 

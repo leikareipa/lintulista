@@ -9,9 +9,9 @@
  * 
  */
 
-include "backend-limits.php";
-include "list-id.php";
-include "return.php";
+require_once "backend-limits.php";
+require_once "list-id.php";
+require_once "return.php";
 
 if (!isset($_GET["list"]))
 {
@@ -40,10 +40,6 @@ if (!isset($observationData["observations"]))
 // Pick out the relevant properties to be returned.
 {
     $maxPlaceNameLength = backend_limits("maxPlaceNameLength");
-    if ($maxPlaceNameLength === null)
-    {
-        exit(return_failure("Server-side IO failure. Can't find a limit for \"maxPlaceNameLength\""));
-    }
 
     $returnData = [];
     foreach ($observationData["observations"] as $observation)

@@ -5,6 +5,6 @@
 
     "limits":
     {
-        "maxPlaceNameLength": 60
+        "maxPlaceNameLength": 50
     }
 }

@@ -18,8 +18,8 @@
  * 
  */
 
-include "return.php";
-include "list-id.php";
+require_once "list-id.php";
+require_once "return.php";
 
 $targetObservation = json_decode(file_get_contents("php://input"), true);
 
