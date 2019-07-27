@@ -1,6 +1,6 @@
 {
 	"comments":["A list of the birds available to Lintulista. The 'thumbnail' property gives the name of that bird's thumbnail image",
-                "file as hosted on Luontoportti; such that e.g. 12374t.jpg may expand to luontoportti.com/suomi/images/12374t.jpg."],
+				"file as hosted on Luontoportti; such that e.g. 12374t.jpg may expand to luontoportti.com/suomi/images/12374t.jpg."],
 				
 	"birds":
 	[
