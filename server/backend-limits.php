@@ -9,9 +9,17 @@
  * 
  */
 
-// Returns the named limitation; or null if a limitation by that name was not found. If an empty
-// string "" is given, returns all limitations as an array; or null if no list of limitations
-// was available.
+$backendLimits = json_decode(file_get_contents("./assets/metadata/backend-limits.json"), true);
+
+if (!$backendLimits ||
+    !is_array($backendLimits["limits"]))
+{
+    exit(return_failure("Server-side IO failure. Can't read the list of backend limits."));
+}
+
+// Returns the named limitation. If a limitation by that name was not found, exits the script
+// with an error message. If an empty string "" is given, returns all limitations as an array;
+// or null if no list of limitations was available.
 //
 // For instance, backend_limits("maxPlaceNameLength") returns the maximum place name length;
 // while backend_limits() returns an array containing, among other things, maxPlaceNameLength,
@@ -21,26 +29,21 @@
 //
 function backend_limits(string $property = "")
 {
-    $property = trim($property);
+    global $backendLimits;
     
-    $limits = json_decode(file_get_contents("./assets/metadata/backend-limits.json"), true);
-
-    if (!isset($limits["limits"]))
-    {
-        return null;
-    }
+    $property = trim($property);
 
     if (empty($property))
     {
-        return $limits["limits"];
+        return $backendLimits["limits"];
     }
 
-    if (isset($limits["limits"][$property]))
+    if (isset($backendLimits["limits"][$property]))
     {
-        return $limits["limits"][$property];
+        return $backendLimits["limits"][$property];
     }
 
-    return null;
+    exit(return_failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
 }
 
 ?>
