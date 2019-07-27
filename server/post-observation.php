@@ -19,9 +19,9 @@
  * 
  */
 
-include "return.php";
-include "list-id.php";
-include "backend-limits.php";
+require_once "database.php";
+require_once "list-id.php";
+require_once "return.php";
 
 // Validate the input parameters.
 {
@@ -36,95 +36,11 @@ include "backend-limits.php";
     }
 }
 
+$listId = database_get_list_id_of_edit_key($_GET["list"]);
+
 $newObservation = json_decode(file_get_contents("php://input"), true);
 
-// Validate the input observation data.
-{
-    if (!isset($newObservation["species"]))
-    {
-        exit(return_failure("The given observation data is missing the required \"species\" property."));
-    }
-
-    if (!isset($newObservation["timestamp"]))
-    {
-        exit(return_failure("The given observation data is missing the required \"timestamp\" property."));
-    }
-
-    // The 'place' property is optional, but we enforce a length limit on it.
-    if (isset($newObservation["place"]))
-    {
-        $maxPlaceNameLength = backend_limits("maxPlaceNameLength");
-
-        if ($maxPlaceNameLength === null)
-        {
-            exit(return_failure("Server-side IO failure. Can't find a limit for \"maxPlaceNameLength\""));
-        }
-
-        $newObservation["place"] = substr($newObservation["place"], 0, $maxPlaceNameLength);
-    }
-}
-
-// See whether the new observation is valid.
-{
-    // We only allow known birds to be added.
-    {
-        $knownBirdsData = json_decode(file_get_contents("./assets/metadata/known-birds.json"), true);
-
-        if (!isset($knownBirdsData["birds"]))
-        {
-            exit(return_failure("Server-side IO failure. The known birds list is missing the required \"birds\" property."));
-        }
-
-        if (!in_array($newObservation["species"], array_map(function($bird){return $bird["species"];}, $knownBirdsData["birds"])))
-        {
-            exit(return_failure("The given observation is of an unrecognized bird \"" . $newObservation["species"] . "\"."));
-        }
-    }
-}
-
-$baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
-
-// Append the new observation to the current ones.
-{
-    $observationData = json_decode(file_get_contents($baseFilePath . "observations.json"), true);
-
-    if (!$observationData)
-    {
-        exit(return_failure("Server-side IO failure. Could not read the list of observations."));
-    }
-
-    if (!isset($observationData["observations"]))
-    {
-        exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
-    }
-
-    // Find if an observation of this species already exists in the list.
-    $idx = array_search($newObservation["species"],
-                        array_map(function($observation){return $observation["species"];}, $observationData["observations"]));
-
-    // If the species is already on the list, we'll modify the existing entry rather than
-    // adding a new one.
-    if ($idx !== false)
-    {
-        if (isset($newObservation["place"]))
-        {
-            $observationData["observations"][$idx]["place"] = $newObservation["place"];
-        }
-
-        if (isset($newObservation["timestamp"]))
-        {
-            $observationData["observations"][$idx]["timestamp"] = $newObservation["timestamp"];
-        }
-    }
-    // Otherwise, add the observation into the list as a new entry.
-    else
-    {
-        $observationData["observations"][] = ["species"=>$newObservation["species"], "timestamp"=>$newObservation["timestamp"]] +
-                                             (isset($newObservation["place"])? ["place"=>$newObservation["place"]] : []);
-    }
-}
-
-file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
+database_store_observation($listId, $newObservation);
 
 exit(return_success());
 
