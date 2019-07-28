@@ -46,7 +46,7 @@
                     return;
                 }
 
-                const backend = await backend_access({listId});
+                const backend = await backend_access(listId);
 
                 render_observation_list(backend);
                 render_bird_search(backend);

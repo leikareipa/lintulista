@@ -8,12 +8,12 @@
 
 "use strict";
 
-import {error, panic_if_undefined, warn, panic_if_not_type} from "./assert.js";
+import {error, panic_if_undefined, warn, panic_if_not_type, is_defined} from "./assert.js";
 import {observation} from "./observation.js";
 import {bird} from "./bird.js";
 
 // Provides mediated access to the given list's data in Lintulista's backend.
-export async function backend_access({listId})
+export async function backend_access(listId)
 {
     const backendAddress = Object.freeze(
     {
@@ -22,7 +22,13 @@ export async function backend_access({listId})
         backendLimits: "./server/get-backend-limits.php",
         observations: "./server/get-observations.php",
         knownBirds: "./server/get-known-birds-list.php",
+        createList: "./server/create-new-list.php",
     });
+
+    if (!is_defined(listId))
+    {
+        return create_new_list();
+    }
 
     const backendLimits = Object.freeze(await http_fetch_backend_limits());
 
@@ -103,6 +109,25 @@ export async function backend_access({listId})
     {
         return Boolean(localCache.knownBirds.map(b=>b.species.toLowerCase()).includes(species.toLowerCase()));
     }
+
+    async function create_new_list()
+    {
+        const [wasSuccessful, responseData] = await http_fetch(backendAddress.createList,
+        {
+            method: "POST",
+            cache: "no-store",
+        });
+
+        if (wasSuccessful)
+        {
+            return JSON.parse(responseData).keys;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     // Performs the given async fetch and returns an array of the following kind:
     //

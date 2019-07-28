@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lintulista</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <base href="/">
+    </head>
+    <body>
+        Hello there. <a href="#" onclick="create_new_list();">Click here to create a new list</a>.
+
+        <script type="module">
+            import {backend_access} from "./client/dist/backend-access.js";
+
+            window.create_new_list = async()=>
+            {
+                const keys = await backend_access();
+
+                const keyElements = document.createElement("div");
+                keyElements.innerHTML = `<br><b>Keys</b><br>Edit: ${keys.editKey}<br>View: ${keys.viewKey}`;
+                document.body.appendChild(keyElements);
+
+                return;
+            }
+        </script>
+    </body>
+</html>

@@ -52,20 +52,20 @@ function database_query(string $queryString)
     return mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
 
-// Wrapper function for sending queries to the database such that no data is expected in response.
-// E.g. database_command("UPDATE table SET x = 5 WHERE id = 1") modifies the database but returns no
-// data in response.
+// Wrapper function for sending queries to the database such that the database is expected to return
+// no data in reponse. E.g. database_command("UPDATE table SET x = 5 WHERE id = 1") modifies the data-
+// base but returns no data in response.
+//
+// The function returns the last error code associated with executing the command; or 0 if no error
+// occurred.
+//
 function database_command(string $commandString)
 {
     global $database;
 
     $response = mysqli_query($database, $commandString);
-    if (!$response)
-    {
-        exit(return_failure("Server-side IO failure. Failed to command the database with \"{$commandString}\" (" . mysqli_error($database) . ")."));
-    }
 
-    return;
+    return mysqli_errno($database);
 }
 
 // Returns all observations associated with the given list.
@@ -121,6 +121,31 @@ function database_get_list_id_of_edit_key(string $editKey)
     }
 
     return $result[0]["list_id"];
+}
+
+// Adds into the database a new observation list with the given parameters. Returns true
+// on success; false if any of the given keys were not unique in the table of lists; and
+// -1 on other errors.
+//
+// Generally, if false is returned, you might generate a new set of keys and try again.
+//
+function database_add_list(array $keys, int $timestamp, string $creatorHash)
+{
+    if (!isset($keys["viewKey"]) ||
+        !isset($keys["editKey"]))
+    {
+        exit(return_failure("Was asked to add a list to the database, but was not given the required keys for it."));
+    }
+
+    $returnValue = database_command("INSERT INTO lintulista_lists (view_key, edit_key, creation_timestamp, creator_hash) VALUES " .
+                                    "('{$keys["viewKey"]}', '{$keys["editKey"]}', {$timestamp}, '{$creatorHash}')");
+
+    switch ($returnValue)
+    {
+        case 1062: return false; // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. Can't use the given keys.
+        case 0: return true;     // Successfully added the list.
+        default: return -1;      // Something went badly wrong.
+    }
 }
 
 // Insert or update the given observation in the given list. If the observation already
