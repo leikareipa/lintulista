@@ -27,9 +27,7 @@ require_once "return.php";
     }
 }
 
-$listId = database_get_list_id_of_edit_key($_GET["list"]);
-
-$observations = database_get_observations_in_list($listId);
+$observations = database_get_observations_in_list($_GET["list"]);
 
 // Pick out the relevant properties to be returned.
 {

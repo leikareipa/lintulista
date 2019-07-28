@@ -34,7 +34,7 @@ require_once "return.php";
         $keys = ["editKey"=>pseudorandom_string(backend_limits("editKeyLength")),
                  "viewKey"=>pseudorandom_string(backend_limits("viewKeyLength"), true)];
 
-        $wasSuccessful = database_add_list($keys, time(), ip_hash());
+        $wasSuccessful = database_create_list($keys, time(), ip_hash());
 
         if ($wasSuccessful === true)
         {

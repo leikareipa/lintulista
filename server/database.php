@@ -44,7 +44,9 @@ function database_query(string $queryString)
     global $database;
 
     $response = mysqli_query($database, $queryString);
-    if (!$response)
+
+    if (($response === false) ||
+        (mysqli_errno($database) !== 0))
     {
         exit(return_failure("Server-side IO failure. Failed to query the database with \"{$queryString}\" (" . mysqli_error($database) . ")."));
     }
@@ -63,34 +65,63 @@ function database_command(string $commandString)
 {
     global $database;
 
-    $response = mysqli_query($database, $commandString);
+    mysqli_query($database, $commandString);
 
     return mysqli_errno($database);
 }
 
-// Returns all observations associated with the given list.
-function database_get_observations_in_list(int $listId)
+// Returns the corresponding list id of the given list key.
+//
+// If requireEditRights is set to true, the given key must match a list's edit key. If it
+// does not match any list's edit key, the script will terminate with an error message. If
+// requireEditRights is set to false, the key can be found among either the edit keys or the
+// view keys.
+//
+// If the key does not match to that of any list, the script will terminate with an error
+// message.
+//
+// In practice, when you're requesting the list id of a key with the intent of modifying the
+// list's data, set requireEditRights to true.
+//
+function database_get_list_id_of_key(string $listKey, bool $requireEditRights = true)
 {
-    $result = database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId}");
-
-    if (!is_array($result))
+    if ($requireEditRights)
     {
-        exit(return_failure("Failed to fetch the observations of list #\"{$listId}\"."));
+        $response = database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = '{$listKey}'");
+    }
+    else
+    {
+        $response = database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}' OR edit_key = '{$listKey}'");
     }
 
-    return $result;
+    if (empty($response))
+    {
+        exit(return_failure("Unknown list key."));
+    }
+
+    if (count($response) > 1)
+    {
+        exit(return_failure("Detected duplicate list ids for key \"{$listKey}\"."));
+    }
+
+    return $response[0]["list_id"];
+}
+
+// Returns all observations associated with the given list.
+function database_get_observations_in_list(string $listKey)
+{
+    $listId = database_get_list_id_of_key($listKey, false);
+
+    return database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId}");
 }
 
 // Returns the observation of the given species in the given list; or null if no such
 // observation could be found.
-function database_get_observation_of_species(int $listId, string $species)
+function database_get_observation_of_species(string $listKey, string $species)
 {
-    $result = database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
+    $listId = database_get_list_id_of_key($listKey. false);
 
-    if (!is_array($result))
-    {
-        exit(return_failure("Failed to fetch observations of \"{$species}\"."));
-    }
+    $result = database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
 
     if (count($result) === 0)
     {
@@ -105,31 +136,13 @@ function database_get_observation_of_species(int $listId, string $species)
     return $result[0];
 }
 
-function database_get_list_id_of_edit_key(string $editKey)
-{
-    $result = database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = '{$editKey}'");
-
-    if (!is_array($result))
-    {
-        exit(return_failure("Failed to fetch observations of \"{$species}\"."));
-    }
-
-    if ((count($result) != 1) ||
-        !isset($result[0]["list_id"]))
-    {
-        exit(return_failure("Invalid list id data for key \"{$editKey}\"."));
-    }
-
-    return $result[0]["list_id"];
-}
-
 // Adds into the database a new observation list with the given parameters. Returns true
 // on success; false if any of the given keys were not unique in the table of lists; and
 // -1 on other errors.
 //
 // Generally, if false is returned, you might generate a new set of keys and try again.
 //
-function database_add_list(array $keys, int $timestamp, string $creatorHash)
+function database_create_list(array $keys, int $timestamp, string $creatorHash)
 {
     if (!isset($keys["viewKey"]) ||
         !isset($keys["editKey"]))
@@ -142,7 +155,7 @@ function database_add_list(array $keys, int $timestamp, string $creatorHash)
 
     switch ($returnValue)
     {
-        case 1062: return false; // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. Can't use the given keys.
+        case 1062: return false; // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. The given keys are probably already in use.
         case 0: return true;     // Successfully added the list.
         default: return -1;      // Something went badly wrong.
     }
@@ -151,7 +164,7 @@ function database_add_list(array $keys, int $timestamp, string $creatorHash)
 // Insert or update the given observation in the given list. If the observation already
 // exists in the list, its data are overwritten by those of the given observation; otherwise
 // a new observation entry is created in the list.
-function database_store_observation(int $listId, array $observation)
+function database_store_observation(string $listKey, array $observation)
 {
     $species = isset($observation["species"])? $observation["species"]
                                              : exit(return_failure("The given observation is missing the required \"species\" property."));
@@ -167,9 +180,11 @@ function database_store_observation(int $listId, array $observation)
         exit(return_failure("Unable to find a bird species called \"{$species}\"."));
     }
 
-    $existingObservation = database_get_observation_of_species($listId, $species);
+    $existingObservation = database_get_observation_of_species($listKey, $species);
     if ($existingObservation)
     {
+        $listId = database_get_list_id_of_key($listKey, true);
+
         $combinedValues = [];
 
         // Collect together the values that need to be updated.
