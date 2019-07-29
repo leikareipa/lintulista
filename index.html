@@ -4,26 +4,160 @@
         <title>Lintulista</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=UnifrakturCook:700&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="index.css">
-        <base href="/">
     </head>
     <body>
-        Hello there. <a href="#" onclick="create_new_list();">Click here to create a new list</a>.
+        <header>
+            <div id="title">
+                <div id="app-name">
+                    Lintulista!
+                </div>
+                <div id="subtitle">
+                    Kuvien lähde: <a href="http://www.luontoportti.com/">LuontoPortti</a>
+                </div>
+            </div>
+        </header>
 
+        <div id="content">
+            <div id="random-observations" style="overflow: hidden; display: flex; justify-content: center;"></div>
+            <div id="create-new-list"></div>
+        </div>
+
+        <div id="info">
+            <div class="entry">
+                <div class="title">Mitä Lintulistalla tekee?</div>
+                <div class="text">
+                    <p>Lintulistalla tallennat ensihavaintosi linnuista kätevästi nettiin ja tarkastelet niitä kuvallisesta
+                    listasta havaintopäivämäärän, lahkon tai lajin mukaan järjesteltynä.</p>
+                    <p>Lintulista on taulukko-ohjelmaa mielenkiintoisempi tapa pitää kirjaa havainnoistaan!</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">Mitä käyttäjältä vaaditaan?</div>
+                <div class="text">
+                    <p>Lintulistan käyttö ei vaadi maksua, rekisteröitymistä eikä henkilökohtaisten tietojen
+                    luovuttamista, vaan vain modernin nettiselaimen.</p>
+                    <p>Voit luoda itsellesi yhden tai useamman listan, jonka jälkeen saatat ryhtyä merkitsemään
+                    havaintojasi.</p>
+                    <p>Listojen määrää per käyttäjä ei ole rajoitettu, ja voitkin esimerkiksi luoda uuden listan
+                    kutakin linturetkeä varten tai käyttää vain yhtä listaa vuosihavaintojen merkitsemiseen.</p>
+    
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">Miten käytän Lintulistaa?</div>
+                <div class="text">
+                    <p>Kun olet luonut itsellesi listan (kts. sininen nappi, yllä), järjestelmä ilmoittaa sinulle
+                    linkin, jonka kautta pääset katselemaan ja muokkaamaan listaa. Tarvitset linkin käyttääksesi
+                    listaa, joten kopioi se talteen!</p>
+                    <p>Kuka tahansa linkin haltija kykenee muokkaamaan listaa. Älä siis käytä linkkiä julkisilla
+                    tietokoneilla tai muutoin luovuta sitä tuntemattomille.</p>
+                    <p>Huomaa, että listaan antamasi tiedot ovat julkisia. Niiden säilymisestä ei kuitenkaan voida
+                    antaa takeita, joten talletathan itsellesi kopion aika-ajoin.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">Kuka teki Lintulistan?</div>
+                <div class="text">
+                    <p>Lintulistan on luonut suomalainen Tarpeeksi Hyvae Soft. Voit ottaa tekijään yhteyttä
+                    <a href="mailto:sw@tarpeeksihyvaesoft.com">tästä</a>.
+                    <p>Lintujen kuvat tulevat <a href="http://www.luontoportti.com">LuontoPortista</a>. Lintulista
+                    ja LuontoPortti eivät muutoin liity toisiinsa.</p>
+                    <p>Lintulista on avointa lähdekoodia - löydät sen myös
+                    <a href="https://www.github.com/leikareipa/lintulista">GitHubista</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="https://www.github.com/leikareipa/lintulista">Lintulista on GitHub</a>
+            &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
+            &bull; Includes content from <a href="http://www.luontoportti.com">LuontoPortti</a>
+        </footer>
+
+        <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
         <script type="module">
+            import {ObservationListElement} from "./client/dist/react-components/observation-list/ObservationListElement.js"
+            import {CreateNewListButton} from "./client/dist/react-components/buttons/CreateNewListButton.js";
             import {backend_access} from "./client/dist/backend-access.js";
+            import {observation} from "./client/dist/observation.js";
 
-            window.create_new_list = async()=>
+            // Run the app.
+            (async()=>
             {
-                const keys = await backend_access();
+                const knownBirds = await backend_access.fetch_known_birds_list();
 
-                const keyElements = document.createElement("div");
-                keyElements.innerHTML = `<br><b>Keys</b><br>Edit: ${keys.editKey}<br>View: ${keys.viewKey}`;
-                document.body.appendChild(keyElements);
+                // Render a random selection of observations. (In the future, we might draw
+                // a random sample from user-submitted observations, but for now, since there
+                // are very few of those, we just generate random observations on the spot.)
+                if (knownBirds.length)
+                {
+                    const randomObservations = Array(10).fill().map((elem, idx)=>
+                    {
+                        const randomDate = (()=>
+                        {
+                            const date = new Date();
+                            date.setDate(Math.floor(Math.random() * 31));
+                            date.setMonth(Math.floor(Math.random() * 12));
 
-                return;
-            }
+                            return date;
+                        })();
+
+                        return React.createElement(ObservationListElement,
+                        {
+                            key: idx,
+                            observation: observation(
+                            {
+                                place: null,
+                                date: randomDate,
+                                bird: (()=>
+                                {
+                                    let bird;
+                                    let loopCount = 0;
+                                    const maxLoops = 1000;
+
+                                    do { bird = knownBirds[Math.floor(Math.random() * knownBirds.length)]; }
+                                    while (!bird.thumbnailUrl.match(/null-bird-thumbnail/) && (++loopCount < maxLoops));
+
+                                    return ((loopCount >= maxLoops)? null : bird);
+                                })(),
+                            }),
+                            shades: null,
+                        });
+                    });
+
+                    const container = document.getElementById("random-observations");
+
+                    if (!container)
+                    {
+                        panic("Can't find a required container!");
+                    }
+                    else
+                    {
+                        ReactDOM.unmountComponentAtNode(container)
+                        ReactDOM.render(randomObservations, document.getElementById("random-observations"));
+                    }
+                }
+
+                // Render a button with which the user can create a new list.
+                {
+                    const container = document.getElementById("create-new-list");
+
+                    if (!container)
+                    {
+                        panic("Can't find a required container!");
+                    }
+                    else
+                    {
+                        ReactDOM.unmountComponentAtNode(container)
+                        ReactDOM.render(React.createElement(CreateNewListButton), container);
+                    }
+                }
+            })();
         </script>
+      </script>
     </body>
 </html>
