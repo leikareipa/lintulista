@@ -149,12 +149,13 @@ const httpRequests = Object.freeze(
     },
 
     // Returns as an array of observation() objects the observations associated with the
-    // current list; or, on failure, an empty array.
-    fetch_observations: async function(listKey)
+    // given list; or, on failure, an empty array. You should provide as the second parameter
+    // a list of the birds accepted as valid observees. Any observations submitted from the
+    // server that are not found on this list will be ignored.
+    fetch_observations: async function(listKey, knownBirds = [])
     {
         panic_if_not_type("string", listKey);
-
-        const knownBirds = await this.fetch_known_birds_list();
+        panic_if_not_type("object", knownBirds)
 
         const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`,
         {
@@ -264,15 +265,15 @@ export async function backend_access(listKey)
             await this.refresh_observations();
         },
 
-        refresh_observations: async function()
-        {
-            this.observations = Object.freeze(await httpRequests.fetch_observations(listKey));
-        },
-
         refresh_known_birds: async function()
         {
             this.knownBirds = Object.freeze(await httpRequests.fetch_known_birds_list());
-        }
+        },
+
+        refresh_observations: async function()
+        {
+            this.observations = Object.freeze(await httpRequests.fetch_observations(listKey, this.knownBirds));
+        },
     };
     await localCache.refresh();
 
