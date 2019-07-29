@@ -161,6 +161,16 @@ function database_create_list(array $keys, int $timestamp, string $creatorHash)
     }
 }
 
+// Deletes any observations from the given list where the species name matches the given one.
+function database_delete_observations_of_species(string $listKey, string $speciesName)
+{
+    $listId = database_get_list_id_of_key($listKey, true);
+
+    database_command("DELETE FROM lintulista_observations WHERE species = '{$speciesName}'");
+
+    return;
+}
+
 // Insert or update the given observation in the given list. If the observation already
 // exists in the list, its data are overwritten by those of the given observation; otherwise
 // a new observation entry is created in the list.
@@ -180,11 +190,11 @@ function database_store_observation(string $listKey, array $observation)
         exit(return_failure("Unable to find a bird species called \"{$species}\"."));
     }
 
+    $listId = database_get_list_id_of_key($listKey, true);
     $existingObservation = database_get_observation_of_species($listKey, $species);
+    
     if ($existingObservation)
     {
-        $listId = database_get_list_id_of_key($listKey, true);
-
         $combinedValues = [];
 
         // Collect together the values that need to be updated.

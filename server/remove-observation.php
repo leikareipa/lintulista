@@ -14,10 +14,9 @@
  * The above will remove an observation of the species "Naakka". If no observation of
  * that bird exists in the list, success will be returned without further action.
  * 
- * Note that you are expected to remove only one observation per request.
- * 
  */
 
+require_once "database.php";
 require_once "list-id.php";
 require_once "return.php";
 
@@ -44,36 +43,7 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
     }
 }
 
-$baseFilePath = ("./assets/lists/" . $_GET["list"] . "/");
-
-// Remove the given observation from the list of observation.
-{
-    $observationData = json_decode(file_get_contents($baseFilePath . "observations.json"), true);
-
-    if (!$observationData)
-    {
-        exit(return_failure("Server-side IO failure. Could not read the list of observations."));
-    }
-
-    if (!isset($observationData["observations"]))
-    {
-        exit(return_failure("Server-side IO failure. The observation list is missing the required \"observations\" property."));
-    }
-
-    // Find the observation in the list, and remove it.
-    {
-        $idx = array_search($targetObservation["species"],
-                            array_map(function($observation){return $observation["species"];}, $observationData["observations"]));
-
-        if ($idx !== false)
-        {
-            unset($observationData["observations"][$idx]);
-            $observationData["observations"] = array_values($observationData["observations"]);
-        }
-    }
-}
-
-file_put_contents(($baseFilePath . "observations.json"), json_encode($observationData, JSON_UNESCAPED_UNICODE));
+database_delete_observations_of_species($_GET["list"], $targetObservation["species"]);
 
 exit(return_success());
 
