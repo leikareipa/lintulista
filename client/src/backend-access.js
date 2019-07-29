@@ -80,7 +80,6 @@ const httpRequests = Object.freeze(
         const [wasSuccessful,] = await this.send_request(`${this.backendURLs.deleteObservation}?list=${listKey}`,
         {
             method: "POST",
-            cache: "no-store",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(postData),
         });
@@ -133,10 +132,7 @@ const httpRequests = Object.freeze(
     //
     fetch_backend_limits: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getBackendLimits,
-        {
-            cache: "no-store",
-        });
+        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getBackendLimits);
 
         if (wasSuccessful)
         {
@@ -157,10 +153,7 @@ const httpRequests = Object.freeze(
         panic_if_not_type("string", listKey);
         panic_if_not_type("object", knownBirds)
 
-        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`,
-        {
-            cache: "no-store",
-        });
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`);
 
         if (wasSuccessful)
         {
@@ -210,7 +203,6 @@ const httpRequests = Object.freeze(
         const [wasSuccessful,] = await this.send_request(`${this.backendURLs.postObservation}?list=${listKey}`,
         {
             method: "POST",
-            cache: "no-store",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(postData),
         });
@@ -233,7 +225,6 @@ const httpRequests = Object.freeze(
         const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.createList,
         {
             method: "POST",
-            cache: "no-store",
         });
 
         if (wasSuccessful)
@@ -273,7 +264,7 @@ export async function backend_access(listKey)
         refresh_observations: async function()
         {
             this.observations = Object.freeze(await httpRequests.fetch_observations(listKey, this.knownBirds));
-        },
+        }
     };
     await localCache.refresh();
 
