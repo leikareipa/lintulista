@@ -17,6 +17,11 @@ function return_success($data = "")
 
 function return_failure($errorMessage = "")
 {
+    // Error reponses should not be cached. Note that this assumes that no other
+    // output has been produced from any of the scripts that ran prior to calling
+    // this function.
+    header("Cache-Control: no-cache");
+
     echo json_encode(["valid"=>false, "message"=>$errorMessage], JSON_UNESCAPED_UNICODE);
 }
 
