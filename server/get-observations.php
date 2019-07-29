@@ -1,5 +1,7 @@
 <?php
 
+header("Cache-Control: no-store");
+
 /*
  *
  * 2019 Tarpeeksi Hyvae Soft /
