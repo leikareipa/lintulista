@@ -1,5 +1,8 @@
 <?php
 
+// In general, we don't expect the list of known birds to change very often.
+header("Cache-Control: max-age=604800");
+
 /*
  *
  * 2019 Tarpeeksi Hyvae Soft /
