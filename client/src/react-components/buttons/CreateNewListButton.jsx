@@ -6,6 +6,9 @@
 
 "use strict";
 
+import {backend_access} from "../../backend-access.js";
+import { is_defined } from "../../assert.js";
+
 // Displays a multi-step button, whose contents change depending on how many steps have
 // been taken.
 //
@@ -16,36 +19,95 @@ export function CreateNewListButton(props = {})
 {
     CreateNewListButton.validate_props(props);
 
-    const [stepsCompleted, setStepsCompleted] = React.useState(0);
+    const [currentStep, setCurrentStep] = React.useState("1");
+
+    // When the server has created a new list and sent us the keys, they will be stored here.
+    const [newListKeys, setNewListKeys] = React.useState(0);
 
     React.useEffect(()=>
     {
-        switch (stepsCompleted)
+        if (newListKeys)
         {
-            case 1: setTimeout(()=>setStepsCompleted(2), 8500); break; /* TODO: Send a request to the server to create a new list.*/
+            if ((currentStep === "2") &&
+                is_defined(newListKeys.editKey) &&
+                is_defined(newListKeys.viewKey))
+            {
+                setCurrentStep("3");
+            }
+            else
+            {
+                setCurrentStep("fail");
+            }
         }
-    }, [stepsCompleted]);
+    }, [newListKeys])
+
+    React.useEffect(()=>
+    {
+        switch (currentStep)
+        {
+            case "2":
+            {
+                (async()=>
+                {
+                    const keys = await backend_access.create_new_list();
+                    
+                    if (keys)
+                    {
+                        setNewListKeys(keys);
+                    }
+                    else
+                    {
+                        setCurrentStep("fail");
+                    }
+                })();
+
+                break;
+            }
+            case "3":
+            {
+                if (!is_defined(newListKeys.editKey) ||
+                    !is_defined(newListKeys.viewKey))
+                {
+                    setCurrentStep("fail");
+                }
+
+                break;
+            }
+            default: break;
+        }
+    }, [currentStep]);
 
     // For each step the elements to be displayed inside the button.
-    const stepsElements =
-    [
-        <div>Luo uusi lista</div>,
+    const stepElements =
+    {
+        "1":
+            <div>Luo uusi lista</div>,
 
-        <div>
-            <i className="fas fa-spinner fa-spin fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
-            Luodaan uutta listaa, odotahan...
-        </div>,
+        "2":
+            <div>
+                <i className="fas fa-spinner fa-spin fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
+                Luodaan uutta listaa, odotahan...
+            </div>,
 
-        <div>
-            <i className="fas fa-link fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
-            Luotiin uusi lista. <a href="#">Nappaa linkki talteen</a>
-        </div>
-    ];
+        "3":
+            <div>
+                <i className="fas fa-link fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
+                    Luotiin uusi lista. <a href={`./edit/${newListKeys.editKey}`}
+                                           target="_blank"
+                                           rel="noopener noreferrer">Nappaa linkki talteen</a>
+            </div>,
+
+        "fail":
+            <div>
+                <i className="fas fa-times fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
+                Uutta listaa ei voitu luoda!
+            </div>,
+    };
 
     return <div className="CreateNewListButton">
-                <div className={`button step-${stepsCompleted+1}`}
-                     onClick={()=>setStepsCompleted(Math.max(1, stepsCompleted))}>
-                         {stepsElements[stepsCompleted] || <></>}
+                <div className={`button step-${currentStep}`}
+                     onClick={()=>{if (currentStep === "1") setCurrentStep("2")}}>
+                         {stepElements[currentStep] || <></>}
                 </div>
            </div>
 }

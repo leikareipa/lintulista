@@ -149,6 +149,11 @@ footer
     -moz-user-select: auto;
 }
 
+.CreateNewListButton > .button.step-fail
+{
+    background-color: rgb(185, 58, 58);
+}
+
 .ObservationListElement
 {
     position: relative;
