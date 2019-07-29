@@ -24,6 +24,17 @@ require_once "backend-limits.php";
 require_once "database.php";
 require_once "return.php";
 
+// For rudimentary prevention of clients spamming new list creation, we'll force a wait
+// time on creating a list.
+//
+/// TODO: In the future, you might e.g. adjust this value based on how many lists the
+/// client has created in the last x minutes, going from no or very little delay to more
+/// of it.
+if (sleep(8) === false)
+{
+    exit(return_failure("Server-side error."));
+}
+
 // Attempt to create a new list with unique keys. We'll keep looping until the database
 // informs us that the keys were valid and that it created the desired list.
 {
