@@ -16,7 +16,7 @@ export function BirdSearch(props = {})
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
     return <>
-               <BirdSearchField onFocus={props.shades.put_on}
+               <BirdSearchField onFocus={()=>props.shades.put_on({onClick:props.shadesOnClick})}
                                 onChange={regenerate_search_results}
                                 onBlur={remove_shades_if_lost_focus}/>
                <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"

@@ -21,7 +21,6 @@
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
         <script type="module">
             import {render_observation_list} from "./client/dist/render/render-observation-list.js";
-            import {render_bird_search} from "./client/dist/render/render-bird-search.js";
             import {backend_access} from "./client/dist/backend-access.js";
 
             // Grab from the address bar the id of the observation list to be operated on.
@@ -49,7 +48,6 @@
                 const backend = await backend_access(listId);
 
                 render_observation_list(backend);
-                render_bird_search(backend);
             })();
         </script>
     </body>
