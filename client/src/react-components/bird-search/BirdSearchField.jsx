@@ -6,7 +6,7 @@ export function BirdSearchField(props = {})
 {
     return <input className="BirdSearchField"
                   type="search"
-                  placeholder=""
+                  placeholder="Hae lajin nimellä..."
                   spellCheck="false"
                   autoComplete="off"
                   onBlur={props.onBlur}

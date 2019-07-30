@@ -16,11 +16,11 @@ export function BirdSearchResultElement(props = {})
         }
         else
         {
-            return [false, <>
-                               <i className="fas fa-crow" style={{color:"mediumseagreen"}}/>
+            return [false, <div style={{marginTop:"3px"}}>
+                               <i className="fas fa-crow fa-lg" style={{color:"mediumseagreen"}}/>
                                <i className="fas fa-plus fa-xs" style={{color:"mediumseagreen"}}/>
-                               <span> Merkitse uudeksi havainnoksi</span>
-                           </>];
+                               <span> Merkitse listaan</span>
+                           </div>];
         }
     })();
 

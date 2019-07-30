@@ -1,8 +1,8 @@
 "use strict";
 
+import {panic_if_undefined, panic_if_not_type} from "../../assert.js"
 import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
-import {panic_if_undefined, panic_if_not_type} from "../../assert.js"
 import {BirdSearchField} from "./BirdSearchField.js";
 
 // Displays a search bar and corresponding search results on bird names. Expects the names
@@ -15,21 +15,26 @@ export function BirdSearch(props = {})
 
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
+    // As a feature of convenience, clear the search results when the user clicks outside
+    // of the search box.
+    /// FIXME: This clears the results when the user clicks anywhere. Also, the search
+    /// field text should also be cleared away.
+    React.useEffect(()=>
+    {
+        window.addEventListener("click", clear_search_results);
+        return ()=>window.removeEventListener("keydown", clear_search_results);
+
+        function clear_search_results()
+        {
+            setCurrentSearchResultElements([]);
+        }
+    }, []);
+
     return <>
-               <BirdSearchField onFocus={()=>props.shades.put_on({onClick:props.shadesOnClick})}
-                                onChange={regenerate_search_results}
-                                onBlur={remove_shades_if_lost_focus}/>
+               <BirdSearchField onChange={regenerate_search_results}/>
                <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"
                                          resultElements={currentSearchResultElements}/>
            </>
-
-    function remove_shades_if_lost_focus()
-    {
-        if (!currentSearchResultElements.length)
-        {
-            props.shades.pull_off();
-        }
-    }
 
     // Called when the user selects one of the search results.
     async function select_bird(bird)
@@ -75,7 +80,7 @@ BirdSearch.defaultProps =
 
 BirdSearch.validate_props = function(props)
 {
-    panic_if_undefined(props.backend, props.selectionCallback, props.shades);
+    panic_if_undefined(props.backend, props.selectionCallback);
 
     return;
 }

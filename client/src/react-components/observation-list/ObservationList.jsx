@@ -31,14 +31,12 @@ export function ObservationList(props = {})
     React.useEffect(()=>
     {
         setObservationElements(generate_observation_elements());
-    }, [sortObservationsBy])
+    }, [sortObservationsBy]);
 
     return <div className="ObservationList">
                <div className="search">
                    <BirdSearch key={searchFieldKey}
-                               shades={props.shades}
                                backend={props.backend}
-                               shadesOnClick={reset_search_field}
                                selectionCallback={(bird)=>add_observation(bird)}/>
                </div>
                <div className="sorter">
@@ -58,21 +56,9 @@ export function ObservationList(props = {})
     // Called when the user requests us to add a new observation into the list.
     async function add_observation(bird)
     {
-        reset_search_field();
-
-        await props.shades.pull_off();
-
         await props.backend.post_observation(observation({bird, date:new Date()}));
 
         setObservationElements(generate_observation_elements());
-    }
-
-    // Clear away any input in the search file, and close any search results that might
-    // be open.
-    function reset_search_field()
-    {
-        props.shades.pull_off();
-        setSearchFieldKey(searchFieldKey + 1);
     }
 
     function generate_observation_elements()

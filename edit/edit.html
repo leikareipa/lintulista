@@ -5,17 +5,31 @@
         <meta name="referrer" content="no-referrer">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Damion&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="edit.css">
         <link rel="stylesheet" type="text/css" href="edit-animations.css">
         <base href="/">
     </head>
     <body>
-        <div id="search-widget" style="margin-top: 20px;"></div>
-        <div id="observation-list" style="margin-top: 50px; margin-bottom: 50px;"></div>
+        <header>
+            <div id="title">
+                <div id="app-name">
+                    Lintulista!
+                </div>
+            </div>
+        </header>
+
+        <div id="observation-list"></div>
 
         <div id="set-date-dialog"></div>
         <div id="set-place-dialog"></div>
+
+        <footer>
+            <a href="https://www.github.com/leikareipa/lintulista">Lintulista on GitHub</a>
+            &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
+            &bull; Includes content from <a href="http://www.luontoportti.com">LuontoPortti</a>
+        </footer>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>

@@ -21,21 +21,23 @@ header
 
 header > #title
 {
+    transform: rotate(-2deg);
     position: absolute;
     top: 30px;
     left: 15%;
+    color: rgb(241, 241, 241);
 }
 
 header > #title > #app-name
 {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: "Damion", cursive;
     font-size: 400%;
-
 }
 
 header > #title > #subtitle
 {
-    font-family: serif;
+    transform: rotate(2deg); /* Counter the title's rotation.*/
+    font-family: sans-serif;
     font-size: 70%;
     margin-top: -15px;
 }
@@ -56,6 +58,10 @@ footer
     justify-content: center;
     background-color: #dbdbdb;
     margin-bottom: -150px;
+
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 }
 
 #content > *
@@ -173,7 +179,7 @@ footer
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    border: 18px solid #efefef;
+    border: 17px solid #efefef;
     box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.4);
     z-index: 2;
 }
