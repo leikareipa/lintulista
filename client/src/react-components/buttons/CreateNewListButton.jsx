@@ -92,9 +92,9 @@ export function CreateNewListButton(props = {})
         "3":
             <div>
                 <i className="fas fa-link fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
-                    Luotiin uusi lista. <a href={`./edit/${newListKeys.editKey}`}
+                    Luotiin uusi lista. Nappaa <a href={`./edit/${newListKeys.editKey}`}
                                            target="_blank"
-                                           rel="noopener noreferrer">Nappaa linkki talteen</a>
+                                           rel="noopener noreferrer">linkki</a> talteen.
             </div>,
 
         "fail":

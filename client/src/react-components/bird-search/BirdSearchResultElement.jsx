@@ -8,34 +8,38 @@ export function BirdSearchResultElement(props = {})
 {
     BirdSearchResultElement.validate_props(props);
 
-    const {hasBeenPreviouslyObserved, dateObserved} = (()=>
+    const [hasBeenPreviouslyObserved, dateObserved] = (()=>
     {
         if (props.dateObserved)
         {
-            return {
-                hasBeenPreviouslyObserved: true,
-                dateObserved: <>{props.dateObserved}</>,
-            };
+            return [true, <>{props.dateObserved}</>];
         }
         else
         {
-            return {
-                hasBeenPreviouslyObserved: false,
-                dateObserved: <>
-                                  <i className="fas fa-pen" style={{color:"mediumseagreen"}}/>
-                                  <span> Merkitse uudeksi havainnoksi</span>
-                              </>,
-            };
+            return [false, <>
+                               <i className="fas fa-crow" style={{color:"mediumseagreen"}}/>
+                               <i className="fas fa-plus fa-xs" style={{color:"mediumseagreen"}}/>
+                               <span> Merkitse uudeksi havainnoksi</span>
+                           </>];
         }
     })();
 
-    return <div className="BirdSearchResultElement" style={{cursor: (hasBeenPreviouslyObserved? "default" : "pointer")}}
-                                                    onClick={()=>{!hasBeenPreviouslyObserved? props.clickCallback(props.bird) : 1;}}>
-               <BirdThumbnail bird={props.bird}/>
-               <span className="name">
-                   {props.bird.species}<br/>
-                   <span className="observed-date">{dateObserved}</span>
-               </span>
+    return <div className={`BirdSearchResultElement ${!hasBeenPreviouslyObserved? "not-previously-observed" : ""}`.trim()}
+                onClick={()=>{if (!hasBeenPreviouslyObserved) props.clickCallback(props.bird)}}>
+                    <BirdThumbnail bird={props.bird}/>
+                    <div className="card">
+                        <div className="bird-name">
+                            {props.bird.species}
+                        </div>
+                        <div className="classification">
+                            {props.bird.order}
+                            <i className="fas fa-caret-right fa-sm" style={{margin:"5px", color:"rgba(0, 0, 0, 0.4)"}}/>
+                            {props.bird.family}
+                        </div>
+                        <div className="observed-date">
+                            {dateObserved}
+                        </div>
+                    </div>
            </div>
 }
 

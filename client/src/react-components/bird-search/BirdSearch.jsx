@@ -2,7 +2,7 @@
 
 import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
 import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
-import {panic_if_undefined} from "../../assert.js"
+import {panic_if_undefined, panic_if_not_type} from "../../assert.js"
 import {BirdSearchField} from "./BirdSearchField.js";
 
 // Displays a search bar and corresponding search results on bird names. Expects the names
@@ -31,6 +31,14 @@ export function BirdSearch(props = {})
         }
     }
 
+    // Called when the user selects one of the search results.
+    async function select_bird(bird)
+    {
+        panic_if_not_type("object", bird);
+
+        props.selectionCallback(bird);
+    }
+
     // Refresh the list of search results that match the current text in the search field.
     function regenerate_search_results(inputEvent)
     {
@@ -47,10 +55,7 @@ export function BirdSearch(props = {})
 
                     searchResults.push(<BirdSearchResultElement key={bird.species}
                                                                 bird={bird}
-                                                                clickCallback={(bird)=>{
-                                                                    props.shades.pull_off();
-                                                                    props.selectionCallback(bird);
-                                                                }}
+                                                                clickCallback={(bird)=>select_bird(bird)}
                                                                 dateObserved={observation? observation.dateString : null} />);
                 }
             });
@@ -65,7 +70,7 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 4,
+    maxResultElements: 5,
 };
 
 BirdSearch.validate_props = function(props)

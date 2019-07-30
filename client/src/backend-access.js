@@ -45,7 +45,12 @@ const httpRequests = Object.freeze(
         return fetch(url, params)
                 .then(response=>
                 {
-                    return (response.ok? response.json() : undefined);
+                    if (!response.ok)
+                    {
+                        throw response.statusText;
+                    }
+
+                    return response.json();
                 })
                 .then(ticket=>
                 {

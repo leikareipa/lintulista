@@ -32,7 +32,7 @@ export function render_bird_search(backend)
     const searchShades = shades(
     {
         z: 99,
-        opacity: 0.6,
+        opacity: 0.5,
         container: document.body,
         onClick: ()=>
         {
@@ -54,6 +54,8 @@ export function render_bird_search(backend)
         {
             // Clear the search bar and its results.
             render_bird_search(backend);
+
+            await searchShades.pull_off();
 
             const newObservation = observation({bird, date:new Date()});
 
