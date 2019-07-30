@@ -13,12 +13,19 @@ import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationInfo} from "./ObservationInfo.js";
+import {darken_viewport} from "../../darken_viewport.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
 {
     ObservationListElement.validate_props(props);
+
+    const shadeArgs =
+    {
+        z: 110,
+        opacity: 0.5,
+    };
 
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
@@ -75,7 +82,7 @@ export function ObservationListElement(props = {})
     {
         resetButtonState();
 
-        await props.shades.put_on();
+        const shades = await darken_viewport(shadeArgs);
 
         await open_modal_dialog(QueryObservationDeletion,
         {
@@ -87,7 +94,7 @@ export function ObservationListElement(props = {})
             }
         });
 
-        await props.shades.pull_off();
+        await shades.remove();
     }
 
     // When a button is pressed to change the observation's date. Will prompt the user to
@@ -97,7 +104,7 @@ export function ObservationListElement(props = {})
     {
         resetButtonState();
 
-        await props.shades.put_on();
+        const shades = await darken_viewport(shadeArgs);
 
         await open_modal_dialog(QueryObservationDate,
         {
@@ -123,7 +130,7 @@ export function ObservationListElement(props = {})
             }
         });
 
-        await props.shades.pull_off();
+        await shades.remove();
     }
 
     // When a button is pressed to change the observation's place. Will prompt the user to
@@ -133,7 +140,7 @@ export function ObservationListElement(props = {})
     {
         resetButtonState();
 
-        await props.shades.put_on();
+        const shades = await darken_viewport(shadeArgs);
 
         await open_modal_dialog(QueryObservationPlace,
         {
@@ -160,7 +167,7 @@ export function ObservationListElement(props = {})
             }
         });
 
-        await props.shades.pull_off();
+        await shades.remove();
     }
 
     // Compares the old data (the current observation parameters) with proposed new ones;
@@ -183,7 +190,7 @@ export function ObservationListElement(props = {})
 
 ObservationListElement.validate_props = function(props)
 {
-    panic_if_undefined(props, props.shades, props.observation);
+    panic_if_undefined(props, props.observation);
 
     return;
 }

@@ -3,19 +3,29 @@
  * Lintulista
  * 
  * Provides functions to create and manage shades - DOM elements filling the entire parent
- * container with a dark, partially see-through color.
+ * container with a dark (partially see-through or fully opaque) color.
  * 
  */
 
 "use strict";
 
-import {panic_if_undefined, error} from "./assert.js";
+import {error, panic_if_not_type} from "./assert.js";
 
-export function shades(args = {/*z, onClick, opacity, container*/})
+// Appends an element over the viewport's entire body, with the given opacity, z-index and
+// click callback as given.
+//
+// Returns a promise that resolves to the function's interface once the darkener element
+// has transitioned into its full opacity.
+//
+// Once the return promise resolves, you can call .remove() to remove the darkener element
+// from the DOM. Note that .remove() returns with a promise that resolves once the darkener
+// element has transitioned into full transparency and been removed from the DOM.
+//
+export function darken_viewport(args = {/*z, onClick, opacity*/})
 {
-    panic_if_undefined(args, args.container);
+    panic_if_not_type("object", args);
 
-    args = {...shades.defaultArgs, ...args};
+    args = {...darken_viewport.defaultArgs, ...args};
 
     const shadeId = random_id();
 
@@ -40,11 +50,10 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                                  width: 100%;
                                  height: 100%;
                                  opacity: 0;
-                                 visibility: hidden;
-                                 transition: visibility 0s, opacity ${transitionDuration}s linear;
+                                 transition: opacity ${transitionDuration}s linear;
                                  z-index: ${args.z};`
 
-        args.container.appendChild(element);
+        document.body.appendChild(element);
 
         return element;
     })();
@@ -53,42 +62,12 @@ export function shades(args = {/*z, onClick, opacity, container*/})
     {
         id: shadeId,
 
-        put_on: (overrideArgs = {/*z, onClick, opacity*/})=>
+        // Remove the darkening. Returns a promise that resolves once the darkener element
+        // has transitioned into full transparency and has been removed from the DOM.
+        remove: ()=>
         {
             return new Promise(resolve=>
             {
-                if (!shadeId)
-                {
-                    resolve();
-                    return;
-                }
-
-                shadeElement.style.zIndex = (overrideArgs.z || args.z);
-                shadeElement.onclick = (overrideArgs.onClick || args.onClick);
-                shadeElement.style.opacity = `${overrideArgs.opacity || args.opacity}`;
-                shadeElement.style.visibility = "visible";
-                
-                // Use a timeout instead of a transition event listener to prevent a missing
-                // transition from holding up the app.
-                setTimeout(()=>
-                {
-                    resolve();
-                }, (transitionDuration * 1000));
-            });
-        },
-
-        pull_off: (args = {})=>
-        {
-            return new Promise(resolve=>
-            {
-                args = 
-                {
-                    ...{
-                        removeWhenDone: false,
-                    },
-                    ...args,
-                };
-
                 if (!shadeId)
                 {
                     resolve();
@@ -101,12 +80,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 // transition from holding up the app.
                 setTimeout(()=>
                 {
-                    shadeElement.style.visibility = "hidden";
-
-                    if (args.removeWhenDone)
-                    {
-                        shadeElement.remove();
-                    }
+                    shadeElement.remove();
 
                     resolve();
                 }, (transitionDuration * 1000));
@@ -114,7 +88,25 @@ export function shades(args = {/*z, onClick, opacity, container*/})
         },
     });
 
-    return publicInterface;
+    return new Promise(resolve=>
+    {
+        if (!shadeId)
+        {
+            resolve(publicInterface);
+            return;
+        }
+        
+        // Use a timeout instead of a transition event listener to prevent a missing
+        // transition from holding up the app.
+        shadeElement.style.zIndex = args.z;
+        shadeElement.onclick = args.onClick;
+        shadeElement.style.opacity = `${window.getComputedStyle(shadeElement).opacity + args.opacity}`; // Trigger post-appendChild() reflow with getComputedStyle().
+
+        setTimeout(()=>
+        {
+            resolve(publicInterface);
+        }, (transitionDuration * 1000));
+    });
 
     // Generates a unique (pseudo-)random DOM id; otherwise returns null to indicate failure.
     function random_id()
@@ -125,7 +117,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
         
         do
         {
-            if (++loops > 100000)
+            if (++loops > 100)
             {
                 return null;
             }
@@ -138,6 +130,9 @@ export function shades(args = {/*z, onClick, opacity, container*/})
                 [seed[rand1], seed[rand2]] = [seed[rand2], seed[rand1]];
             }
 
+            // Prevent an id beginning with a number. That would only happen if you used the raw
+            // seed as an id rather than appending it to a known string, but let's ensure this
+            // anyway.
             if (!seed[0].match(/[a-zA-Z]/))
             {
                 seed[0] = "b";
@@ -150,7 +145,7 @@ export function shades(args = {/*z, onClick, opacity, container*/})
     }
 }
 
-shades.defaultArgs =
+darken_viewport.defaultArgs =
 {
     z: 100,
     opacity: 0.4,

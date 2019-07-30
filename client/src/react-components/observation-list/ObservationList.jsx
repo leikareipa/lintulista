@@ -67,7 +67,6 @@ export function ObservationList(props = {})
         {
             return <ObservationListElement observation={obs}
                                            key={obs.bird.species}
-                                           shades={props.shades}
                                            maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
                                            requestDeleteObservation={async(self)=>await delete_observation(self)}
                                            requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
@@ -138,7 +137,7 @@ export function ObservationList(props = {})
 
 ObservationList.validate_props = function(props)
 {
-    panic_if_undefined(props.backend, props.shades);
+    panic_if_undefined(props.backend);
 
     return;
 }

@@ -6,20 +6,16 @@
 
 "use strict";
 
-import {shades} from "./shades.js"
+import {darken_viewport} from "./darken_viewport.js"
 
 export function panic(errorMessage = "")
 {
     // Draw a black screen over the entire page, blocking user interaction.
-    const blackScreen = shades(
+    darken_viewport(
     {
-        container: document.body,
         opacity: 1,
-        onClick: ()=>{},
         z: 1000, // Should be above everything else on the page.
     });
-
-    blackScreen.put_on();
 
     alert(`Lintulista is in a panic: ${errorMessage}`);
     throw Error(`Lintulista is in a panic: ${errorMessage}`);
