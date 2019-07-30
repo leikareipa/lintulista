@@ -89,7 +89,6 @@ export function ObservationListElement(props = {})
             observation: observationData,
             onAccept: async()=>
             {
-                await delay(1500);
                 await props.requestDeleteObservation(observationData);
             }
         });
@@ -114,7 +113,6 @@ export function ObservationListElement(props = {})
                 // Send the new place string to the server.
                 if (newDate !== null)
                 {
-                    await delay(1500);
                     const updatedObservation = await props.requestChangeObservationDate(observationData, newDate);
 
                     if (updatedObservation)
@@ -151,7 +149,6 @@ export function ObservationListElement(props = {})
                 // Send the new place string to the server.
                 if (newPlace !== null)
                 {
-                    await delay(1500);
                     const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
 
                     if (updatedObservation)

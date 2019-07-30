@@ -16,6 +16,12 @@ import {Dialog} from "./Dialog.js"
 //
 // The observation whose deletion is prompted is to be provided via props.observation.
 //
+// If the user accepts the dialog (i.e. confirms the deletion), the callback provided via
+// props.onDialogAccept will be called. It will receive no parameters.
+//
+// If the user rejects the dialog, the callback provided via props.onDialogReject will be
+// called. It will receive no parameters.
+//
 export function QueryObservationDeletion(props = {})
 {
     QueryObservationDeletion.validateProps(props);

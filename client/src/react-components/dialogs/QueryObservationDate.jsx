@@ -15,10 +15,13 @@ import {Dialog} from "./Dialog.js"
 //
 // The observation for which the date is prompted is to be provided via props.observation.
 //
-// A callback function which receives the date once the dialog closes can be given via
-// props.receiveData. It will be called on dialog close with the following object as
-// a parameter: {day, month, year}. Note especially that month will be given as 1-indexed,
-// such that 1 is January and 12 is December.
+// If the user accepts the dialog, the callback provided via props.onDialogAccept will be
+// called with the object {day, month, year} as a parameter, giving the user-provided date for
+// the observation. Note that 'month' will be given as a 1-indexed value, such that e.g.
+// 1 is January and 12 is December.
+//
+// If the user rejects the dialog, the callback provided via props.onDialogReject will be
+// called. It will receive no parameters.
 //
 export function QueryObservationDate(props = {})
 {

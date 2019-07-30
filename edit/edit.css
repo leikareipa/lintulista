@@ -14,7 +14,7 @@ body
     z-index: 1;
 
     padding-right: 1.2vw;
-    padding-left: 10px;
+    padding-left: 8px;
 
     background-image: linear-gradient(to right, #c0c0c0, #adadad);
 }
@@ -514,6 +514,36 @@ footer
 }
 
 .Dialog.QueryObservationDate > .form > .fields > .bird-name
+{
+    color: black;
+    text-align: left;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar
+{
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar *
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar > .month
+{
+    flex: 2;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields .ScrollerLabel
+{
+    text-align: center;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;

@@ -40,12 +40,14 @@ export function QueryAddNewObservation(props = {})
     return <Dialog component="QueryAddNewObservation"
                    title="Lisätäänkö havainto?"
                    titleIcon="fas fa-crow"
+                   rejectButtonText="Peruuta"
+                   acceptButtonText="Lisää"
                    onDialogAccept={()=>close_dialog(true)}
                    onDialogReject={()=>close_dialog(false)}>
                <BirdThumbnail bird={props.bird}/>
                <div className="fields">
                    <div className="bird-name">
-                       {props.bird.species}:
+                       {props.bird.species}
                    </div>
                    <div className="date-bar">
                        <div className="day">

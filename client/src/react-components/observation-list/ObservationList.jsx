@@ -7,7 +7,10 @@
 "use strict";
 
 import {ObservationListElement} from "./ObservationListElement.js";
+import {QueryAddNewObservation} from "../dialogs/QueryAddNewObservation.js";
 import {panic_if_undefined} from "../../assert.js";
+import {open_modal_dialog} from "../../open-modal-dialog.js";
+import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 
@@ -26,8 +29,6 @@ export function ObservationList(props = {})
 
     const [observationElements, setObservationElements] = React.useState(generate_observation_elements());
 
-    const [searchFieldKey, setSearchFieldKey] = React.useState(0);
-
     React.useEffect(()=>
     {
         setObservationElements(generate_observation_elements());
@@ -35,8 +36,7 @@ export function ObservationList(props = {})
 
     return <div className="ObservationList">
                <div className="search">
-                   <BirdSearch key={searchFieldKey}
-                               backend={props.backend}
+                   <BirdSearch backend={props.backend}
                                selectionCallback={(bird)=>add_observation(bird)}/>
                </div>
                <div className="sorter">
@@ -56,9 +56,22 @@ export function ObservationList(props = {})
     // Called when the user requests us to add a new observation into the list.
     async function add_observation(bird)
     {
-        await props.backend.post_observation(observation({bird, date:new Date()}));
+        const shades = await darken_viewport();
 
-        setObservationElements(generate_observation_elements());
+        await open_modal_dialog(QueryAddNewObservation,
+        {
+            bird,
+            onAccept: async({year, month, day})=>
+            {
+                panic_if_undefined(year, month, day);
+
+                await props.backend.post_observation(observation({bird, date:new Date(year, month-1, day)}));
+
+                setObservationElements(generate_observation_elements());
+            }
+        });
+
+        await shades.remove();
     }
 
     function generate_observation_elements()
