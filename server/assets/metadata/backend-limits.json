@@ -6,7 +6,7 @@
     "limits":
     {
         "maxPlaceNameLength": 50,
-        "editKeyLength": 50,
+        "editKeyLength": 60,
         "viewKeyLength": 7,
         "ipHashLength": 16
     }
