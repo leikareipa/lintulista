@@ -1,7 +1,7 @@
 "use strict";
 
+import {panic_if_not_type} from "../../assert.js"
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {panic} from "../../assert.js"
 
 // An element displaying information about an individual search result.
 export function BirdSearchResultElement(props = {})
@@ -37,10 +37,7 @@ export function BirdSearchResultElement(props = {})
 
 BirdSearchResultElement.validate_props = function(props)
 {
-    if (typeof props.clickCallback !== "function")
-    {
-        panic("Expected a click handler function.");
-    }
+    panic_if_not_type("function", props.clickCallback);
 
     return;
 }
