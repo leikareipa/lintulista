@@ -15,7 +15,6 @@ import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationInfo} from "./ObservationInfo.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {delay} from "../../delay.js";
 
 export function ObservationListElement(props = {})
 {
@@ -65,15 +64,17 @@ export function ObservationListElement(props = {})
         pulseGeoTagElement: ()=>{},
     }
 
-    return <div className="ObservationListElement" onMouseEnter={()=>setMouseHovering(true)}
-                                                   onMouseLeave={()=>setMouseHovering(false)}>
-                <BirdThumbnail bird={observationData.bird}/>
-                <div className="card">
-                    <ObservationInfo observation={observationData}
-                                     setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
-                </div>
-                <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/>
-            </div>
+    return <div className={`ObservationListElement ${props.visible? "" : "hidden"}`.trim()}
+                onMouseEnter={()=>setMouseHovering(true)}
+                onMouseLeave={()=>setMouseHovering(false)}>
+                    {props.showOrder? <div className="order-tag">{observationData.bird.order}</div> : <></>}
+                    <BirdThumbnail bird={observationData.bird}/>
+                    <div className="card">
+                        <ObservationInfo observation={observationData}
+                                         setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
+                    </div>
+                    <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/>
+           </div>
 
     // When a button is pressed to delete the observation. Will requests the backend to
     // remove this observation from the user's list of observations. Takes in a callback
@@ -171,7 +172,7 @@ export function ObservationListElement(props = {})
     // any new parameters that differ from the existing ones will cause the corresponding
     // DOM elements to be given a brief animation to indicate to the user that their values
     // have changed.
-    function pulse_changed_elements(oldData, newData)
+    async function pulse_changed_elements(oldData, newData)
     {
         if (newData.place !== oldData.place)
         {
@@ -183,6 +184,11 @@ export function ObservationListElement(props = {})
             animation.pulseDateElement();
         }
     }
+}
+
+ObservationListElement.defaultProps =
+{
+    showOrder: false,
 }
 
 ObservationListElement.validate_props = function(props)
