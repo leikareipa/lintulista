@@ -21,7 +21,9 @@ export function BirdThumbnail(props = {})
 
     // For lazy image loading.
     const thumbnailRef = React.createRef();
-    const [thumbnailSrc, setThumbnailSrc] = React.useState("./client/assets/images/placeholder-bird-thumbnail.png");
+    const [thumbnailSrc, setThumbnailSrc] = React.useState(props.useLazyLoading? "./client/assets/images/placeholder-bird-thumbnail.png"
+                                                                               : props.bird.thumbnailUrl);
+
     const intersectionObserver = new IntersectionObserver(([element])=>
     {
         if (element.isIntersecting)
@@ -33,15 +35,23 @@ export function BirdThumbnail(props = {})
 
     React.useEffect(()=>
     {
-        intersectionObserver.observe(thumbnailRef.current);
-        
-        return ()=>{intersectionObserver.disconnect()}
+        if (props.useLazyLoading)
+        {
+            intersectionObserver.observe(thumbnailRef.current);
+            
+            return ()=>{intersectionObserver.disconnect()}
+        }
     }, []);
 
     return <img className="BirdThumbnail"
                 referrerPolicy="no-referrer"
                 src={thumbnailSrc}
                 ref={thumbnailRef}/>
+}
+
+BirdThumbnail.defaultProps =
+{
+    useLazyLoading: true,
 }
 
 BirdThumbnail.validate_props = function(props)

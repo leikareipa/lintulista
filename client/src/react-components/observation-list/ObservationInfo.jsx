@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
+import {panic_if_not_type} from "../../assert.js";
 import {animate} from "../../animate.js";
 import {GeoTag} from "../misc/GeoTag.js";
 
@@ -24,6 +24,8 @@ import {GeoTag} from "../misc/GeoTag.js";
 //
 export function ObservationInfo(props = {})
 {
+    ObservationInfo.validate_props(props);
+
     // Used to start an animation on a particular element. Will take in an object of the
     // form {ref, name, callback}, where 'ref' is a React reference to the element on which
     // to play the animation; 'animationName' is the name of the animation; and 'callback'
@@ -71,8 +73,7 @@ export function ObservationInfo(props = {})
 
 ObservationInfo.validate_props = function(props)
 {
-    panic_if_undefined(props, props.observation, props.setAnimationCallbacks);
-
+    panic_if_not_type("object", props, props.observation);
     panic_if_not_type("function", props.setAnimationCallbacks);
     
     return;

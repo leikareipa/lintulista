@@ -25,9 +25,6 @@
 
         <div id="observation-list"></div>
 
-        <div id="set-date-dialog"></div>
-        <div id="set-place-dialog"></div>
-
         <footer>
             Lintulista</a>
             &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
@@ -58,13 +55,11 @@
             {
                 if (!listId)
                 {
-                    error("A list id must be provided to view a list.");
+                    error("A list id must be provided.");
                     return;
                 }
 
-                const backend = await backend_access(listId);
-
-                render_observation_list(backend);
+                render_observation_list(await backend_access(listId));
             })();
         </script>
     </body>

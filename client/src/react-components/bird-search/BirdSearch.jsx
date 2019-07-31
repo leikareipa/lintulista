@@ -69,7 +69,7 @@ export function BirdSearch(props = {})
             inactivate_search_field();
         }
 
-        props.selectionCallback(bird);
+        props.callbackSelectBird(bird);
     }
 
     function inactivate_search_field()
@@ -89,11 +89,12 @@ export function BirdSearch(props = {})
         const searchString = inputEvent.target.value.trim();
         const searchResults = [];
 
-        if (searchString.length)
+        if (searchString.length &&
+            (searchFieldState === "active"))
         {
             props.backend.known_birds().forEach(bird=>
             {
-                if (bird.species.toLowerCase().includes(searchString.toLowerCase()))
+                if (bird.species.toLowerCase().startsWith(searchString.toLowerCase()))
                 {
                     const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
 
@@ -114,12 +115,13 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 4,
+    maxResultElements: 1,
 };
 
 BirdSearch.validate_props = function(props)
 {
-    panic_if_undefined(props.backend, props.selectionCallback);
+    panic_if_not_type("object", props, props.backend);
+    panic_if_not_type("function", props.callbackSelectBird, props.callbackSearchResults);
 
     return;
 }

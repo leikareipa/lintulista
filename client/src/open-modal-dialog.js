@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type} from "./assert.js";
+import {panic_if_undefined} from "./assert.js";
 import {animate} from "./animate.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes

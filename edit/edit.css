@@ -9,6 +9,7 @@ body
     color: white;
     text-align: center;
     margin: 0;
+    overflow-y: scroll;
 
     position: relative;
     z-index: 1;
@@ -110,11 +111,6 @@ footer
     width: 30px;
 }
 
-.ObservationList > .action-bar > .MenuButton > .icon:hover
-{
-    color: #fafafa;
-}
-
 .ObservationList > .action-bar > .MenuButton > .icon.active
 {
     color: rgb(53, 145, 231);
@@ -122,6 +118,8 @@ footer
 
 .ObservationList > .action-bar > .MenuButton > .dropdown
 {
+    color: white;
+
     user-select: none;
     -moz-user-select: none;
 
@@ -148,15 +146,15 @@ footer
 
 .ObservationList > .action-bar > .MenuButton > .dropdown > div:hover
 {
+    color: white;
     background-color: rgb(53, 145, 231);
-    color: #f2f2f2;
 }
 
 .ObservationList > .action-bar > .MenuButton > .dropdown > .title
 {
+    color: white;
     border-radius: 6px 6px 0 0;
     background-color: rgb(53, 145, 231);
-    color: white;
     cursor: auto;
 }
 
@@ -177,53 +175,48 @@ footer
 
 .BirdSearchField
 {
+    width: 240px;
     height: 45px;
     outline: none;
     background-color: #f1f1f1;
-    z-index: 120; /* Above the shades.*/
     padding: 10px;
     padding-top: 15px;
     padding-bottom: 15px;
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.15);
-
     border: none;
+    border-radius: 3px;
+
+    position: relative;
+    z-index: 21; /* Above the BirdSearchResultElement*/
 
     transition: width 0.15s linear;
-}
-
-.BirdSearchField.inactive
-{
-    width: 240px;
-    border-radius: 3px;
-}
-
-.BirdSearchField.active
-{
-    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.4);
-    background-color: rgb(53, 145, 231);
-    color: white;
-    border-radius: 6px;
-    width: 390px;
 }
 
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 52px; /* Below the search input field.*/
-    right: calc(15% + 18px); /* Level with the search input field.*/
+    top: 50px; /* Below the search input field.*/
+    right: calc(15% + 40px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
 .BirdSearchResultElement
 {
-    width: 378px; /* Width of the parent container minus padding.*/
+    width: 340px; /* Width of the parent container minus padding.*/
     color: black;
-    background-color: #f2f2f2;
+    background-color: #f1f1f1;
     padding: 6px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 17px;
+    padding-bottom: 17px;
     display: flex;
     align-items: center;
+    border-radius: 4px;
+    margin-top: 4px;
+    
+    box-shadow: 0 -27px 5px 55px rgba(0, 0, 0, 0.3);
+
+    position: relative;
+    z-index: 20;
 
     -moz-user-select: none;
     user-select: none;
@@ -231,7 +224,7 @@ footer
 
 .BirdSearchResultElement:nth-child(2n)
 {
-    background-color: #f8f8f8;
+    background-color: #f1f1f1;
 }
 
 .BirdSearchResultElement.not-previously-observed
@@ -241,8 +234,8 @@ footer
 
 .BirdSearchResultElement .BirdThumbnail
 {
-    width: 65px;
-    height: 65px;
+    width: 100px;
+    height: 100px;
     margin-left: 15px;
     margin-right: 18px;
     border-radius: 50%;
@@ -288,6 +281,7 @@ footer
 {
     display: inline-block;
     transform: translateY(-60px);
+    width: 100%;
 }
 
 .ObservationList > .elements

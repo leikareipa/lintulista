@@ -67,7 +67,7 @@ export function ObservationListElement(props = {})
     return <div className={`ObservationListElement ${props.visible? "" : "hidden"}`.trim()}
                 onMouseEnter={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
-                    {props.showOrder? <div className="order-tag">{observationData.bird.order}</div> : <></>}
+                    {props.showOrderTag? <div className="order-tag">{observationData.bird.order}</div> : <></>}
                     <BirdThumbnail bird={observationData.bird}/>
                     <div className="card">
                         <ObservationInfo observation={observationData}
@@ -188,7 +188,7 @@ export function ObservationListElement(props = {})
 
 ObservationListElement.defaultProps =
 {
-    showOrder: false,
+    showOrderTag: false,
 }
 
 ObservationListElement.validate_props = function(props)

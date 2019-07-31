@@ -29,7 +29,7 @@ export function BirdSearchField(props = {})
     return <input className={`BirdSearchField ${props.state}`.trim()}
                   ref={searchRef}
                   type="search"
-                  placeholder="Hae lajia..."
+                  placeholder={(props.state === "inactive")? "Hae lajia..." : ""}
                   spellCheck="false"
                   autoComplete="off"
                   onBlur={props.onBlur}

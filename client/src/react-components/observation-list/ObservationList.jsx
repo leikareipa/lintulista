@@ -38,7 +38,8 @@ export function ObservationList(props = {})
     return <div className="ObservationList">
                <div className="action-bar">
                    <BirdSearch backend={props.backend}
-                               callbackSelectBird={(bird)=>add_observation(bird)}/>
+                               callbackSelectBird={(bird)=>add_observation(bird)}
+                               callbackSearchResults={(results)=>setObservationElements(generate_observation_elements(results))}/>
                    <MenuButton icon="fas fa-ellipsis-v"
                                title="Listan järjestys"
                                options={
@@ -74,18 +75,56 @@ export function ObservationList(props = {})
         await shades.remove();
     }
 
-    function generate_observation_elements()
+    // (Re-)generate the observation cards in the observation list. If a non-empty array
+    // of bird() elements is passed as an argument, we'll only add such observations whose
+    // bird species is represented in the given domain.
+    function generate_observation_elements(birdDomain = [])
     {
-        return sort_observation_list(props.backend.observations().slice()).map(obs=>
+        const elements = [];
+        const observations = sort_observation_list(props.backend.observations().slice());
+
+        if (birdDomain.length)
         {
-            return <ObservationListElement observation={obs}
-                                           key={obs.bird.species}
-                                           showOrder={sortObservationsBy === "order"}
-                                           maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
-                                           requestDeleteObservation={async(self)=>await delete_observation(self)}
-                                           requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
-                                           requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
-        });
+            birdDomain.forEach(bird=>
+            {
+                const obs = observations.find(obs=>(obs.bird.species === bird.species));
+                
+                if (obs)
+                {
+                    elements.push(<ObservationListElement observation={obs}
+                                                        key={obs.bird.species}
+                                                        visible={true}
+                                                        showOrderTag={sortObservationsBy === "order"}
+                                                        maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
+                                                        requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                                        requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                                        requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>);
+                }
+                else
+                {
+                    elements.push(<ObservationListElement observation={observations[0]}
+                                                        key={bird.species}
+                                                        visible={true}
+                                                        showOrderTag={true}/>);
+                }
+            });
+        }
+        else
+        {
+            observations.forEach(obs=>
+            {
+                elements.push(<ObservationListElement observation={obs}
+                                                        key={obs.bird.species}
+                                                        visible={true}
+                                                        showOrderTag={sortObservationsBy === "order"}
+                                                        maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
+                                                        requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                                        requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                                        requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>)
+            })
+        }
+
+        return elements;
     }
 
     function sort_observation_list(list)

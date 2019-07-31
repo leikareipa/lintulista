@@ -16,27 +16,19 @@ export function BirdSearchResultElement(props = {})
         }
         else
         {
-            return [false, <div>
-                               <i className="fas fa-crow fa-lg" style={{color:"mediumseagreen"}}/>
-                               <i className="fas fa-plus fa-xs" style={{color:"mediumseagreen"}}/>
-                               <span> Merkitse listaan</span>
-                           </div>];
+            return [false, <>Ei aiempaa havaintoa</>];
         }
     })();
 
     return <div className={`BirdSearchResultElement ${!hasBeenPreviouslyObserved? "not-previously-observed" : ""}`.trim()}
                 onClick={()=>{if (!hasBeenPreviouslyObserved) props.clickCallback(props.bird)}}>
-                    <BirdThumbnail bird={props.bird}/>
+                    <BirdThumbnail bird={props.bird}
+                                   useLazyLoading={false}/>
                     <div className="card">
                         <div className="bird-name">
                             {props.bird.species}
                         </div>
-                        <div className="classification">
-                            {props.bird.order}
-                            <i className="fas fa-caret-right fa-sm" style={{margin:"5px", color:"rgba(0, 0, 0, 0.2)"}}/>
-                            {props.bird.family}
-                        </div>
-                        <div className="observed-date">
+                        <div className="date-observed">
                             {dateObserved}
                         </div>
                     </div>
