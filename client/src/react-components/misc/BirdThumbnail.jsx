@@ -34,7 +34,9 @@ export function BirdThumbnail(props = {})
     React.useEffect(()=>
     {
         intersectionObserver.observe(thumbnailRef.current);
-    });
+        
+        return ()=>{intersectionObserver.disconnect()}
+    }, []);
 
     return <img className="BirdThumbnail"
                 referrerPolicy="no-referrer"
