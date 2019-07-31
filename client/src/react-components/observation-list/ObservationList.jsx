@@ -13,6 +13,7 @@ import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
+import {MenuButton} from "../buttons/MenuButton.js";
 
 export function ObservationList(props = {})
 {
@@ -35,16 +36,17 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     return <div className="ObservationList">
-               <BirdSearch backend={props.backend}
-                           selectionCallback={(bird)=>add_observation(bird)}/>
-               <div className="sorter">
-                   Listan järjestys:
-                   <select defaultValue={sortObservationsBy}
-                           onChange={(event)=>setSortObservationsBy(event.target.value)}>
-                       <option value="species">Lajinimi</option>
-                       <option value="order">Lahko ja heimo</option>
-                       <option value="date">Havaintopäivä</option>
-                   </select>
+               <div className="action-bar">
+                   <BirdSearch backend={props.backend}
+                               callbackSelectBird={(bird)=>add_observation(bird)}/>
+                   <MenuButton icon="fas fa-ellipsis-v"
+                               title="Listan järjestys"
+                               options={
+                               [
+                                    <div key="2" onClick={()=>setSortObservationsBy("order")}>Heimo</div>,
+                                    <div key="3" onClick={()=>setSortObservationsBy("date")}>Päiväys</div>,
+                                    <div key="1" onClick={()=>setSortObservationsBy("species")}>Lajinimi</div>,
+                               ]}/>
                </div>
                <div className="elements">
                    {observationElements}
