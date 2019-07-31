@@ -47,18 +47,18 @@ header > #title > #app-name
 header > #title > #subtitle
 {
     transform: rotate(2deg); /* Counter the title's rotation.*/
-    font-family: serif;
+    font-family: sans-serif;
     font-size: 70%;
     margin-top: -15px;
 }
 
 footer
 {
-    color: rgb(214, 214, 214);
+    color: rgb(92, 92, 92);
     font-family: sans-serif;
-    font-size: 85%;
     padding-top: 40px;
     padding-bottom: 20px;
+    font-size: 80%;
 }
 
 #observation-list
@@ -81,9 +81,7 @@ footer
 
 .BirdSearchField
 {
-    width: 220px;
     height: 40px;
-    border-radius: 3px;
     outline: none;
     background-color: rgba(241, 241, 241, 0.45);
     position: relative;
@@ -98,11 +96,18 @@ footer
     top: -85px;
     right: 25%;
 
-    transition: width 0.075s linear;
+    transition: all 0.1s linear;
 }
 
-.BirdSearchField:focus
+.BirdSearchField.inactive
 {
+    width: 220px;
+    border-radius: 3px;
+}
+
+.BirdSearchField.active
+{
+    background-color: rgba(241, 241, 241, 0.65);
     border-radius: 3px 3px 0 0;
     width: 390px;
 }
@@ -151,8 +156,8 @@ footer
 
 .BirdSearchResultElement .BirdThumbnail
 {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     margin-left: 8px;
     margin-right: 14px;
     border-radius: 50%;

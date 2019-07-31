@@ -35,10 +35,8 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     return <div className="ObservationList">
-               <div className="search">
-                   <BirdSearch backend={props.backend}
-                               selectionCallback={(bird)=>add_observation(bird)}/>
-               </div>
+               <BirdSearch backend={props.backend}
+                           selectionCallback={(bird)=>add_observation(bird)}/>
                <div className="sorter">
                    Listan järjestys:
                    <select defaultValue={sortObservationsBy}

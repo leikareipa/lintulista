@@ -16,7 +16,7 @@ export function BirdSearchResultElement(props = {})
         }
         else
         {
-            return [false, <div style={{marginTop:"3px"}}>
+            return [false, <div>
                                <i className="fas fa-crow fa-lg" style={{color:"mediumseagreen"}}/>
                                <i className="fas fa-plus fa-xs" style={{color:"mediumseagreen"}}/>
                                <span> Merkitse listaan</span>
@@ -33,7 +33,7 @@ export function BirdSearchResultElement(props = {})
                         </div>
                         <div className="classification">
                             {props.bird.order}
-                            <i className="fas fa-caret-right fa-sm" style={{margin:"5px", color:"rgba(0, 0, 0, 0.4)"}}/>
+                            <i className="fas fa-caret-right fa-sm" style={{margin:"5px", color:"rgba(0, 0, 0, 0.2)"}}/>
                             {props.bird.family}
                         </div>
                         <div className="observed-date">

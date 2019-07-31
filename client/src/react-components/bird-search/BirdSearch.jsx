@@ -15,33 +15,72 @@ export function BirdSearch(props = {})
 
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
-    // As a feature of convenience, clear the search results when the user clicks outside
-    // of the search box.
-    /// FIXME: This clears the results when the user clicks anywhere. Also, the search
-    /// field text should also be cleared away.
+    const [searchFieldState, setSearchFieldState] = React.useState("inactive");
+
+    // Implements a click handler that clears away any search results and inactivates the
+    // search field when the user clicks outside of the search element.
     React.useEffect(()=>
     {
-        window.addEventListener("click", clear_search_results);
-        return ()=>window.removeEventListener("keydown", clear_search_results);
+        window.addEventListener("click", handle_search_click);
+        return ()=>window.removeEventListener("keydown", handle_search_click);
 
-        function clear_search_results()
+        function handle_search_click(clickEvent)
         {
-            setCurrentSearchResultElements([]);
+            const clickedOnSearchElement = (()=>
+            {
+                let node = clickEvent.target;
+                while (node)
+                {
+                    if (node.classList &&
+                        (node.classList.contains("BirdSearchResultsDisplay") ||
+                         node.classList.contains("BirdSearchField")))
+                    {
+                        return true;
+                    }
+
+                    node = node.parentNode;
+                }
+
+                return false;
+            })();
+
+            if (!clickedOnSearchElement)
+            {
+                inactivate_search_field();
+            }
         }
     }, []);
 
-    return <>
-               <BirdSearchField onChange={regenerate_search_results}/>
+    return <div className="BirdSearch">
+               <BirdSearchField state={searchFieldState}
+                                onFocus={activate_search_field}
+                                onChange={regenerate_search_results}/>
                <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"
                                          resultElements={currentSearchResultElements}/>
-           </>
+           </div>
 
     // Called when the user selects one of the search results.
     async function select_bird(bird)
     {
         panic_if_not_type("object", bird);
 
+        if (searchFieldState === "active")
+        {
+            inactivate_search_field();
+        }
+
         props.selectionCallback(bird);
+    }
+
+    function inactivate_search_field()
+    {
+        setCurrentSearchResultElements([]);
+        setSearchFieldState("inactive");
+    }
+
+    function activate_search_field()
+    {
+        setSearchFieldState("active");
     }
 
     // Refresh the list of search results that match the current text in the search field.
@@ -75,7 +114,7 @@ export function BirdSearch(props = {})
 BirdSearch.defaultProps =
 {
     // How many search results to display, at most.
-    maxResultElements: 5,
+    maxResultElements: 4,
 };
 
 BirdSearch.validate_props = function(props)

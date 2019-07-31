@@ -133,7 +133,7 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
             // Prevent an id beginning with a number. That would only happen if you used the raw
             // seed as an id rather than appending it to a known string, but let's ensure this
             // anyway.
-            if (!seed[0].match(/[a-zA-Z]/))
+            if (seed[0].match(/[0-9]/))
             {
                 seed[0] = "b";
             }
