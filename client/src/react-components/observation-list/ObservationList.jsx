@@ -41,11 +41,11 @@ export function ObservationList(props = {})
                                callbackSelectedBird={(bird)=>add_observation(bird)}/>
                    <MenuButton icon="fas fa-ellipsis-v"
                                title="Listan järjestys"
-                               options={
+                               items={
                                [
-                                    <div key="2" onClick={()=>setSortObservationsBy("order")}>Heimo</div>,
-                                    <div key="3" onClick={()=>setSortObservationsBy("date")}>Päiväys</div>,
-                                    <div key="1" onClick={()=>setSortObservationsBy("species")}>Lajinimi</div>,
+                                   {text:"Heimo", callbackOnSelect:()=>setSortObservationsBy("order")},
+                                   {text:"Päiväys", callbackOnSelect:()=>setSortObservationsBy("date")},
+                                   {text:"Lajinimi", callbackOnSelect:()=>setSortObservationsBy("species")},
                                ]}/>
                </div>
                <div className="elements">
