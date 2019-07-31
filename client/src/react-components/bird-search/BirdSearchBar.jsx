@@ -32,8 +32,8 @@ export function BirdSearchBar(props = {})
     // click ON the search element.
     React.useEffect(()=>
     {
-        window.addEventListener("click", handle_search_click);
-        return ()=>window.removeEventListener("click", handle_search_click);
+        window.addEventListener("mousedown", handle_search_click);
+        return ()=>window.removeEventListener("mousedown", handle_search_click);
 
         function handle_search_click(clickEvent)
         {
