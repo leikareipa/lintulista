@@ -168,7 +168,7 @@ footer
     display: block;
 }
 
-.BirdSearchField
+.BirdSearchBar
 {
     width: 230px;
     height: 45px;
@@ -182,12 +182,12 @@ footer
     border-radius: 3px;
 
     position: relative;
-    z-index: 21; /* Above the BirdSearchResultElement*/
+    z-index: 21; /* Above the BirdSearchResult*/
 
     transition: width 0.15s linear;
 }
 
-.BirdSearchField.active
+.BirdSearchBar.active
 {
     width: 260px;
 }
@@ -200,7 +200,7 @@ footer
     z-index: 10; /* Above the observation list.*/
 }
 
-.BirdSearchResultElement
+.BirdSearchResult
 {
     width: 340px; /* Width of the parent container minus padding.*/
     color: black;
@@ -222,17 +222,17 @@ footer
     user-select: none;
 }
 
-.BirdSearchResultElement:nth-child(2n)
+.BirdSearchResult:nth-child(2n)
 {
     background-color: #f1f1f1;
 }
 
-.BirdSearchResultElement.not-previously-observed
+.BirdSearchResult.not-previously-observed
 {
     cursor: pointer;
 }
 
-.BirdSearchResultElement .BirdThumbnail
+.BirdSearchResult .BirdThumbnail
 {
     width: 100px;
     height: 100px;
@@ -242,7 +242,7 @@ footer
     box-shadow: 0 4px 5px -4px rgba(0, 0, 0, 0.5);
 }
 
-.BirdSearchResultElement > .card
+.BirdSearchResult > .card
 {
     display: flex;
     flex-direction: column;
@@ -250,12 +250,12 @@ footer
     line-height: 120%;
 }
 
-.BirdSearchResultElement > .card > *
+.BirdSearchResult > .card > *
 {
     flex: 1;
 }
 
-.BirdSearchResultElement > .card > .bird-name
+.BirdSearchResult > .card > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
@@ -263,7 +263,7 @@ footer
     font-family: sans-serif;
 }
 
-.BirdSearchResultElement > .card > .date-observed
+.BirdSearchResult > .card > .date-observed
 {
     font-size: 90%;
     font-weight: normal;
@@ -271,7 +271,7 @@ footer
     font-family: sans-serif;
 }
 
-.BirdSearchResultElement > .card > .classification
+.BirdSearchResult > .card > .classification
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);

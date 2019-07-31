@@ -19,9 +19,9 @@ import {panic_if_not_type, panic} from "../../assert.js";
 // bar receives user input. It will be provided one parameter: the search bar's current
 // value.
 //
-export function BirdSearchField(props = {})
+export function BirdSearchBar(props = {})
 {
-    BirdSearchField.validateProps(props);
+    BirdSearchBar.validateProps(props);
 
     const searchRef = React.useRef();
 
@@ -45,7 +45,7 @@ export function BirdSearchField(props = {})
                     if (node.classList &&
                         (node.classList.contains("BirdSearchResultsDisplay") ||
                          node.classList.contains("BirdSearchResultsElement") ||
-                         node.classList.contains("BirdSearchField")))
+                         node.classList.contains("BirdSearchBar")))
                     {
                         return true;
                     }
@@ -86,7 +86,7 @@ export function BirdSearchField(props = {})
         }
     }, [state]);
 
-    return <input className={`BirdSearchField ${state}`.trim()}
+    return <input className={`BirdSearchBar ${state}`.trim()}
                   ref={searchRef}
                   type="search"
                   onFocus={()=>get_focus(true)}
@@ -108,7 +108,7 @@ export function BirdSearchField(props = {})
     }
 }
 
-BirdSearchField.defaultProps =
+BirdSearchBar.defaultProps =
 {
     initialState: "inactive",
     callbackOnChange: ()=>{},
@@ -116,7 +116,7 @@ BirdSearchField.defaultProps =
     callbackOnInactivate: ()=>{},
 }
 
-BirdSearchField.validateProps = function(props)
+BirdSearchBar.validateProps = function(props)
 {
     panic_if_not_type("object", props);
     panic_if_not_type("string", props.initialState);

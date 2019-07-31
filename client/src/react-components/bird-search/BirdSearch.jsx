@@ -1,9 +1,8 @@
 "use strict";
 
-import {BirdSearchResultsDisplay} from "./BirdSearchResultsDisplay.js";
-import {BirdSearchResultElement} from "./BirdSearchResultElement.js";
 import {panic_if_not_type} from "../../assert.js"
-import {BirdSearchField} from "./BirdSearchField.js";
+import {BirdSearchResult} from "./BirdSearchResult.js";
+import {BirdSearchBar} from "./BirdSearchBar.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
@@ -24,11 +23,12 @@ export function BirdSearch(props = {})
     const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
 
     return <div className="BirdSearch">
-               <BirdSearchField initialState="inactive"
-                                callbackOnChange={refresh_search_results}
-                                callbackOnInactivate={reset_search_results}/>
-               <BirdSearchResultsDisplay className="BirdSearchResultsDisplay"
-                                         resultElements={currentSearchResultElements}/>
+               <BirdSearchBar initialState="inactive"
+                              callbackOnChange={refresh_search_results}
+                              callbackOnInactivate={reset_search_results}/>
+               <div className="BirdSearchResultsDisplay">
+                   {currentSearchResultElements}
+               </div>
            </div>
 
     function refresh_search_results(searchString)
@@ -51,10 +51,10 @@ export function BirdSearch(props = {})
             {
                 const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
 
-                searchResults.push(<BirdSearchResultElement key={bird.species}
-                                                            bird={bird}
-                                                            clickCallback={select_bird}
-                                                            dateObserved={observation? observation.dateString : null} />);
+                searchResults.push(<BirdSearchResult key={bird.species}
+                                                     bird={bird}
+                                                     clickCallback={select_bird}
+                                                     dateObserved={observation? observation.dateString : null} />);
             }
         });
 

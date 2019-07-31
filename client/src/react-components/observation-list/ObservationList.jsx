@@ -38,8 +38,7 @@ export function ObservationList(props = {})
     return <div className="ObservationList">
                <div className="action-bar">
                    <BirdSearch backend={props.backend}
-                               callbackSelectBird={(bird)=>add_observation(bird)}
-                               callbackSearchResults={(results)=>setObservationElements(generate_observation_elements(results))}/>
+                               callbackSelectedBird={(bird)=>add_observation(bird)}/>
                    <MenuButton icon="fas fa-ellipsis-v"
                                title="Listan järjestys"
                                options={
