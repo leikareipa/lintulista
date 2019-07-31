@@ -29,7 +29,7 @@ export function MenuButton(props = {})
     React.useEffect(()=>
     {
         window.addEventListener("click", handle_click);
-        return ()=>window.removeEventListener("keydown", handle_click);
+        return ()=>window.removeEventListener("click", handle_click);
 
         function handle_click(clickEvent)
         {
