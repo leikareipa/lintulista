@@ -35,6 +35,8 @@ export function BirdSearch(props = {})
     {
         if (!searchString)
         {
+            reset_search_results();
+            
             return;
         }
 
