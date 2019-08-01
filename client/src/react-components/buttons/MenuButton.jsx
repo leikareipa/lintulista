@@ -86,8 +86,6 @@ export function MenuButton(props = {})
         </div>
     ));
 
-    console.log(props.items[props.initialItemIdx].text);
-
     return <div className="MenuButton" title={props.title}>
                <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
                    {currentItemText}

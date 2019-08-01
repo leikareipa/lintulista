@@ -47,7 +47,7 @@ export function QueryAddNewObservation(props = {})
                <BirdThumbnail bird={props.bird}/>
                <div className="fields">
                    <div className="bird-name">
-                       {props.bird.species}
+                       {props.bird.species},
                    </div>
                    <div className="date-bar">
                        <div className="day">

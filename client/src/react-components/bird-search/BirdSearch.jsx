@@ -54,7 +54,8 @@ export function BirdSearch(props = {})
                 searchResults.push(<BirdSearchResult key={bird.species}
                                                      bird={bird}
                                                      clickCallback={select_bird}
-                                                     dateObserved={observation? observation.dateString : null} />);
+                                                     dateObserved={observation? observation.dateString : null}
+                                                     placeObserved={observation? observation.place : null}/>);
             }
         });
 
@@ -66,6 +67,8 @@ export function BirdSearch(props = {})
     {
         panic_if_not_type("object", bird);
 
+        reset_search_results();
+        
         props.callbackSelectedBird(bird);
     }
 
