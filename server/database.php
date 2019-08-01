@@ -17,6 +17,44 @@ require_once "list-key.php";
 require_once "return.php";
 
 // A wrapper for interacting with Lintulista's database.
+//
+// Currently, the following functions make up the class's public interface:
+//
+//     - remove_observations_of_species_from_list()
+//     - get_corresponding_view_key()
+//     - get_observations_in_list()
+//     - post_observation_to_list()
+//     - create_new_list()
+//
+// These functions correspond to the commands available to the frontend client; they allow the
+// client to access - and possibly modify - the public data in a given list.
+//
+// The client will query the server with a list key (a string identifying a particular list)
+// and the desired action to perform on that list. A server-side script receives that request
+// and calls on the relevant public function in database class to carry it out. The database
+// class will thus receive a request and a key string - it must first convert the key string
+// into an internal list ID before issuing any requests to the database against that list.
+//
+// There are two kinds of list keys in Lintulista: an edit key and a view key. Each list has one
+// of both - the edit key can be used to modify the list's data, while the view key can be used
+// to view the list's public data but not modify it. The internal database functions must thus
+// verify that the key string received from the client has the required rights to perform the
+// requested action; such that e.g. a request to add an observation to a list using its view key
+// should not be carried out.
+//
+// In practice, any function in the database class that invokes the database (e.g. "SELECT ..."
+// or "UPDATE ...") should first call get_list_id_of_key() to transform the list key into a list
+// ID, then use the ID when invoking the database (e.g. "SELECT ... FROM ... WHERE list_id = ..."
+// rather than "SELECT ... FROM ... WHERE edit_key = ...").
+//
+//     The function get_list_id_of_key() takes as parameters the key string and a boolean
+//     specifying whether the key is required to have edit rights. When requesting the list
+//     ID of a key with intent to modify the database, call get_list_id_of_key("...", true).
+//     This will verify that the given key has the rights to make changes to the database;
+//     i.e. whether it's an edit key or a view key. If the key lacks those rights, the script
+//     will return to the client with an error. If you do not intend a query using the list ID
+//     to modify the database, you can call get_list_id_of_key("...", false).
+//
 class DatabaseAccess
 {
     // An object returned from mysqli_connect() for accessing the database. Will be
