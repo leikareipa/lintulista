@@ -36,12 +36,14 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     const lockElement = props.backend.hasEditRights? <a className="lock" href={`./${props.backend.viewKey}`}
-                                                        title={"Siirry listan julkiseen versioon"}>
-                                                            <i className={"fas fa-unlock-alt"}/>
+                                                        target="_blank" rel="noopener noreferrer"
+                                                        title="Avaa listan julkinen versio">
+                                                            <i className="fas fa-unlock-alt"/>
                                                      </a>
                                                    : <a className="lock" href={null}
-                                                        title={"Julkinen lista, havaintoja ei voi muokata"}>
-                                                            <i className={"fas fa-lock"}/>
+                                                        target="_blank" rel="noopener noreferrer"
+                                                        title="Julkinen lista, havaintoja ei voi muokata">
+                                                            <i className="fas fa-lock"/>
                                                      </a>
 
     return <div className="ObservationList">
