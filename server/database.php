@@ -103,7 +103,7 @@ class DatabaseAccess
     {
         $listId = $this->get_list_id_of_key($listKey, true);
 
-        $this->database_command("DELETE FROM lintulista_observations WHERE species = '{$speciesName}'");
+        $this->database_command("DELETE FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$speciesName}'");
 
         return;
     }
