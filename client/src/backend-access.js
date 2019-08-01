@@ -248,6 +248,17 @@ export async function backend_access(listKey)
 {
     const backendLimits = Object.freeze(await httpRequests.fetch_backend_limits());
 
+    // Do a basic client-side check for whether the given key has edit rights. Note that
+    // this does not necessarily reflect whether the server would allow this key to make
+    // edits, nor does its value enable the client to make server-side changes; it's
+    // rather just a shortcut for certain client-side UI matters etc.
+    const hasEditRights = (()=>
+    {
+        /// TODO: Make a better check. But for now, since edit keys are quite long, while
+        /// non-edit keys are short, we can approximate based on key length.
+        return Boolean(listKey.length <= 15);
+    });
+
     // We'll cache some server responses here, so that their elements can be queried in-
     // code without invoking the browser's cache every time. 
     const localCache =
@@ -275,6 +286,8 @@ export async function backend_access(listKey)
 
     const publicInterface =
     {
+        hasEditRights,
+
         known_birds: ()=>localCache.knownBirds,
         observations: ()=>localCache.observations,
         backend_limits: ()=>backendLimits,
