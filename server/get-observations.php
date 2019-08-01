@@ -29,7 +29,7 @@ require_once "return.php";
     }
 }
 
-$observations = database_get_observations_in_list($_GET["list"]);
+$observations = (new DatabaseAccess())->get_observations_in_list($_GET["list"]);
 
 // Pick out the relevant properties to be returned.
 {

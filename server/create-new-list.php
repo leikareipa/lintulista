@@ -35,6 +35,8 @@ if (sleep(8) === false)
     exit(return_failure("Server-side error."));
 }
 
+$database = new DatabaseAccess();
+
 // Attempt to create a new list with unique keys. We'll keep looping until the database
 // informs us that the keys were valid and that it created the desired list.
 {
@@ -45,7 +47,7 @@ if (sleep(8) === false)
         $keys = ["editKey"=>generate_random_edit_key(),
                  "viewKey"=>generate_random_view_key()];
 
-        $wasSuccessful = database_create_list($keys, time(), ip_hash());
+        $wasSuccessful = $database->create_new_list($keys, time(), ip_hash());
 
         if ($wasSuccessful === true)
         {

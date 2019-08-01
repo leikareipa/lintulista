@@ -35,7 +35,7 @@ require_once "return.php";
     }
 }
 
-$viewKey = database_get_view_key($_GET["list"]);
+$viewKey = (new DatabaseAccess())->get_view_key($_GET["list"]);
 
 exit(return_success(json_encode($viewKey)));
 
