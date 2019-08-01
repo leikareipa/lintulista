@@ -44,11 +44,14 @@ export function ObservationList(props = {})
                                items={
                                [
                                    {text:"Laji", callbackOnSelect:()=>setSortObservationsBy("species")},
+                                   {text:"Päivä", callbackOnSelect:()=>setSortObservationsBy("date")},
                                    {text:"Heimo", callbackOnSelect:()=>setSortObservationsBy("order")},
-                                   {text:"Aika", callbackOnSelect:()=>setSortObservationsBy("date")},
                                ]}
-                               initialItemIdx="2"
+                               initialItemIdx={1}
                                showTooltip={true}/>
+                   <div className="lock">
+                       <i className={props.backend.hasEditRights? "fas fa-unlock-alt" : "fas fa-lock"}/>
+                   </div>
                </div>
                <div className="elements">
                    {observationElements}
