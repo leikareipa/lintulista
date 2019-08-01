@@ -45,7 +45,7 @@ $targetObservation = json_decode(file_get_contents("php://input"), true);
     }
 }
 
-(new DatabaseAccess())->delete_observations_of_species($_GET["list"], $targetObservation["species"]);
+(new DatabaseAccess())->remove_observations_of_species_from_list($_GET["list"], $targetObservation["species"]);
 
 exit(return_success());
 

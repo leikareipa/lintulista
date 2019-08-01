@@ -51,9 +51,11 @@ class DatabaseAccess
 
     // Returns the view key corresponding to the given edit key. If the edit key can't be found
     // in the database, a random string of the view key's length will be returned.
-    function get_view_key(string $editKey)
+    function get_corresponding_view_key(string $editKey)
     {
-        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = '{$editKey}'");
+        $listId = $this->get_list_id_of_key($editKey, false);
+
+        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE list_id = '{$listId}'");
 
         if (count($result) !== 1)
         {
@@ -69,27 +71,6 @@ class DatabaseAccess
         $listId = $this->get_list_id_of_key($listKey, false);
 
         return $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
-    }
-
-    // Returns the observation of the given species in the given list; or null if no such
-    // observation could be found.
-    function get_observation_of_species(string $listKey, string $species)
-    {
-        $listId = $this->get_list_id_of_key($listKey, false);
-
-        $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
-
-        if (count($result) === 0)
-        {
-            return null;
-        }
-
-        if (count($result) > 1)
-        {
-            exit(return_failure("Detected duplicate observations of \"{$species}\"."));
-        }
-
-        return $result[0];
     }
 
     // Adds into the database a new observation list with the given parameters. Returns true
@@ -118,7 +99,7 @@ class DatabaseAccess
     }
 
     // Deletes any observations from the given list where the species name matches the given one.
-    function delete_observations_of_species(string $listKey, string $speciesName)
+    function remove_observations_of_species_from_list(string $listKey, string $speciesName)
     {
         $listId = $this->get_list_id_of_key($listKey, true);
 
@@ -130,7 +111,7 @@ class DatabaseAccess
     // Insert or update the given observation in the given list. If the observation already
     // exists in the list, its data are overwritten by those of the given observation; otherwise
     // a new observation entry is created in the list.
-    function store_observation(string $listKey, array $observation)
+    function post_observation_to_list(string $listKey, array $observation)
     {
         $species = isset($observation["species"])? $observation["species"]
                                                  : exit(return_failure("The given observation is missing the required \"species\" property."));
@@ -141,13 +122,13 @@ class DatabaseAccess
         $place = isset($observation["place"])? mb_substr($observation["place"], 0, backend_limits("maxPlaceNameLength"), "utf-8")
                                              : null;
 
-        if (!known_birds_is_valid_species($species))
+        if (!is_known_species($species))
         {
-            exit(return_failure("Unable to find a bird species called \"{$species}\"."));
+            exit(return_failure("Unable to recognize the species \"{$species}\"."));
         }
 
         $listId = $this->get_list_id_of_key($listKey, true);
-        $existingObservation = $this->get_observation_of_species($listKey, $species);
+        $existingObservation = $this->get_observation_of_species($listId, $species);
         
         if ($existingObservation)
         {
@@ -178,6 +159,25 @@ class DatabaseAccess
         }
 
         return;
+    }
+
+    // Returns the observation of the given species in the given list; or null if no such
+    // observation could be found.
+    private function get_observation_of_species(string $listId, string $species)
+    {
+        $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
+
+        if (count($result) === 0)
+        {
+            return null;
+        }
+
+        if (count($result) > 1)
+        {
+            exit(return_failure("Detected duplicate observations of \"{$species}\"."));
+        }
+
+        return $result[0];
     }
 
     // Returns the corresponding list id of the given list key.

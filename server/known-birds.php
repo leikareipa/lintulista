@@ -32,7 +32,7 @@ function known_birds_id_for_species_name(string $speciesName)
 
 // Returns true if the given species name is recognized; false otherwise. Note that this
 // search is case sensitive.
-function known_birds_is_valid_species(string $speciesName)
+function is_known_species(string $speciesName)
 {
     return (known_birds_id_for_species_name($speciesName) !== false);
 }

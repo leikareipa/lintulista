@@ -40,7 +40,7 @@ require_once "return.php";
 
 $newObservation = json_decode(file_get_contents("php://input"), true);
 
-(new DatabaseAccess())->store_observation($_GET["list"], $newObservation);
+(new DatabaseAccess())->post_observation_to_list($_GET["list"], $newObservation);
 
 exit(return_success());
 
