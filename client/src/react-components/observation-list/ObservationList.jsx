@@ -35,6 +35,15 @@ export function ObservationList(props = {})
         setObservationElements(generate_observation_elements());
     }, [sortObservationsBy]);
 
+    const lockElement = props.backend.hasEditRights? <a className="lock" href={`./${props.backend.viewKey}`}
+                                                        title={"Siirry listan julkiseen versioon"}>
+                                                            <i className={"fas fa-unlock-alt"}/>
+                                                     </a>
+                                                   : <a className="lock" href={null}
+                                                        title={"Listan havaintoja ei voi muokata"}>
+                                                            <i className={"fas fa-lock"}/>
+                                                     </a>
+
     return <div className="ObservationList">
                <div className="action-bar">
                    <BirdSearch backend={props.backend}
@@ -49,9 +58,7 @@ export function ObservationList(props = {})
                                ]}
                                initialItemIdx={1}
                                showTooltip={true}/>
-                   <div className="lock">
-                       <i className={props.backend.hasEditRights? "fas fa-unlock-alt" : "fas fa-lock"}/>
-                   </div>
+                   {lockElement}
                </div>
                <div className="elements">
                    {observationElements}
