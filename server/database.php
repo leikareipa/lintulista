@@ -107,6 +107,20 @@ function database_get_list_id_of_key(string $listKey, bool $requireEditRights = 
     return $response[0]["list_id"];
 }
 
+// Returns the view key corresponding to the given edit key. If the edit key can't be found
+// in the database, a random string of the view key's length will be returned.
+function database_get_view_key(string $editKey)
+{
+    $result = database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = '{$editKey}'");
+
+    if (count($result) !== 1)
+    {
+        return substr(bin2hex(random_bytes(backend_limits("viewKeyLength"))), 0, backend_limits("viewKeyLength"));
+    }
+
+    return $result[0];
+}
+
 // Returns all observations associated with the given list.
 function database_get_observations_in_list(string $listKey)
 {

@@ -26,6 +26,7 @@ const httpRequests = Object.freeze(
         getObservations: "./server/get-observations.php",
         getKnownBirds: "./server/get-known-birds-list.php",
         createList: "./server/create-new-list.php",
+        getViewKey: "./server/get-view-key.php",
     }),
 
     // Performs an async fetch on the given URL and with the given parameters (corresponding
@@ -90,6 +91,27 @@ const httpRequests = Object.freeze(
         });
 
         return wasSuccessful;
+    },
+
+    // Returns the view key associated with the given edit key.
+    fetch_view_key: async function(editKey)
+    {
+        panic_if_not_type("string", editKey);
+
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getViewKey}?list=${editKey}`);
+
+        if (wasSuccessful)
+        {
+            const data = JSON.parse(responseData);
+
+            panic_if_not_type("string", data.view_key);
+
+            return data.view_key;
+        }
+        else
+        {
+            panic("Failed to fetch the view key from the server.");
+        }
     },
 
     // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
@@ -256,8 +278,22 @@ export async function backend_access(listKey)
     {
         /// TODO: Make a better check. But for now, since edit keys are quite long, while
         /// non-edit keys are short, we can approximate based on key length.
-        return Boolean(listKey.length <= 15);
-    });
+        return Boolean(listKey.length > 15);
+    })();
+
+    // If the user is editing the list with an edit key, we also want to inform them of
+    // the more publically sharable view key. For that, we need to fetch the view key from
+    // the server.
+    const viewKey = await (async()=>
+    {
+        // The list key is the view key if it has no edit rights.
+        if (!hasEditRights)
+        {
+            return listKey;
+        }
+
+        return httpRequests.fetch_view_key(listKey);
+    })();
 
     // We'll cache some server responses here, so that their elements can be queried in-
     // code without invoking the browser's cache every time. 
@@ -287,6 +323,7 @@ export async function backend_access(listKey)
     const publicInterface =
     {
         hasEditRights,
+        viewKey,
 
         known_birds: ()=>localCache.knownBirds,
         observations: ()=>localCache.observations,
