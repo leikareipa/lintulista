@@ -40,7 +40,7 @@ export function ObservationList(props = {})
                                                             <i className={"fas fa-unlock-alt"}/>
                                                      </a>
                                                    : <a className="lock" href={null}
-                                                        title={"Listan havaintoja ei voi muokata"}>
+                                                        title={"Julkinen lista, havaintoja ei voi muokata"}>
                                                             <i className={"fas fa-lock"}/>
                                                      </a>
 

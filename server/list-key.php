@@ -7,7 +7,7 @@
  * 
  */
 
-function is_valid_list_id(string $id)
+function is_valid_list_key(string $id)
 {
     return preg_match("/^[0-9a-zA-Z]+$/", $id);
 }

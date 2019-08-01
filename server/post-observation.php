@@ -22,7 +22,7 @@ header("Cache-Control: no-store");
  */
 
 require_once "database.php";
-require_once "list-id.php";
+require_once "list-key.php";
 require_once "return.php";
 
 // Validate the input parameters.
@@ -32,7 +32,7 @@ require_once "return.php";
         exit(return_failure("Missing the required \"list\" parameter."));
     }
 
-    if (!is_valid_list_id($_GET["list"]))
+    if (!is_valid_list_key($_GET["list"]))
     {
         exit(return_failure("Invalid \"list\" parameter."));
     }
