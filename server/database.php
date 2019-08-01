@@ -127,7 +127,7 @@ function database_get_observations_in_list(string $listKey)
 {
     $listId = database_get_list_id_of_key($listKey, false);
 
-    return database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId}");
+    return database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
 }
 
 // Returns the observation of the given species in the given list; or null if no such
@@ -136,7 +136,7 @@ function database_get_observation_of_species(string $listKey, string $species)
 {
     $listId = database_get_list_id_of_key($listKey. false);
 
-    $result = database_query("SELECT * FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
+    $result = database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
 
     if (count($result) === 0)
     {
