@@ -84,7 +84,7 @@ footer
 {
     position: absolute;
     top: -85px;
-    right: 10%;
+    right: 12%;
     display: flex;
     flex-direction: row;
     color: rgba(241, 241, 241, 0.45);
@@ -95,7 +95,12 @@ footer
 
 .ObservationList > .action-bar > *
 {
-    margin-right: 30px;
+    margin-right: 35px;
+}
+
+.ObservationList > .action-bar > *:last-child
+{
+    margin-right: 0;
 }
 
 .ObservationList > .action-bar > .MenuButton
@@ -107,8 +112,45 @@ footer
 {
     cursor: pointer;
     color: #f1f1f1;
-    transform: scale(2.2);
     width: 30px;
+}
+
+/* Font Awesome icons.*/
+.ObservationList > .action-bar > .MenuButton > .icon i
+{
+    transform: scale(2.2);
+}
+
+.ObservationList > .action-bar > .MenuButton > .tooltip
+{
+    position: absolute;
+    top: -38px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(53, 145, 231);
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    font-size: 80%;
+    font-family: sans-serif;
+    line-height: 100%;
+    padding: 9px;
+    padding-left: 13px;
+    padding-right: 13px;
+    min-width: 50px;
+}
+
+.ObservationList > .action-bar > .MenuButton > .tooltip::after
+{
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    content: " ";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: rgb(53, 145, 231) transparent transparent transparent;
 }
 
 .ObservationList > .action-bar > .MenuButton > .dropdown
@@ -121,7 +163,7 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -22px 5px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 -46px 5px 70px rgba(0, 0, 0, 0.25);
 
     position: absolute;
     top: 60px;
@@ -138,6 +180,7 @@ footer
     border-radius: 6px 6px 0 0;
     background-color: rgb(53, 145, 231);
     cursor: auto;
+    font-family: sans-serif;
 }
 
 .ObservationList > .action-bar > .MenuButton > .dropdown > .items > div
@@ -197,8 +240,8 @@ footer
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 47px; /* Below the search input field.*/
-    right: calc(15% + 38px); /* Level with the search input field.*/
+    top: 50px; /* Below the search input field.*/
+    right: calc(12% + 25px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
@@ -215,7 +258,7 @@ footer
     border-radius: 4px;
     margin-top: 4px;
     
-    box-shadow: 0 -27px 5px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 -27px 5px 55px rgba(0, 0, 0, 0.25);
 
     position: relative;
     z-index: 20;

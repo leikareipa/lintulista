@@ -27,6 +27,9 @@ import {panic_if_not_type, error} from "../../assert.js";
 //
 // Note that the menu currently does not allow items to have tick boxes or the like.
 //
+// The index of the initial active item can be given via props.initialItemIdx as a 0-
+// indexed integer.
+//
 /// TODO: Add showing which of the drop-down's items are currently selected.
 //
 export function MenuButton(props = {})
@@ -34,6 +37,8 @@ export function MenuButton(props = {})
     MenuButton.validate_props(props);
 
     const [dropdownVisible, setDropdownVisible] = React.useState(false);
+
+    const [currentItemText, setCurrentItemText] = React.useState(props.items[props.initialItemIdx].text);
 
     // Implements a click handler that hides the menu's dropdown when the user clicks
     // outside of the dropdown element - but not when they click on it. Note that clicks
@@ -76,12 +81,17 @@ export function MenuButton(props = {})
     const itemElements = props.items.map((item, idx)=>
     (
         <div key={item.text + idx}
-             onClick={()=>handle_item_click(item.callbackOnSelect)}>
+             onClick={()=>handle_item_click(idx, item.callbackOnSelect)}>
                  {item.text}
         </div>
     ));
 
+    console.log(props.items[props.initialItemIdx].text);
+
     return <div className="MenuButton" title={props.title}>
+               <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
+                   {currentItemText}
+               </div>
                <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
                     onClick={dropdownVisible? hide_dropdown : show_dropdown}>
                         <i className={props.icon}/>
@@ -96,8 +106,9 @@ export function MenuButton(props = {})
                </div>
            </div>
 
-    function handle_item_click(callback)
+    function handle_item_click(itemIdx, callback)
     {
+        setCurrentItemText(props.items[itemIdx].text);
         setDropdownVisible(false);
         callback();
     }
@@ -120,7 +131,9 @@ MenuButton.defaultProps =
     [
         {text:"?", callbackOnSelect:()=>error("This menu item has not been fully implemented.")},
     ],
+    initialItemIdx: 0,
     icon: "fas fa-question",
+    showTooltip: true,
 }
 
 MenuButton.validate_props = function(props)

@@ -43,10 +43,12 @@ export function ObservationList(props = {})
                                title="Listan järjestys"
                                items={
                                [
+                                   {text:"Laji", callbackOnSelect:()=>setSortObservationsBy("species")},
                                    {text:"Heimo", callbackOnSelect:()=>setSortObservationsBy("order")},
-                                   {text:"Päiväys", callbackOnSelect:()=>setSortObservationsBy("date")},
-                                   {text:"Lajinimi", callbackOnSelect:()=>setSortObservationsBy("species")},
-                               ]}/>
+                                   {text:"Aika", callbackOnSelect:()=>setSortObservationsBy("date")},
+                               ]}
+                               initialItemIdx="2"
+                               showTooltip={true}/>
                </div>
                <div className="elements">
                    {observationElements}
