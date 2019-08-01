@@ -20,7 +20,7 @@
  * 
  */
 
-require_once "backend-limits.php";
+require_once "list-key.php";
 require_once "database.php";
 require_once "return.php";
 
@@ -42,8 +42,8 @@ if (sleep(8) === false)
 
     while (++$attempts < 20)
     {
-        $keys = ["editKey"=>pseudorandom_string(backend_limits("editKeyLength")),
-                 "viewKey"=>pseudorandom_string(backend_limits("viewKeyLength"), true)];
+        $keys = ["editKey"=>generate_random_edit_key(),
+                 "viewKey"=>generate_random_view_key()];
 
         $wasSuccessful = database_create_list($keys, time(), ip_hash());
 
@@ -60,24 +60,6 @@ if (sleep(8) === false)
 }
 
 exit(return_failure("Failed to create a new list."));
-
-function pseudorandom_string(int $length, bool $onlyLetters = false)
-{
-    $string = "";
-    $charset = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-    for ($i = 0; $i < $length; $i++)
-    {
-        $string .= $charset[random_int(0, ($onlyLetters? 25 : 35))];
-    }
-
-    if (strlen($string) !== $length)
-    {
-        exit(return_failure("Failed to generate a pseudorandom string."));
-    }
-    
-    return $string;
-}
 
 function ip_hash()
 {

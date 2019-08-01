@@ -13,6 +13,7 @@
 
 require_once "backend-limits.php";
 require_once "known-birds.php";
+require_once "list-key.php";
 require_once "return.php";
 
 // Connect to the database.
@@ -115,7 +116,7 @@ function database_get_view_key(string $editKey)
 
     if (count($result) !== 1)
     {
-        return substr(bin2hex(random_bytes(backend_limits("viewKeyLength"))), 0, backend_limits("viewKeyLength"));
+        return generate_random_view_key();
     }
 
     return $result[0];
