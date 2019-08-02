@@ -2,7 +2,7 @@
 
 import {panic_if_not_type} from "../../assert.js"
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {GeoTag} from "../misc/GeoTag.js";
+import {GeoTag} from "../tags/GeoTag.js";
 
 // An element displaying information about an individual search result.
 export function BirdSearchResult(props = {})

@@ -8,7 +8,7 @@
 
 import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {GeoTag} from "../misc/GeoTag.js";
+import {GeoTag} from "../tags/GeoTag.js";
 import {Dialog} from "./Dialog.js"
 
 // Displays a modal dialog with which the user can input a place string for an observation.

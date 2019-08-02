@@ -8,7 +8,7 @@
 
 import {panic_if_not_type} from "../../assert.js";
 import {animate} from "../../animate.js";
-import {GeoTag} from "../misc/GeoTag.js";
+import {GeoTag} from "../tags/GeoTag.js";
 
 // Renders structured information about an observation.
 //
