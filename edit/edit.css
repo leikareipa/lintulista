@@ -140,13 +140,14 @@ footer
     background-color: #f1f1f1;
     color: rgb(0, 0, 0);
     border-radius: 3px;
-    font-size: 85%;
+    font-size: 80%;
     font-family: sans-serif;
     line-height: 100%;
     padding: 9px;
     padding-left: 13px;
     padding-right: 13px;
     min-width: 46px;
+    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
 .ObservationList > .action-bar > .MenuButton > .tooltip::after
@@ -173,7 +174,7 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -26px 5px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -15px 5px 50px rgba(0, 0, 0, 0.15);
 
     position: absolute;
     top: 55px;
@@ -225,7 +226,6 @@ footer
     padding: 10px;
     padding-top: 15px;
     padding-bottom: 15px;
-    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
     border: none;
     border-radius: 3px;
 
@@ -557,7 +557,7 @@ footer
     padding-top: 0px;
     padding-bottom: 1px;
     background-color: #f2f2f2;
-    border-radius: 6px;
+    border-radius: 3px;
     display: inline-block;
     color: black;
     z-index: 200;
@@ -581,8 +581,8 @@ footer
     color: white;
     border-radius: 0;
     background-color:rgb(53, 145, 231);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 
     user-select: none;
     -moz-user-select: none;
