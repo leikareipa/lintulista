@@ -133,16 +133,16 @@ footer
 {
     white-space: nowrap;
     position: absolute;
-    top: -39px;
-    left: calc(50% - 2px);
+    top: -40px;
+    left: calc(50% - 1px);
     transform: translateX(-50%);
-    background-color: #f1f1f1;
+    background-color: white;
     color: rgb(0, 0, 0);
     border-radius: 3px;
     font-size: 80%;
     font-family: sans-serif;
     line-height: 100%;
-    padding: 9px;
+    padding: 10px;
     padding-left: 13px;
     padding-right: 13px;
     min-width: 46px;
@@ -160,7 +160,7 @@ footer
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: #f1f1f1 transparent transparent transparent;
+    border-color: white transparent transparent transparent;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown
@@ -173,7 +173,7 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -15px 5px 50px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0px 5px 40px rgba(0, 0, 0, 0.15);
 
     position: absolute;
     top: 55px;
@@ -194,16 +194,18 @@ footer
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div
 {
+    color: black;
     padding-top: 2px;
     padding-bottom: 2px;
-    background-color: rgb(53, 145, 231);
+    background-color: white;
     cursor: pointer;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:hover
 {
-    color: rgb(58, 58, 58);
-    background-color: #f5f5f5;
+    transform: scale(1.03);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.inactive
@@ -251,7 +253,7 @@ footer
 {
     width: 380px; /* Width of the parent container minus padding.*/
     color: black;
-    background-color: #f5f5f5;
+    background-color: white;
     padding: 6px;
     padding-top: 17px;
     padding-bottom: 17px;
@@ -401,7 +403,7 @@ footer
 .ObservationListElementGhost .BirdThumbnail
 {
     background-color: #dbdbdb;
-    border: 1px dashed gray;
+    border: 1px dashed rgb(143, 143, 143);
     padding: 16px;
     box-shadow: none;
 }
@@ -426,7 +428,7 @@ footer
     width: 194px;
     margin-top: -15px;
     background-color: #dbdbdb;
-    border: 1px dashed gray;
+    border: 1px dashed rgb(143, 143, 143);
     padding-top: 20px;
     padding-bottom: 12px;
 }

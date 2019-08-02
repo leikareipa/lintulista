@@ -48,11 +48,10 @@ export function ObservationListActionBar(props = {})
                            items={
                            [
                                {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
-                               {text:"Heimo", callbackOnSelect:()=>props.callbackSetListSorting("order")},
                                {text:"Havaintopäivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
                                {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("100-lajia")},
                            ]}
-                           initialItemIdx={2}
+                           initialItemIdx={1}
                            showTooltip={true}/>
                {lockElement}
            </div>
