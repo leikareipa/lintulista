@@ -21,12 +21,12 @@ export function ObservationListFooter(props = {})
     ObservationListFooter.validate_props(props);
 
     return <div className="ObservationListFooter">
-               Listassa on yhteensä&nbsp;
+               Listassa on&nbsp;
                <span className="observation-count">
                    {props.numObservationsInList}
                </span> havaintoa.&nbsp;
                <span onClick={props.callbackDownloadList} style={{textDecoration:"underline", cursor:"pointer"}}>
-                   Lataa lista CSV-tiedostona
+                   Lataa havainnot CSV-tiedostona
                </span>.
            </div>
 }

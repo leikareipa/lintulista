@@ -16,6 +16,7 @@ import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
+import * as FileSaver from "../../filesaver/FileSaver.js";
 
 // A list of the birds in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 // In the future, this array might be located in some other file, but for now it's made its home here.
@@ -66,7 +67,7 @@ export function ObservationList(props = {})
                    {observationElements}
                </div>
                <ObservationListFooter numObservationsInList={observationElements.length}
-                                      callbackDownloadList={()=>{console.log("TODO")}}/>
+                                      callbackDownloadList={save_observation_list_to_csv_file}/>
            </div>
 
     // Called when the user requests us to add a new observation into the list.
@@ -165,6 +166,20 @@ export function ObservationList(props = {})
             
             default: panic("Unknown sorter."); break;
         }
+    }
+
+    async function save_observation_list_to_csv_file()
+    {
+        let csvString = "Päiväys, Laji, Heimo, Lahko, Havaintopaikka\n";
+
+        props.backend.observations().slice().sort(sorters["date"]).forEach(obs=>
+        {
+            const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
+
+            csvString += `${dateString}, ${obs.bird.species}, ${obs.bird.family}, ${obs.bird.order}, ${obs.place},\n`;
+        });
+
+        saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
     }
 
     async function delete_observation(targetObservation)
