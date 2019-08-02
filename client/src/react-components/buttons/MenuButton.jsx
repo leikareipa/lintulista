@@ -86,12 +86,13 @@ export function MenuButton(props = {})
         </div>
     ));
 
-    return <div className="MenuButton" title={props.title}>
+    return <div className="MenuButton">
                <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
                    {currentItemText}
                </div>
                <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
-                    onClick={dropdownVisible? hide_dropdown : show_dropdown}>
+                    onClick={dropdownVisible? hide_dropdown : show_dropdown}
+                    title={props.title}>
                         <i className={props.icon}/>
                </div>
                <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`.trim()}>
