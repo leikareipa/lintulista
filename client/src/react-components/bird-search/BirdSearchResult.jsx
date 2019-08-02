@@ -17,7 +17,7 @@ export function BirdSearchResult(props = {})
         }
         else
         {
-            return [false, <>Ei havaintoa</>];
+            return [false, <>Ei merkittyä havaintoa</>];
         }
     })();
 

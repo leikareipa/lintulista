@@ -10,14 +10,11 @@ body
     text-align: center;
     margin: 0;
     overflow-y: scroll;
+    padding-right: 1.2vw;
+    background-image: linear-gradient(to right, #c0c0c0, #adadad);
 
     position: relative;
     z-index: 1;
-
-    padding-right: 1.2vw;
-    padding-left: 8px;
-
-    background-image: linear-gradient(to right, #c0c0c0, #adadad);
 }
 
 header
@@ -26,7 +23,6 @@ header
     background-color: #c0c0c0;
     color: #f0f0f0;
     padding-bottom: 205px;
-
     background-image: linear-gradient(to right, #c0c0c0, #adadad);
 }
 
@@ -34,7 +30,7 @@ header > #title
 {
     transform: rotate(-2deg);
     position: absolute;
-    top: 25px;
+    top: 12px;
     left: 13%;
     color: #f1f1f1;
 }
@@ -42,7 +38,7 @@ header > #title
 header > #title > #app-name
 {
     font-family: "Damion", cursive;
-    font-size: 400%;
+    font-size: 450%;
 }
 
 header > #title > #subtitle
@@ -50,26 +46,28 @@ header > #title > #subtitle
     transform: rotate(2deg); /* Counter the title's rotation.*/
     font-family: sans-serif;
     font-size: 70%;
-    margin-top: -15px;
+    margin-top: -20px;
 }
 
 footer
 {
-    color: rgb(92, 92, 92);
+    color: rgb(240, 240, 240);
     font-family: sans-serif;
     padding-top: 40px;
     padding-bottom: 20px;
-    font-size: 80%;
+    font-size: 90%;
+    font-style: italic;
 }
 
 #observation-list
 {
     background-color: #dbdbdb;
-    border-left: 17px dotted #c0c0c0;
+    border-radius: 0 5px 5px 0;
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 
+    border-bottom: 1px solid rgb(160, 160, 160);
     box-shadow: 6px 7px 5px rgba(0, 0, 0, 0.05);
 }
 
@@ -136,11 +134,11 @@ footer
 {
     white-space: nowrap;
     position: absolute;
-    top: -38px;
+    top: -39px;
     left: calc(50% - 1px);
     transform: translateX(-50%);
-    background-color: #797979;
-    color: rgb(233, 233, 233);
+    background-color: #f1f1f1;
+    color: rgb(0, 0, 0);
     border-radius: 3px;
     font-size: 85%;
     font-family: sans-serif;
@@ -162,7 +160,7 @@ footer
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: #797979 transparent transparent transparent;
+    border-color: #f1f1f1 transparent transparent transparent;
 }
 
 .ObservationList > .action-bar > .MenuButton > .dropdown
@@ -175,10 +173,10 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -26px 5px 60px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 -26px 5px 60px rgba(0, 0, 0, 0.15);
 
     position: absolute;
-    top: 60px;
+    top: 55px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
@@ -227,7 +225,7 @@ footer
     padding: 10px;
     padding-top: 15px;
     padding-bottom: 15px;
-    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
     border: none;
     border-radius: 3px;
 
@@ -263,7 +261,7 @@ footer
     border-radius: 0px;
     margin-top: 4px;
     
-    box-shadow: 0 -27px 5px 60px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 -27px 5px 60px rgba(0, 0, 0, 0.15);
 
     position: relative;
     z-index: 20;
@@ -335,7 +333,8 @@ footer
     justify-content: center;
 }
 
-.ObservationListElement
+.ObservationListElement,
+.ObservationListElementGhost
 {
     position: relative;
     color: black;
@@ -348,7 +347,8 @@ footer
     flex-direction: column;
 }
 
-.ObservationListElement.hidden
+.ObservationListElement.hidden,
+.ObservationListElementGhost.hidden
 {
     display: none;
 }
@@ -370,7 +370,8 @@ footer
     z-index: 4; /* Above the bird thumbnail.*/
 }
 
-.ObservationListElement .BirdThumbnail
+.ObservationListElement .BirdThumbnail,
+.ObservationListElementGhost .BirdThumbnail
 {
     position: relative;
     width: 140px;
@@ -381,7 +382,16 @@ footer
     z-index: 2;
 }
 
-.ObservationListElement > .card
+.ObservationListElementGhost .BirdThumbnail
+{
+    background-color: #dbdbdb;
+    border: 1px dashed gray;
+    padding: 16px;
+    box-shadow: none;
+}
+
+.ObservationListElement > .card,
+.ObservationListElementGhost > .card
 {
     border-radius: 3px;
     width: 196px;
@@ -393,6 +403,16 @@ footer
     text-align: center;
     position: relative;
     z-index: 1;
+}
+
+.ObservationListElementGhost > .card
+{
+    width: 194px;
+    margin-top: -15px;
+    background-color: #dbdbdb;
+    border: 1px dashed gray;
+    padding-top: 20px;
+    padding-bottom: 12px;
 }
 
 .ObservationListElement > .card > .ObservationInfo
@@ -412,14 +432,16 @@ footer
     visibility: hidden;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .bird-name
+.ObservationListElement > .card > .ObservationInfo > .bird-name,
+.ObservationListElementGhost > .card > .ObservationInfo > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
     font-size: 90%;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .date
+.ObservationListElement > .card > .ObservationInfo > .date,
+.ObservationListElementGhost > .card > .ObservationInfo > .date
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);

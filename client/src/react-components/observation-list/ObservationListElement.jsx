@@ -189,6 +189,7 @@ export function ObservationListElement(props = {})
 ObservationListElement.defaultProps =
 {
     showOrderTag: false,
+    visible: true,
 }
 
 ObservationListElement.validate_props = function(props)
