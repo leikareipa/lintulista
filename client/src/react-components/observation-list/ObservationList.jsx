@@ -8,13 +8,12 @@
 
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
+import {ObservationListActionBar} from "./ObservationListActionBar.js";
 import {ObservationListElement} from "./ObservationListElement.js";
 import {QueryAddNewObservation} from "../dialogs/QueryAddNewObservation.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
-import {BirdSearch} from "../bird-search/BirdSearch.js";
-import {MenuButton} from "../buttons/MenuButton.js";
 import {PlainTag} from "../tags/PlainTag.js";
 
 // A list of the birds in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
@@ -193,34 +192,10 @@ export function ObservationList(props = {})
         setObservationElements(generate_observation_elements());
     }, [sortObservationsBy]);
 
-    const lockElement = props.backend.hasEditRights? <a className="lock" href={`./${props.backend.viewKey}`}
-                                                        target="_blank" rel="noopener noreferrer"
-                                                        title="Avaa listan julkinen versio">
-                                                            <i className="fas fa-unlock-alt"/>
-                                                     </a>
-                                                   : <a className="lock" href={null}
-                                                        target="_blank" rel="noopener noreferrer"
-                                                        title="Julkisen listan havaintoja ei voi muokata">
-                                                            <i className="fas fa-lock"/>
-                                                     </a>
-
     return <div className="ObservationList">
-               <div className="action-bar">
-                   <BirdSearch backend={props.backend}
-                               callbackSelectedBird={(bird)=>add_observation(bird)}/>
-                   <MenuButton icon="fas fa-ellipsis-v"
-                               title="Listan järjestys"
-                               items={
-                               [
-                                   {text:"Laji", callbackOnSelect:()=>setSortObservationsBy("species")},
-                                   {text:"Heimo", callbackOnSelect:()=>setSortObservationsBy("order")},
-                                   {text:"Havaintopäivä", callbackOnSelect:()=>setSortObservationsBy("date")},
-                                   {text:"100 Lajia -haaste", callbackOnSelect:()=>setSortObservationsBy("100-lajia")},
-                               ]}
-                               initialItemIdx={2}
-                               showTooltip={true}/>
-                   {lockElement}
-               </div>
+               <ObservationListActionBar backend={props.backend}
+                                         callbackAddObservation={add_observation}
+                                         callbackSetListSorting={setSortObservationsBy}/>
                <div className="elements">
                    {observationElements}
                </div>
