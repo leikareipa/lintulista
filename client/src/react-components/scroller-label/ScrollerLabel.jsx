@@ -45,14 +45,13 @@ export function ScrollerLabel(props = {})
         return ()=>props.onChange(underlyingValue);
     }, [underlyingValue]);
 
-    /// TODO: Automatic scrolling while holding down the mouse button.
     return <div className="ScrollerLabel">
-               <Scroller icon="fas fa-chevron-up fa-2x"
+               <Scroller icon="fas fa-caret-up fa-2x"
                          callback={()=>scroll_value(1)}/>
                <div className="value">
                    {`${displayable_value()}${props.suffix || ""}`}
                </div>
-               <Scroller icon="fas fa-chevron-down fa-2x"
+               <Scroller icon="fas fa-caret-down fa-2x"
                          callback={()=>scroll_value(-1)}/>
            </div>
 
