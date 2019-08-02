@@ -36,7 +36,16 @@ export function panic_if_not_type(typeName, ...properties)
 {
     properties.forEach(property=>
     {
-        if (typeof property !== typeName)
+        const isOfType = (()=>
+        {
+            switch (typeName)
+            {
+                case "array": return Array.isArray(property);
+                default: return (typeof property === typeName);
+            }
+        })();
+
+        if (!isOfType)
         {
             panic(`A property is of the wrong type; expected "${typeName}".`);
         }
