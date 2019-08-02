@@ -11,6 +11,7 @@ import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
 import {ObservationListActionBar} from "./ObservationListActionBar.js";
 import {ObservationListElement} from "./ObservationListElement.js";
 import {QueryAddNewObservation} from "../dialogs/QueryAddNewObservation.js";
+import {ObservationListFooter} from "./ObservationListFooter.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
@@ -64,6 +65,8 @@ export function ObservationList(props = {})
                <div className="elements">
                    {observationElements}
                </div>
+               <ObservationListFooter numObservationsInList={observationElements.length}
+                                      callbackDownloadList={()=>{console.log("TODO")}}/>
            </div>
 
     // Called when the user requests us to add a new observation into the list.
@@ -112,15 +115,15 @@ export function ObservationList(props = {})
             });
 
             // Add elements for observations of species not included in the challenge.
-            observationElements.push(sort_observation_list(props.backend.observations().slice())
-                                     .filter(obs=>!sataLajia.includes(obs.bird.species))
-                                     .map(obs=>make_element_for_observation(obs, <PlainTag text="Lisälaji"/>)));
+            observationElements.push(...(sort_observation_list(props.backend.observations().slice())
+                                         .filter(obs=>!sataLajia.includes(obs.bird.species))
+                                         .map(obs=>make_element_for_observation(obs, <PlainTag text="Lisälaji"/>))));
         }
         // Otherwise, we just add observed elements for the observations the user has made, and
         // sort them according to whatever sorting option is currently selected.
         else
         {
-            observationElements.push(sort_observation_list(props.backend.observations().slice()).map(obs=>make_element_for_observation(obs)));
+            observationElements.push(...sort_observation_list(props.backend.observations().slice()).map(obs=>make_element_for_observation(obs)));
         }
 
         return observationElements;
