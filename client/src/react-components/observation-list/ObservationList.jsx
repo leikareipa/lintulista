@@ -15,6 +15,7 @@ import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
+import {PlainTag} from "../tags/PlainTag.js";
 
 // A list of the birds in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 // In the future, this array might be located in some other file, but for now it's made its home here.
@@ -273,7 +274,7 @@ export function ObservationList(props = {})
             // Add elements for observations of species not included in the challenge.
             observationElements.push(sort_observation_list(props.backend.observations().slice())
                                      .filter(obs=>!sataLajia.includes(obs.bird.species))
-                                     .map(obs=>make_element_for_observation(obs)));
+                                     .map(obs=>make_element_for_observation(obs, <PlainTag text="Lisälaji"/>)));
         }
         // Otherwise, we just add observed elements for the observations the user has made, and
         // sort them according to whatever sorting option is currently selected.
@@ -293,12 +294,13 @@ export function ObservationList(props = {})
                                                 visible={true}/>
         }
 
-        function make_element_for_observation(obs)
+        function make_element_for_observation(obs, tag = <></>)
         {
             panic_if_not_type("object", obs);
 
             return <ObservationListElement observation={obs}
                                            key={obs.bird.species}
+                                           tag={tag}
                                            visible={true}
                                            showOrderTags={sortObservationsBy === "order"}
                                            maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}

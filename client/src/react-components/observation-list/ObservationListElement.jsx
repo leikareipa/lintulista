@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic} from "../../assert.js";
+import {panic, panic_if_not_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
@@ -68,6 +68,7 @@ export function ObservationListElement(props = {})
                 onMouseEnter={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
                     {props.showOrderTag? <div className="order-tag">{observationData.bird.order}</div> : <></>}
+                    {props.tag}
                     <BirdThumbnail bird={observationData.bird}/>
                     <div className="card">
                         <ObservationInfo observation={observationData}
@@ -190,11 +191,12 @@ ObservationListElement.defaultProps =
 {
     showOrderTag: false,
     visible: true,
+    tag: <></>,
 }
 
 ObservationListElement.validate_props = function(props)
 {
-    panic_if_undefined(props, props.observation);
+    panic_if_not_type("object", props, props.observation);
 
     return;
 }
