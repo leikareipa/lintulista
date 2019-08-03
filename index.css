@@ -21,25 +21,32 @@ header
 
 header > #title
 {
-    transform: rotate(-2deg);
     position: absolute;
-    top: 30px;
+    top: 20px;
     left: 15%;
-    color: rgb(241, 241, 241);
+    color: #f1f1f1;
 }
 
 header > #title > #app-name
 {
+    transform: rotate(-2deg);
     font-family: "Damion", cursive;
-    font-size: 400%;
+    font-size: 450%;
+
+    position: relative;
+    z-index: 0;
 }
 
 header > #title > #subtitle
 {
-    transform: rotate(2deg); /* Counter the title's rotation.*/
     font-family: sans-serif;
     font-size: 70%;
-    margin-top: -15px;
+    margin-top: -26px;
+    text-align: right;
+    font-style: italic;
+
+    position: relative;
+    z-index: 1;
 }
 
 footer
@@ -57,7 +64,7 @@ footer
     flex-direction: column;
     justify-content: center;
     background-color: #dbdbdb;
-    margin-bottom: -150px;
+    margin-bottom: -153px;
 
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
@@ -121,7 +128,7 @@ footer
 
     transform: translateY(-10px);
     font-family: sans-serif;
-    height: 20px;
+    height: 26px;
     padding-top: 18px;
     padding-bottom: 18px;
     border-radius: 6px;
@@ -186,6 +193,8 @@ footer
 
 .ObservationListElement > .card
 {
+    font-family: "Nunito", serif;
+    font-size: 98%;
     border-radius: 3px;
     width: 196px;
     margin-top: -15px;
