@@ -53,10 +53,10 @@ header > #title > #subtitle
 
 footer
 {
-    color: rgb(0, 0, 0);
+    color: rgb(78, 78, 78);
     font-family: sans-serif;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 45px;
+    padding-bottom: 35px;
     font-size: 90%;
 }
 
@@ -306,7 +306,7 @@ footer
     display: flex;
     flex-direction: column;
     text-align: left;
-    line-height: 125%;
+    line-height: 140%;
 }
 
 .BirdSearchResult > .card > *
@@ -323,7 +323,7 @@ footer
 
 .BirdSearchResult > .card > .date-observed
 {
-    font-size: 90%;
+    font-size: 100%;
     font-weight: normal;
     color: rgba(0, 0, 0, 0.6);
 }
@@ -455,7 +455,7 @@ footer
     padding-top: 24px;
     padding-bottom: 13px;
     background-color: #eaeaea;
-    line-height: 120%;
+    line-height: 110%;
     text-align: center;
     position: relative;
     z-index: 1;
