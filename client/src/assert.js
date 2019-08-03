@@ -65,6 +65,7 @@ export function is_defined(property)
 export function error(errorMessage = "")
 {
     console.error(`Lintulista: ${errorMessage}`);
+    alert(`Lintulista: ${errorMessage}`);
 }
 
 export function warn(errorMessage = "")
