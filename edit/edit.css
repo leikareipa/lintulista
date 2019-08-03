@@ -87,7 +87,12 @@ footer
     cursor: pointer;
 }
 
-.MenuButton .icon:active
+.MenuButton.disabled
+{
+    cursor: auto;
+}
+
+.MenuButton.enabled > .icon:active
 {
     transform: translateY(2px);
 }
@@ -103,7 +108,7 @@ footer
 {
     display: flex;
     flex-direction: row;
-    width: 440px;
+    width: 500px;
     position: absolute;
     top: 59px;
     right: 13%;
@@ -184,7 +189,7 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0px 5px 40px rgba(15, 7, 0, 0.15);
+    box-shadow: 0 0px 15px 40px rgba(15, 7, 0, 0.25);
 
     position: absolute;
     top: 55px;
@@ -256,7 +261,7 @@ footer
 {
     position: absolute;
     top: 47px; /* Below the search input field.*/
-    right: calc(12% + 114px); /* Level with the search input field.*/
+    right: calc(12% + 184px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
@@ -274,7 +279,7 @@ footer
     align-items: center;
     border-radius: 8px;
     margin-top: 4px;
-    box-shadow: 0 -27px 5px 60px rgba(15, 7, 0, 0.15);
+    box-shadow: 0 -27px 15px 60px rgba(15, 7, 0, 0.25);
 
     position: relative;
     z-index: 20;
@@ -339,7 +344,7 @@ footer
 {
     position: fixed;
     bottom: 0;
-    right: 0;
+    left: 0;
     z-index: 1000;
 
     font-size: 95%;
@@ -348,22 +353,12 @@ footer
 
 .ObservationList > .ObservationListFooter > .observation-count
 {
-    background-color: #f9f9f9;
-    color: rgb(0, 0, 0);
-    padding: 12px;
-    padding-right: 25px;
-    border-radius: 0 3px 0 0;
+    background-color: #000000;
+    color: rgb(209, 209, 209);
+    padding: 9px;
+    padding-right: 15px;
     font-family: sans-serif;
-    border-radius: 6px 0 0 0;
-
-    background-size: 20px 20px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-}
-
-.ObservationList > .ObservationListFooter > .observation-count > .value
-{
-    font-weight: bold; 
+    border-radius: 0 6px 0 0;
 }
 
 .ObservationList > .elements

@@ -20,15 +20,25 @@ export function ObservationListFooter(props = {})
 {
     ObservationListFooter.validate_props(props);
 
+    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajeja.</>
+                                                                : <>
+                                                                      Listassa on&nbsp;
+                                                                      <span style={{fontWeight:"bold"}}>
+                                                                          {props.numObservationsInList}
+                                                                      </span> laji{props.numObservationsInList !== 1? "a" : ""}.
+                                                                  </>
+
+    const observationDownloadElement = !props.numObservationsInList? <></>
+                                                                   : <span onClick={props.callbackDownloadList}
+                                                                           style={{textDecoration:"underline", cursor:"pointer"}}>
+                                                                         Lataa CSV:nä
+                                                                     </span>
+
     return <div className="ObservationListFooter">
                <div className="observation-count">
-                   <i className="fas fa-info-circle"/> Listassa on&nbsp;
-                   <span className="value">
-                       {props.numObservationsInList}
-                   </span> havainto{props.numObservationsInList !== 1? "a" : ""}.&nbsp;
-                   <span onClick={props.callbackDownloadList} style={{textDecoration:"underline", cursor:"pointer"}}>
-                       Tallenna CSV:nä
-                   </span>
+                   <i className="fas fa-info-circle"/>&nbsp;
+                   {observationCountElement}&nbsp;
+                   {observationDownloadElement}
                </div>
            </div>
 }
