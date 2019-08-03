@@ -29,21 +29,10 @@ export function ObservationListActionBar(props = {})
 {
     ObservationListActionBar.validate_props(props);
 
-    const lockElement = props.backend.hasEditRights? <a className="lock" href={`./${props.backend.viewKey}`}
-                                                        target="_blank" rel="noopener noreferrer"
-                                                        title="Avaa listan julkinen versio">
-                                                            <i className="fas fa-unlock-alt"/>
-                                                     </a>
-                                                   : <a className="lock" href={null}
-                                                        target="_blank" rel="noopener noreferrer"
-                                                        title="Julkisen listan havaintoja ei voi muokata">
-                                                            <i className="fas fa-lock"/>
-                                                     </a>
-
     return <div className="ObservationListActionBar">
                <BirdSearch backend={props.backend}
                            callbackSelectedBird={props.callbackAddObservation}/>
-               <MenuButton icon="fas fa-list-ul"
+               <MenuButton icon="fas fa-list-ul fa-fw"
                            title="Listan järjestys"
                            items={
                            [
@@ -53,7 +42,27 @@ export function ObservationListActionBar(props = {})
                            ]}
                            initialItemIdx={1}
                            showTooltip={true}/>
-               {lockElement}
+               <MenuButton icon="fas fa-info-circle fa-fw"
+                           title="Avaa käyttöohje"
+                           callbackOnButtonClick={()=>
+                           {
+                               if (!window.open("./ohjeet/", "_blank", "noopener"))
+                               {
+                                    /// TODO. Handle popup blocking.
+                               }
+                           }}
+                           showTooltip={false}/>
+               <MenuButton icon={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}
+                           title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
+                           enabled={props.backend.hasEditRights}
+                           callbackOnButtonClick={!props.backend.hasEditRights? null : ()=>
+                           {
+                               if (!window.open(`./${props.backend.viewKey}`, "_blank", "noopener"))
+                               {
+                                    /// TODO. Handle popup blocking.
+                               }
+                           }}
+                           showTooltip={false}/>
            </div>
 }
 
