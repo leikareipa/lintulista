@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, error} from "../../assert.js";
+import {panic_if_not_type, warn} from "../../assert.js";
 
 // Renders a button associated with a drop-down menu that activates when the button is
 // clicked. The drop-down menu holds a set of items that the user can click on; when an
@@ -15,9 +15,12 @@ import {panic_if_not_type, error} from "../../assert.js";
 // The icon to be rendered on the button should be provided via props.icon as a Font
 // Awesome class name string (e.g. "fas fa-question fa-2x" for a large question mark).
 //
+// A callback for when the user clicks on the button can be provided via props.callbackOnButtonClick.
+// It will be passed no parameters.
+//
 // The menu's title is to be provided via props.title.
 //
-// The menu's items are to be provided via props.items as an array of objects of the
+// The menu's items can be provided via props.items as an array of objects of the
 // following form:
 //
 //     {
@@ -30,6 +33,9 @@ import {panic_if_not_type, error} from "../../assert.js";
 // The index of the initial active item can be given via props.initialItemIdx as a 0-
 // indexed integer.
 //
+// If no menu items are provided, the menu button acts as a regular button; i.e. clicking
+// on it will not open a menu. You can detect the click via props.callbackOnButtonClick.
+//
 /// TODO: Add showing which of the drop-down's items are currently selected.
 //
 export function MenuButton(props = {})
@@ -38,7 +44,8 @@ export function MenuButton(props = {})
 
     const [dropdownVisible, setDropdownVisible] = React.useState(false);
 
-    const [currentItemText, setCurrentItemText] = React.useState(props.items[props.initialItemIdx].text);
+    const [currentItemText, setCurrentItemText] = React.useState(props.items.length? props.items[props.initialItemIdx].text
+                                                                                   : "null");
 
     // Implements a click handler that hides the menu's dropdown when the user clicks
     // outside of the dropdown element - but not when they click on it. Note that clicks
@@ -86,26 +93,40 @@ export function MenuButton(props = {})
         </div>
     ));
 
-    return <div className="MenuButton" onClick={dropdownVisible? hide_dropdown : show_dropdown}>
-               <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
-                   {currentItemText}
-               </div>
-               <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
-                    title={props.title}>
-                        <i className={props.icon}/>
-               </div>
-               <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`.trim()}>
-                   <div className="title">
-                       {props.title}
-                   </div>
-                   <div className="items">
-                       {itemElements}
-                   </div>
-               </div>
+    const dropDownMenu = !props.items.length? <></>
+                                            : <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`.trim()}>
+                                                  <div className="title">
+                                                      {props.title}
+                                                  </div>
+                                                  <div className="items">
+                                                      {itemElements}
+                                                  </div>
+                                              </div>
+
+    return <div className="MenuButton"
+                onClick={()=>
+                {
+                    props.callbackOnButtonClick();
+                    dropdownVisible? hide_dropdown() : show_dropdown();
+                }}>
+                    <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
+                        {currentItemText}
+                    </div>
+                    <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
+                         title={props.title}>
+                             <i className={props.icon}/>
+                    </div>
+                    {dropDownMenu}
            </div>
 
     function handle_item_click(itemIdx, callback)
     {
+        if (!props.items.length)
+        {
+            warn("Received a click on an item even though there are no items.");
+            return;
+        }
+
         setCurrentItemText(props.items[itemIdx].text);
         setDropdownVisible(false);
         callback();
@@ -118,20 +139,21 @@ export function MenuButton(props = {})
 
     function show_dropdown()
     {
-        setDropdownVisible(true);
+        if (props.items.length)
+        {
+            setDropdownVisible(true);
+        }
     }
 }
 
 MenuButton.defaultProps =
 {
     title: "?",
-    items:
-    [
-        {text:"?", callbackOnSelect:()=>error("This menu item has not been fully implemented.")},
-    ],
-    initialItemIdx: 0,
     icon: "fas fa-question",
+    items: [],
+    initialItemIdx: 0,
     showTooltip: true,
+    callbackOnButtonClick: ()=>{}
 }
 
 MenuButton.validate_props = function(props)
