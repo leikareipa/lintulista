@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="edit.css">
         <link rel="stylesheet" type="text/css" href="edit-animations.css">
-        <base href="/">
+        <base href="../">
     </head>
     <body>
         <header>
@@ -34,6 +34,7 @@
         <script type="module">
             import {render_observation_list} from "./client/dist/render/render-observation-list.js";
             import {backend_access} from "./client/dist/backend-access.js";
+            import {error} from "./client/dist/assert.js";
 
             // Grab from the address bar the id of the observation list to be operated on.
             const listId = (()=>
