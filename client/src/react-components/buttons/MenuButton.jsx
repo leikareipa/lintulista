@@ -12,6 +12,11 @@ import {panic_if_not_type, warn} from "../../assert.js";
 // clicked. The drop-down menu holds a set of items that the user can click on; when an
 // item is clicked, the menu is closed and the item's callback is called.
 //
+// You can set via props.enabled whether the button is enabled (true) or disabled (false).
+// The only effect of this is that the button's class list will be set accordingly, such
+// that when props.enabled = true, the class list will be "MenuButton enabled", and while
+// props.enabled = false, the class list will be "MenuButton disabled".
+//
 // The icon to be rendered on the button should be provided via props.icon as a Font
 // Awesome class name string (e.g. "fas fa-question fa-2x" for a large question mark).
 //
@@ -94,7 +99,7 @@ export function MenuButton(props = {})
     ));
 
     const dropDownMenu = !props.items.length? <></>
-                                            : <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`.trim()}>
+                                            : <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
                                                   <div className="title">
                                                       {props.title}
                                                   </div>
@@ -103,7 +108,7 @@ export function MenuButton(props = {})
                                                   </div>
                                               </div>
 
-    return <div className="MenuButton"
+    return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"}`}
                 onClick={()=>
                 {
                     props.callbackOnButtonClick();
@@ -151,6 +156,7 @@ MenuButton.defaultProps =
     title: "?",
     icon: "fas fa-question",
     items: [],
+    enabled: true,
     initialItemIdx: 0,
     showTooltip: true,
     callbackOnButtonClick: ()=>{}
