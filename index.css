@@ -22,7 +22,7 @@ header
 header > #title
 {
     position: absolute;
-    top: 20px;
+    top: 38px;
     left: 15%;
     color: #f1f1f1;
 }
@@ -64,7 +64,7 @@ footer
     flex-direction: column;
     justify-content: center;
     background-color: #dbdbdb;
-    margin-bottom: -153px;
+    margin-bottom: -130px;
 
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
@@ -73,7 +73,7 @@ footer
 
 #content > *
 {
-    transform: translateY(-60px);
+    transform: translateY(-30px);
 }
 
 #info
@@ -126,9 +126,9 @@ footer
     user-select: none;
     -moz-user-select: none;
 
-    transform: translateY(-10px);
+    transform: translateY(-22px);
     font-family: sans-serif;
-    height: 26px;
+    height: 20px;
     padding-top: 18px;
     padding-bottom: 18px;
     border-radius: 6px;
@@ -183,11 +183,11 @@ footer
 .ObservationListElement .BirdThumbnail
 {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    border: 17px solid #efefef;
-    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.4);
+    border: 16px solid #f3f3f3;
+    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
     z-index: 2;
 }
 
@@ -198,10 +198,10 @@ footer
     border-radius: 3px;
     width: 196px;
     margin-top: -15px;
-    padding-top: 21px;
+    padding-top: 24px;
     padding-bottom: 13px;
     background-color: #eaeaea;
-    line-height: 130%;
+    line-height: 110%;
     text-align: center;
     position: relative;
     z-index: 1;
