@@ -43,12 +43,12 @@ export function ObservationListActionBar(props = {})
     return <div className="ObservationListActionBar">
                <BirdSearch backend={props.backend}
                            callbackSelectedBird={props.callbackAddObservation}/>
-               <MenuButton icon="fas fa-ellipsis-v"
+               <MenuButton icon="fas fa-list-ul"
                            title="Listan järjestys"
                            items={
                            [
                                {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
-                               {text:"Havaintopäivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
+                               {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
                                {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("100-lajia")},
                            ]}
                            initialItemIdx={1}

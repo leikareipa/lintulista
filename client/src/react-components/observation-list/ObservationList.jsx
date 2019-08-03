@@ -66,7 +66,7 @@ export function ObservationList(props = {})
                <div className="elements">
                    {observationElements}
                </div>
-               <ObservationListFooter numObservationsInList={observationElements.length}
+               <ObservationListFooter numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observation_list_to_csv_file}/>
            </div>
 

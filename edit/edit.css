@@ -22,31 +22,33 @@ header
     position: relative;
     background-color: #c0c0c0;
     color: #f0f0f0;
-    padding-bottom: 205px;
+    padding-bottom: 115px;
     background-image: linear-gradient(to right, #c0c0c0, #adadad);
 }
 
 header > #title
 {
-    transform: rotate(-2deg);
+    transform: rotate(-1deg);
     position: absolute;
-    top: 12px;
-    left: 13%;
+    top: 45px;
+    left: 25px;
     color: #f1f1f1;
 }
 
 header > #title > #app-name
 {
+    transform: rotate(0deg);
     font-family: "Damion", cursive;
-    font-size: 450%;
+    font-size: 350%;
 }
 
 header > #title > #subtitle
 {
-    transform: rotate(2deg); /* Counter the title's rotation.*/
     font-family: sans-serif;
     font-size: 70%;
-    margin-top: -18px;
+    margin-top: -10px;
+    text-align: right;
+    font-style: italic;
 }
 
 footer
@@ -54,25 +56,40 @@ footer
     color: rgb(0, 0, 0);
     font-family: sans-serif;
     padding-top: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
     font-size: 90%;
 }
 
 #observation-list
 {
     background-color: #dbdbdb;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 3px 3px 0;
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 
-    border-bottom: 1px solid rgb(160, 160, 160);
     box-shadow: 6px 7px 5px rgba(0, 0, 0, 0.05);
+
+    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+
+    border-left: 17px dotted #c0c0c0;
 }
 
 #privacy-notice > *
 {
     margin: 5px;
+}
+
+.MenuButton
+{
+    cursor: pointer;
+}
+
+.MenuButton .icon:active
+{
+    transform: translateY(2px);
 }
 
 .BirdThumbnail
@@ -84,11 +101,12 @@ footer
 
 .ObservationList > .ObservationListActionBar
 {
-    position: absolute;
-    top: 60px;
-    right: 15%;
     display: flex;
     flex-direction: row;
+    width: 440px;
+    position: absolute;
+    top: 59px;
+    right: 13%;
     color: rgba(241, 241, 241, 0.45);
 
     height: 45px;
@@ -97,18 +115,13 @@ footer
 
 .ObservationList > .ObservationListActionBar > *
 {
-    margin-right: 45px;
-}
-
-.ObservationList > .ObservationListActionBar > *:last-child
-{
-    margin-right: 0;
+    flex-grow: 1;
 }
 
 .ObservationList > .ObservationListActionBar > .lock i
 {
     color: #f1f1f1;
-    transform: scale(2);
+    transform: scale(2.5);
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton
@@ -118,34 +131,32 @@ footer
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .icon
 {
-    cursor: pointer;
     color: #f1f1f1;
-    width: 40px;
 }
 
 /* Font Awesome icons.*/
 .ObservationList > .ObservationListActionBar > .MenuButton > .icon i
 {
-    transform: scale(2);
+    transform: scale(2.5);
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .tooltip
 {
     white-space: nowrap;
     position: absolute;
-    top: -40px;
-    left: calc(50% - 1px);
+    top: -45px;
+    left: 50%;
     transform: translateX(-50%);
-    background-color: white;
-    color: rgb(0, 0, 0);
+    background-color: #8d8d8c;
+    color: #ffffff;
     border-radius: 3px;
-    font-size: 80%;
+    font-size: 90%;
     font-family: sans-serif;
     line-height: 100%;
-    padding: 10px;
+    padding: 9px;
     padding-left: 13px;
     padding-right: 13px;
-    min-width: 46px;
+    min-width: 45px;
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
@@ -160,7 +171,7 @@ footer
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0 8px;
-    border-color: white transparent transparent transparent;
+    border-color: #828282 transparent transparent transparent;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown
@@ -169,11 +180,11 @@ footer
     -moz-user-select: none;
 
     color: white;
-    border-radius: 0px;
+    border-radius: 8px;
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0px 5px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0px 5px 40px rgba(15, 7, 0, 0.15);
 
     position: absolute;
     top: 55px;
@@ -187,9 +198,9 @@ footer
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
-    background-color: rgb(53, 145, 231);
+    background-color: #5a5a5a;
     cursor: auto;
-    font-style: italic;
+    border-radius: 8px 8px 0 0;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div
@@ -197,15 +208,19 @@ footer
     color: black;
     padding-top: 2px;
     padding-bottom: 2px;
-    background-color: white;
+    background-color: #f9f9f9;
     cursor: pointer;
+}
+
+.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:last-child
+{
+    border-radius: 0 0 4px 4px;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:hover
 {
-    transform: scale(1.03);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
+    transform: scale(1.05);
+    border-radius: 8px;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.inactive
@@ -228,41 +243,38 @@ footer
     padding-top: 15px;
     padding-bottom: 15px;
     border: none;
-    border-radius: 3px;
+    border-radius: 8px;
+    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 
     position: relative;
-    z-index: 21; /* Above the BirdSearchResult*/
+    z-index: 21;
 
     transition: width 0.15s linear;
-}
-
-.BirdSearchBar.active
-{
-    width: 260px;
 }
 
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 48px; /* Below the search input field.*/
-    right: calc(12% + 96px); /* Level with the search input field.*/
+    top: 47px; /* Below the search input field.*/
+    right: calc(12% + 114px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
 .BirdSearchResult
 {
+    font-family: "Nunito", serif;
+    font-size: 98%;
     width: 380px; /* Width of the parent container minus padding.*/
     color: black;
-    background-color: white;
+    background-color: #f9f9f9;
     padding: 6px;
     padding-top: 17px;
     padding-bottom: 17px;
     display: flex;
     align-items: center;
-    border-radius: 0px;
+    border-radius: 8px;
     margin-top: 4px;
-    
-    box-shadow: 0 -27px 5px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -27px 5px 60px rgba(15, 7, 0, 0.15);
 
     position: relative;
     z-index: 20;
@@ -278,7 +290,7 @@ footer
     width: 90px;
     height: 90px;
     margin-left: 15px;
-    margin-right: 20px;
+    margin-right: 23px;
     border-radius: 50%;
     border: 7px solid white;
     box-shadow: 0 0px 7px -4px rgba(0, 0, 0, 1);
@@ -289,7 +301,7 @@ footer
     display: flex;
     flex-direction: column;
     text-align: left;
-    line-height: 130%;
+    line-height: 125%;
 }
 
 .BirdSearchResult > .card > *
@@ -301,21 +313,19 @@ footer
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
-    font-size: 90%;
-    font-family: serif;
+    font-size: 100%;
 }
 
 .BirdSearchResult > .card > .date-observed
 {
-    font-size: 80%;
+    font-size: 90%;
     font-weight: normal;
     color: rgba(0, 0, 0, 0.6);
-    font-family: serif;
 }
 
 .BirdSearchResult > .card > .classification
 {
-    font-size: 80%;
+    font-size: 90%;
     color: rgba(0, 0, 0, 0.6);
 }
 
@@ -329,26 +339,35 @@ footer
 {
     position: fixed;
     bottom: 0;
-    left: 0;
     right: 0;
     z-index: 1000;
 
     font-size: 95%;
-    text-align: right;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    padding-right: 30px;
+    text-align: left;
 }
 
 .ObservationList > .ObservationListFooter > .observation-count
+{
+    background-color: #f9f9f9;
+    color: rgb(0, 0, 0);
+    padding: 12px;
+    padding-right: 25px;
+    border-radius: 0 3px 0 0;
+    font-family: sans-serif;
+    border-radius: 6px 0 0 0;
+
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.ObservationList > .ObservationListFooter > .observation-count > .value
 {
     font-weight: bold; 
 }
 
 .ObservationList > .elements
 {
-    transform: translateY(-60px);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -377,13 +396,13 @@ footer
 
 .ObservationListElement > .PlainTag.lis-laji
 {
-    padding: 5px;
+    padding: 6px;
     padding-left: 8px;
     padding-right: 8px;
     background-color: rgb(241, 200, 14);
     color: black;
-    border-radius: 6px;
-    box-shadow: 0px 10px 2px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 10px 10px 2px -5px rgba(0, 0, 0, 0.1);
     font-size: 80%;
     font-family: sans-serif;
 
@@ -414,11 +433,11 @@ footer
 .ObservationListElementGhost .BirdThumbnail
 {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    border: 17px solid #efefef;
-    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.4);
+    border: 16px solid #f3f3f3;
+    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
     z-index: 2;
 }
 
@@ -426,20 +445,22 @@ footer
 {
     background-color: #dbdbdb;
     border: 1px dashed rgb(143, 143, 143);
-    padding: 16px;
+    padding: 15px;
     box-shadow: none;
 }
 
 .ObservationListElement > .card,
 .ObservationListElementGhost > .card
 {
+    font-family: "Nunito", serif;
+    font-size: 98%;
     border-radius: 3px;
     width: 196px;
     margin-top: -15px;
-    padding-top: 21px;
+    padding-top: 24px;
     padding-bottom: 13px;
     background-color: #eaeaea;
-    line-height: 130%;
+    line-height: 120%;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -451,7 +472,7 @@ footer
     margin-top: -15px;
     background-color: #dbdbdb;
     border: 1px dashed rgb(143, 143, 143);
-    padding-top: 20px;
+    padding-top: 23px;
     padding-bottom: 12px;
 }
 
@@ -494,9 +515,9 @@ footer
     font-size: 130%;
     z-index: 3;
     transition: all 0.35s ease-in-out;
-    border-radius: 0 6px 6px 6px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 7px -0px rgba(0, 0, 0, 0.15);
+    border-radius: 0 8px 8px 8px;
+    background-color: #f3f3f3;
+    box-shadow: -10px 10px 1px -2px rgba(0, 0, 0, 0.2);
 
     position: absolute;
     top: 5px;
@@ -515,7 +536,7 @@ footer
     height: 0;
     border-style: solid;
     border-width: 0 8px 10px 0;
-    border-color: transparent #f9f9f9 transparent transparent;
+    border-color: transparent #f3f3f3 transparent transparent;
 }
 
 .ObservationListElement > .AsyncIconButtonBar.hidden
@@ -533,22 +554,16 @@ footer
 
 .ObservationListElement > .AsyncIconButtonBar > .buttons > *
 {
-    flex: 1;
-}
-
-.ObservationListElement > .AsyncIconButtonBar > .buttons > *
-{
-    color: rgb(53, 145, 231);
+    color: #3591e7;
     cursor: pointer;
     padding: 7px;
     margin: 5px;
+    flex: 1;
 }
 
-.ObservationListElement > .AsyncIconButtonBar > .buttons > .AsyncIconButton.enabled:hover
+.ObservationListElement > .AsyncIconButtonBar > .buttons > *:hover
 {
-    color: rgb(53, 145, 231);
-    background-color: rgba(0, 0, 0, 0.03);
-    border-radius: 6px;
+    color: #277ecf;
 }
 
 .AsyncIconButtonBar > .buttons > .AsyncIconButton.enabled:active
