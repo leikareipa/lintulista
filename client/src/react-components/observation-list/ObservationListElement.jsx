@@ -83,6 +83,7 @@ export function ObservationListElement(props = {})
     async function button_remove_observation({resetButtonState})
     {
         resetButtonState();
+        props.callbackSetActionBarEnabled(false);
 
         const shades = await darken_viewport(shadeArgs);
 
@@ -94,7 +95,9 @@ export function ObservationListElement(props = {})
                 await props.requestDeleteObservation(observationData);
             }
         });
-
+        
+        props.callbackSetActionBarEnabled(true);
+        
         await shades.remove();
     }
 
@@ -104,6 +107,7 @@ export function ObservationListElement(props = {})
     async function button_change_observation_date({resetButtonState})
     {
         resetButtonState();
+        props.callbackSetActionBarEnabled(false);
 
         const shades = await darken_viewport(shadeArgs);
 
@@ -130,6 +134,8 @@ export function ObservationListElement(props = {})
             }
         });
 
+        props.callbackSetActionBarEnabled(true);
+
         await shades.remove();
     }
 
@@ -139,6 +145,7 @@ export function ObservationListElement(props = {})
     async function button_change_observation_place({resetButtonState})
     {
         resetButtonState();
+        props.callbackSetActionBarEnabled(false);
 
         const shades = await darken_viewport(shadeArgs);
 
@@ -166,6 +173,8 @@ export function ObservationListElement(props = {})
             }
         });
 
+        props.callbackSetActionBarEnabled(true);
+
         await shades.remove();
     }
 
@@ -189,6 +198,7 @@ export function ObservationListElement(props = {})
 
 ObservationListElement.defaultProps =
 {
+    callbackSetActionBarEnabled: ()=>{},
     showOrderTag: false,
     visible: true,
     tag: <></>,

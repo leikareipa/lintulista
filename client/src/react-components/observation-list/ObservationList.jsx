@@ -51,6 +51,8 @@ export function ObservationList(props = {})
 
     const [observationElements, setObservationElements] = React.useState(generate_observation_elements());
 
+    const [actionBarEnabled, setActionBarEnabled] = React.useState(true);
+
     React.useEffect(()=>
     {
         setObservationElements(generate_observation_elements());
@@ -71,7 +73,8 @@ export function ObservationList(props = {})
                          </div>
 
     return <div className="ObservationList">
-               <ObservationListActionBar backend={props.backend}
+               <ObservationListActionBar enabled={actionBarEnabled}
+                                         backend={props.backend}
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortObservationsBy}/>
                <div className="elements">
@@ -146,6 +149,7 @@ export function ObservationList(props = {})
                                            visible={true}
                                            showOrderTags={sortObservationsBy === "order"}
                                            maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
+                                           callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
                                            requestDeleteObservation={async(self)=>await delete_observation(self)}
                                            requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
                                            requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
