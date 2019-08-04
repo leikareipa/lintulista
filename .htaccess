@@ -4,4 +4,4 @@ RewriteCond %{REQUEST_URI} ^.*/edit/.*$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
-RewriteRule (.*) edit.html?list=$1 [L]
+RewriteRule (.*) list.html?list=$1 [L]
