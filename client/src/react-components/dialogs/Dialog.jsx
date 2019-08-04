@@ -24,6 +24,10 @@ import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 // Functions to be called when the user accepts or rejects the dialog should be provided via
 // props.onDialogAccept and props.onDialogReject.
 //
+// Callbacks can be provided via props.giveCallbackTriggerDialogAccept and props.giveCallbackTriggerDialogReject
+// that on Dialog's initialization will receive a function that the caller can use to accept or
+// reject the dialog via code.
+//
 // To build a dialog called MyDialog using Dialog as a base, you might have the following JSX:
 //
 //     <Dialog component="MyDialog"
@@ -86,7 +90,21 @@ export function Dialog(props = {})
                 props.onDialogReject();
             }
         }
-    }, [])
+    }, []);
+
+    // A function with which the accept button's pressed state can be triggered in-code.
+    // Will be set to its correct value when the accept button initializes.
+    let triggerAcceptButtonPress = ()=>{};
+
+    if (is_function(props.giveCallbackTriggerDialogAccept))
+    {
+        props.giveCallbackTriggerDialogAccept(()=>{triggerAcceptButtonPress()});
+    }
+
+    if (is_function(props.giveCallbackTriggerDialogReject))
+    {
+        props.giveCallbackTriggerDialogAccept(reject);
+    }
 
     return <div className={`Dialog ${props.component}`}>
                <div className="title">
@@ -97,26 +115,39 @@ export function Dialog(props = {})
                </div>
                <div className="button-bar">
                    <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
-                       <AsyncIconButton task={(returnData)=>{
-                                            setRejectButtonEnabled(false);
-                                            props.onDialogAccept(returnData);
-                                        }}
+                       <AsyncIconButton task={accept}
                                         icon={`${props.acceptButtonIcon} fa-2x`}
                                         printTitle={true}
                                         title={props.acceptButtonText}
-                                        titleWhenClicked="Tallennetaan..."/>
+                                        titleWhenClicked="Tallennetaan..."
+                                        giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}/>
                    </div>
                    <div className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
-                        onClick={!rejectButtonEnabled? null : ()=>{
-                            setAcceptButtonEnabled(false);
-                            setRejectButtonEnabled(false);
-                            props.onDialogReject();
-                        }}>
+                        onClick={reject}>
                             <i className={`${props.rejectButtonIcon} fa-2x`}/>
                             <br/>{props.rejectButtonText}
                    </div>
                </div>
            </div>
+
+    function accept()
+    {
+        if (acceptButtonEnabled)
+        {
+            setRejectButtonEnabled(false);
+            props.onDialogAccept();
+        }
+    }
+
+    function reject()
+    {
+        if (rejectButtonEnabled)
+        {
+            setAcceptButtonEnabled(false);
+            setRejectButtonEnabled(false);
+            props.onDialogReject();
+        } 
+    }
 }
 
 Dialog.validateProps = function(props)
