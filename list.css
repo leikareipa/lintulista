@@ -477,7 +477,7 @@ footer
 
 .ObservationListElement > .PlainTag.lis-laji
 {
-    padding: 6px;
+    padding: 4px;
     padding-left: 8px;
     padding-right: 8px;
     background-color: rgb(241, 200, 14);
@@ -488,7 +488,7 @@ footer
     font-family: sans-serif;
 
     position: absolute;
-    left: 50%;
+    left: calc(50% - 40px);
     transform: translateX(-50%);
     top: 4px;
     z-index: 5;

@@ -53,22 +53,17 @@ export function ObservationListActionBar(props = {})
                            initialItemIdx={1}
                            showTooltip={true}/>
 
-               {/* A button that displays either a locked or unlocked lock icon, depending on whether the user
+               {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
                  * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
                  * accessing with an edit key) will direct the browser to a version of the list using the view
                  * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
-               <MenuButton icon={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}
-                           title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                           enabled={props.backend.hasEditRights}
-                           id="lock"
-                           callbackOnButtonClick={!props.backend.hasEditRights? null : ()=>
-                           {
-                               if (!window.open(`./${props.backend.viewKey}`, "_blank", "noopener"))
-                               {
-                                    /// TODO. Handle popup blocking.
-                               }
-                           }}
-                           showTooltip={false}/>
+               <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
+                  title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
+                  href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
+                  rel="noopener noreferrer"
+                  target="_blank">
+                      <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>
+               </a>
            </div>
 }
 
