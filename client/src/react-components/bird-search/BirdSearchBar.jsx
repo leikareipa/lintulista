@@ -27,6 +27,8 @@ export function BirdSearchBar(props = {})
 
     const [state, setState] = React.useState(props.initialState);
 
+    const [currentText, setCurrentText] = React.useState("");
+
     // Implements a click handler that clears away any search results and inactivates the
     // search bar when the user clicks outside of the search element - but not when they
     // click ON the search element.
@@ -67,6 +69,7 @@ export function BirdSearchBar(props = {})
     {
         if (searchRef.current && (state === "inactive"))
         {
+            setCurrentText("");
             searchRef.current.value = "";
         }
     });
@@ -80,8 +83,16 @@ export function BirdSearchBar(props = {})
 
         switch (state)
         {
-            case "inactive": props.callbackOnInactivate(); break;
-            case "active": props.callbackOnActivate(); break;
+            case "inactive":
+            {
+                props.callbackOnInactivate();
+                break;
+            }
+            case "active":
+            {
+                props.callbackOnActivate();
+                break;
+            }
             default: panic(`Unknown state "${state}".`); break;
         }
     }, [state]);
@@ -89,6 +100,13 @@ export function BirdSearchBar(props = {})
     return <input className={`BirdSearchBar ${state}`.trim()}
                   ref={searchRef}
                   type="search"
+                  onBlur={()=>
+                  {
+                      if (!currentText.length)
+                      {
+                          got_focus(false);
+                      }
+                  }}
                   onFocus={()=>got_focus(true)}
                   onChange={handle_input_event}
                   spellCheck="false"
@@ -102,9 +120,11 @@ export function BirdSearchBar(props = {})
 
     function handle_input_event(inputEvent)
     {
-        const searchString = inputEvent.target.value.trim();
+        const inputString = inputEvent.target.value.trim();
 
-        props.callbackOnChange(searchString);
+        setCurrentText(inputString);
+
+        props.callbackOnChange(inputString);
     }
 }
 
