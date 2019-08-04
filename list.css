@@ -93,6 +93,11 @@ footer
     transform: translateY(2px);
 }
 
+.AsyncIconButton.waiting
+{
+    cursor: auto;
+}
+
 .AsyncIconButton.disabled
 {
     cursor: auto;

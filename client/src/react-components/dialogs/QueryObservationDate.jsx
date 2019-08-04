@@ -37,8 +37,9 @@ export function QueryObservationDate(props = {})
     return <Dialog component="QueryObservationDate"
                    title="Merkitse havaintopäivä"
                    titleIcon="fas fa-clock"
-                   onDialogAccept={()=>close_dialog(true)}
-                   onDialogReject={()=>close_dialog(false)}>
+                   enterAccepts={true}
+                   onDialogAccept={accept}
+                   onDialogReject={reject}>
                <BirdThumbnail bird={props.observation.bird}/>
                <div className="fields">
                    <div className="bird-name">
@@ -74,13 +75,14 @@ export function QueryObservationDate(props = {})
                </div>
            </Dialog>
 
-    function close_dialog(accept = true)
+    function accept()
     {
-        switch (accept)
-        {
-            case true: props.onDialogAccept({day, month, year}); break;
-            default: props.onDialogReject(); break;
-        }
+        props.onDialogAccept({day, month, year});
+    }
+
+    function reject()
+    {
+        props.onDialogReject();
     }
 }
 

@@ -37,8 +37,9 @@ export function QueryObservationPlace(props = {})
     return <Dialog component="QueryObservationPlace"
                    title="Merkitse havaintopaikka"
                    titleIcon="fas fa-map-marker-alt"
-                   onDialogAccept={()=>close_dialog(true)}
-                   onDialogReject={()=>close_dialog(false)}>
+                   enterAccepts={true}
+                   onDialogAccept={accept}
+                   onDialogReject={reject}>
                <BirdThumbnail bird={props.observation.bird}/>
                <div className="fields">
                    <div className="bird-name">
@@ -68,13 +69,14 @@ export function QueryObservationPlace(props = {})
                </div>
            </Dialog>
 
-    function close_dialog(accept = true)
+    function accept()
     {
-        switch (accept)
-        {
-            case true: props.onDialogAccept(placeString); break;
-            default: props.onDialogReject(); break;
-        }
+        props.onDialogAccept(placeString);
+    }
+    
+    function reject()
+    {
+        props.onDialogReject();
     }
 }
 

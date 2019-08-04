@@ -28,6 +28,10 @@ import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 // that on Dialog's initialization will receive a function that the caller can use to accept or
 // reject the dialog via code.
 //
+// Whether to trigger dialog rejection on the user pressing the Escape key and/or acceptance
+// on the user pressing the Enter key can be given as booleans via props.escRejects and
+// props.enterAccepts, respectively.
+//
 // To build a dialog called MyDialog using Dialog as a base, you might have the following JSX:
 //
 //     <Dialog component="MyDialog"
@@ -59,6 +63,56 @@ export function Dialog(props = {})
     const [acceptButtonEnabled, setAcceptButtonEnabled] = React.useState(props.acceptButtonEnabled);
     const [rejectButtonEnabled, setRejectButtonEnabled] = React.useState(props.rejectButtonEnabled);
 
+    // For when the dialog is accepted/rejected via code rather than by the user pressing
+    // the corresponding buttons.
+    const [acceptViaCode, setAcceptViaCode] = React.useState(false);
+    const [rejectViaCode, setRejectViaCode] = React.useState(false);
+
+    React.useEffect(()=>
+    {
+        if (acceptViaCode)
+        {
+            setAcceptViaCode(false);
+
+            if (acceptButtonEnabled)
+            {
+                // This will call accept() via the AsyncIconButton's task() callback.
+                triggerAcceptButtonPress();
+            }
+        }
+
+        if (rejectViaCode && rejectButtonEnabled)
+        {
+            setRejectViaCode(false);
+            
+            if (rejectButtonEnabled)
+            {
+                reject();
+            }
+        }
+    }, [acceptViaCode, rejectViaCode, acceptButtonEnabled, rejectButtonEnabled]);
+
+    React.useEffect(()=>
+    {
+        window.addEventListener("keydown", handle_key);
+        return ()=>window.removeEventListener("keydown", handle_key);
+
+        function handle_key(keyEvent)
+        {
+            if (props.enterAccepts &&
+                (keyEvent.key === "Enter"))
+            {
+                setAcceptViaCode(true);
+            }
+
+            if (props.escRejects &&
+                (keyEvent.key === "Escape"))
+            {
+                setRejectViaCode(true);
+            }
+        }
+    }, []);
+
     // Provide the caller a function with which to set the state of the accept/reject
     // buttons, since React doesn't seem to be updating their state properly via prop
     // changes on Dialog initialization.
@@ -75,78 +129,55 @@ export function Dialog(props = {})
         });
     }
 
-    // Have the dialog close with the 'reject' status if the user presses ESC.
-    React.useEffect(()=>
+    if (is_function(props.giveCallbackTriggerDialogAccept))
     {
-        window.addEventListener("keydown", close_on_esc);
-        return ()=>window.removeEventListener("keydown", close_on_esc);
+        props.giveCallbackTriggerDialogAccept(()=>setAcceptViaCode(true));
+    }
 
-        function close_on_esc(keyPressEvent)
-        {
-            if (keyPressEvent.key === "Escape")
-            {
-                setRejectButtonEnabled(false);
-                setAcceptButtonEnabled(false);
-                props.onDialogReject();
-            }
-        }
-    }, []);
+    if (is_function(props.giveCallbackTriggerDialogReject))
+    {
+        props.giveCallbackTriggerDialogReject(()=>setRejectViaCode(true));
+    }
 
     // A function with which the accept button's pressed state can be triggered in-code.
     // Will be set to its correct value when the accept button initializes.
     let triggerAcceptButtonPress = ()=>{};
 
-    if (is_function(props.giveCallbackTriggerDialogAccept))
-    {
-        props.giveCallbackTriggerDialogAccept(()=>{triggerAcceptButtonPress()});
-    }
-
-    if (is_function(props.giveCallbackTriggerDialogReject))
-    {
-        props.giveCallbackTriggerDialogAccept(reject);
-    }
-
     return <div className={`Dialog ${props.component}`}>
-               <div className="title">
-                   <i className={props.titleIcon}/> {props.title}
-               </div>
-               <div className="form">
-                   {props.children}
-               </div>
-               <div className="button-bar">
-                   <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
-                       <AsyncIconButton task={accept}
-                                        icon={`${props.acceptButtonIcon} fa-2x`}
-                                        printTitle={true}
-                                        title={props.acceptButtonText}
-                                        titleWhenClicked="Tallennetaan..."
-                                        giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}/>
-                   </div>
-                   <div className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
-                        onClick={reject}>
-                            <i className={`${props.rejectButtonIcon} fa-2x`}/>
-                            <br/>{props.rejectButtonText}
-                   </div>
-               </div>
+                <div className="title">
+                    <i className={props.titleIcon}/> {props.title}
+                </div>
+                <div className="form">
+                    {props.children}
+                </div>
+                <div className="button-bar">
+                    <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
+                        <AsyncIconButton task={accept}
+                                         icon={`${props.acceptButtonIcon} fa-2x`}
+                                         printTitle={true}
+                                         title={props.acceptButtonText}
+                                         titleWhenClicked="Tallennetaan..."
+                                         giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}/>
+                    </div>
+                    <div className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
+                         onClick={reject}>
+                             <i className={`${props.rejectButtonIcon} fa-2x`}/>
+                             <br/>{props.rejectButtonText}
+                    </div>
+                </div>
            </div>
 
     function accept()
     {
-        if (acceptButtonEnabled)
-        {
-            setRejectButtonEnabled(false);
-            props.onDialogAccept();
-        }
+        setRejectButtonEnabled(false);
+        props.onDialogAccept();
     }
 
     function reject()
     {
-        if (rejectButtonEnabled)
-        {
-            setAcceptButtonEnabled(false);
-            setRejectButtonEnabled(false);
-            props.onDialogReject();
-        } 
+        setAcceptButtonEnabled(false);
+        setRejectButtonEnabled(false);
+        props.onDialogReject();
     }
 }
 
@@ -173,4 +204,6 @@ Dialog.defaultProps =
     acceptButtonText: "Tallenna",
     rejectButtonIcon: "fas fa-times",
     rejectButtonText: "Peruuta",
+    enterAccepts: false,
+    escRejects: true,
 }

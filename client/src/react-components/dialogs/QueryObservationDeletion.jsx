@@ -49,8 +49,9 @@ export function QueryObservationDeletion(props = {})
                    acceptButtonText="Poista"
                    acceptButtonEnabled={false}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}
-                   onDialogAccept={props.onDialogAccept}
-                   onDialogReject={props.onDialogReject}>
+                   enterAccepts={true}
+                   onDialogAccept={accept}
+                   onDialogReject={reject}>
                <BirdThumbnail bird={props.observation.bird}/>
                <div className="fields">
                    <div className="bird-name">
@@ -72,6 +73,16 @@ export function QueryObservationDeletion(props = {})
                    </div>
                </div>
            </Dialog>
+
+    function accept()
+    {
+        props.onDialogAccept();
+    }
+
+    function reject()
+    {
+        props.onDialogReject();
+    }
 
     function is_input_name_valid()
     {
