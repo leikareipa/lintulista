@@ -57,14 +57,15 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     const emptyElement = <div className="intro">
-                             <h3><i className="fas fa-crow"/> Tervetuloa Lintulistaan!</h3>
+                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h3>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
                              {props.backend.hasEditRights
                                  ? <>
-                                       <p>Kun olet valmis aloittamaan havaintojesi merkitsemisen, kirjoita ylälaidan hakukenttään
-                                          haluamasi lintulajin nimi ja klikkaa se listalle!</p>
+                                       <p>Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään
+                                          lintulajin nimi. Halutun tuloksen kohdalla paina <i style={{color:"#2478d8"}} className="fas fa-plus-circle fa-xs"/>-symbolia
+                                          lisätäksesi se listaan!</p>
                                    </>
                                  : <></>}
                          </div>

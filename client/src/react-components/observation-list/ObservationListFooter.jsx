@@ -20,7 +20,7 @@ export function ObservationListFooter(props = {})
 {
     ObservationListFooter.validate_props(props);
 
-    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole havaittuja lajeja. Niiden lukumäärä päivittyy tähän.</>
+    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajihavaintoja. Niiden lukumäärä päivittyy tähän.</>
                                                                 : <>
                                                                       Listassa on&nbsp;
                                                                       <span style={{fontWeight:"bold"}}>
@@ -31,7 +31,7 @@ export function ObservationListFooter(props = {})
     const observationDownloadElement = !props.numObservationsInList? <></>
                                                                    : <span onClick={props.callbackDownloadList}
                                                                            style={{textDecoration:"underline", cursor:"pointer"}}>
-                                                                         Lataa havainnot CSV:nä
+                                                                         Lataa CSV:nä
                                                                      </span>
 
     return <div className="ObservationListFooter">

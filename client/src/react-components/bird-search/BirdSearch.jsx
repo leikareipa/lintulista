@@ -26,7 +26,7 @@ export function BirdSearch(props = {})
                <BirdSearchBar initialState="inactive"
                               callbackOnChange={refresh_search_results}
                               callbackOnInactivate={reset_search_results}/>
-               <div className="BirdSearchResultsDisplay">
+               <div className={`BirdSearchResultsDisplay ${currentSearchResultElements.length? "active" : "inactive"}`.trim()}>
                    {currentSearchResultElements}
                </div>
            </div>
