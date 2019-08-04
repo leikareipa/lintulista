@@ -25,13 +25,22 @@ import {MenuButton} from "../buttons/MenuButton.js";
 // provided via props.callbackSetListSorting. It will be passed one parameter: a string
 // describing the new sorting order.
 //
+// Whether the action bar is enabled (true) or disabled (false) can be given as a boolean
+// via props.enabled. The only effect of this is that the component's class list will be
+// appended with "enabled" or "disabled", accordingly.
+//
 export function ObservationListActionBar(props = {})
 {
     ObservationListActionBar.validate_props(props);
 
-    return <div className="ObservationListActionBar">
+    return <div className={`ObservationListActionBar ${props.enabled? "enabled" : "disabled"}`.trim()}>
+
+               {/* A search field that allows the user to search for specific bird species to be added as
+                 * observations.*/}
                <BirdSearch backend={props.backend}
                            callbackSelectedBird={props.callbackAddObservation}/>
+
+               {/* A button with which the user can change the sorting order of the observation list.*/}
                <MenuButton icon="fas fa-list-ul fa-fw"
                            title="Listan järjestys"
                            items={
@@ -42,6 +51,11 @@ export function ObservationListActionBar(props = {})
                            ]}
                            initialItemIdx={1}
                            showTooltip={true}/>
+
+               {/* A button that displays either a locked or unlocked lock icon, depending on whether the user
+                 * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
+                 * accessing with an edit key) will direct the browser to a version of the list using the view
+                 * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
                <MenuButton icon={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}
                            title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
                            enabled={props.backend.hasEditRights}
@@ -54,6 +68,11 @@ export function ObservationListActionBar(props = {})
                            }}
                            showTooltip={false}/>
            </div>
+}
+
+ObservationListActionBar.defaultProps =
+{
+    enabled: true,
 }
 
 ObservationListActionBar.validate_props = function(props)
