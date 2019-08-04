@@ -745,20 +745,27 @@ footer
     transition: transform 0.025s ease-in-out;
 }
 
+.Dialog > .button-bar > .accept
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Dialog > .button-bar > .reject:active
+{
+    transform: translateY(2px);
+}
+
 .Dialog > .button-bar > *:hover
 {
     color: white;
 }
 
-.Dialog > .button-bar > *:active
-{
-    transform: translateY(2px);
-}
-
 .Dialog > .button-bar > *.disabled
 {
     color: rgb(168, 168, 168);
-    cursor: inherit;
+    cursor: auto;
     pointer-events: none;
 }
 
