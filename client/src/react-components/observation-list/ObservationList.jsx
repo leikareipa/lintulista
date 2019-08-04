@@ -10,13 +10,10 @@ import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
 import {ObservationListActionBar} from "./ObservationListActionBar.js";
 import {ObservationListElement} from "./ObservationListElement.js";
-import {QueryAddNewObservation} from "../dialogs/QueryAddNewObservation.js";
 import {ObservationListFooter} from "./ObservationListFooter.js";
-import {open_modal_dialog} from "../../open-modal-dialog.js";
-import {darken_viewport} from "../../darken_viewport.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
-import * as FileSaver from "../../filesaver/FileSaver.js";
+import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 // A list of the birds in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 // In the future, this array might be located in some other file, but for now it's made its home here.
@@ -59,12 +56,25 @@ export function ObservationList(props = {})
         setObservationElements(generate_observation_elements());
     }, [sortObservationsBy]);
 
+    const emptyElement = <div className="intro">
+                             <h3><i className="fas fa-crow"/> Tervetuloa Lintulistaan!</h3>
+                             <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
+                                <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
+                                ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
+                             {props.backend.hasEditRights
+                                 ? <>
+                                       <p>Kun olet valmis aloittamaan havaintojesi merkitsemisen, kirjoita ylälaidan hakukenttään
+                                          haluamasi lintulajin nimi ja klikkaa se listalle!</p>
+                                   </>
+                                 : <></>}
+                         </div>
+
     return <div className="ObservationList">
                <ObservationListActionBar backend={props.backend}
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortObservationsBy}/>
                <div className="elements">
-                   {observationElements}
+                   {observationElements.length? observationElements : emptyElement}
                </div>
                <ObservationListFooter numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observation_list_to_csv_file}/>
@@ -73,22 +83,9 @@ export function ObservationList(props = {})
     // Called when the user requests us to add a new observation into the list.
     async function add_observation(bird)
     {
-        const shades = await darken_viewport();
+        await props.backend.post_observation(observation({bird, date:new Date()}));
 
-        await open_modal_dialog(QueryAddNewObservation,
-        {
-            bird,
-            onAccept: async({year, month, day})=>
-            {
-                panic_if_undefined(year, month, day);
-
-                await props.backend.post_observation(observation({bird, date:new Date(year, month-1, day)}));
-
-                setObservationElements(generate_observation_elements());
-            }
-        });
-
-        await shades.remove();
+        setObservationElements(generate_observation_elements());
     }
 
     function generate_observation_elements()

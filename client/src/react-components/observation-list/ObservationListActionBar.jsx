@@ -42,16 +42,6 @@ export function ObservationListActionBar(props = {})
                            ]}
                            initialItemIdx={1}
                            showTooltip={true}/>
-               <MenuButton icon="fas fa-info-circle fa-fw"
-                           title="Avaa käyttöohje"
-                           callbackOnButtonClick={()=>
-                           {
-                               if (!window.open("./ohjeet/", "_blank", "noopener"))
-                               {
-                                    /// TODO. Handle popup blocking.
-                               }
-                           }}
-                           showTooltip={false}/>
                <MenuButton icon={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}
                            title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
                            enabled={props.backend.hasEditRights}

@@ -69,9 +69,9 @@ export function BirdSearch(props = {})
     {
         panic_if_not_type("object", bird);
 
+        await props.callbackSelectedBird(bird);
+
         reset_search_results();
-        
-        props.callbackSelectedBird(bird);
     }
 
     function reset_search_results()

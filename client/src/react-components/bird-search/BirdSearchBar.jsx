@@ -92,7 +92,7 @@ export function BirdSearchBar(props = {})
                   onFocus={()=>get_focus(true)}
                   onChange={handle_input_event}
                   spellCheck="false"
-                  placeholder={(state === "inactive")? "Hae lajia..." : ""}
+                  placeholder={(state === "inactive")? "Hae lajeja" : ""}
                   autoComplete="off"/>
 
     function get_focus(gotIt)

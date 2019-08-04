@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {error, warn, panic, panic_if_not_type} from "../../assert.js";
+import {error, panic_if_not_type} from "../../assert.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.

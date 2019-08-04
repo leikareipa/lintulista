@@ -152,7 +152,7 @@ footer
 
 .CreateNewListButton > .button.step-1:active
 {
-    transform: translateY(-8px);
+    transform: translateY(-20px);
     box-shadow: none;
 }
 
@@ -201,10 +201,11 @@ footer
     padding-top: 24px;
     padding-bottom: 13px;
     background-color: #eaeaea;
-    line-height: 110%;
+    line-height: 115%;
     text-align: center;
     position: relative;
     z-index: 1;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.4);
 }
 
 .ObservationListElement > .card > .ObservationInfo
