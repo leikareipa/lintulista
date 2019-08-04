@@ -310,12 +310,12 @@ export async function backend_access(listKey)
 
         refresh_known_birds: async function()
         {
-            this.knownBirds = Object.freeze(await httpRequests.fetch_known_birds_list());
+            this.knownBirds = await httpRequests.fetch_known_birds_list();
         },
 
         refresh_observations: async function()
         {
-            this.observations = Object.freeze(await httpRequests.fetch_observations(listKey, this.knownBirds));
+            this.observations = await httpRequests.fetch_observations(listKey, this.knownBirds);
         }
     };
     await localCache.refresh();
@@ -337,6 +337,14 @@ export async function backend_access(listKey)
             panic_if_not_type("string", listKey);
             panic_if_not_type("object", existingObservation);
 
+            const obsIdx = localCache.observations.findIndex(obs=>(obs.bird.species === existingObservation.bird.species));
+
+            if (obsIdx === -1)
+            {
+                error("Can't delete an unknown observation.");
+                return false;
+            }
+
             const deletedSuccessfully = await httpRequests.delete_observation(listKey, existingObservation);
 
             if (!deletedSuccessfully)
@@ -345,7 +353,7 @@ export async function backend_access(listKey)
                 return false;
             }
 
-            await localCache.refresh_observations();
+            localCache.observations.splice(obsIdx, 1);
 
             return true;
         },
@@ -357,6 +365,8 @@ export async function backend_access(listKey)
         {
             panic_if_undefined(newObservation, newObservation.bird, newObservation.unixTimestamp);
 
+            const obsIdx = localCache.observations.findIndex(obs=>(obs.bird.species === newObservation.bird.species));
+
             const postedSuccessfully = await httpRequests.post_observation(listKey, newObservation);
             
             if (!postedSuccessfully)
@@ -365,7 +375,7 @@ export async function backend_access(listKey)
                 return false;
             }
 
-            await localCache.refresh_observations();
+            localCache.observations.splice(obsIdx, (obsIdx !== -1), newObservation);
 
             return true;
         },

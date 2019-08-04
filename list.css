@@ -426,15 +426,15 @@ footer
     width: 550px;
     text-align: left;
     padding: 30px;
-    padding-top: 17px;
-    padding-bottom: 17px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-top: 60px;
-    border-radius: 26px;
+    border-radius: 6px;
     box-shadow: -30px 30px 3px -4px rgba(10, 0, 0, 0.1);
     background-color: #f9f9f9;
 }
 
-.ObservationList > .elements > .intro h2
+.ObservationList > .elements > .intro h3
 {
     color: #bd7b72;
 }

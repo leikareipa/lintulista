@@ -59,7 +59,7 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     const emptyElement = <div className="intro">
-                             <h2><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h2><hr style={{color:"#bd7b72"}}/>
+                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h3>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
@@ -87,7 +87,7 @@ export function ObservationList(props = {})
     // Called when the user requests us to add a new observation into the list.
     async function add_observation(bird)
     {
-        await props.backend.post_observation(observation({bird, date:new Date()}));
+        await props.backend.post_observation(observation({bird, date:new Date(), place:""}));
 
         setObservationElements(generate_observation_elements());
     }
@@ -203,7 +203,7 @@ export function ObservationList(props = {})
 
         const modifiedObservation = observation(
         {
-            bird: existingObservation.bird,
+            ...existingObservation,
             date: newDate,
         });
 
