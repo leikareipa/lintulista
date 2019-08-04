@@ -12,6 +12,9 @@ import {panic_if_not_type, warn} from "../../assert.js";
 // clicked. The drop-down menu holds a set of items that the user can click on; when an
 // item is clicked, the menu is closed and the item's callback is called.
 //
+// Each menu button requires a unique id string, which can be provided via props.id. It
+// will be stored in the DOM as the button element's 'data-menu-button-id' attribute.
+//
 // You can set via props.enabled whether the button is enabled (true) or disabled (false).
 // The only effect of this is that the button's class list will be set accordingly, such
 // that when props.enabled = true, the class list will be "MenuButton enabled", and while
@@ -52,9 +55,9 @@ export function MenuButton(props = {})
     const [currentItemText, setCurrentItemText] = React.useState(props.items.length? props.items[props.initialItemIdx].text
                                                                                    : "null");
 
-    // Implements a click handler that hides the menu's dropdown when the user clicks
-    // outside of the dropdown element - but not when they click on it. Note that clicks
-    // on the items of the menu will still trigger the item's separate onclick handler.
+    // Implements a click handler that toggles the dropdown when the user clicks on the
+    // button, and hides the dropdown if it's visible when the user clicks outside of the
+    // button or the dropdown.
     React.useEffect(()=>
     {
         window.addEventListener("mousedown", handle_mousedown);
@@ -66,13 +69,12 @@ export function MenuButton(props = {})
 
         function handle_mousedown(clickEvent)
         {
-            const clickedOnSelfElement = (()=>
+            const clickedOnSelf = (()=>
             {
                 let node = clickEvent.target;
                 while (node)
                 {
-                    if (node.classList &&
-                        node.classList.contains("MenuButton"))
+                    if (node.dataset && (node.dataset.menuButtonId === props.id))
                     {
                         return true;
                     }
@@ -83,16 +85,30 @@ export function MenuButton(props = {})
                 return false;
             })();
 
-            if (!clickedOnSelfElement)
+            const clickedOnItem = Boolean(clickedOnSelf &&
+                                          clickEvent.target.classList &&
+                                          clickEvent.target.classList.contains("item"));
+
+            if (clickedOnSelf)
+            {
+                if (!clickedOnItem)
+                {
+                    dropdownVisible? hide_dropdown() : show_dropdown();
+                    props.callbackOnButtonClick();
+                }
+                // Else, let the item's own onClick handler deal with the click.
+            }
+            else
             {
                 hide_dropdown();
             }
         }
-    }, []);
+    });
 
     const itemElements = props.items.map((item, idx)=>
     (
         <div key={item.text + idx}
+             className="item"
              onClick={()=>handle_item_click(idx, item.callbackOnSelect)}>
                  {item.text}
         </div>
@@ -109,11 +125,7 @@ export function MenuButton(props = {})
                                               </div>
 
     return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"}`}
-                onClick={()=>
-                {
-                    props.callbackOnButtonClick();
-                    dropdownVisible? hide_dropdown() : show_dropdown();
-                }}>
+                data-menu-button-id={props.id}>
                     <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
                         {currentItemText}
                     </div>
@@ -165,7 +177,7 @@ MenuButton.defaultProps =
 MenuButton.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.items);
-    panic_if_not_type("string", props.title);
+    panic_if_not_type("string", props.title, props.id);
 
     return;
 }

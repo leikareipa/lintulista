@@ -113,11 +113,6 @@ footer
     cursor: auto;
 }
 
-.MenuButton.enabled > .icon:active
-{
-    transform: translateY(2px);
-}
-
 .BirdThumbnail
 {
     user-select: none;
@@ -238,7 +233,7 @@ footer
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.1s;
+    animation-duration: 0.2s;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .title
@@ -268,6 +263,7 @@ footer
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:hover
 {
     transform: scale(1.1);
+    border-radius: 0;
 }
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.inactive
@@ -302,7 +298,7 @@ footer
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 45px; /* Below the search input field.*/
+    top: 46px; /* Below the search input field.*/
     right: calc(12% + 129px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
@@ -312,7 +308,7 @@ footer
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.1s;
+    animation-duration: 0.2s;
 }
 
 .BirdSearchResult

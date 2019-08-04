@@ -43,6 +43,7 @@ export function ObservationListActionBar(props = {})
                {/* A button with which the user can change the sorting order of the observation list.*/}
                <MenuButton icon="fas fa-list-ul fa-fw"
                            title="Listan järjestys"
+                           id="list-order"
                            items={
                            [
                                {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
@@ -59,6 +60,7 @@ export function ObservationListActionBar(props = {})
                <MenuButton icon={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}
                            title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
                            enabled={props.backend.hasEditRights}
+                           id="lock"
                            callbackOnButtonClick={!props.backend.hasEditRights? null : ()=>
                            {
                                if (!window.open(`./${props.backend.viewKey}`, "_blank", "noopener"))
