@@ -96,7 +96,12 @@
                 // are very few of those, we just generate random observations on the spot.)
                 if (knownBirds.length)
                 {
-                    const randomObservations = Array(10).fill().map((elem, idx)=>
+                    // Assumed (approximate) width in pixels of a single observation card element.
+                    const observationCardWidth = 200;
+
+                    const numObservationCards = Math.min(30, Math.max(3, (Math.floor(window.innerWidth / observationCardWidth) + 1)));
+                    
+                    const randomObservations = Array(numObservationCards).fill().map((elem, idx)=>
                     {
                         const randomDate = (()=>
                         {
