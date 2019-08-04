@@ -213,6 +213,13 @@ footer
     transform: translateX(-50%);
     z-index: 1000;
 }
+.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.active
+{
+    animation-name: animation-slide-down-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.1s;
+}
 
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .title
 {
