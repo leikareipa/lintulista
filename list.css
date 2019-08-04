@@ -127,7 +127,7 @@ footer
     width: 440px;
     position: absolute;
     top: 59px;
-    right: 40px;
+    right: 60px;
     color: rgba(241, 241, 241, 0.45);
 
     height: 45px;
@@ -528,7 +528,7 @@ footer
     text-align: center;
     position: relative;
     z-index: 1;
-    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
 }
 
 .ObservationListElementGhost > .card

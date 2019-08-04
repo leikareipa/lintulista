@@ -20,48 +20,58 @@ export function BirdSearch(props = {})
 {
     BirdSearch.validate_props(props);
 
-    const [currentSearchResultElements, setCurrentSearchResultElements] = React.useState([]);
+    const [currentSearchResultElement, setCurrentSearchResultElement] = React.useState(false);
 
     return <div className="BirdSearch">
                <BirdSearchBar initialState="inactive"
                               callbackOnChange={refresh_search_results}
                               callbackOnInactivate={reset_search_results}/>
-               <div className={`BirdSearchResultsDisplay ${currentSearchResultElements.length? "active" : "inactive"}`.trim()}>
-                   {currentSearchResultElements}
+               <div className={`BirdSearchResultsDisplay ${currentSearchResultElement? "active" : "inactive"}`.trim()}>
+                   {currentSearchResultElement? currentSearchResultElement : <></>}
                </div>
            </div>
 
+    // Show search results for the given search string.
     function refresh_search_results(searchString)
     {
-        if (!searchString)
+        searchString = searchString.trim();
+
+        if (!searchString.length)
         {
             reset_search_results();
-            
             return;
         }
 
-        const searchResults = [];
-
-        props.backend.known_birds().forEach(bird=>
+        // First, see if we have an exact match.
+        ((exactMatch)=>
         {
-            if (searchResults.length >= props.maxNumResultElements)
+            if (exactMatch)
             {
+                setCurrentSearchResultElement(make_result_element(exactMatch));
                 return;
             }
 
-            if (bird.species.toLowerCase().startsWith(searchString.toLowerCase()))
+            // Second, otherwise, get the closest partial match, if any.
+            ((partialMatch)=>
             {
-                const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
+                if (partialMatch)
+                {
+                    setCurrentSearchResultElement(make_result_element(partialMatch));
+                    return;
+                }
+            })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase().includes(searchString.toLowerCase()))));
+        })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase() === searchString.toLowerCase())));
 
-                searchResults.push(<BirdSearchResult key={bird.species}
-                                                     bird={bird}
-                                                     clickCallback={select_bird}
-                                                     dateObserved={observation? observation.dateString : null}
-                                                     placeObserved={observation? observation.place : null}/>);
-            }
-        });
+        function make_result_element(bird)
+        {
+            const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
 
-        setCurrentSearchResultElements(searchResults);
+            return <BirdSearchResult key={bird.species}
+                                     bird={bird}
+                                     clickCallback={select_bird}
+                                     dateObserved={observation? observation.dateString : null}
+                                     placeObserved={observation? observation.place : null}/>;
+        }
     }
 
     // Called when the user selects one of the search results.
@@ -76,7 +86,7 @@ export function BirdSearch(props = {})
 
     function reset_search_results()
     {
-        setCurrentSearchResultElements([]);
+        setCurrentSearchResultElement(false);
     }
 }
 

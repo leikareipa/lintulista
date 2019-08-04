@@ -89,13 +89,13 @@ export function BirdSearchBar(props = {})
     return <input className={`BirdSearchBar ${state}`.trim()}
                   ref={searchRef}
                   type="search"
-                  onFocus={()=>get_focus(true)}
+                  onFocus={()=>got_focus(true)}
                   onChange={handle_input_event}
                   spellCheck="false"
                   placeholder={(state === "inactive")? "Hae lajeja" : ""}
                   autoComplete="off"/>
 
-    function get_focus(gotIt)
+    function got_focus(gotIt)
     {
         setState(gotIt? "active" : "inactive");
     }
