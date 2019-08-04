@@ -425,25 +425,23 @@ footer
     color: black;
     width: 550px;
     text-align: left;
-    transform: rotate(-0.5deg);
     padding: 30px;
     padding-top: 17px;
     padding-bottom: 17px;
-    margin-top: 80px;
-    border-radius: 0;
-    box-shadow: -10px 10px 3px -4px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
+    border-radius: 26px;
+    box-shadow: -30px 30px 3px -4px rgba(10, 0, 0, 0.1);
     background-color: #f9f9f9;
-    border-left: 16px solid #2478d8;
 }
 
-.ObservationList > .elements > .intro h3
+.ObservationList > .elements > .intro h2
 {
-    color: #2478d8;
+    color: #bd7b72;
 }
 
 .ObservationList > .elements > .intro a
 {
-    color: #2478d8;
+    color: #bd7b72;
 }
 
 .ObservationList > .elements

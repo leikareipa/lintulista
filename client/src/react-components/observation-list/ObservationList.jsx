@@ -59,14 +59,14 @@ export function ObservationList(props = {})
     }, [sortObservationsBy]);
 
     const emptyElement = <div className="intro">
-                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h3>
+                             <h2><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h2><hr style={{color:"#bd7b72"}}/>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
                              {props.backend.hasEditRights
                                  ? <>
                                        <p>Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään
-                                          lintulajin nimi. Halutun tuloksen kohdalla paina <i style={{color:"#2478d8"}} className="fas fa-plus-circle fa-xs"/>-symbolia
+                                          lintulajin nimi. Halutun tuloksen kohdalla paina <i style={{color:"#bd7b72"}} className="fas fa-plus-circle fa-xs"/>-symbolia
                                           lisätäksesi se listaan!</p>
                                    </>
                                  : <></>}
@@ -196,10 +196,15 @@ export function ObservationList(props = {})
     {
         panic_if_undefined(existingObservation, year, month, day);
 
+        const newDate = new Date();
+        newDate.setFullYear(year);
+        newDate.setMonth(month-1);
+        newDate.setDate(day);
+
         const modifiedObservation = observation(
         {
             bird: existingObservation.bird,
-            date: new Date(year, month-1, day),
+            date: newDate,
         });
 
         if (!(await props.backend.post_observation(modifiedObservation)))
