@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {error, panic_if_not_type} from "../../assert.js";
+import {error, panic_if_not_type, is_function} from "../../assert.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -26,6 +26,11 @@ import {error, panic_if_not_type} from "../../assert.js";
 //
 //     Note: If props.task is undefined or set to a falsy value, the button's state will
 //     automatically be set to "disabled" and clicking on it will have no effect.
+//
+// You can provide a function via props.giveCallbackTriggerPress that accepts a function
+// as a parameter, to receive a function with which the button's press can be trigger in-
+// code. Calling that function will cause the button to adopt its "waiting" state and
+// execute its props.task callback, just as it would when the user clicks on the button.
 //
 // Text to be shown when the cursor hovers over the button can be provided in props.title;
 // no text will be displayed if set to null. An alternate title text can be provided via
@@ -59,9 +64,14 @@ export function AsyncIconButton(props = {})
     //   "disabled" = the button can't be interacted with
     //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
     const [currentState, setCurrentState] = React.useState((props.task && props.enabled)? "enabled" : "disabled");
+
+    if (is_function(props.giveCallbackTriggerPress))
+    {
+        props.giveCallbackTriggerPress(handle_click);
+    }
     
     return <span className={`AsyncIconButton ${currentState}`}
-                 onClick={click_handler}
+                 onClick={handle_click}
                  title={props.printTitle? "" : currentTitle}
                  style={{[props.color? "color" : "ignoreThisPropertyValue"]:props.color}}>
                      <i className={currentIcon}/>
@@ -69,7 +79,7 @@ export function AsyncIconButton(props = {})
            </span>
 
     // Called when the button is clicked.
-    async function click_handler()
+    async function handle_click()
     {
         if ((currentState !== "enabled") ||
             !props.task)
