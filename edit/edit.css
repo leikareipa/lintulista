@@ -35,6 +35,11 @@ header > #title
     color: #f1f1f1;
 }
 
+header > #title a
+{
+    text-decoration: none;
+}
+
 header > #title > #app-name
 {
     transform: rotate(0deg);
@@ -364,7 +369,7 @@ footer
 {
     position: fixed;
     bottom: 0;
-    right: 0;
+    left: 0;
     z-index: 1000;
 
     font-size: 95%;
@@ -376,10 +381,10 @@ footer
     background-color: #c7dfdb;
     color: rgb(0, 0, 0);
     padding: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 11px;
+    padding-right: 11px;
     font-family: sans-serif;
-    border-radius: 7px 0 0 0;
+    border-radius: 0 7px 0 0;
 }
 
 .ObservationList > .elements > .intro
