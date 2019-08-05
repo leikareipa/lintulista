@@ -51,7 +51,7 @@ require_once "return.php";
         exit(return_failure("Missing the required \"list\" parameter."));
     }
 
-    if (!is_valid_list_key($_GET["list"]))
+    if (ListKey::is_key_malformed($_GET["list"]))
     {
         exit(return_failure("Invalid \"list\" parameter."));
     }

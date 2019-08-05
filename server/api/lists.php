@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST")
         exit(return_failure("Missing the required \"list\" parameter."));
     }
 
-    if (!is_valid_list_key($_GET["list"]))
+    if (ListKey::is_key_malformed($_GET["list"]))
     {
         exit(return_failure("Invalid \"list\" parameter."));
     }
@@ -101,8 +101,8 @@ function create_new_list()
     $attempts = 0;
     while (++$attempts < 20)
     {
-        $keys = ["editKey"=>generate_random_edit_key(),
-                 "viewKey"=>generate_random_view_key()];
+        $keys = ["editKey"=>ListKey::generate_random_edit_key(),
+                 "viewKey"=>ListKey::generate_random_view_key()];
 
         $wasSuccessful = $database->create_new_list($keys, time(), $ipHash);
 

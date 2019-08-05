@@ -95,7 +95,7 @@ class DatabaseAccess
 
         if (count($result) !== 1)
         {
-            return generate_random_view_key();
+            return ListKey::generate_random_view_key();
         }
 
         return $result[0]["view_key"];

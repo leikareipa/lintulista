@@ -28,25 +28,25 @@ class KnownBirds
         }
     }
 
-    // Returns a copy of the portions of the know birds data that can be revealed publically;
-    // e.g. to the front-end client.
-    function public_data()
+    // Returns a copy of the portions of the know birds data that can be revealed publically
+    // (e.g. to the front-end client).
+    function public_data(): array
     {
         return $this->knownBirds["birds"];
     }
 
-    // Returns the index in the list of known birds of the given species; or false if such
-    // a species could not be found in the list. Note that this search is case sensitive.
-    function known_birds_id_for_species_name(string $speciesName)
-    {
-        return array_search($speciesName, array_map(function($bird){return $bird["species"];}, $this->knownBirds["birds"]));
-    }
-
     // Returns true if the given species name is recognized; false otherwise. Note that this
     // search is case sensitive.
-    function is_known_species(string $speciesName)
+    function is_known_species(string $speciesName): bool
     {
-        return ($this->known_birds_id_for_species_name($speciesName) !== false);
+        return ($this->list_idx_of_species_name($speciesName) !== false);
+    }
+
+    // Returns the index in the list of known birds of the given species; or false if such
+    // a species could not be found in the list. Note that this search is case sensitive.
+    private function list_idx_of_species_name(string $speciesName): string
+    {
+        return array_search($speciesName, array_map(function($bird){return $bird["species"];}, $this->knownBirds["birds"]));
     }
 }
 
