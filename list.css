@@ -409,7 +409,7 @@ footer
 
 .ObservationList > .ObservationListFooter > .observation-count
 {
-    background-color: #c7dfdb;
+    background-color: #cadee4;
     color: rgb(0, 0, 0);
     padding: 8px;
     padding-left: 11px;
@@ -475,7 +475,7 @@ footer
 
 .ObservationListElement > .PlainTag.lis-laji
 {
-    padding: 4px;
+    padding: 6px;
     padding-left: 8px;
     padding-right: 8px;
     background-color: rgb(241, 200, 14);
@@ -889,22 +889,9 @@ footer
     align-items: left;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields input
-{
-    padding-left: 43px; /* Make room for the embedded icon.*/
-}
-
 .Dialog.QueryObservationDeletion > .form > .fields > .list-id
 {
     flex: 1;
-}
-
-.Dialog.QueryObservationDeletion > .form > .fields > .character-count
-{
-    margin-left: auto;
-    margin-right: 4px;
-    margin-top: 4px;
-    font-size: 80%;
 }
 
 .Dialog.QueryObservationDeletion > .form > .fields > .bird-name
@@ -912,20 +899,6 @@ footer
     color: black;
     text-align: left;
     margin-bottom: 12px;
-}
-
-.Dialog.QueryObservationDeletion > .form > .fields .input-icon
-{
-    position: absolute;
-    left: 146px;
-    bottom: 51px;
-    display: inline-block;
-    color: rgb(185, 185, 185);
-}
-
-.Dialog.QueryObservationDeletion > .form > .fields .input-icon.good-input
-{
-    color: rgba(53, 145, 231, 0.8);
 }
 
 .Dialog.QueryObservationPlace

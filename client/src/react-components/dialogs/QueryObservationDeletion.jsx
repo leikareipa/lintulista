@@ -26,21 +26,11 @@ export function QueryObservationDeletion(props = {})
 {
     QueryObservationDeletion.validateProps(props);
 
-    // The species name that the user has so far entered into the dialog's input field.
-    const [nameEntered, setNameEntered] = React.useState("");
-
     // A workaround for React not wanting to correctly update the state of Dialog's accept/reject
     // buttons on Dialog initialization. So instead we'll get a direct callback from Dialog, and
     // use that when we want to update the buttons' state. This callback will be initialized when
     // we set up Dialog.
     let setButtonEnabled = (button, state)=>{};
-
-    React.useEffect(()=>
-    {
-        // We'll make enabled the button to accept deletion only while the species name is
-        // correctly input.
-        setButtonEnabled("accept", is_input_name_valid());
-    }, [nameEntered]);
 
     return <Dialog component="QueryObservationDeletion"
                    title="Poistetaanko havainto?"
@@ -59,20 +49,24 @@ export function QueryObservationDeletion(props = {})
                    </div>
                    <input className="list-id"
                           type="text"
-                          onChange={(event)=>setNameEntered(event.target.value)}
+                          onChange={update_on_input}
                           placeholder="Toista linnun nimi jatkaaksesi"
                           spellCheck="false"
-                          maxLength={props.observation.bird.species.length}
                           autoFocus/>
-                   <div className={`input-icon ${is_input_name_valid()? "good-input" : ""}`.trim()}
-                        title={is_input_name_valid()? "Ok!" : `Kirjoita "${props.observation.bird.species}"`}>
-                       <i className="fas fa-crow fa-lg"/>
-                   </div>
-                   <div className="character-count">
-                       {nameEntered.length}/{props.observation.bird.species.length} merkkiä
-                   </div>
                </div>
            </Dialog>
+
+    function update_on_input(inputEvent)
+    {
+        if (inputEvent.target.value.toLowerCase() === props.observation.bird.species.toLowerCase())
+        {
+            setButtonEnabled("accept", true);
+        }
+        else
+        {
+            setButtonEnabled("accept", false);
+        }
+    }
 
     function accept()
     {
@@ -82,11 +76,6 @@ export function QueryObservationDeletion(props = {})
     function reject()
     {
         props.onDialogReject();
-    }
-
-    function is_input_name_valid()
-    {
-        return (nameEntered.toLowerCase() === props.observation.bird.species.toLowerCase());
     }
 }
 
