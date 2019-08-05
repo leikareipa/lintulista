@@ -20,14 +20,14 @@ export function BirdSearch(props = {})
 {
     BirdSearch.validate_props(props);
 
-    const [currentSearchResultElement, setCurrentSearchResultElement] = React.useState(false);
+    const [currentSearchResult, setCurrentSearchResult] = React.useState(false);
 
     return <div className="BirdSearch">
                <BirdSearchBar initialState="inactive"
                               callbackOnChange={refresh_search_results}
                               callbackOnInactivate={reset_search_results}/>
-               <div className={`BirdSearchResultsDisplay ${currentSearchResultElement? "active" : "inactive"}`.trim()}>
-                   {currentSearchResultElement? currentSearchResultElement : <></>}
+               <div className={`BirdSearchResultsDisplay ${currentSearchResult? "active" : "inactive"}`.trim()}>
+                   {currentSearchResult? currentSearchResult.element : <></>}
                </div>
            </div>
 
@@ -47,7 +47,7 @@ export function BirdSearch(props = {})
         {
             if (exactMatch)
             {
-                setCurrentSearchResultElement(make_result_element(exactMatch));
+                update_match(exactMatch);
                 return;
             }
 
@@ -56,11 +56,20 @@ export function BirdSearch(props = {})
             {
                 if (partialMatch)
                 {
-                    setCurrentSearchResultElement(make_result_element(partialMatch));
+                    update_match(partialMatch);
                     return;
                 }
             })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase().includes(searchString.toLowerCase()))));
         })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase() === searchString.toLowerCase())));
+
+        function update_match(bird)
+        {
+            if (!currentSearchResult ||
+                (bird.species !== currentSearchResult.bird.species))
+            {
+                setCurrentSearchResult({bird, element:make_result_element(bird)});
+            }
+        }
 
         function make_result_element(bird)
         {
@@ -86,7 +95,7 @@ export function BirdSearch(props = {})
 
     function reset_search_results()
     {
-        setCurrentSearchResultElement(false);
+        setCurrentSearchResult(false);
     }
 }
 
