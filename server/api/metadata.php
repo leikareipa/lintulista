@@ -32,7 +32,7 @@ require_once "return.php";
 {
     if (!isset($_GET["type"]))
     {
-        exit(ReturnObject::failure("Missing the required \"type\" parameter."));
+        exit(ReturnObject::failure("Missing the required 'type' parameter."));
     }
 }
 
@@ -59,7 +59,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             }
         }
     }
-    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method '{$_SERVER["REQUEST_METHOD"]}'."));
 }
 
 function get_known_birds()

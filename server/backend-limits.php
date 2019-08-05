@@ -48,7 +48,7 @@ class BackendLimits
             return $this->backendLimits["limits"][$property];
         }
 
-        exit(ReturnObject::failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
+        exit(ReturnObject::failure("Server-side IO failure. Can't find a limit for '{$property}'."));
     }
 }
 

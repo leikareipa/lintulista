@@ -150,17 +150,17 @@ class DatabaseAccess
     function put_observation_to_list(string $listKey, array $observation)
     {
         $species = isset($observation["species"])? $observation["species"]
-                                                 : exit(ReturnObject::failure("The given observation is missing the required \"species\" property."));
+                                                 : exit(ReturnObject::failure("The given observation is missing the required 'species' property."));
 
         $timestamp = isset($observation["timestamp"])? $observation["timestamp"]
-                                                     : exit(ReturnObject::failure("The given observation is missing the required \"timestamp\" property."));
+                                                     : exit(ReturnObject::failure("The given observation is missing the required 'timestamp' property."));
 
         $place = isset($observation["place"])? mb_substr($observation["place"], 0, (new BackendLimits())->value_of("maxPlaceNameLength"), "utf-8")
                                              : null;
 
         if (!(new KnownBirds())->is_known_species($species))
         {
-            exit(ReturnObject::failure("Unable to recognize the species \"{$species}\"."));
+            exit(ReturnObject::failure("Unable to recognize the species '{$species}'."));
         }
 
         $listId = $this->get_list_id_of_key($listKey, true);
@@ -210,7 +210,7 @@ class DatabaseAccess
 
         if (count($result) > 1)
         {
-            exit(ReturnObject::failure("Detected duplicate observations of \"{$species}\"."));
+            exit(ReturnObject::failure("Detected duplicate observations of '{$species}'."));
         }
 
         return $result[0];
@@ -247,7 +247,7 @@ class DatabaseAccess
 
         if (count($response) > 1)
         {
-            exit(ReturnObject::failure("Detected duplicate list ids for key \"{$listKey}\"."));
+            exit(ReturnObject::failure("Detected duplicate list ids for key '{$listKey}'."));
         }
 
         return $response[0]["list_id"];
@@ -262,7 +262,7 @@ class DatabaseAccess
         if (($response === false) ||
             (mysqli_errno($this->database) !== 0))
         {
-            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database with \"{$queryString}\" (" . mysqli_error($this->database) . ")."));
+            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database with '{$queryString}' (" . mysqli_error($this->database) . ")."));
         }
 
         return mysqli_fetch_all($response, MYSQLI_ASSOC);

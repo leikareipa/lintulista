@@ -48,12 +48,12 @@ require_once "return.php";
 {
     if (!isset($_GET["list"]))
     {
-        exit(ReturnObject::failure("Missing the required \"list\" parameter."));
+        exit(ReturnObject::failure("Missing the required 'list' parameter."));
     }
 
     if (ListKey::is_key_malformed($_GET["list"]))
     {
-        exit(ReturnObject::failure("Invalid \"list\" parameter."));
+        exit(ReturnObject::failure("Invalid 'list' parameter."));
     }
 }
 
@@ -76,7 +76,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         delete_observation($_GET["list"], $observation);
         exit(ReturnObject::success());
     }
-    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method '{$_SERVER["REQUEST_METHOD"]}'."));
 }
 
 // Removes the given observation from the given list.
@@ -86,7 +86,7 @@ function delete_observation(string $listKey, array $observation)
     {
         if (!isset($observation["species"]))
         {
-            exit(ReturnObject::failure("The given observation data is missing the required \"species\" property."));
+            exit(ReturnObject::failure("The given observation data is missing the required 'species' property."));
         }
     }
 
@@ -119,12 +119,12 @@ function get_observations(string $listKey)
         {
             if (!isset($observation["species"]))
             {
-                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
+                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required 'species' property."));
             }
 
             if (!isset($observation["timestamp"]))
             {
-                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
+                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required 'timestamp' property."));
             }
 
             $place = null;

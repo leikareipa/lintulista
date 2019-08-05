@@ -36,12 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST")
 {
     if (!isset($_GET["list"]))
     {
-        exit(ReturnObject::failure("Missing the required \"list\" parameter."));
+        exit(ReturnObject::failure("Missing the required 'list' parameter."));
     }
 
     if (ListKey::is_key_malformed($_GET["list"]))
     {
-        exit(ReturnObject::failure("Invalid \"list\" parameter."));
+        exit(ReturnObject::failure("Invalid 'list' parameter."));
     }
 }
 
@@ -57,7 +57,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         $listInfo = get_list_information($_GET["list"]);
         exit(ReturnObject::success(json_encode($listInfo)));
     }
-    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method '{$_SERVER["REQUEST_METHOD"]}'."));
 }
 
 function get_list_information()
