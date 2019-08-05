@@ -15,13 +15,13 @@ function is_valid_list_key(string $id)
 // Generates a valid, random view key.
 function generate_random_view_key()
 {
-    return pseudorandom_string(backend_limits("viewKeyLength"), true);
+    return pseudorandom_string((new BackendLimits())->value_of("viewKeyLength"), true);
 }
 
 // Generates a valid, random edit key.
 function generate_random_edit_key()
 {
-    return pseudorandom_string(backend_limits("editKeyLength"));
+    return pseudorandom_string((new BackendLimits())->value_of("editKeyLength"));
 }
 
 function pseudorandom_string(int $length, bool $onlyLetters = false)

@@ -91,16 +91,14 @@ class DatabaseAccess
     // in the database, a random string of the view key's length will be returned.
     function get_corresponding_view_key(string $editKey)
     {
-        $listId = $this->get_list_id_of_key($editKey, false);
-
-        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE list_id = '{$listId}'");
+        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = '{$editKey}'");
 
         if (count($result) !== 1)
         {
             return generate_random_view_key();
         }
 
-        return $result[0];
+        return $result[0]["view_key"];
     }
 
     // Returns all observations associated with the given list.
@@ -157,10 +155,10 @@ class DatabaseAccess
         $timestamp = isset($observation["timestamp"])? $observation["timestamp"]
                                                      : exit(return_failure("The given observation is missing the required \"timestamp\" property."));
 
-        $place = isset($observation["place"])? mb_substr($observation["place"], 0, backend_limits("maxPlaceNameLength"), "utf-8")
+        $place = isset($observation["place"])? mb_substr($observation["place"], 0, (new BackendLimits())->value_of("maxPlaceNameLength"), "utf-8")
                                              : null;
 
-        if (!is_known_species($species))
+        if (!(new KnownBirds())->is_known_species($species))
         {
             exit(return_failure("Unable to recognize the species \"{$species}\"."));
         }

@@ -10,7 +10,7 @@
 
 "use strict";
 
-import {error, panic_if_undefined, warn, panic_if_not_type} from "./assert.js";
+import {error, panic_if_undefined, warn, panic_if_not_type, panic} from "./assert.js";
 import {observation} from "./observation.js";
 import {bird} from "./bird.js";
 
@@ -20,13 +20,9 @@ const httpRequests = Object.freeze(
     // All of Lintulista's URLs for client-to-backend HTTP requests.
     backendURLs: Object.freeze(
     {
-        deleteObservation: "./server/api/delete-observation.php",
-        getBackendLimits: "./server/api/get-backend-limits.php",
-        postObservation: "./server/api/put-observation.php",
-        getObservations: "./server/api/get-observations.php",
-        getKnownBirds: "./server/api/get-known-birds-list.php",
-        createList: "./server/api/create-new-list.php",
-        getViewKey: "./server/api/get-view-key.php",
+        observations: "./server/api/observations.php",
+        metadata: "./server/api/metadata.php",
+        lists: "./server/api/lists.php",
     }),
 
     // Performs an async fetch on the given URL and with the given parameters (corresponding
@@ -78,13 +74,10 @@ const httpRequests = Object.freeze(
     {
         panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
 
-        const [wasSuccessful,] = await this.send_request(`${this.backendURLs.deleteObservation}?list=${listKey}`,
+        const [wasSuccessful,] = await this.send_request(`${this.backendURLs.observations}?list=${listKey}`,
         {
             method: "DELETE",
-            body: JSON.stringify({
-                key: listKey,
-                species: observation.bird.species,
-            }),
+            body: JSON.stringify({species:observation.bird.species}),
         });
 
         return wasSuccessful;
@@ -95,7 +88,7 @@ const httpRequests = Object.freeze(
     {
         panic_if_not_type("string", listKey);
 
-        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getViewKey}?list=${listKey}`,
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.lists}?list=${listKey}`,
         {
             method: "GET",
         });
@@ -104,9 +97,9 @@ const httpRequests = Object.freeze(
         {
             const data = JSON.parse(responseData);
 
-            panic_if_not_type("string", data.view_key);
+            panic_if_not_type("string", data.viewKey);
 
-            return data.view_key;
+            return data.viewKey;
         }
         else
         {
@@ -119,21 +112,16 @@ const httpRequests = Object.freeze(
     // or, on failure, as an empty array.
     get_known_birds_list: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getKnownBirds,
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.metadata}?type=knownBirds`,
         {
             method: "GET",
         });
 
         if (wasSuccessful)
         {
-            const birdData = JSON.parse(responseData);
+            const birds = JSON.parse(responseData);
 
-            if (typeof birdData.birds === "undefined")
-            {
-                throw "Missing required data in the master bird list.";
-            }
-
-            return birdData.birds.map(b=>bird(
+            return birds.map(b=>bird(
             {
                 order: b.order,
                 family: b.family,
@@ -162,7 +150,7 @@ const httpRequests = Object.freeze(
     //
     get_backend_limits: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getBackendLimits,
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.metadata}?type=backendLimits`,
         {
             method: "GET",
         });
@@ -186,7 +174,7 @@ const httpRequests = Object.freeze(
         panic_if_not_type("string", listKey);
         panic_if_not_type("object", knownBirds)
 
-        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`,
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.observations}?list=${listKey}`,
         {
             method: "GET",
         });
@@ -229,7 +217,7 @@ const httpRequests = Object.freeze(
         panic_if_not_type("object", observation, observation.bird);
         panic_if_undefined(observation.unixTimestamp);
 
-        const [wasSuccessful,] = await this.send_request(`${this.backendURLs.postObservation}?list=${listKey}`,
+        const [wasSuccessful,] = await this.send_request(`${this.backendURLs.observations}?list=${listKey}`,
         {
             method: "PUT",
             body: JSON.stringify({
@@ -254,7 +242,7 @@ const httpRequests = Object.freeze(
     //
     create_new_list: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.createList,
+        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.lists,
         {
             method: "POST",
         });

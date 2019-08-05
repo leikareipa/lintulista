@@ -9,41 +9,47 @@
  * 
  */
 
-$backendLimits = json_decode(file_get_contents("./assets/metadata/backend-limits.json"), true);
-
-if (!$backendLimits ||
-    !is_array($backendLimits["limits"]))
+class BackendLimits
 {
-    exit(return_failure("Server-side IO failure. Can't read the list of backend limits."));
-}
+    private $backendLimits;
 
-// Returns the named limitation. If a limitation by that name was not found, exits the script
-// with an error message. If an empty string "" is given, returns all limitations as an array;
-// or null if no list of limitations was available.
-//
-// For instance, backend_limits("maxPlaceNameLength") returns the maximum place name length;
-// while backend_limits() returns an array containing, among other things, maxPlaceNameLength,
-// should such a property exist in the list of limitations.
-//
-// For a list of the property names available, see server/assets/metadata/backend-limits.json.
-//
-function backend_limits(string $property = "")
-{
-    global $backendLimits;
-    
-    $property = trim($property);
-
-    if (empty($property))
+    function __construct()
     {
-        return $backendLimits["limits"];
+        $this->backendLimits = json_decode(file_get_contents("./assets/metadata/backend-limits.json"), true);
+
+        if (!$this->backendLimits ||
+            !isset($this->backendLimits["limits"]))
+        {
+            exit(return_failure("Server-side IO failure. The list of known birds is invalid."));
+        }
     }
 
-    if (isset($backendLimits["limits"][$property]))
+    // Returns the named limitation. If a limitation by that name was not found, exits the script
+    // with an error message. If an empty string "" is given, returns all limitations as an array;
+    // or null if no list of limitations was available.
+    //
+    // For instance, value_of("maxPlaceNameLength") returns the maximum place name length; while
+    // value_of() returns an array containing, among other things, maxPlaceNameLength, should such
+    // a property exist in the list of limitations.
+    //
+    // For a list of the property names available, see server/assets/metadata/backend-limits.json.
+    //
+    function value_of(string $property = "")
     {
-        return $backendLimits["limits"][$property];
-    }
+        $property = trim($property);
 
-    exit(return_failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
+        if (empty($property))
+        {
+            return $this->backendLimits["limits"];
+        }
+
+        if (isset($this->backendLimits["limits"][$property]))
+        {
+            return $this->backendLimits["limits"][$property];
+        }
+
+        exit(return_failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
+    }
 }
 
 ?>
