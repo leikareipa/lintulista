@@ -30,9 +30,9 @@ export function QueryObservationPlace(props = {})
 {
     QueryObservationPlace.validateProps(props);
 
-    const [placeString, setPlaceString] = React.useState(props.observation.place || "");
+    const [placeName, setPlaceName] = React.useState(props.observation.place || "");
 
-    const mapUrl = GeoTag.map_link_from_string(placeString);
+    const mapUrl = GeoTag.map_link_from_string(placeName);
 
     return <Dialog component="QueryObservationPlace"
                    title="Merkitse havaintopaikka"
@@ -48,8 +48,8 @@ export function QueryObservationPlace(props = {})
                    </div>
                    <input className="place-name"
                           type="text"
-                          onChange={(event)=>setPlaceString(event.target.value)}
-                          value={placeString? placeString : ""}
+                          onChange={update_on_input}
+                          defaultValue={placeName}
                           placeholder="Esim. Lauttasaari, Helsinki"
                           spellCheck="false"
                           maxLength={props.maxPlaceNameLength}
@@ -64,15 +64,20 @@ export function QueryObservationPlace(props = {})
                        </a>
                    </div>
                    <div className="character-count">
-                       {props.maxPlaceNameLength - placeString.length} merkki
-                       {((props.maxPlaceNameLength - placeString.length) !== 1)? "ä" : ""} jäljellä
+                       {props.maxPlaceNameLength - placeName.length} merkki
+                       {((props.maxPlaceNameLength - placeName.length) !== 1)? "ä" : ""} jäljellä
                    </div>
                </div>
            </Dialog>
 
+    function update_on_input(inputEvent)
+    {
+        setPlaceName(inputEvent.target.value);
+    }
+
     function accept()
     {
-        props.onDialogAccept(placeString);
+        props.onDialogAccept(placeName);
     }
     
     function reject()

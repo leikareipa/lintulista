@@ -147,6 +147,7 @@ export function ObservationList(props = {})
                                            key={obs.bird.species}
                                            tag={tag}
                                            visible={true}
+                                           allowEditing={props.backend.hasEditRights}
                                            showOrderTags={sortObservationsBy === "order"}
                                            maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
                                            callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}

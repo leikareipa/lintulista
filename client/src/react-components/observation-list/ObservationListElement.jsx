@@ -74,7 +74,8 @@ export function ObservationListElement(props = {})
                         <ObservationInfo observation={observationData}
                                          setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
                     </div>
-                    <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/>
+                    {props.allowEditing? <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/> : <></>}
+                    
            </div>
 
     // When a button is pressed to delete the observation. Will requests the backend to
@@ -97,7 +98,7 @@ export function ObservationListElement(props = {})
         });
         
         props.callbackSetActionBarEnabled(true);
-        
+
         await shades.remove();
     }
 
