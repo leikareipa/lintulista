@@ -89,7 +89,7 @@
             // Run the app.
             (async()=>
             {
-                const knownBirds = await backend_access.fetch_known_birds_list();
+                const knownBirds = await backend_access.get_known_birds_list();
 
                 // Render a random selection of observations. (In the future, we might draw
                 // a random sample from user-submitted observations, but for now, since there

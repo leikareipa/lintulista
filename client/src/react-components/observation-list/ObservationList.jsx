@@ -87,7 +87,7 @@ export function ObservationList(props = {})
     // Called when the user requests us to add a new observation into the list.
     async function add_observation(bird)
     {
-        await props.backend.post_observation(observation({bird, date:new Date(), place:""}));
+        await props.backend.put_observation(observation({bird, date:new Date(), place:""}));
 
         setObservationElements(generate_observation_elements());
     }
@@ -208,7 +208,7 @@ export function ObservationList(props = {})
             date: newDate,
         });
 
-        if (!(await props.backend.post_observation(modifiedObservation)))
+        if (!(await props.backend.put_observation(modifiedObservation)))
         {
             return null;
         }
@@ -233,7 +233,7 @@ export function ObservationList(props = {})
             place: newPlace,
         });
         
-        if (!(await props.backend.post_observation(modifiedObservation)))
+        if (!(await props.backend.put_observation(modifiedObservation)))
         {
             return null;
         }

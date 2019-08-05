@@ -20,9 +20,9 @@ const httpRequests = Object.freeze(
     // All of Lintulista's URLs for client-to-backend HTTP requests.
     backendURLs: Object.freeze(
     {
-        deleteObservation: "./server/remove-observation.php",
+        deleteObservation: "./server/delete-observation.php",
         getBackendLimits: "./server/get-backend-limits.php",
-        postObservation: "./server/post-observation.php",
+        postObservation: "./server/put-observation.php",
         getObservations: "./server/get-observations.php",
         getKnownBirds: "./server/get-known-birds-list.php",
         createList: "./server/create-new-list.php",
@@ -78,27 +78,27 @@ const httpRequests = Object.freeze(
     {
         panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
 
-        const postData =
-        {
-            species: observation.bird.species,
-        };
-
         const [wasSuccessful,] = await this.send_request(`${this.backendURLs.deleteObservation}?list=${listKey}`,
         {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(postData),
+            method: "DELETE",
+            body: JSON.stringify({
+                key: listKey,
+                species: observation.bird.species,
+            }),
         });
 
         return wasSuccessful;
     },
 
     // Returns the view key associated with the given edit key.
-    fetch_view_key: async function(editKey)
+    get_view_key: async function(listKey)
     {
-        panic_if_not_type("string", editKey);
+        panic_if_not_type("string", listKey);
 
-        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getViewKey}?list=${editKey}`);
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getViewKey}?list=${listKey}`,
+        {
+            method: "GET",
+        });
 
         if (wasSuccessful)
         {
@@ -117,9 +117,12 @@ const httpRequests = Object.freeze(
     // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
     // be added as observations. The list will be returned as an array of bird() objects;
     // or, on failure, as an empty array.
-    fetch_known_birds_list: async function()
+    get_known_birds_list: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getKnownBirds);
+        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getKnownBirds,
+        {
+            method: "GET",
+        });
 
         if (wasSuccessful)
         {
@@ -157,9 +160,12 @@ const httpRequests = Object.freeze(
     //         ...,
     //     }
     //
-    fetch_backend_limits: async function()
+    get_backend_limits: async function()
     {
-        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getBackendLimits);
+        const [wasSuccessful, responseData] = await this.send_request(this.backendURLs.getBackendLimits,
+        {
+            method: "GET",
+        });
 
         if (wasSuccessful)
         {
@@ -175,12 +181,15 @@ const httpRequests = Object.freeze(
     // given list; or, on failure, an empty array. You should provide as the second parameter
     // a list of the birds accepted as valid observees. Any observations submitted from the
     // server that are not found on this list will be ignored.
-    fetch_observations: async function(listKey, knownBirds = [])
+    get_observations: async function(listKey, knownBirds = [])
     {
         panic_if_not_type("string", listKey);
         panic_if_not_type("object", knownBirds)
 
-        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`);
+        const [wasSuccessful, responseData] = await this.send_request(`${this.backendURLs.getObservations}?list=${listKey}`,
+        {
+            method: "GET",
+        });
 
         if (wasSuccessful)
         {
@@ -214,24 +223,20 @@ const httpRequests = Object.freeze(
 
     // Submits the given bird as an observation to be appended to the given list. Returns
     // true if succeeded; false otherwise.
-    post_observation: async function(listKey, observation)
+    put_observation: async function(listKey, observation)
     {
         panic_if_not_type("string", listKey);
         panic_if_not_type("object", observation, observation.bird);
         panic_if_undefined(observation.unixTimestamp);
 
-        const postData =
-        {
-            species: observation.bird.species,
-            timestamp: observation.unixTimestamp,
-            place: observation.place,
-        };
-
         const [wasSuccessful,] = await this.send_request(`${this.backendURLs.postObservation}?list=${listKey}`,
         {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(postData),
+            method: "PUT",
+            body: JSON.stringify({
+                species: observation.bird.species,
+                timestamp: observation.unixTimestamp,
+                place: observation.place,
+            }),
         });
 
         return wasSuccessful;
@@ -268,7 +273,7 @@ const httpRequests = Object.freeze(
 // Provides mediated access to the given list's data in Lintulista's backend.
 export async function backend_access(listKey)
 {
-    const backendLimits = Object.freeze(await httpRequests.fetch_backend_limits());
+    const backendLimits = Object.freeze(await httpRequests.get_backend_limits());
 
     // Do a basic client-side check for whether the given key has edit rights. Note that
     // this does not necessarily reflect whether the server would allow this key to make
@@ -292,7 +297,7 @@ export async function backend_access(listKey)
             return listKey;
         }
 
-        return httpRequests.fetch_view_key(listKey);
+        return httpRequests.get_view_key(listKey);
     })();
 
     // We'll cache some server responses here, so that their elements can be queried in-
@@ -310,12 +315,12 @@ export async function backend_access(listKey)
 
         refresh_known_birds: async function()
         {
-            this.knownBirds = await httpRequests.fetch_known_birds_list();
+            this.knownBirds = await httpRequests.get_known_birds_list();
         },
 
         refresh_observations: async function()
         {
-            this.observations = await httpRequests.fetch_observations(listKey, this.knownBirds);
+            this.observations = await httpRequests.get_observations(listKey, this.knownBirds);
         }
     };
     await localCache.refresh();
@@ -361,13 +366,13 @@ export async function backend_access(listKey)
         // Appends the given observation to the server-side list of observations. Updates
         // the local cache of observations, accordingly. Returns true if successful; false
         // otherwise.
-        post_observation: async(newObservation)=>
+        put_observation: async(newObservation)=>
         {
             panic_if_undefined(newObservation, newObservation.bird, newObservation.unixTimestamp);
 
             const obsIdx = localCache.observations.findIndex(obs=>(obs.bird.species === newObservation.bird.species));
 
-            const postedSuccessfully = await httpRequests.post_observation(listKey, newObservation);
+            const postedSuccessfully = await httpRequests.put_observation(listKey, newObservation);
             
             if (!postedSuccessfully)
             {
@@ -386,4 +391,4 @@ export async function backend_access(listKey)
 
 // Convenience aliases.
 backend_access.create_new_list = ()=>httpRequests.create_new_list();
-backend_access.fetch_known_birds_list = ()=>httpRequests.fetch_known_birds_list();
+backend_access.get_known_birds_list = ()=>httpRequests.get_known_birds_list();

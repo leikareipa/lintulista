@@ -23,7 +23,7 @@ require_once "return.php";
 //     - remove_observations_of_species_from_list()
 //     - get_corresponding_view_key()
 //     - get_observations_in_list()
-//     - post_observation_to_list()
+//     - put_observation_to_list()
 //     - create_new_list()
 //
 // These functions correspond to the commands available to the frontend client; they allow the
@@ -149,7 +149,7 @@ class DatabaseAccess
     // Insert or update the given observation in the given list. If the observation already
     // exists in the list, its data are overwritten by those of the given observation; otherwise
     // a new observation entry is created in the list.
-    function post_observation_to_list(string $listKey, array $observation)
+    function put_observation_to_list(string $listKey, array $observation)
     {
         $species = isset($observation["species"])? $observation["species"]
                                                  : exit(return_failure("The given observation is missing the required \"species\" property."));
