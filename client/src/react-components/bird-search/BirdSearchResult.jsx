@@ -36,12 +36,18 @@ export function BirdSearchResult(props = {})
                         {dateObserved}
                     </div>
                 </div>
-                {!hasBeenPreviouslyObserved? <AsyncIconButton icon="fas fa-plus"
-                                                              title={`Lisää ${props.bird.species} listaan`}
-                                                              titleClicked="Lisätään listaan..."
-                                                              task={()=>props.clickCallback(props.bird)}/>
-                                           : <></>}
+                {(props.allowAddingToList &&
+                  !hasBeenPreviouslyObserved)? <AsyncIconButton icon="fas fa-plus"
+                                                                title={`Lisää ${props.bird.species} listaan`}
+                                                                titleClicked="Lisätään listaan..."
+                                                                task={()=>props.clickCallback(props.bird)}/>
+                                             : <></>}
            </div>
+}
+
+BirdSearchResult.defaultProps =
+{
+    allowAddingToList: false,
 }
 
 BirdSearchResult.validate_props = function(props)
