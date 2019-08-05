@@ -57,6 +57,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                 $backendLimits = get_backend_limits();
                 exit(ReturnObject::success(json_encode($backendLimits)));
             }
+            default: exit(ReturnObject::failure("Unknown metadata type '{$_GET["type"]}'."));
         }
     }
     default: exit(ReturnObject::failure("Unknown method '{$_SERVER["REQUEST_METHOD"]}'."));
