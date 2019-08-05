@@ -15,6 +15,8 @@ import {panic_if_undefined} from "../../assert.js";
 // The bird whose thumbnail image is to be displayed should be provided via props.bird as a
 // bird() object.
 //
+// Lazy loading of the thumbnail image can get enabled/disabled via props.useLazyLoading.
+//
 export function BirdThumbnail(props = {})
 {
     BirdThumbnail.validate_props(props);

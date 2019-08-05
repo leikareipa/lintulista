@@ -42,7 +42,8 @@ export function QueryObservationDeletion(props = {})
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
-               <BirdThumbnail bird={props.observation.bird}/>
+               <BirdThumbnail bird={props.observation.bird}
+                              useLazyLoading={false}/>
                <div className="fields">
                    <div className="bird-name">
                        {props.observation.bird.species}:
