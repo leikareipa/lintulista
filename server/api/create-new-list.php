@@ -20,6 +20,9 @@
  * 
  */
 
+// Assume we're in /server/api/.
+chdir("../");
+
 require_once "list-key.php";
 require_once "database.php";
 require_once "return.php";

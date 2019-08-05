@@ -21,6 +21,9 @@ header("Cache-Control: no-store");
  * 
  */
 
+// Assume we're in /server/api/.
+chdir("../");
+
 require_once "backend-limits.php";
 require_once "return.php";
 

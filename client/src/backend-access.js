@@ -20,13 +20,13 @@ const httpRequests = Object.freeze(
     // All of Lintulista's URLs for client-to-backend HTTP requests.
     backendURLs: Object.freeze(
     {
-        deleteObservation: "./server/delete-observation.php",
-        getBackendLimits: "./server/get-backend-limits.php",
-        postObservation: "./server/put-observation.php",
-        getObservations: "./server/get-observations.php",
-        getKnownBirds: "./server/get-known-birds-list.php",
-        createList: "./server/create-new-list.php",
-        getViewKey: "./server/get-view-key.php",
+        deleteObservation: "./server/api/delete-observation.php",
+        getBackendLimits: "./server/api/get-backend-limits.php",
+        postObservation: "./server/api/put-observation.php",
+        getObservations: "./server/api/get-observations.php",
+        getKnownBirds: "./server/api/get-known-birds-list.php",
+        createList: "./server/api/create-new-list.php",
+        getViewKey: "./server/api/get-view-key.php",
     }),
 
     // Performs an async fetch on the given URL and with the given parameters (corresponding

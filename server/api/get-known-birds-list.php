@@ -13,6 +13,9 @@ header("Cache-Control: max-age=604800");
  * 
  */
 
+// Assume we're in /server/api/.
+chdir("../");
+
 require_once "return.php";
 
 $knownBirdsData = file_get_contents("./assets/metadata/known-birds.json");
