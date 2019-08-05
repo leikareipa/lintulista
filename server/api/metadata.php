@@ -32,7 +32,7 @@ require_once "return.php";
 {
     if (!isset($_GET["type"]))
     {
-        exit(return_failure("Missing the required \"type\" parameter."));
+        exit(ReturnObject::failure("Missing the required \"type\" parameter."));
     }
 }
 
@@ -50,16 +50,16 @@ switch ($_SERVER["REQUEST_METHOD"])
                 // a mildly large dataset at ~50 KB, so best allow some caching of it.
                 header("Cache-Control: max-age=604800");
 
-                exit(return_success(json_encode($knownBirds)));
+                exit(ReturnObject::success(json_encode($knownBirds)));
             }
             case "backendLimits":
             {
                 $backendLimits = get_backend_limits();
-                exit(return_success(json_encode($backendLimits)));
+                exit(ReturnObject::success(json_encode($backendLimits)));
             }
         }
     }
-    default: exit(return_failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
 }
 
 function get_known_birds()

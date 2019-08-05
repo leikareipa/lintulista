@@ -35,7 +35,7 @@ class ListKey
 
         if (self::is_key_malformed($viewKey))
         {
-            exit(return_failure("Failed to generate a valid list key."));
+            exit(ReturnObject::failure("Failed to generate a valid list key."));
         }
 
         return $viewKey;
@@ -50,7 +50,7 @@ class ListKey
 
         if (self::is_key_malformed($editKey))
         {
-            exit(return_failure("Failed to generate a valid list key."));
+            exit(ReturnObject::failure("Failed to generate a valid list key."));
         }
 
         return $editKey;
@@ -68,12 +68,12 @@ class ListKey
 
         if (strlen($string) !== $length)
         {
-            exit(return_failure("Failed to generate a valid pseudorandom key string."));
+            exit(ReturnObject::failure("Failed to generate a valid pseudorandom key string."));
         }
 
         if (self::is_key_malformed($string))
         {
-            exit(return_failure("Failed to generate a valid pseudorandom key string."));
+            exit(ReturnObject::failure("Failed to generate a valid pseudorandom key string."));
         }
         
         return $string;

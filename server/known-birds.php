@@ -24,7 +24,7 @@ class KnownBirds
         if (!$this->knownBirds ||
             !isset($this->knownBirds["birds"]))
         {
-            exit(return_failure("Server-side IO failure. The list of known birds is invalid."));
+            exit(ReturnObject::failure("Server-side IO failure. The list of known birds is invalid."));
         }
     }
 

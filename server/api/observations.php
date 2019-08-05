@@ -48,12 +48,12 @@ require_once "return.php";
 {
     if (!isset($_GET["list"]))
     {
-        exit(return_failure("Missing the required \"list\" parameter."));
+        exit(ReturnObject::failure("Missing the required \"list\" parameter."));
     }
 
     if (ListKey::is_key_malformed($_GET["list"]))
     {
-        exit(return_failure("Invalid \"list\" parameter."));
+        exit(ReturnObject::failure("Invalid \"list\" parameter."));
     }
 }
 
@@ -62,21 +62,21 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "GET":
     {
         $returnData = get_observations($_GET["list"]);
-        exit(return_success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
+        exit(ReturnObject::success(json_encode($returnData, JSON_UNESCAPED_UNICODE)));
     }
     case "PUT":
     {
         $observation = json_decode(file_get_contents("php://input"), true);
         put_observation($_GET["list"], $observation);
-        exit(return_success());
+        exit(ReturnObject::success());
     }
     case "DELETE":
     {
         $observation = json_decode(file_get_contents("php://input"), true);
         delete_observation($_GET["list"], $observation);
-        exit(return_success());
+        exit(ReturnObject::success());
     }
-    default: exit(return_failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
 }
 
 // Removes the given observation from the given list.
@@ -86,7 +86,7 @@ function delete_observation(string $listKey, array $observation)
     {
         if (!isset($observation["species"]))
         {
-            exit(return_failure("The given observation data is missing the required \"species\" property."));
+            exit(ReturnObject::failure("The given observation data is missing the required \"species\" property."));
         }
     }
 
@@ -119,12 +119,12 @@ function get_observations(string $listKey)
         {
             if (!isset($observation["species"]))
             {
-                exit(return_failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
+                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required \"species\" property."));
             }
 
             if (!isset($observation["timestamp"]))
             {
-                exit(return_failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
+                exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required \"timestamp\" property."));
             }
 
             $place = null;

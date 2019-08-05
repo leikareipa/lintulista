@@ -20,7 +20,7 @@ class BackendLimits
         if (!$this->backendLimits ||
             !isset($this->backendLimits["limits"]))
         {
-            exit(return_failure("Server-side IO failure. The list of known birds is invalid."));
+            exit(ReturnObject::failure("Server-side IO failure. The list of known birds is invalid."));
         }
     }
 
@@ -48,7 +48,7 @@ class BackendLimits
             return $this->backendLimits["limits"][$property];
         }
 
-        exit(return_failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
+        exit(ReturnObject::failure("Server-side IO failure. Can't find a limit for \"{$property}\""));
     }
 }
 

@@ -36,12 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST")
 {
     if (!isset($_GET["list"]))
     {
-        exit(return_failure("Missing the required \"list\" parameter."));
+        exit(ReturnObject::failure("Missing the required \"list\" parameter."));
     }
 
     if (ListKey::is_key_malformed($_GET["list"]))
     {
-        exit(return_failure("Invalid \"list\" parameter."));
+        exit(ReturnObject::failure("Invalid \"list\" parameter."));
     }
 }
 
@@ -50,14 +50,14 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "POST":
     {
         $keys = create_new_list();
-        exit(return_success(json_encode($keys)));
+        exit(ReturnObject::success(json_encode($keys)));
     }
     case "GET":
     {
         $listInfo = get_list_information($_GET["list"]);
-        exit(return_success(json_encode($listInfo)));
+        exit(ReturnObject::success(json_encode($listInfo)));
     }
-    default: exit(return_failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
+    default: exit(ReturnObject::failure("Unknown method \"{$_SERVER["REQUEST_METHOD"]}\"."));
 }
 
 function get_list_information()
@@ -89,7 +89,7 @@ function create_new_list()
     /// of it.
     if (sleep(8) === false)
     {
-        exit(return_failure("Server-side error."));
+        exit(ReturnObject::failure("Server-side error."));
     }
 
     $backendLimits = new BackendLimits();
