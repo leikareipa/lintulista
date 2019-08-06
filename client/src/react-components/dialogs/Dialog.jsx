@@ -145,7 +145,7 @@ export function Dialog(props = {})
 
     return <div className={`Dialog ${props.component}`}>
                 <div className="title">
-                    <i className={props.titleIcon}/> {props.title}
+                    <i className={`title-icon ${props.titleIcon}`}/> {props.title}
                 </div>
                 <div className="form">
                     {props.children}

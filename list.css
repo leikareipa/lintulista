@@ -719,7 +719,7 @@ footer
     min-width: 400px;
     padding-top: 0px;
     padding-bottom: 1px;
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     border-radius: 3px;
     display: inline-block;
     color: black;
@@ -733,7 +733,7 @@ footer
     /* Center in the viewport.*/
     position: fixed;
     transform: translateX(-50%);
-    top: 20px;
+    top: 40px;
     left: 50%;
 }
 
@@ -749,6 +749,12 @@ footer
 
     user-select: none;
     -moz-user-select: none;
+}
+
+.Dialog > .title > .title-icon
+{
+    margin-right: 5px;
+    font-size: 125%;
 }
 
 .Dialog > .button-bar
@@ -829,15 +835,21 @@ footer
 .Dialog > .form > .fields input
 {
     outline: none;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.4);
     padding-right: 15px;
     padding-left: 15px;
+    background-color: white;
+    max-height: 47px;
+
+    transition: box-shadow 0.1s ease-in-out;
 }
 
-.Dialog > .form > .fields input:focus
+.Dialog > .form > .fields input:focus,
+.Dialog > .form > .fields input:hover
 {
-    border: 1px solid rgba(53, 145, 231, 0.8);
+    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.4);
 }
 
 .Dialog.QueryObservationDate > .form > .fields > .date-bar
@@ -954,27 +966,35 @@ footer
 
 .Dialog.QueryObservationPlace > .form > .fields input
 {
-    padding-left: 43px; /* Make room for the embedded GeoTag.*/
+    padding-left: 51px; /* Make room for the embedded GeoTag.*/
 }
 
 .Dialog.QueryObservationPlace > .form > .fields .map-link
 {
     font-size: 175%;
     position: absolute;
-    left: 150px;
+    left: 153px;
     bottom: 44px;
     display: inline-block;
 }
 
 .Dialog.QueryObservationPlace > .form > .fields .map-link a
 {
-    color: rgba(53, 145, 231, 0.8);
+    color: rgb(240, 104, 63);
     text-decoration: none;
 }
 
-.Dialog.QueryObservationPlace > .form > .fields .map-link a.disabled
+.Dialog.QueryObservationPlace > .form > .fields .map-link.disabled a
 {
     color: rgb(191, 191, 191);
+}
+
+.Dialog.QueryObservationPlace > .form > .fields .map-link.enabled
+{
+    animation-name: animation-jump-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.2s;
 }
 
 .Dialog.QueryObservationPlace > .form > .fields > .character-count

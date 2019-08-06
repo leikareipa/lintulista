@@ -36,7 +36,7 @@ export function QueryObservationPlace(props = {})
 
     return <Dialog component="QueryObservationPlace"
                    title="Merkitse havaintopaikka"
-                   titleIcon="fas fa-map-marker-alt"
+                   titleIcon="fas fa-map-marked-alt"
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
@@ -54,9 +54,8 @@ export function QueryObservationPlace(props = {})
                           spellCheck="false"
                           maxLength={props.maxPlaceNameLength}
                           autoFocus/>
-                   <div className="map-link">
-                       <a className={!mapUrl? "disabled" : undefined}
-                          href={mapUrl}
+                   <div className={`map-link ${mapUrl? "enabled" : "disabled"}`.trim()}>
+                       <a href={mapUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           title="Kokeile karttalinkkiä">
