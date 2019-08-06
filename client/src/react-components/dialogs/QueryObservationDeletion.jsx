@@ -50,9 +50,11 @@ export function QueryObservationDeletion(props = {})
                    <input className="list-id"
                           type="text"
                           onChange={update_on_input}
-                          placeholder="Toista linnun nimi jatkaaksesi"
                           spellCheck="false"
                           autoFocus/>
+                    <div className="instruction">
+                        Kirjoita "{props.observation.bird.species}" jatkaaksesi
+                    </div>
                </div>
            </Dialog>
 
