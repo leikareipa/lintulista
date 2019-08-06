@@ -34,7 +34,7 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
         error("Failed to generate a valid DOM id for a shade element.");
     }
 
-    const transitionDuration = 0.25;
+    const transitionDuration = 0.2;
 
     // Insert the shade into the DOM. Note that by default, it's not yet displayed.
     const shadeElement = (()=>

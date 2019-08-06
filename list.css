@@ -39,8 +39,8 @@ footer
 #app-title
 {
     position: absolute;
-    top: 40px;
-    left: 1%;
+    top: 30px;
+    left: 1.5%;
     
     transform: rotate(-2deg);
     z-index: 1;

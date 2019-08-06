@@ -35,29 +35,46 @@ const sataLajia = Object.freeze(
     "Tiltaltti","Törmäpääsky","Töyhtöhyyppä","Töyhtötiainen","Tukkakoskelo","Tukkasotka","Tundrahanhi","Tuulihaukka","Urpiainen","Uuttukyyhky",
     "Valkoposkihanhi","Varis","Varpunen","Varpushaukka","Varpuspöllö","Västäräkki","Viherpeippo","Vihervarpunen","Viirupöllö","Viitakerttunen",
 ]);
-    
+
 export function ObservationList(props = {})
 {
     ObservationList.validate_props(props);
 
-    const [sortObservationsBy, setSortObservationsBy] = React.useState("date");
-    const sorters =
-    {
-        species: (a, b)=>(a.bird.species < b.bird.species? -1 : a.bird.species > b.bird.species? 1 : 0),
-        family: (a, b)=>(a.bird.family < b.bird.family? -1 : a.bird.family > b.bird.family? 1 : 0),
-        order: (a, b)=>(a.bird.order < b.bird.order? -1 : a.bird.order > b.bird.order? 1 : 0),
-        date: (a, b)=>(a.unixTimestamp < b.unixTimestamp? 1 : a.unixTimestamp > b.unixTimestamp? -1 : 0),
-    };
-
-    const [observationElements, setObservationElements] = React.useState(generate_observation_elements());
+    // Used for rerendering the list of observation elements.
+    const [elementsKey, setElementsKey] = React.useState(0);
 
     const [actionBarEnabled, setActionBarEnabled] = React.useState(true);
 
+    // Functions for sorting the list of observation elements.
+    const observationElementSorters =
+    {
+        species: (a, b)=>(a.observation.bird.species < b.observation.bird.species? -1 : a.observation.bird.species > b.observation.bird.species? 1 : 0),
+        family: (a, b)=>(a.observation.bird.family < b.observation.bird.family? -1 : a.observation.bird.family > b.observation.bird.family? 1 : 0),
+        order: (a, b)=>(a.observation.bird.order < b.observation.bird.order? -1 : a.observation.bird.order > b.observation.bird.order? 1 : 0),
+        date: (a, b)=>(a.observation.unixTimestamp < b.observation.unixTimestamp? 1 : a.observation.unixTimestamp > b.observation.unixTimestamp? -1 : 0),
+    };
+
+    // Specifies by which sorting mode the list is currently to be sorted. Must be one of
+    // the modes in 'observationElementSorters'. Note that if you change the initial useState()
+    // value of this, you should change the initial value of the sorting menu index in the
+    // ObservationListActionBar element of this component also.
+    const [sortListBy, setSortListBy] = React.useState("date");
+
+    // An array providing for each observation in the list its corresponding React element.
+    const [observationElements,] = React.useState(()=>create_observation_elements());
+
+    // Regenerate the list every time the sorting mode changes.
     React.useEffect(()=>
     {
-        setObservationElements(generate_observation_elements());
-    }, [sortObservationsBy]);
+        observationElements.splice(0, observationElements.length, ...create_observation_elements());
+        sort_observation_list();
+        redraw_elements_list();
+    }, [sortListBy]);
 
+    console.log("Redrawing the observation list.");
+
+    // The element displayed in the observation list when the list is empty (i.e. when
+    // there are no observations).
     const emptyElement = <div className="intro">
                              <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h3>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
@@ -72,110 +89,129 @@ export function ObservationList(props = {})
                                  : <></>}
                          </div>
 
+    console.log("-------- Finished redrawing the observation list.");
     return <div className="ObservationList">
                <ObservationListActionBar enabled={actionBarEnabled}
                                          backend={props.backend}
                                          callbackAddObservation={add_observation}
-                                         callbackSetListSorting={setSortObservationsBy}/>
-               <div className="elements">
-                   {observationElements.length? observationElements : emptyElement}
+                                         callbackSetListSorting={setSortListBy}/>
+               <div className="elements" key={elementsKey}>
+                   {observationElements.length? observationElements.map(e=>e.element) : emptyElement}
                </div>
                <ObservationListFooter numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observation_list_to_csv_file}/>
            </div>
 
-    // Called when the user requests us to add a new observation into the list.
-    async function add_observation(bird)
+    function redraw_elements_list()
     {
-        await props.backend.put_observation(observation({bird, date:new Date(), place:""}));
-
-        setObservationElements(generate_observation_elements());
+        setElementsKey(elementsKey+1);
     }
 
-    function generate_observation_elements()
+    // Map all of the user's observations into React elements to be displayed.
+    //
+    function create_observation_elements()
     {
-        const observationElements = [];
+        console.log("Regenerating observation elements.");
 
         // For the 100 Lajia challenge, we want to insert three kinds of elements: (1) ghost
         // elements for species that are included in the challenge but which the user hasn't
-        // yet observed; (2) observed elements for species that the user has observed and which
+        // yet observed; (2) regular elements for species that the user has observed and which
         // are included in the challenge; and (3) additional observations that the user has
         // made but which aren't included in the challenge.
-        //
-        // Additionally, we want to sort those elements so that the species included in the
-        // challenge appear first - in alphabetical order - followed by - in alphabetical
-        // order - observations of species not included in the challenge.
-        if (sortObservationsBy === "100-lajia")
+        if (sortListBy === "100-lajia")
         {
             // Add elements for species included in the challenge.
-            sataLajia.forEach(species=>
+            const sata = sataLajia.reduce((array, species)=>
             {
                 const existingObservation = props.backend.observations().find(obs=>(obs.bird.species === species));
 
-                observationElements.push(existingObservation? make_element_for_observation(existingObservation)
-                                                            : make_element_for_challenge(species));
-            });
+                array.push(existingObservation? create_observation_element(existingObservation)
+                                              : create_ghost_observation_element(species));
+
+                return array;
+            }, []);
 
             // Add elements for observations of species not included in the challenge.
-            observationElements.push(...(sort_observation_list(props.backend.observations().slice())
-                                         .filter(obs=>!sataLajia.includes(obs.bird.species))
-                                         .map(obs=>make_element_for_observation(obs, <PlainTag text="Lisälaji"/>))));
+            const normal = props.backend.observations().filter(obs=>!sataLajia.includes(obs.bird.species))
+                                                       .map(obs=>create_observation_element(obs));
+
+            return [...sata, ...normal];
         }
-        // Otherwise, we just add observed elements for the observations the user has made, and
-        // sort them according to whatever sorting option is currently selected.
+        // Otherwise, we just return elements for the observations the user has made.
         else
         {
-            observationElements.push(...sort_observation_list(props.backend.observations().slice()).map(obs=>make_element_for_observation(obs)));
-        }
-
-        return observationElements;
-
-        function make_element_for_challenge(speciesName)
-        {
-            panic_if_not_type("string", speciesName);
-
-            return <ObservationListElementGhost key={`ghost-of-${speciesName}`}
-                                                speciesName={speciesName}
-                                                visible={true}/>
-        }
-
-        function make_element_for_observation(obs, tag = <></>)
-        {
-            panic_if_not_type("object", obs);
-
-            return <ObservationListElement observation={obs}
-                                           key={obs.bird.species}
-                                           tag={tag}
-                                           visible={true}
-                                           allowEditing={props.backend.hasEditRights}
-                                           showOrderTags={sortObservationsBy === "order"}
-                                           maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
-                                           callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
-                                           requestDeleteObservation={async(self)=>await delete_observation(self)}
-                                           requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
-                                           requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
+            return props.backend.observations().map(obs=>create_observation_element(obs));
         }
     }
 
-    function sort_observation_list(list)
+    function create_ghost_observation_element(speciesName)
     {
-        switch (sortObservationsBy)
-        {
-            case "order": return list.sort(sorters.family).sort(sorters.order);
-            case "100-lajia": return list.sort(sorters["species"]);
+        panic_if_not_type("string", speciesName);
 
-            case "date":
-            case "species": return list.sort(sorters[sortObservationsBy]);
-            
-            default: panic("Unknown sorter."); break;
+        const bird = props.backend.known_birds().find(bird=>(bird.species === speciesName));
+
+        if (!bird)
+        {
+            panic(`Unknown species '${speciesName}'.`);
         }
+
+        return {
+            observation: observation({bird, date:new Date()}),
+            element: <ObservationListElementGhost key={`ghost-of-${speciesName}`}
+                                                  speciesName={speciesName}
+                                                  visible={true}/>
+        };
+    }
+
+    function create_observation_element(obs, tag = <></>)
+    {
+        panic_if_not_type("object", obs, tag);
+
+        /// Temporary implementation; will be replaced.
+        if ((sortListBy === "100-lajia") &&
+            !sataLajia.includes(obs.bird.species))
+        {
+            tag = <PlainTag text="Lisälaji"/>;
+        }
+
+        return {
+            observation: obs,
+            element: <ObservationListElement observation={obs}
+                                             key={obs.bird.species}
+                                             tag={tag}
+                                             visible={true}
+                                             allowEditing={props.backend.hasEditRights}
+                                             maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
+                                             callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
+                                             requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                             requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                             requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
+        };
+    }
+
+    function sort_observation_list()
+    {
+        const sorter = (()=>
+        {
+            switch (sortListBy)
+            {
+                case "100-lajia": return observationElementSorters["species"];
+
+                case "date":
+                case "species": return observationElementSorters[sortListBy];
+                
+                default: panic("Unknown sorter."); return ()=>{};
+            }
+        })();
+        
+        observationElements.sort(sorter);
     }
 
     async function save_observation_list_to_csv_file()
     {
         let csvString = "Päiväys, Laji, Heimo, Lahko, Havaintopaikka\n";
 
-        props.backend.observations().slice().sort(sorters["date"]).forEach(obs=>
+        props.backend.observations().forEach(obs=>
         {
             const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
 
@@ -185,10 +221,61 @@ export function ObservationList(props = {})
         saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
     }
 
+    // Called when the user requests us to add a new observation into the list.
+    async function add_observation(bird)
+    {
+        const obs = observation({bird, date:new Date(), place:""});
+
+        if (await props.backend.put_observation(obs))
+        {
+            const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === obs.bird.species));
+
+            // If the observation didn't already exist in the list, add it; otherwise
+            // update it. Even though this function is add_observation(), if the user
+            // has the list in the 100 Lajia sorting mode, there may be a ghost element
+            // for a bird of this species already in the list - in which case, we want
+            // to replace the ghost element rather than adding a new, duplicate observation.
+            if (elementIdx === -1)
+            {
+                observationElements.unshift(create_observation_element(obs));
+            }
+            else
+            {
+                observationElements.splice(elementIdx, 1, create_observation_element(obs));
+            }
+            
+            redraw_elements_list();
+        }
+        else
+        {
+            error(`Could not add an observation for ${bird.species}.`);
+        }
+    }
+
     async function delete_observation(targetObservation)
     {
-        await props.backend.delete_observation(targetObservation);
-        setObservationElements(generate_observation_elements());
+        const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === targetObservation.bird.species));
+
+        if ((elementIdx !== -1) && await props.backend.delete_observation(targetObservation))
+        {
+            const speciesName = observationElements[elementIdx].observation.bird.species;
+
+            if ((sortListBy === "100-lajia") && sataLajia.includes(speciesName))
+            {
+                observationElements.splice(elementIdx, 1,
+                                           create_ghost_observation_element(speciesName));
+            }
+            else
+            {
+                observationElements.splice(elementIdx, 1);
+            }
+            
+            redraw_elements_list();
+        }
+        else
+        {
+            error(`Could not deöete the observation of ${bird.species}.`);
+        }
     }
 
     // Alters an existing observation's date to match the given year, month (1-12), and
@@ -213,10 +300,8 @@ export function ObservationList(props = {})
             return null;
         }
 
-        if (sortObservationsBy === "date")
-        {
-            setObservationElements(generate_observation_elements());
-        }
+        const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
+        observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }
@@ -237,6 +322,9 @@ export function ObservationList(props = {})
         {
             return null;
         }
+
+        const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
+        observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }

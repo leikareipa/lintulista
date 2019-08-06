@@ -31,7 +31,7 @@ export function ObservationListFooter(props = {})
     const observationDownloadElement = !props.numObservationsInList? <></>
                                                                    : <span onClick={props.callbackDownloadList}
                                                                            style={{textDecoration:"underline", cursor:"pointer"}}>
-                                                                         Lataa CSV:nä
+                                                                         Lataa havaintotiedot
                                                                      </span>
 
     return <div className="ObservationListFooter">
