@@ -38,11 +38,27 @@ export function BirdThumbnail(props = {})
 
     React.useEffect(()=>
     {
-        if (intersectionObserver)
+        if (props.useLazyLoading)
         {
-            intersectionObserver.observe(thumbnailRef.current);
-            
-            return ()=>{intersectionObserver.disconnect()}
+            const isInView = (()=>
+            {
+                const viewHeight = window.innerHeight;
+                const containerRect = thumbnailRef.current.getBoundingClientRect();
+
+                return Boolean((containerRect.top > -containerRect.height) &&
+                            (containerRect.top < viewHeight));
+            })();
+
+            if (isInView)
+            {
+                thumbnailRef.current.setAttribute("src", props.bird.thumbnailUrl);
+            }
+            else if (intersectionObserver)
+            {
+                intersectionObserver.observe(thumbnailRef.current);
+                
+                return ()=>{intersectionObserver.disconnect()}
+            }
         }
     }, []);
 
