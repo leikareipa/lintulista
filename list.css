@@ -108,10 +108,28 @@ footer
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 
     padding: 10px;
-    padding-top: 12px;
+    padding-top: 15px;
     padding-bottom: 30px;
 
     border-left: 17px dotted #c0c0c0;
+}
+
+#observation-list:empty::before
+{
+    display: inline-block;
+    font-style: bold;
+    font-variant: normal;
+    text-rendering: auto;
+
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    content: "\f110";
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 900;
+    animation: fa-spin 1.7s infinite linear;
+    font-size: 400%;
+    color: white;
 }
 
 .AsyncIconButton.enabled
@@ -847,7 +865,7 @@ footer
 .Dialog > .form > .fields input:focus,
 .Dialog > .form > .fields input:hover
 {
-    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .Dialog.QueryObservationDate > .form > .fields > .date-bar
