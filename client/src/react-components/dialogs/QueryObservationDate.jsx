@@ -36,7 +36,6 @@ export function QueryObservationDate(props = {})
 
     return <Dialog component="QueryObservationDate"
                    title="Merkitse havaintopäivä"
-                   titleIcon="fas fa-clock"
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>

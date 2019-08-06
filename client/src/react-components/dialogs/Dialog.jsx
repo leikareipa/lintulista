@@ -17,9 +17,8 @@ import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 // string props.component = "AskManyQuestions". The string will be appended to Dialog's class
 // name list, so that you can style the dialog in CSS using '.Dialog.AskManyQuestions'.
 //
-// The dialog's title text and icon should be provided via props.title and props.titleIcon; of
-// which both should be strings, the latter giving the Font Awesome class names for the desired
-// icon (e.g. props.titleIcon = "fas fa-map-marker-alt" for a map marker icon).
+// The dialog's title text should be provided via props.title; the text will be shown at the top
+// of the dialog.
 //
 // Functions to be called when the user accepts or rejects the dialog should be provided via
 // props.onDialogAccept and props.onDialogReject.
@@ -36,7 +35,6 @@ import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 //
 //     <Dialog component="MyDialog"
 //             title="It's my dialog"
-//             titleIcon="fas fa-question"
 //             onDialogAccept={()=>...}
 //             onDialogReject={()=>...}>
 //         <span className="sub-title">
@@ -145,7 +143,7 @@ export function Dialog(props = {})
 
     return <div className={`Dialog ${props.component}`}>
                 <div className="title">
-                    <i className={`title-icon ${props.titleIcon}`}/> {props.title}
+                    <i className="title-icon fas fa-feather-alt"/> {props.title}
                 </div>
                 <div className="form">
                     {props.children}
@@ -184,7 +182,7 @@ export function Dialog(props = {})
 Dialog.validateProps = function(props)
 {
     panic_if_not_type("object", props);
-    panic_if_not_type("string", props.component, props.titleIcon, props.title);
+    panic_if_not_type("string", props.component, props.title);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
 
     if (is_defined(props.callbackSetButtonEnabled) &&

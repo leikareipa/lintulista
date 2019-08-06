@@ -36,7 +36,6 @@ export function QueryObservationPlace(props = {})
 
     return <Dialog component="QueryObservationPlace"
                    title="Merkitse havaintopaikka"
-                   titleIcon="fas fa-map-marked-alt"
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
