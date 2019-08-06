@@ -141,7 +141,9 @@ export function Dialog(props = {})
     // Will be set to its correct value when the accept button initializes.
     let triggerAcceptButtonPress = ()=>{};
 
-    return <div className={`Dialog ${props.component}`}>
+    const dialogRef = React.useRef();
+
+    return <div className={`Dialog ${props.component} animation-fadein`} ref={dialogRef}>
                 <div className="title">
                     <i className="title-icon fas fa-feather-alt"/> {props.title}
                 </div>

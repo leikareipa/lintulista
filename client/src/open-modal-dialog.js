@@ -83,14 +83,9 @@ export function open_modal_dialog(dialog, parameters = {})
     {
         if (dialogContainer.childElementCount)
         {
-            /// WIP. Temporary animation.
-            await animate(dialogContainer.firstChild, "fadeout");
             ReactDOM.unmountComponentAtNode(dialogContainer);
-            dialogContainer.remove();
         }
-        else
-        {
-            dialogContainer.remove();
-        }
+
+        dialogContainer.remove();
     }
 }
