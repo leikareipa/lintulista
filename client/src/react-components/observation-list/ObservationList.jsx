@@ -61,6 +61,7 @@ export function ObservationList(props = {})
     const [sortListBy, setSortListBy] = React.useState("date");
 
     // An array providing for each observation in the list its corresponding React element.
+    // Note that we invoke lazy initial state with useState().
     const [observationElements,] = React.useState(()=>create_observation_elements());
 
     // Regenerate the list every time the sorting mode changes.
@@ -191,6 +192,8 @@ export function ObservationList(props = {})
 
     function sort_observation_list()
     {
+        console.log("Sorting the observation list.");
+
         const sorter = (()=>
         {
             switch (sortListBy)
@@ -244,6 +247,7 @@ export function ObservationList(props = {})
                 observationElements.splice(elementIdx, 1, create_observation_element(obs));
             }
             
+            sort_observation_list();
             redraw_elements_list();
         }
         else
@@ -270,6 +274,7 @@ export function ObservationList(props = {})
                 observationElements.splice(elementIdx, 1);
             }
             
+            sort_observation_list();
             redraw_elements_list();
         }
         else
@@ -303,6 +308,9 @@ export function ObservationList(props = {})
         const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
         observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
 
+        sort_observation_list();
+        redraw_elements_list();
+
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }
 
@@ -325,6 +333,9 @@ export function ObservationList(props = {})
 
         const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
         observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
+
+        sort_observation_list();
+        redraw_elements_list();
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }
