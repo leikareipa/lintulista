@@ -87,14 +87,14 @@ function create_new_list()
     /// TODO: In the future, you might e.g. adjust this value based on how many lists the
     /// client has created in the last x minutes, going from no or very little delay to more
     /// of it.
-    if (sleep(8) === false)
+    if (sleep(4) === false)
     {
         exit(ReturnObject::failure("Server-side error."));
     }
 
     $backendLimits = new BackendLimits();
     $database = new DatabaseAccess();
-    $ipHash = substr(hash("sha256", $_SERVER['REMOTE_ADDR'], false), 0, $backendLimits->value_of("ipHashLength"));
+    $ipHash = substr(hash("sha256", $database->stable_salted($_SERVER['REMOTE_ADDR']), false), 0, $backendLimits->value_of("ipHashLength"));
 
     // Attempt to create a new list with unique keys. We'll keep looping until the database
     // informs us that the keys were valid and that it created the desired list.

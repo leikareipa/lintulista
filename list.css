@@ -40,7 +40,7 @@ footer
 {
     position: absolute;
     top: 30px;
-    left: 1.5%;
+    left: 50px;
     
     transform: rotate(-2deg);
     z-index: 1;
@@ -120,6 +120,9 @@ footer
     font-style: bold;
     font-variant: normal;
     text-rendering: auto;
+
+    position: relative;
+    top: 35px;
 
     -webkit-font-smoothing: antialiased;
     font-family: "Font Awesome 5 Free";
@@ -290,7 +293,7 @@ footer
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
-    background-color: #8d8c8c;
+    background-color: #757575;
     cursor: auto;
     border-radius: 4px 4px 0 0;
 }
@@ -312,6 +315,7 @@ footer
 .ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:hover
 {
     transform: scale(1.1);
+    background-color: white;
     border-radius: 0;
 }
 

@@ -9,7 +9,7 @@
 .animation-jump
 {
     animation-name: animation-jump-frames;
-    animation-iteration-count: 1;
+    animation-iteration-count: 2;
     animation-timing-function: ease-in-out;
     animation-duration: 0.3s;
 }
@@ -28,7 +28,7 @@
     animation-direction: reverse;
     animation-iteration-count: 1;
     animation-timing-function: linear;
-    animation-duration: 0.05s;
+    animation-duration: 0.15s;
 }
 
 .animation-spin
@@ -43,8 +43,8 @@
 {
     animation-name: animation-flip-frames;
     animation-iteration-count: 1;
-    animation-timing-function: ease-in;
-    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
 }
 
 .animation-jumping
@@ -111,6 +111,6 @@
 
 @keyframes animation-flip-frames
 {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(359deg); }
+    0% { transform: rotateY(90deg); }
+    100% { transform: rotateY(0deg); }
 }

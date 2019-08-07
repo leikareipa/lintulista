@@ -7,6 +7,8 @@
  * 
  */
 
+require_once "backend-limits.php";
+
 // Provides convenience wrappers for dealing with keys in Lintulista.
 //
 // Lintulista's keys are unique strings used to identify particular observation lists. Each

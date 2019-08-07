@@ -61,6 +61,9 @@ class DatabaseAccess
     // initialized by the class constructor.
     private $database;
 
+    // A constant salt value. Will not change on repeated invocations of the script.
+    private $stableSalt;
+
     function __construct()
     {
         // Connect to the database.
@@ -71,10 +74,13 @@ class DatabaseAccess
                 !isset($databaseCredentials["host"]) ||
                 !isset($databaseCredentials["user"]) ||
                 !isset($databaseCredentials["password"]) ||
-                !isset($databaseCredentials["database"]))
+                !isset($databaseCredentials["database"]) ||
+                !isset($databaseCredentials["stableSalt"]))
             {
                 exit(ReturnObject::failure("Server-side IO failure. Malformed database credentials."));
             }
+
+            $this->stableSalt = $databaseCredentials["stableSalt"];
 
             $this->database = mysqli_connect($databaseCredentials["host"],
                                              $databaseCredentials["user"],
@@ -87,9 +93,15 @@ class DatabaseAccess
         }
     }
 
+    // Salts the given base string with a stable salt.
+    function stable_salted(string $baseString): string
+    {
+        return ($baseString . $this->stableSalt);
+    }
+
     // Returns the view key corresponding to the given edit key. If the edit key can't be found
     // in the database, a random string of the view key's length will be returned.
-    function get_corresponding_view_key(string $editKey)
+    function get_corresponding_view_key(string $editKey): string
     {
         $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = '{$editKey}'");
 
@@ -101,8 +113,9 @@ class DatabaseAccess
         return $result[0]["view_key"];
     }
 
-    // Returns all observations associated with the given list.
-    function get_observations_in_list(string $listKey)
+    // Returns all observations associated with the given list; or an empty array if no
+    // observations were found.
+    function get_observations_in_list(string $listKey): array
     {
         $listId = $this->get_list_id_of_key($listKey, false);
 
@@ -197,15 +210,15 @@ class DatabaseAccess
         return;
     }
 
-    // Returns the observation of the given species in the given list; or null if no such
-    // observation could be found.
-    private function get_observation_of_species(string $listId, string $species)
+    // Returns the observation of the given species in the given list; or an empty array if
+    // no such observation could be found.
+    private function get_observation_of_species(string $listId, string $species): array
     {
         $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
 
         if (count($result) === 0)
         {
-            return null;
+            return [];
         }
 
         if (count($result) > 1)
@@ -229,7 +242,7 @@ class DatabaseAccess
     // In practice, when you're requesting the list id of a key with the intent of modifying the
     // list's data, set requireEditRights to true.
     //
-    private function get_list_id_of_key(string $listKey, bool $requireEditRights = true)
+    private function get_list_id_of_key(string $listKey, bool $requireEditRights = true): string
     {
         if ($requireEditRights)
         {
@@ -255,7 +268,7 @@ class DatabaseAccess
 
     // Wrapper function for sending queries to the database such that data is expected in response.
     // E.g. database_query("SELECT * FROM table WHERE x = 10") returns such columns' values where x = 10.
-    private function database_query(string $queryString)
+    private function database_query(string $queryString): array
     {
         $response = mysqli_query($this->database, $queryString);
 
@@ -275,7 +288,7 @@ class DatabaseAccess
     // The function returns the last error code associated with executing the command; or 0 if no error
     // occurred.
     //
-    private function database_command(string $commandString)
+    private function database_command(string $commandString): int
     {
         mysqli_query($this->database, $commandString);
 
