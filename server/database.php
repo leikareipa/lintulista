@@ -61,8 +61,8 @@ class DatabaseAccess
     // initialized by the class constructor.
     private $database;
 
-    // A constant salt value. Will not change on repeated invocations of the script.
-    private $stableSalt;
+    // A constant salt value; will not change on repeated invocations of the script.
+    private $pepper;
 
     function __construct()
     {
@@ -75,12 +75,12 @@ class DatabaseAccess
                 !isset($databaseCredentials["user"]) ||
                 !isset($databaseCredentials["password"]) ||
                 !isset($databaseCredentials["database"]) ||
-                !isset($databaseCredentials["stableSalt"]))
+                !isset($databaseCredentials["pepper"]))
             {
                 exit(ReturnObject::failure("Server-side IO failure. Malformed database credentials."));
             }
 
-            $this->stableSalt = $databaseCredentials["stableSalt"];
+            $this->pepper = $databaseCredentials["pepper"];
 
             $this->database = mysqli_connect($databaseCredentials["host"],
                                              $databaseCredentials["user"],
@@ -94,9 +94,9 @@ class DatabaseAccess
     }
 
     // Salts the given base string with a stable salt.
-    function stable_salted(string $baseString): string
+    function peppered(string $baseString): string
     {
-        return ($baseString . $this->stableSalt);
+        return ($baseString . $this->pepper);
     }
 
     // Returns the view key corresponding to the given edit key. If the edit key can't be found
@@ -113,13 +113,42 @@ class DatabaseAccess
         return $result[0]["view_key"];
     }
 
-    // Returns all observations associated with the given list; or an empty array if no
-    // observations were found.
+    // Returns all observations associated with the given list. If the given key doesn't exist
+    // in the system, a random list of nonce observations will be returned.
     function get_observations_in_list(string $listKey): array
     {
-        $listId = $this->get_list_id_of_key($listKey, false);
+        // Generate random nonce observations.
+        if (!$this->key_exists($listKey))
+        {
+            $nonce = [];
+            $knownBirds = (new KnownBirds)->public_data();
+            $numBirds = (count($knownBirds) - 1);
 
-        return $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
+            // Note: Duplicate species count toward the total count but are removed prior to
+            // returning, so the number of nonces returned may be some fewer than this number.
+            $numNoncesToGenerate = random_int(0, $numBirds);
+
+            for ($i = 0; $i < $numNoncesToGenerate; $i++)
+            {
+                $birdSpecies = $knownBirds[random_int(0, $numBirds)]["species"];
+                $timestamp = random_int((time() - 47304000), time());
+
+                // Add the nonce to the list if one by this species doesn't already exist there.
+                if (!array_search($birdSpecies, array_map(function($bird){return $bird["species"];}, $nonce)))
+                {
+                    $nonce[] = ["species"=>$birdSpecies, "timestamp"=>$timestamp];
+                }
+            }
+
+            return array_unique($nonce, SORT_REGULAR);
+        }
+        // Otherwise, return valid observations.
+        else
+        {
+            $listId = $this->get_list_id_of_key($listKey, false);
+
+            return $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
+        }
     }
 
     // Adds into the database a new observation list with the given parameters. Returns true
@@ -227,6 +256,14 @@ class DatabaseAccess
         }
 
         return $result[0];
+    }
+
+    // Returns true if the given list key (edit or view) exists in the database; false otherwise.
+    private function key_exists(string $listKey): bool
+    {
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}' OR edit_key = '{$listKey}'");
+
+        return !empty($response);
     }
 
     // Returns the corresponding list id of the given list key.

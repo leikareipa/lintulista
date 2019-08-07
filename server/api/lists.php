@@ -94,7 +94,7 @@ function create_new_list()
 
     $backendLimits = new BackendLimits();
     $database = new DatabaseAccess();
-    $ipHash = substr(hash("sha256", $database->stable_salted($_SERVER['REMOTE_ADDR']), false), 0, $backendLimits->value_of("ipHashLength"));
+    $ipHash = substr(hash("sha256", $database->peppered($_SERVER['REMOTE_ADDR']), false), 0, $backendLimits->value_of("ipHashLength"));
 
     // Attempt to create a new list with unique keys. We'll keep looping until the database
     // informs us that the keys were valid and that it created the desired list.
