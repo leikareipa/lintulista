@@ -139,6 +139,15 @@ function get_observations(string $listKey)
         }
     }
 
+    // By default, the data are in chronological order of entry; so let's sort them in
+    // some other manner to hide the original ordering from public view.
+    usort($returnData, function($a, $b)
+    {
+        return ($a["timestamp"] == $b["timestamp"])? 0
+                                                   : ($a["timestamp"] > $b["timestamp"])? -1
+                                                                                        : 1;
+    });
+
     return $returnData;
 }
 
