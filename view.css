@@ -39,8 +39,8 @@ footer
 #app-title
 {
     position: absolute;
-    top: 30px;
-    left: 50px;
+    top: 33px;
+    left: 40px;
     
     transform: rotate(-2deg);
     z-index: 1;
@@ -89,7 +89,7 @@ footer
     height: 100px;
     border-radius: 2px;
     transform: rotate(5deg);
-    background-color: #cfcfcf;
+    background-color: #d0cfcf;
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
@@ -329,7 +329,7 @@ footer
     display: block;
 }
 
-.BirdSearchBar
+.BirdSearchBar > .search-bar
 {
     width: 230px;
     height: 40px;
@@ -340,12 +340,23 @@ footer
     padding-bottom: 15px;
     border: none;
     border-radius: 4px;
+    padding-right: 40px;
 
-    
     position: relative;
     z-index: 21;
 
     transition: width 0.15s linear;
+}
+
+.BirdSearchBar > .icon
+{
+    position: absolute;
+    z-index: 22;
+    color: rgb(182, 57, 57);
+    pointer-events: none;
+
+    top: 1px;
+    right: 195px;
 }
 
 .BirdSearchResultsDisplay
@@ -481,20 +492,20 @@ footer
     padding: 30px;
     padding-top: 5px;
     padding-bottom: 5px;
-    margin-top: 60px;
-    border-radius: 6px;
-    box-shadow: -30px 30px 3px -4px rgba(10, 0, 0, 0.1);
+    margin-top: -29px;
+    border-radius: 0px;
+    box-shadow: 0 10px 3px -4px rgba(10, 0, 0, 0.1);
     background-color: #f9f9f9;
 }
 
 .ObservationList > .elements > .intro h3
 {
-    color: #bd7b72;
+    color: #2478d8;
 }
 
 .ObservationList > .elements > .intro a
 {
-    color: #bd7b72;
+    color: #2478d8;
 }
 
 .ObservationList > .elements
@@ -746,7 +757,7 @@ footer
     display: inline-block;
     color: black;
     z-index: 200;
-    box-shadow: 0 6px 10px -7px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -765,7 +776,7 @@ footer
     padding: 18px;
     color: white;
     border-radius: 0;
-    background-color:rgb(53, 145, 231);
+    background-color:#3591e7;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 
@@ -834,10 +845,10 @@ footer
 
 .Dialog > .form
 {
-    padding-top: 18px;
-    padding-left: 17px;
+    padding-top: 20px;
+    padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
     display: flex;
 }
 
@@ -850,7 +861,7 @@ footer
 {
     width: 100px;
     height: 100px;
-    margin-right: 20px;
+    margin-right: 25px;
     border-radius: 50%;
 }
 
@@ -864,6 +875,7 @@ footer
     padding-left: 15px;
     background-color: white;
     transition: box-shadow 0.1s ease-in-out;
+    min-height: 47px;
 }
 
 .Dialog > .form > .fields input:focus,
@@ -968,7 +980,7 @@ footer
 {
     margin-left: auto;
     margin-right: 4px;
-    margin-top: 4px;
+    margin-top: 9px;
     font-size: 80%;
     color: rgba(0, 0, 0, 0.75);
 }
@@ -1002,8 +1014,8 @@ footer
 {
     font-size: 175%;
     position: absolute;
-    left: 153px;
-    bottom: 44px;
+    left: 156px;
+    bottom: 51px;
     display: inline-block;
 }
 
@@ -1030,7 +1042,7 @@ footer
 {
     margin-left: auto;
     margin-right: 4px;
-    margin-top: 4px;
+    margin-top: 9px;
     font-size: 80%;
 }
 
@@ -1053,10 +1065,10 @@ footer
 
 .ScrollerLabel .Scroller:hover
 {
-    color: rgba(53, 145, 231, 0.8);
+    color: #3591e7;
 }
 
 .ScrollerLabel .Scroller:active
 {
-    color: rgb(53, 145, 231);
+    color: #2c81cf;
 }

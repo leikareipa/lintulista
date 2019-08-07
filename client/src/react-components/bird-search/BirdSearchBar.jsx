@@ -97,21 +97,26 @@ export function BirdSearchBar(props = {})
         }
     }, [state]);
 
-    return <input className={`BirdSearchBar ${state}`.trim()}
-                  ref={searchRef}
-                  type="search"
-                  onBlur={()=>
-                  {
-                      if (!currentText.length)
+    return <div className="BirdSearchBar">
+               <input className={`search-bar ${state}`.trim()}
+                      ref={searchRef}
+                      type="search"
+                      onBlur={()=>
                       {
-                          got_focus(false);
-                      }
-                  }}
-                  onFocus={()=>got_focus(true)}
-                  onChange={handle_input_event}
-                  spellCheck="false"
-                  placeholder={(state === "inactive")? "Hae lajia" : ""}
-                  autoComplete="off"/>
+                          if (!currentText.length)
+                          {
+                              got_focus(false);
+                          }
+                      }}
+                      onFocus={()=>got_focus(true)}
+                      onChange={handle_input_event}
+                      spellCheck="false"
+                      placeholder={(state === "inactive")? "Hae lajia" : ""}
+                      autoComplete="off"/>
+                <div className="icon">
+                    <i className="fas fa-search"/>
+                </div>
+           </div>
 
     function got_focus(gotIt)
     {

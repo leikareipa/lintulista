@@ -35,7 +35,7 @@
             import {error} from "./client/dist/assert.js";
 
             // Grab from the address bar the id of the observation list to be operated on.
-            const listId = (()=>
+            const listKey = (()=>
             {
                 const params = new URLSearchParams(window.location.search);
 
@@ -50,13 +50,15 @@
             // Start the app.
             (async()=>
             {
-                if (!listId)
+                if (!listKey)
                 {
                     error("A list id must be provided.");
                     return;
                 }
 
-                render_observation_list(await backend_access(listId));
+                const backend = await backend_access(listKey);
+
+                render_observation_list(backend);
             })();
         </script>
     </body>
