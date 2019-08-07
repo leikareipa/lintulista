@@ -115,6 +115,10 @@ class DatabaseAccess
 
     // Returns all observations associated with the given list. If the given key doesn't exist
     // in the system, a random list of nonce observations will be returned.
+    //
+    // Note that the 'place' property of an observation will be returned only for an edit key,
+    // and will be omitted in the retun when accessing with a view key.
+    //
     function get_observations_in_list(string $listKey): array
     {
         // Generate random nonce observations.
@@ -145,9 +149,20 @@ class DatabaseAccess
         // Otherwise, return valid observations.
         else
         {
+            $isEditKey = $this->is_edit_key($listKey);
             $listId = $this->get_list_id_of_key($listKey, false);
 
-            return $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
+            $observations = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
+
+            $returnObservations = [];
+            foreach ($observations as $obs)
+            {
+                $returnObservations[] = ["species"=>$obs["species"],
+                                         "timestamp"=>$obs["timestamp"],
+                                         "place"=>($isEditKey? $obs["place"] : "")];
+            }
+
+            return $returnObservations;
         }
     }
 
@@ -202,7 +217,7 @@ class DatabaseAccess
         {
             return;
         }
-        
+
         $species = isset($observation["species"])? $observation["species"]
                                                  : exit(ReturnObject::failure("The given observation is missing the required 'species' property."));
 
@@ -274,6 +289,22 @@ class DatabaseAccess
     private function key_exists(string $listKey): bool
     {
         $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}' OR edit_key = '{$listKey}'");
+
+        return !empty($response);
+    }
+
+    // Returns true if the given list key is an existing edit key.
+    private function is_edit_key(string $listKey): bool
+    {
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = '{$listKey}'");
+
+        return !empty($response);
+    }
+
+    // Returns true if the given list key is an existing view key.
+    private function is_view_key(string $listKey): bool
+    {
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}'");
 
         return !empty($response);
     }
