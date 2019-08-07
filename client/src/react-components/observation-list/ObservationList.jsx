@@ -218,7 +218,7 @@ export function ObservationList(props = {})
         {
             const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
 
-            csvString += `${dateString}, ${obs.bird.species}, ${obs.bird.family}, ${obs.bird.order}, ${obs.place},\n`;
+            csvString += `${dateString||""}, ${obs.bird.species||""}, ${obs.bird.family||""}, ${obs.bird.order||""}, ${obs.place||""},\n`;
         });
 
         saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
