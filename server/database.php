@@ -103,7 +103,7 @@ class DatabaseAccess
     // in the database, a random string of the view key's length will be returned.
     function get_corresponding_view_key(string $editKey): string
     {
-        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = '{$editKey}'");
+        $result = $this->database_query("SELECT view_key FROM lintulista_lists WHERE edit_key = ?", [$editKey]);
 
         if (count($result) !== 1)
         {
@@ -152,7 +152,8 @@ class DatabaseAccess
             $isEditKey = $this->is_edit_key($listKey);
             $listId = $this->get_list_id_of_key($listKey, false);
 
-            $observations = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId}");
+            $observations = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = ?",
+                                                  [$listId]);
 
             $returnObservations = [];
             foreach ($observations as $obs)
@@ -180,8 +181,8 @@ class DatabaseAccess
             exit(ReturnObject::failure("Was asked to add a list to the database, but was not given the required keys for it."));
         }
 
-        $returnValue = $this->database_command("INSERT INTO lintulista_lists (view_key, edit_key, creation_timestamp, creator_hash) VALUES " .
-                                               "('{$keys["viewKey"]}', '{$keys["editKey"]}', {$timestamp}, '{$creatorHash}')");
+        $returnValue = $this->database_command("INSERT INTO lintulista_lists (view_key, edit_key, creation_timestamp, creator_hash) VALUES (?, ?, ?, ?)",
+                                               [$keys["viewKey"], $keys["editKey"], $timestamp, $creatorHash]);
 
         switch ($returnValue)
         {
@@ -202,7 +203,8 @@ class DatabaseAccess
 
         $listId = $this->get_list_id_of_key($listKey, true);
 
-        $this->database_command("DELETE FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$speciesName}'");
+        $this->database_command("DELETE FROM lintulista_observations WHERE list_id = ? AND species = ?",
+                                [$listId, $speciesName]);
 
         return;
     }
@@ -254,13 +256,14 @@ class DatabaseAccess
 
             if (count($combinedValues))
             {
-                $this->database_command("UPDATE lintulista_observations SET " . join(", ", $combinedValues) . " WHERE list_id = {$listId} AND species = '{$species}'");
+                $this->database_command("UPDATE lintulista_observations SET " . join(", ", $combinedValues) . " WHERE list_id = ? AND species = ?",
+                                        [$listId, $species]);
             }
         }
         else
         {
-            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`, place) VALUES " .
-                                    "({$listId}, '{$species}', {$timestamp}, '{$place}')");
+            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`, place) VALUES (?, ?, ?, ?)",
+                                    [$listId, $species, $timestamp, $place]);
         }
 
         return;
@@ -270,7 +273,8 @@ class DatabaseAccess
     // no such observation could be found.
     private function get_observation_of_species(string $listId, string $species): array
     {
-        $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$species}'");
+        $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = ? AND species = ?",
+                                        [$listId, $species]);
 
         if (count($result) === 0)
         {
@@ -288,7 +292,8 @@ class DatabaseAccess
     // Returns true if the given list key (edit or view) exists in the database; false otherwise.
     private function key_exists(string $listKey): bool
     {
-        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}' OR edit_key = '{$listKey}'");
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = ? OR edit_key = ?",
+                                          [$listKey, $listKey]);
 
         return !empty($response);
     }
@@ -296,7 +301,8 @@ class DatabaseAccess
     // Returns true if the given list key is an existing edit key.
     private function is_edit_key(string $listKey): bool
     {
-        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = '{$listKey}'");
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = ?",
+                                          [$listKey]);
 
         return !empty($response);
     }
@@ -304,7 +310,8 @@ class DatabaseAccess
     // Returns true if the given list key is an existing view key.
     private function is_view_key(string $listKey): bool
     {
-        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}'");
+        $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = ?",
+                                          [$listKey]);
 
         return !empty($response);
     }
@@ -326,11 +333,13 @@ class DatabaseAccess
     {
         if ($requireEditRights)
         {
-            $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = '{$listKey}'");
+            $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = ?",
+                                              [$listKey]);
         }
         else
         {
-            $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = '{$listKey}' OR edit_key = '{$listKey}'");
+            $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = ? OR edit_key = ?",
+                                              [$listKey, $listKey]);
         }
 
         if (empty($response))
@@ -340,37 +349,52 @@ class DatabaseAccess
 
         if (count($response) > 1)
         {
-            exit(ReturnObject::failure("Detected duplicate list ids for key '{$listKey}'."));
+            exit(ReturnObject::failure("Detected duplicate list ids for a key."));
         }
 
         return $response[0]["list_id"];
     }
 
     // Wrapper function for sending queries to the database such that data is expected in response.
-    // E.g. database_query("SELECT * FROM table WHERE x = 10") returns such columns' values where x = 10.
-    private function database_query(string $queryString): array
+    // E.g. database_query("SELECT * FROM table WHERE x = ?", [10]) returns such columns' values where x = 10.
+    private function database_query(string $queryString, array $parameters): array
     {
-        $response = mysqli_query($this->database, $queryString);
+        $stmt = mysqli_prepare($this->database, $queryString);
 
-        if (($response === false) ||
-            (mysqli_errno($this->database) !== 0))
+        mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
+
+        $execute = mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (!$stmt || !$execute || !$result || (mysqli_errno($this->database) !== 0))
         {
-            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database with '{$queryString}' (" . mysqli_error($this->database) . ")."));
+            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database (" . mysqli_error($this->database) . ")."));
         }
 
-        return mysqli_fetch_all($response, MYSQLI_ASSOC);
+        $returnObject = [];
+        while ($row = mysqli_fetch_assoc($result))
+        {
+            $returnObject[] = $row;
+        }
+
+        return $returnObject;
     }
 
     // Wrapper function for sending queries to the database such that the database is expected to return
-    // no data in reponse. E.g. database_command("UPDATE table SET x = 5 WHERE id = 1") modifies the data-
-    // base but returns no data in response.
+    // no data in reponse. E.g. database_command("UPDATE table SET x = ? WHERE id = ?", [1, 2]) modifies
+    // the database but returns no data in response.
     //
     // The function returns the last error code associated with executing the command; or 0 if no error
     // occurred.
     //
-    private function database_command(string $commandString): int
+    private function database_command(string $commandString, array $parameters): int
     {
-        mysqli_query($this->database, $commandString);
+        $stmt = mysqli_prepare($this->database, $commandString);
+
+        mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
+
+        mysqli_stmt_execute($stmt);
 
         return mysqli_errno($this->database);
     }
