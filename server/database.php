@@ -179,6 +179,12 @@ class DatabaseAccess
     // Deletes any observations from the given list where the species name matches the given one.
     function remove_observations_of_species_from_list(string $listKey, string $speciesName)
     {
+        // Silently fail if the key isn't valid.
+        if (!$this->key_exists($listKey))
+        {
+            return;
+        }
+
         $listId = $this->get_list_id_of_key($listKey, true);
 
         $this->database_command("DELETE FROM lintulista_observations WHERE list_id = {$listId} AND species = '{$speciesName}'");
@@ -191,6 +197,12 @@ class DatabaseAccess
     // a new observation entry is created in the list.
     function put_observation_to_list(string $listKey, array $observation)
     {
+        // Silently fail if the key isn't valid.
+        if (!$this->key_exists($listKey))
+        {
+            return;
+        }
+        
         $species = isset($observation["species"])? $observation["species"]
                                                  : exit(ReturnObject::failure("The given observation is missing the required 'species' property."));
 
