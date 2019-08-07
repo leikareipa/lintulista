@@ -62,7 +62,8 @@ export function QueryObservationPlace(props = {})
                        </a>
                    </div>
                    <div className="character-count">
-                       {placeName.length}/{props.maxPlaceNameLength}
+                       {props.maxPlaceNameLength - placeName.length} merkki
+                       {((props.maxPlaceNameLength - placeName.length) !== 1)? "ä" : ""} jäljellä
                    </div>
                </div>
            </Dialog>
