@@ -95,7 +95,18 @@ const httpRequests = Object.freeze(
 
         if (wasSuccessful)
         {
-            const data = JSON.parse(responseData);
+            const data = (()=>
+            {
+                try
+                {
+                    return JSON.parse(responseData);
+                }
+                catch (error)
+                {
+                    panic(`Failed to parse a server response. Error: ${error}`);
+                    return false;
+                }
+            })();
 
             panic_if_not_type("string", data.viewKey);
 
@@ -119,7 +130,18 @@ const httpRequests = Object.freeze(
 
         if (wasSuccessful)
         {
-            const birds = JSON.parse(responseData);
+            const birds = (()=>
+            {
+                try
+                {
+                    return JSON.parse(responseData);
+                }
+                catch (error)
+                {
+                    panic(`Failed to parse a server response. Error: ${error}`);
+                    return false;
+                }
+            })();
 
             return birds.map(b=>bird(
             {
@@ -157,7 +179,15 @@ const httpRequests = Object.freeze(
 
         if (wasSuccessful)
         {
-            return JSON.parse(responseData);
+            try
+            {
+                return JSON.parse(responseData);
+            }
+            catch (error)
+            {
+                panic(`Failed to parse a server response. Error: ${error}`);
+                return false;
+            }
         }
         else
         {
@@ -181,7 +211,18 @@ const httpRequests = Object.freeze(
 
         if (wasSuccessful)
         {
-            const observationData = JSON.parse(responseData);
+            const observationData = (()=>
+            {
+                try
+                {
+                    return JSON.parse(responseData);
+                }
+                catch (error)
+                {
+                    panic(`Failed to parse a server response. Error: ${error}`);
+                    return false;
+                }
+            })();
 
             observationData.filter(obs=>!is_known_bird_species(obs.species))
                            .forEach(unknownObs=>
@@ -249,7 +290,15 @@ const httpRequests = Object.freeze(
 
         if (wasSuccessful)
         {
-            return JSON.parse(responseData).keys;
+            try
+            {
+                return JSON.parse(responseData).keys;
+            }
+            catch (error)
+            {
+                panic(`Failed to parse a server response. Error: ${error}`);
+                return false;
+            }
         }
         else
         {
