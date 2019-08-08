@@ -46,7 +46,7 @@ export function BirdSearchBar(props = {})
                 {
                     if (node.classList &&
                         (node.classList.contains("BirdSearchResultsDisplay") ||
-                         node.classList.contains("BirdSearchResultsElement") ||
+                         node.classList.contains("BirdSearchResult") ||
                          node.classList.contains("BirdSearchBar")))
                     {
                         return true;
@@ -64,16 +64,7 @@ export function BirdSearchBar(props = {})
             }
         }
     }, []);
-
-    React.useEffect(()=>
-    {
-        if (searchRef.current && (state === "inactive"))
-        {
-            setCurrentText("");
-            searchRef.current.value = "";
-        }
-    });
-
+    
     React.useEffect(()=>
     {
         if (!["active", "inactive"].includes(state))
