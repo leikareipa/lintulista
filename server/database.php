@@ -135,7 +135,7 @@ class DatabaseAccess
                 $timestamp = random_int((time() - 47304000), time());
 
                 // Add the nonce to the list if one by this species doesn't already exist there.
-                if (!array_search($birdSpecies, array_map(function($bird){return $bird["species"];}, $nonce)))
+                if (array_search($birdSpecies, array_map(function($bird){return $bird["species"];}, $nonce)) === false)
                 {
                     $nonce[] = ["species"=>$birdSpecies, "timestamp"=>$timestamp];
                 }
