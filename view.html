@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lintulista</title>
+        <title>Lintulista!</title>
         <meta name="referrer" content="no-referrer">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -11,22 +11,23 @@
         <link rel="stylesheet" type="text/css" href="view-animations.css">
     </head>
     <body>
-        <header>
+        <div id="content">
+            <div id="header"></div>
+
             <div id="app-title">
-                <i class="fas fa-feather-alt" style="color: #e8e8e8; font-size: 350%"></i><span id="app-name">lintulista!</span>
+                <span id="app-name">lintulista!</span>
             </div>
+
             <div class="app-menu">
-                <div class="app-menu-item"><a href="./ohjeet/">käyttöohjeet</a></div>
-                <div class="app-menu-item"><a href="http://www.luontoportti.com/" target="_blank" rel="noopener">kuvat</a></div>
+                <div class="app-menu-item"><a href="./ohjeet/">käyttöohje</a></div>
                 <div class="app-menu-item"><a href="mailto:sw@tarpeeksihyvaesoft.com">yhteydenotto</a></div>
+                <div class="app-menu-item"><a href="http://www.luontoportti.com/" target="_blank" rel="noopener">luontoportti</a></div>
             </div>
-        </header>
 
-        <div id="action-bar-backdrop"></div>
-        <div id="observation-list"></div>
+            <div id="observation-list"></div>
 
-        <footer>
-        </footer>
+            <footer></footer>
+        </div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>

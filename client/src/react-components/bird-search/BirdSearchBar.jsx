@@ -89,7 +89,7 @@ export function BirdSearchBar(props = {})
     }, [state]);
 
     return <div className="BirdSearchBar">
-               <input className={`search-bar ${state}`.trim()}
+               <input className={`search-field ${state}`.trim()}
                       ref={searchRef}
                       type="search"
                       onBlur={()=>
@@ -102,7 +102,7 @@ export function BirdSearchBar(props = {})
                       onFocus={()=>got_focus(true)}
                       onChange={handle_input_event}
                       spellCheck="false"
-                      placeholder={(state === "inactive")? "Hae lajia" : ""}
+                      placeholder=""
                       autoComplete="off"/>
                 <div className="icon">
                     <i className="fas fa-search"/>
