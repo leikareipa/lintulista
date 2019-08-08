@@ -45,6 +45,25 @@ export function ObservationList(props = {})
 
     const [actionBarEnabled, setActionBarEnabled] = React.useState(true);
 
+    // Specifies by which sorting mode the list is currently to be sorted. Must be one of
+    // the modes in 'observationElementSorters'. The initial value should match the mode by
+    // which the server pre-sorts the observations list before sending it to the client.
+    //
+    // The string will also be used as a CSS class name, so its form should follow the
+    // corresponding syntactical rules for that.
+    //
+    // Note that if you change the initial value, you should change the initial value of the
+    // sorting menu index in the ObservationListActionBar element of this component also.
+    //
+    const [sortListBy, setSortListBy] = React.useState("date");
+
+    const [renderCount,] = React.useState(()=>({count:0}));
+    renderCount.count++;
+
+    // An array providing for each observation in the list its corresponding React element.
+    // Note that we invoke lazy initial state with useState().
+    const [observationElements,] = React.useState(()=>create_observation_elements());
+
     // Functions for sorting the list of observation elements.
     const observationElementSorters =
     {
@@ -54,25 +73,20 @@ export function ObservationList(props = {})
         date: (a, b)=>(a.observation.unixTimestamp < b.observation.unixTimestamp? 1 : a.observation.unixTimestamp > b.observation.unixTimestamp? -1 : 0),
     };
 
-    // Specifies by which sorting mode the list is currently to be sorted. Must be one of
-    // the modes in 'observationElementSorters'. Note that if you change the initial useState()
-    // value of this, you should change the initial value of the sorting menu index in the
-    // ObservationListActionBar element of this component also.
-    const [sortListBy, setSortListBy] = React.useState("date");
-
-    // An array providing for each observation in the list its corresponding React element.
-    // Note that we invoke lazy initial state with useState().
-    const [observationElements,] = React.useState(()=>create_observation_elements());
-
     // Regenerate the list every time the sorting mode changes.
     React.useEffect(()=>
     {
-        observationElements.splice(0, observationElements.length, ...create_observation_elements());
-        sort_observation_list();
-        redraw_elements_list();
+        // We'll assume that the server pre-sorts the observation list by our initial sorting
+        // mode, so we'll skip re-sorting the list on initial render.
+        if (renderCount.count > 1)
+        {
+            observationElements.splice(0, observationElements.length, ...create_observation_elements());
+            sort_observation_list();
+            redraw_elements_list();
+        }
     }, [sortListBy]);
 
-    console.log("Redrawing the observation list.");
+    console.log("Rerendering the observation list.");
 
     // The element displayed in the observation list when the list is empty (i.e. when
     // there are no observations).
@@ -82,11 +96,11 @@ export function ObservationList(props = {})
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
                              {props.backend.hasEditRights
-                                 ? <>
-                                       <p>Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään
-                                          lintulajin nimi. Halutun tuloksen kohdalla paina <i style={{color:"#2478d8"}} className="fas fa-plus-circle fa-xs"/>-symbolia
-                                          lisätäksesi se listaan!</p>
-                                   </>
+                                 ? <p>
+                                       Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään lintulajin nimi.
+                                       Halutun tuloksen kohdalla paina <i style={{color:"#2478d8"}} className="fas fa-plus-circle fa-xs"/>-symbolia
+                                       lisätäksesi se listaan!
+                                   </p>
                                  : <></>}
                          </div>
 
@@ -96,8 +110,9 @@ export function ObservationList(props = {})
                                          backend={props.backend}
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortListBy}/>
-               <div className="elements" key={elementsKey}>
-                   {observationElements.length? observationElements.map(e=>e.element) : emptyElement}
+               <div className={`elements ${sortListBy}`.trim()}
+                    key={elementsKey}>
+                        {observationElements.length? observationElements.map(e=>e.element) : emptyElement}
                </div>
                <ObservationListFooter numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observation_list_to_csv_file}/>
@@ -105,6 +120,7 @@ export function ObservationList(props = {})
 
     function redraw_elements_list()
     {
+        console.log("Triggered element redraw.");
         setElementsKey(elementsKey+1);
     }
 
@@ -119,7 +135,7 @@ export function ObservationList(props = {})
         // yet observed; (2) regular elements for species that the user has observed and which
         // are included in the challenge; and (3) additional observations that the user has
         // made but which aren't included in the challenge.
-        if (sortListBy === "100-lajia")
+        if (sortListBy === "sata-lajia")
         {
             // Add elements for species included in the challenge.
             const sata = sataLajia.reduce((array, species)=>
@@ -159,8 +175,7 @@ export function ObservationList(props = {})
         return {
             observation: observation({bird, date:new Date()}),
             element: <ObservationListElementGhost key={`ghost-of-${speciesName}`}
-                                                  speciesName={speciesName}
-                                                  visible={true}/>
+                                                  speciesName={speciesName}/>
         };
     }
 
@@ -169,7 +184,7 @@ export function ObservationList(props = {})
         panic_if_not_type("object", obs, tag);
 
         /// Temporary implementation; will be replaced.
-        if ((sortListBy === "100-lajia") &&
+        if ((sortListBy === "sata-lajia") &&
             !sataLajia.includes(obs.bird.species))
         {
             tag = <PlainTag text="Lisälaji"/>;
@@ -180,7 +195,6 @@ export function ObservationList(props = {})
             element: <ObservationListElement observation={obs}
                                              key={obs.bird.species}
                                              tag={tag}
-                                             visible={true}
                                              allowEditing={props.backend.hasEditRights}
                                              maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
                                              callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
@@ -198,7 +212,7 @@ export function ObservationList(props = {})
         {
             switch (sortListBy)
             {
-                case "100-lajia": return observationElementSorters["species"];
+                case "sata-lajia": return observationElementSorters["species"];
 
                 case "date":
                 case "species": return observationElementSorters[sortListBy];
@@ -264,7 +278,7 @@ export function ObservationList(props = {})
         {
             const speciesName = observationElements[elementIdx].observation.bird.species;
 
-            if ((sortListBy === "100-lajia") && sataLajia.includes(speciesName))
+            if ((sortListBy === "sata-lajia") && sataLajia.includes(speciesName))
             {
                 observationElements.splice(elementIdx, 1,
                                            create_ghost_observation_element(speciesName));

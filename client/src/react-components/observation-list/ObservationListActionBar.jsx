@@ -48,7 +48,7 @@ export function ObservationListActionBar(props = {})
                            [
                                {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
                                {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
-                               {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("100-lajia")},
+                               {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
                            ]}
                            initialItemIdx={1}
                            showTooltip={true}/>

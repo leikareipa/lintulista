@@ -25,7 +25,7 @@ export function ObservationListElementGhost(props = {})
 {
     ObservationListElementGhost.validate_props(props);
 
-    return <div className={`ObservationListElementGhost ${props.visible? "" : "hidden"}`.trim()}>
+    return <div className="ObservationListElementGhost">
                <div className="BirdThumbnail"/>
                <div className="card">
                    <div className="ObservationInfo">

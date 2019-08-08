@@ -64,7 +64,7 @@ export function ObservationListElement(props = {})
         pulseGeoTagElement: ()=>{},
     }
 
-    return <div className={`ObservationListElement ${props.visible? "" : "hidden"}`.trim()}
+    return <div className="ObservationListElement"
                 onMouseOver={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
                     {props.showOrderTag? <div className="order-tag">{observationData.bird.order}</div> : <></>}

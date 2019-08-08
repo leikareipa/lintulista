@@ -29,7 +29,6 @@ header > #title
 
 header > #title > #app-name
 {
-    transform: rotate(-2deg);
     font-family: "Damion", cursive;
     font-size: 450%;
 
@@ -41,7 +40,7 @@ header > #title > #subtitle
 {
     font-family: sans-serif;
     font-size: 70%;
-    margin-top: -26px;
+    margin-top: -24px;
     text-align: right;
     font-style: italic;
 
