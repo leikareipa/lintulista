@@ -20,12 +20,6 @@ export function ObservationListElement(props = {})
 {
     ObservationListElement.validate_props(props);
 
-    const shadeArgs =
-    {
-        z: 110,
-        opacity: 0.5,
-    };
-
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
 
@@ -67,7 +61,6 @@ export function ObservationListElement(props = {})
     return <div className="ObservationListElement"
                 onMouseOver={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
-                    {props.showOrderTag? <div className="order-tag">{observationData.bird.order}</div> : <></>}
                     {props.tag}
                     <BirdThumbnail bird={observationData.bird}/>
                     <div className="card">
@@ -78,17 +71,23 @@ export function ObservationListElement(props = {})
                     
            </div>
 
+    async function popup_dialog(dialogComponent, args = {})
+    {
+        props.callbackSetActionBarEnabled(false);
+        const shades = await darken_viewport({z:110, opacity:0.5});
+        await open_modal_dialog(dialogComponent, args);
+        props.callbackSetActionBarEnabled(true);
+        await shades.remove();
+    }
+
     // When a button is pressed to delete the observation. Will requests the backend to
     // remove this observation from the user's list of observations. Takes in a callback
     // to reset the button's state.
     async function button_remove_observation({resetButtonState})
     {
         resetButtonState();
-        props.callbackSetActionBarEnabled(false);
 
-        const shades = await darken_viewport(shadeArgs);
-
-        await open_modal_dialog(QueryObservationDeletion,
+        await popup_dialog(QueryObservationDeletion,
         {
             observation: observationData,
             onAccept: async()=>
@@ -96,10 +95,6 @@ export function ObservationListElement(props = {})
                 await props.requestDeleteObservation(observationData);
             }
         });
-        
-        props.callbackSetActionBarEnabled(true);
-
-        await shades.remove();
     }
 
     // When a button is pressed to change the observation's date. Will prompt the user to
@@ -108,11 +103,8 @@ export function ObservationListElement(props = {})
     async function button_change_observation_date({resetButtonState})
     {
         resetButtonState();
-        props.callbackSetActionBarEnabled(false);
 
-        const shades = await darken_viewport(shadeArgs);
-
-        await open_modal_dialog(QueryObservationDate,
+        await popup_dialog(QueryObservationDate,
         {
             observation: observationData,
             onAccept: async(newDate)=>
@@ -134,10 +126,6 @@ export function ObservationListElement(props = {})
                 }
             }
         });
-
-        props.callbackSetActionBarEnabled(true);
-
-        await shades.remove();
     }
 
     // When a button is pressed to change the observation's place. Will prompt the user to
@@ -146,11 +134,8 @@ export function ObservationListElement(props = {})
     async function button_change_observation_place({resetButtonState})
     {
         resetButtonState();
-        props.callbackSetActionBarEnabled(false);
 
-        const shades = await darken_viewport(shadeArgs);
-
-        await open_modal_dialog(QueryObservationPlace,
+        await popup_dialog(QueryObservationPlace,
         {
             maxPlaceNameLength: props.maxPlaceNameLength,
             observation: observationData,
@@ -173,10 +158,6 @@ export function ObservationListElement(props = {})
                 }
             }
         });
-
-        props.callbackSetActionBarEnabled(true);
-
-        await shades.remove();
     }
 
     // Compares the old data (the current observation parameters) with proposed new ones;
