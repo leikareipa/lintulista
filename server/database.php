@@ -237,7 +237,7 @@ class DatabaseAccess
                                                      : exit(ReturnObject::failure("The given observation is missing the required 'timestamp' property."));
 
         $place = isset($observation["place"])? mb_substr($observation["place"], 0, (new BackendLimits())->value_of("maxPlaceNameLength"), "utf-8")
-                                             : null;
+                                             : "";
 
         if (!(new KnownBirds())->is_known_species($species))
         {
