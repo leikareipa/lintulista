@@ -121,6 +121,11 @@ export function BirdSearchBar(props = {})
     function got_focus(gotIt)
     {
         setState(gotIt? "active" : "inactive");
+
+        if (gotIt && currentText)
+        {
+            props.callbackOnChange(currentText);
+        }
     }
 
     function handle_input_event(inputEvent)
