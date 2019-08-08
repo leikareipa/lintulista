@@ -88,7 +88,7 @@ class DatabaseAccess
                                              $databaseCredentials["database"]);
             if (!$this->database)
             {
-                exit(ReturnObject::failure("Failed to connect to the server-side database. Error #" . mysqli_connect_errno()));
+                exit(ReturnObject::failure("Failed to connect to the server-side database."));
             }
         }
     }
@@ -283,7 +283,7 @@ class DatabaseAccess
 
         if (count($result) > 1)
         {
-            exit(ReturnObject::failure("Detected duplicate observations of '{$species}'."));
+            exit(ReturnObject::failure("Server-side IO failure: Detected duplicate observations of a species."));
         }
 
         return $result[0];
@@ -369,7 +369,7 @@ class DatabaseAccess
 
         if (!$stmt || !$execute || !$result || (mysqli_errno($this->database) !== 0))
         {
-            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database (" . mysqli_error($this->database) . ")."));
+            exit(ReturnObject::failure("Server-side IO failure. Failed to query the database."));
         }
 
         $returnObject = [];
