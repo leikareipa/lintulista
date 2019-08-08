@@ -126,7 +126,7 @@
                                     const maxLoops = 1000;
 
                                     do { bird = knownBirds[Math.floor(Math.random() * knownBirds.length)]; }
-                                    while (!bird.thumbnailUrl.match(/null-bird-thumbnail/) && (++loopCount < maxLoops));
+                                    while (!(bird.thumbnailUrl === bird.nullThumbnailUrl) && (++loopCount < maxLoops));
 
                                     return ((loopCount >= maxLoops)? null : bird);
                                 })(),

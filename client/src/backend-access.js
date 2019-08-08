@@ -149,7 +149,7 @@ const httpRequests = Object.freeze(
                 family: b.family,
                 species: b.species,
                 thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
-                                          : "./client/assets/images/null-bird-thumbnail.png"),
+                                          : null),
             }));
         }
         else

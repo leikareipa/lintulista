@@ -57,8 +57,8 @@ export function ObservationList(props = {})
     //
     const [sortListBy, setSortListBy] = React.useState("date");
 
-    const [renderCount,] = React.useState(()=>({count:0}));
-    renderCount.count++;
+    const [renderCount,] = React.useState(()=>({total:0, elements:0}));
+    renderCount.total++;
 
     // An array providing for each observation in the list its corresponding React element.
     // Note that we invoke lazy initial state with useState().
@@ -78,7 +78,7 @@ export function ObservationList(props = {})
     {
         // We'll assume that the server pre-sorts the observation list by our initial sorting
         // mode, so we'll skip re-sorting the list on initial render.
-        if (renderCount.count > 1)
+        if (renderCount.total > 1)
         {
             observationElements.splice(0, observationElements.length, ...create_observation_elements());
             sort_observation_list();
@@ -121,6 +121,8 @@ export function ObservationList(props = {})
     function redraw_elements_list()
     {
         console.log("Triggered element redraw.");
+
+        renderCount.elements++;
         setElementsKey(elementsKey+1);
     }
 
