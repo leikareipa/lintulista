@@ -408,7 +408,7 @@ export async function backend_access(listKey)
             const obsIdx = localCache.observations.findIndex(obs=>(obs.bird.species === newObservation.bird.species));
 
             const postedSuccessfully = await httpRequests.put_observation(listKey, newObservation);
-            
+
             if (!postedSuccessfully)
             {
                 error("Failed to POST an observation.");

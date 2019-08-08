@@ -44,7 +44,7 @@
     animation-name: animation-flip-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.15s;
+    animation-duration: 0.55s;
 }
 
 .animation-jumping
@@ -111,6 +111,6 @@
 
 @keyframes animation-flip-frames
 {
-    0% { transform: rotateY(90deg); }
-    100% { transform: rotateY(0deg); }
+    0% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
 }

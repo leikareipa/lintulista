@@ -90,16 +90,16 @@ export function ObservationList(props = {})
 
     // The element displayed in the observation list when the list is empty (i.e. when
     // there are no observations).
-    const emptyElement = <div className="intro animation-jump">
+    const emptyElement = <div className="intro">
                              <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
                              {props.backend.hasEditRights
                                  ? <p>
-                                       Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään lintulajin nimi.
-                                       Halutun tuloksen kohdalla paina <i style={{color:"#2478d8"}} className="fas fa-plus-circle fa-xs"/>-symbolia
-                                       lisätäksesi se listaan!
+                                       Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään&nbsp;
+                                       <i className="fas fa-search fa-xs"/> lintulajin nimi. Halutun tuloksen
+                                       kohdalla paina <i className="fas fa-plus-circle fa-xs"/>-symbolia lisätäksesi se listaan!
                                    </p>
                                  : <></>}
                          </div>
