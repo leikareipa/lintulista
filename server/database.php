@@ -260,7 +260,7 @@ class DatabaseAccess
         }
         else
         {
-            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`) VALUES (?, ?, ?, ?)",
+            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`) VALUES (?, ?, ?)",
                                     [$listId, $species, $timestamp]);
         }
 
