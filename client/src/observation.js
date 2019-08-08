@@ -29,7 +29,6 @@ export function observation(args = {})
     {
         bird: args.bird,
         date: args.date,
-        place: args.place,
         unixTimestamp: Math.round(args.date.getTime() / 1000),
         dateString,
         timeString,

@@ -1,11 +1,8 @@
 {
-    "comments": ["Constants defining various limitations of Lintulista's backend.",
-                 "VALUES:",
-                 "maxPlaceStringLength = Max number of characters in an observation's place name string. If the client sends a longer string, it will be truncated to this length prior to saving. Note that changes to this value will not modify previously set strings stored on the server that are longer than the new value, but when the client requests to be given these strings, the server will truncate the response copy to the new length."],
+    "comments": ["Constants defining various limitations of Lintulista's backend."],
 
     "limits":
     {
-        "maxPlaceNameLength": 50,
         "editKeyLength": 60,
         "viewKeyLength": 7,
         "ipHashLength": 16

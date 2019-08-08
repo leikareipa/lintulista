@@ -73,7 +73,10 @@ function get_backend_limits()
     $backendLimits = new BackendLimits();
 
     $returnData = [];
-    $returnData["maxPlaceNameLength"] = $backendLimits->value_of("maxPlaceNameLength");
+    
+    ///////////
+    // (No public data to return, at this time.)
+    ///////////
 
     return $returnData;
 }

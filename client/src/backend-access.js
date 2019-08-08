@@ -235,7 +235,6 @@ const httpRequests = Object.freeze(
             {
                 bird: knownBirds.find(b=>(b.species === obs.species)),
                 date: new Date(obs.timestamp*1000),
-                place: obs.place,
             }));
         }
         else
@@ -264,7 +263,6 @@ const httpRequests = Object.freeze(
             body: JSON.stringify({
                 species: observation.bird.species,
                 timestamp: observation.unixTimestamp,
-                place: observation.place,
             }),
         });
 

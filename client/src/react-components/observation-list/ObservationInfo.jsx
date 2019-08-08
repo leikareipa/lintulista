@@ -8,7 +8,6 @@
 
 import {panic_if_not_type} from "../../assert.js";
 import {animate} from "../../animate.js";
-import {GeoTag} from "../tags/GeoTag.js";
 
 // Renders structured information about an observation.
 //
@@ -37,35 +36,27 @@ export function ObservationInfo(props = {})
     const refs =
     {
         date: React.useRef(),
-        geotag: React.useRef(),
     }
 
     React.useEffect(()=>
     {
-        if (animation)
+        if (animation && refs[animation.refName].current)
         {
-            animate(animation.ref.current, animation.animationName, (animation.callback || (()=>{})));
+            animate(refs[animation.refName].current, animation.animationName, (animation.callback || (()=>{})));
             queueAnimation(null);
         }
     }, [animation]);
 
     props.setAnimationCallbacks(
     {
-        pulseDateElement: (whenDone)=>queueAnimation({ref:refs.date, animationName:"jump", callback:whenDone}),
-        pulseGeoTagElement: (whenDone)=>queueAnimation({ref:refs.geotag, animationName:"jump", callback:whenDone}),
+        pulseDateElement: (whenDone)=>queueAnimation({refName:"date", animationName:"jump", callback:whenDone}),
     });
 
     return <div className="ObservationInfo">
                 <div className="bird-name">
                     {props.observation.bird.species}
-                    <div ref={refs.geotag} style={{display:"inline-block"}}>
-                        <GeoTag place={props.observation.place}/>
-                    </div>
                 </div>
-                <div className="date" ref={refs.date} style={{marginTop: props.observation.place? "-1px" : ""}}>
-                    {/* Note: We move the date string up by 1 pixel if the GeoTag is shown, to counter
-                      * the GeoTag pushing the line down by that much. It only does so when its font-size
-                      * property is set below 85% or so; which it is, hence this kludge.*/}
+                <div className="date" ref={refs.date}>
                     {props.observation.dateString}
                 </div>
            </div>

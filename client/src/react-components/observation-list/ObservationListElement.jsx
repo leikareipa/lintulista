@@ -36,12 +36,6 @@ export function ObservationListElement(props = {})
             task: button_remove_observation,
         },
         {
-            icon: "fas fa-map-marked-alt",
-            title: "Merkitse havaintopaikka",
-            titleWhenClicked: "Merkitään havainnon sijaintia",
-            task: button_change_observation_place,
-        },
-        {
             icon: "fas fa-clock",
             title: "Merkitse havaintopäivä",
             titleWhenClicked: "Asetetaan havainnon päivämäärää",
@@ -55,7 +49,6 @@ export function ObservationListElement(props = {})
     let animation =
     {
         pulseDateElement: ()=>{},
-        pulseGeoTagElement: ()=>{},
     }
 
     return <div className="ObservationListElement"
@@ -166,11 +159,6 @@ export function ObservationListElement(props = {})
     // have changed.
     async function pulse_changed_elements(oldData, newData)
     {
-        if (newData.place !== oldData.place)
-        {
-            animation.pulseGeoTagElement();
-        }
-
         if (newData.unixTimestamp !== oldData.unixTimestamp)
         {
             animation.pulseDateElement();

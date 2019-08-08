@@ -91,7 +91,7 @@ export function ObservationList(props = {})
     // The element displayed in the observation list when the list is empty (i.e. when
     // there are no observations).
     const emptyElement = <div className="intro animation-jump">
-                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistaan!</h3>
+                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
                              <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
                                 <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                                 ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
@@ -228,13 +228,13 @@ export function ObservationList(props = {})
 
     async function save_observation_list_to_csv_file()
     {
-        let csvString = "Päiväys, Laji, Heimo, Lahko, Havaintopaikka\n";
+        let csvString = "Ensihavainto, Laji, Heimo, Lahko\n";
 
         props.backend.observations().forEach(obs=>
         {
             const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
 
-            csvString += `${dateString||""}, ${obs.bird.species||""}, ${obs.bird.family||""}, ${obs.bird.order||""}, ${obs.place||""},\n`;
+            csvString += `${dateString||""}, ${obs.bird.species||""}, ${obs.bird.family||""}, ${obs.bird.order||""},\n`;
         });
 
         saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
@@ -321,11 +321,11 @@ export function ObservationList(props = {})
             return null;
         }
 
-        const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
-        observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
-
-        sort_observation_list();
-        redraw_elements_list();
+        if (sortListBy === "date")
+        {
+            sort_observation_list();
+            redraw_elements_list();
+        }
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }
@@ -347,11 +347,11 @@ export function ObservationList(props = {})
             return null;
         }
 
-        const elementIdx = observationElements.map(e=>e.observation.bird.species).findIndex(species=>(species === modifiedObservation.bird.species));
-        observationElements.splice(elementIdx, 1, create_observation_element(modifiedObservation));
-
-        sort_observation_list();
-        redraw_elements_list();
+        if (sortListBy === "place")
+        {
+            sort_observation_list();
+            redraw_elements_list();
+        }
 
         return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
     }

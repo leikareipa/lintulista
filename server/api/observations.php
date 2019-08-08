@@ -23,7 +23,7 @@ header("Cache-Control: no-store");
  *             - 'list': The edit key identifying the list on which to operate. Note that
  *                       the view key is not allowed this operation.
  * 
- *         Body: {species, timestamp, place}
+ *         Body: {species, timestamp}
  * 
  *     - DELETE: Delete a particular observation from the list.
  * 
@@ -105,15 +105,13 @@ function put_observation(string $listKey, array $observation)
     return;
 }
 
-// Returns all observations in the given list as an array of [[species,timestamp,place], [...], ...].
+// Returns all observations in the given list as an array of [[species,timestamp], [...], ...].
 function get_observations(string $listKey)
 {
     $observations = (new DatabaseAccess())->get_observations_in_list($_GET["list"]);
 
     // Pick out the relevant properties to be returned.
     {
-        $maxPlaceNameLength = (new BackendLimits())->value_of("maxPlaceNameLength");
-
         $returnData = [];
         foreach ($observations as $observation)
         {
@@ -127,15 +125,8 @@ function get_observations(string $listKey)
                 exit(ReturnObject::failure("Server-side IO failure. The observation list is missing the required 'timestamp' property."));
             }
 
-            $place = null;
-            if (isset($observation["place"]))
-            {
-                $place = mb_substr($observation["place"], 0, $maxPlaceNameLength, "utf-8");
-            }
-
             $returnData[] = ["species"=>$observation["species"],
-                             "timestamp"=>$observation["timestamp"],
-                             "place"=>$place];
+                             "timestamp"=>$observation["timestamp"]];
         }
     }
 

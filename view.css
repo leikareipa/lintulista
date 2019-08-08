@@ -40,7 +40,7 @@ footer
 {
 
     position: absolute;
-    top: 0px;
+    top: 5px;
     left: 10%;
     z-index: 2;
 }
@@ -247,7 +247,7 @@ footer
     top: -45px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #8d8c8c;
+    background-color: #8c8c8c;
     color: #ffffff;
     border-radius: 3px;
     font-size: 90%;
@@ -364,7 +364,7 @@ footer
 {
     position: absolute;
     z-index: 22;
-    color: #c9c9c9;
+    color: #8c8c8c;
     pointer-events: none;
 
     top: 1px;
@@ -683,7 +683,7 @@ footer
 
     position: absolute;
     top: 5px;
-    right: -15px;
+    right: -12px;
     z-index: 5;
 }
 
@@ -732,35 +732,6 @@ footer
 {
     color: rgba(0, 0, 0, 0.2);
     cursor: auto;
-}
-
-.GeoTag
-{
-    transform: translateY(-3px);
-    color: rgba(0, 0, 0, 0.25);
-    padding-left: 3px;
-    font-size: 100%;
-}
-
-.GeoTag a
-{
-    color: inherit;
-    outline: none;
-    text-decoration: none;
-    border: none;
-}
-
-.ObservationListElement .GeoTag
-{
-    color: rgb(226, 42, 36);
-    font-size: 80%;
-}
-
-.BirdSearchResult .GeoTag
-{
-    color: rgb(226, 42, 36);
-    font-size: 85%;
-    display: inline-block;
 }
 
 .Dialog
@@ -999,72 +970,6 @@ footer
     margin-top: 9px;
     font-size: 80%;
     color: rgba(0, 0, 0, 0.75);
-}
-
-.Dialog.QueryObservationPlace
-{
-    min-width: 450px;
-    padding-bottom: 2px;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields
-{
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields > .bird-name
-{
-    color: black;
-    text-align: left;
-    margin-bottom: 12px;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields input
-{
-    padding-left: 51px; /* Make room for the embedded GeoTag.*/
-}
-
-.Dialog.QueryObservationPlace > .form > .fields .map-link
-{
-    font-size: 175%;
-    position: absolute;
-    left: 156px;
-    bottom: 51px;
-    display: inline-block;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields .map-link a
-{
-    color: rgb(240, 104, 63);
-    text-decoration: none;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields .map-link.disabled a
-{
-    color: rgb(191, 191, 191);
-}
-
-.Dialog.QueryObservationPlace > .form > .fields .map-link.enabled
-{
-    animation-name: animation-jump-frames;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
-    animation-duration: 0.2s;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields > .character-count
-{
-    margin-left: auto;
-    margin-right: 4px;
-    margin-top: 9px;
-    font-size: 80%;
-}
-
-.Dialog.QueryObservationPlace > .form > .fields > .place-name
-{
-    flex: 1;
 }
 
 .ScrollerLabel

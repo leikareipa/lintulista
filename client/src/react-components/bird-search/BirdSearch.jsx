@@ -79,7 +79,6 @@ export function BirdSearch(props = {})
                                      bird={bird}
                                      clickCallback={select_bird}
                                      dateObserved={observation? observation.dateString : null}
-                                     placeObserved={observation? observation.place : null}
                                      allowAddingToList={props.backend.hasEditRights}/>;
         }
     }

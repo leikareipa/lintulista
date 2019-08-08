@@ -116,9 +116,6 @@ class DatabaseAccess
     // Returns all observations associated with the given list. If the given key doesn't exist
     // in the system, a random list of nonce observations will be returned.
     //
-    // Note that the 'place' property of an observation will be returned only for an edit key,
-    // and will be omitted in the retun when accessing with a view key.
-    //
     function get_observations_in_list(string $listKey): array
     {
         // Generate random nonce observations.
@@ -152,15 +149,14 @@ class DatabaseAccess
             $isEditKey = $this->is_edit_key($listKey);
             $listId = $this->get_list_id_of_key($listKey, false);
 
-            $observations = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = ?",
+            $observations = $this->database_query("SELECT species, `timestamp` FROM lintulista_observations WHERE list_id = ?",
                                                   [$listId]);
 
             $returnObservations = [];
             foreach ($observations as $obs)
             {
                 $returnObservations[] = ["species"=>$obs["species"],
-                                         "timestamp"=>$obs["timestamp"],
-                                         "place"=>($isEditKey? $obs["place"] : "")];
+                                         "timestamp"=>$obs["timestamp"]];
             }
 
             return $returnObservations;
@@ -236,9 +232,6 @@ class DatabaseAccess
         $timestamp = isset($observation["timestamp"])? $observation["timestamp"]
                                                      : exit(ReturnObject::failure("The given observation is missing the required 'timestamp' property."));
 
-        $place = isset($observation["place"])? mb_substr($observation["place"], 0, (new BackendLimits())->value_of("maxPlaceNameLength"), "utf-8")
-                                             : "";
-
         if (!(new KnownBirds())->is_known_species($species))
         {
             exit(ReturnObject::failure("Unable to recognize the species '{$species}'."));
@@ -257,11 +250,6 @@ class DatabaseAccess
                 {
                     $combinedValues[] = "`timestamp` = {$timestamp}";
                 }
-
-                if (isset($place))
-                {
-                    $combinedValues[] = "place = '{$place}'";
-                }
             }
 
             if (count($combinedValues))
@@ -272,8 +260,8 @@ class DatabaseAccess
         }
         else
         {
-            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`, place) VALUES (?, ?, ?, ?)",
-                                    [$listId, $species, $timestamp, $place]);
+            $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`) VALUES (?, ?, ?, ?)",
+                                    [$listId, $species, $timestamp]);
         }
 
         return;
@@ -283,7 +271,7 @@ class DatabaseAccess
     // no such observation could be found.
     private function get_observation_of_species(string $listId, string $species): array
     {
-        $result = $this->database_query("SELECT species, place, `timestamp` FROM lintulista_observations WHERE list_id = ? AND species = ?",
+        $result = $this->database_query("SELECT species, `timestamp` FROM lintulista_observations WHERE list_id = ? AND species = ?",
                                         [$listId, $species]);
 
         if (count($result) === 0)

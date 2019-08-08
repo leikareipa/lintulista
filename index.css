@@ -241,11 +241,6 @@ footer
     display: none;
 }
 
-.ObservationListElement .GeoTag
-{
-    display: none;
-}
-
 .BirdThumbnail
 {
     user-select: none;
