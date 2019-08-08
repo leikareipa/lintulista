@@ -175,10 +175,20 @@ class DatabaseAccess
     //
     function create_new_list(array $keys, int $timestamp, string $creatorHash)
     {
+        $backendLimits = new BackendLimits();
+
         if (!isset($keys["viewKey"]) ||
             !isset($keys["editKey"]))
         {
             exit(ReturnObject::failure("Was asked to add a list to the database, but was not given the required keys for it."));
+        }
+
+        if (ListKey::is_key_malformed($keys["viewKey"]) ||
+            ListKey::is_key_malformed($keys["editKey"]) ||
+            strlen($keys["viewKey"]) !== $backendLimits->value_of("viewKeyLength") ||
+            strlen($keys["editKey"]) !== $backendLimits->value_of("editKeyLength"))
+        {
+            exit(ReturnObject::failure("Was asked to add a list to the database, but one or more of the given keys are invalid."));
         }
 
         $returnValue = $this->database_command("INSERT INTO lintulista_lists (view_key, edit_key, creation_timestamp, creator_hash) VALUES (?, ?, ?, ?)",

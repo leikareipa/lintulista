@@ -87,7 +87,7 @@ function create_new_list()
     /// TODO: In the future, you might e.g. adjust this value based on how many lists the
     /// client has created in the last x minutes, going from no or very little delay to more
     /// of it.
-    if (sleep(4) === false)
+    if (sleep(5) === false)
     {
         exit(ReturnObject::failure("Server-side error."));
     }
