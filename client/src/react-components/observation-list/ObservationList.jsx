@@ -7,9 +7,9 @@
 "use strict";
 
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
-import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationListFooter} from "./ObservationListFooter.js";
+import {ObservationCardGhost} from "./ObservationCardGhost.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
@@ -280,8 +280,8 @@ export function ObservationList(props = {})
 
         return {
             observation: observation({bird, date:new Date()}),
-            element: <ObservationListElementGhost key={`ghost-of-${speciesName}`}
-                                                  speciesName={speciesName}/>
+            element: <ObservationCardGhost key={`ghost-of-${speciesName}`}
+                                           speciesName={speciesName}/>
         };
     }
 

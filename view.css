@@ -525,13 +525,13 @@ footer
     transform: translateY(-85px);
 }
 
-.ObservationList > .observation-cards.sata-lajia > .ObservationListElementGhost
+.ObservationList > .observation-cards.sata-lajia > .ObservationCardGhost
 {
     display: block;
 }
 
 .ObservationCard,
-.ObservationListElementGhost
+.ObservationCardGhost
 {
     position: relative;
     color: black;
@@ -545,7 +545,7 @@ footer
     flex-direction: column;
 }
 
-.ObservationListElementGhost
+.ObservationCardGhost
 {
     display: none;
 }
@@ -587,7 +587,7 @@ footer
 }
 
 .ObservationCard > .BirdThumbnail,
-.ObservationListElementGhost > .BirdThumbnail
+.ObservationCardGhost > .BirdThumbnail
 {
     position: relative;
     width: 150px;
@@ -598,7 +598,7 @@ footer
     z-index: 2;
 }
 
-.ObservationListElementGhost > .BirdThumbnail
+.ObservationCardGhost > .BirdThumbnail
 {
     background-color: #dbdbdb;
     border: 1px dashed rgb(143, 143, 143);
@@ -607,7 +607,7 @@ footer
 }
 
 .ObservationCard > .observation-info,
-.ObservationListElementGhost > .observation-info
+.ObservationCardGhost > .observation-info
 {
     font-family: "Nunito", serif;
     font-size: 98%;
@@ -625,7 +625,7 @@ footer
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
 }
 
-.ObservationListElementGhost > .observation-info
+.ObservationCardGhost > .observation-info
 {
     width: 194px;
     margin-top: -15px;
@@ -637,7 +637,7 @@ footer
 }
 
 .ObservationCard > .observation-info > .bird-name,
-.ObservationListElementGhost > .observation-info > .bird-name
+.ObservationCardGhost > .observation-info > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
@@ -645,7 +645,7 @@ footer
 }
 
 .ObservationCard > .observation-info > .date,
-.ObservationListElementGhost > .observation-info > .date
+.ObservationCardGhost > .observation-info > .date
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);
