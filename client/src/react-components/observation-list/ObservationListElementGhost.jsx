@@ -27,16 +27,14 @@ export function ObservationListElementGhost(props = {})
 
     return <div className="ObservationListElementGhost">
                <div className="BirdThumbnail"/>
-               <div className="card">
-                   <div className="ObservationInfo">
-                       <div className="bird-name">
-                           {props.speciesName}
-                       </div>
-                       <div className="date">
-                           100 Lajia -haaste
-                       </div>
-                   </div>
-               </div>
+                <div className="observation-info">
+                    <div className="bird-name">
+                        {props.speciesName}
+                    </div>
+                    <div className="date">
+                        100 Lajia -haaste
+                    </div>
+                </div>
            </div>
 }
 

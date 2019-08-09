@@ -192,7 +192,7 @@ footer
     z-index: 2;
 }
 
-.ObservationCard > .card
+.ObservationCard > .observation-info
 {
     font-family: "Nunito", serif;
     font-size: 98%;
@@ -209,30 +209,14 @@ footer
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
 }
 
-.ObservationCard > .card > .ObservationInfo
-{
-    opacity: 1;
-    transform: rotateY(0);
-    visibility: visible;
-    z-index: 3;
-    transition: all 0.2s linear;
-}
-
-.ObservationCard > .card > .ObservationInfo.hidden
-{
-    opacity: 0;
-    transform: rotateX(80deg);
-    visibility: hidden;
-}
-
-.ObservationCard > .card > .ObservationInfo > .bird-name
+.ObservationCard > .observation-info > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
     font-size: 90%;
 }
 
-.ObservationCard > .card > .ObservationInfo > .date
+.ObservationCard > .observation-info > .date
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);

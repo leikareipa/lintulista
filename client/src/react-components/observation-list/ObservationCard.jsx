@@ -11,13 +11,21 @@ import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
-import {ObservationInfo} from "./ObservationInfo.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {animate} from "../../animate.js";
 
 export function ObservationCard(props = {})
 {
     ObservationCard.validate_props(props);
+
+    // Used to start an animation on a particular element. Will take in an object of the
+    // form {refName, animationName, callback}, where 'refName' identifies a React reference
+    // to the element on which to play the animation; 'animationName' is the name of the
+    // animation; and 'callback' is an optional callback for when the animation finishes.
+    // For more information, see the documentation for animate(). Set to null to play no
+    // animation.
+    const [animation, queueAnimation] = React.useState(null);
 
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
@@ -41,33 +49,52 @@ export function ObservationCard(props = {})
             task: button_change_observation_date,
         },
     ]);
-
-    // Functions that can be called to cause animative effects on particular elements.
-    // These will be callbacks to the ObservationInfo component, initialized to their
-    // proper values when that component initializes.
-    let animation =
+    
+    // Refs to individual elements in the card; for e.g. animation.
+    const refs =
     {
-        pulseDateElement: ()=>{},
+        date: React.useRef(),
     }
+
+    React.useEffect(()=>
+    {
+        if (animation && refs[animation.refName].current)
+        {
+            animate(refs[animation.refName].current, animation.animationName, (animation.callback || (()=>{})));
+            queueAnimation(null);
+        }
+    }, [animation]);
 
     return <div className="ObservationCard"
                 onMouseOver={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
-                    {props.tag}
+
                     <BirdThumbnail bird={observationData.bird}/>
-                    <div className="info">
-                        <ObservationInfo observation={observationData}
-                                         setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
+
+                    {/* Displays facts about the observation; like what was observed and when.*/}
+                    <div className="observation-info">
+                        <div className="bird-name">
+                            {observationData.bird.species}
+                        </div>
+                        <div className="date" ref={refs.date}>
+                            {observationData.dateString}
+                        </div>
                     </div>
+
+                    {/* Provides buttons with which the user can request changes to the observation.*/}
                     {props.allowEditing? <AsyncIconButtonBar buttons={buttonBarButtons} visible={mouseHovering}/> : <></>}
                     
            </div>
 
+    // Pops open the given dialog for the user to interact with. Returns a promise that
+    // resolves once the user has closed the dialog.
     async function popup_dialog(dialogComponent, args = {})
     {
         props.callbackSetActionBarEnabled(false);
         const shades = await darken_viewport({z:110, opacity:0.5});
+
         await open_modal_dialog(dialogComponent, args);
+
         props.callbackSetActionBarEnabled(true);
         await shades.remove();
     }
@@ -108,7 +135,7 @@ export function ObservationCard(props = {})
 
                     if (updatedObservation)
                     {
-                        pulse_changed_elements(observationData, updatedObservation);
+                        queueAnimation({refName:"date", animationName:"jump"});
                         setObservationData(updatedObservation);
                     }
                     else
@@ -118,18 +145,6 @@ export function ObservationCard(props = {})
                 }
             }
         });
-    }
-
-    // Compares the old data (the current observation parameters) with proposed new ones;
-    // any new parameters that differ from the existing ones will cause the corresponding
-    // DOM elements to be given a brief animation to indicate to the user that their values
-    // have changed.
-    async function pulse_changed_elements(oldData, newData)
-    {
-        if (newData.unixTimestamp !== oldData.unixTimestamp)
-        {
-            animation.pulseDateElement();
-        }
     }
 }
 
