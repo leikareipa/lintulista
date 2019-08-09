@@ -59,7 +59,7 @@ export function AsyncIconButton(props = {})
         return (sizeStrings? sizeStrings.join(" ") : "");
     })();
 
-    // Possible states:
+    // The button's current state. Possible values:
     //   "enabled" = the button can be clicked
     //   "disabled" = the button can't be interacted with
     //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
@@ -146,5 +146,7 @@ AsyncIconButton.defaultProps =
 
 AsyncIconButton.validate_props = function(props)
 {
+    panic_if_not_type("object", props);
+
     return;
 }

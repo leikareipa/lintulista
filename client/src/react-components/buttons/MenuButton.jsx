@@ -13,7 +13,8 @@ import {panic_if_not_type, warn} from "../../assert.js";
 // item is clicked, the menu is closed and the item's callback is called.
 //
 // Each menu button requires a unique id string, which can be provided via props.id. It
-// will be stored in the DOM as the button element's 'data-menu-button-id' attribute.
+// will be stored in the DOM as the button element's 'data-menu-button-id' attribute, and
+// appended to the button's class list.
 //
 // You can set via props.enabled whether the button is enabled (true) or disabled (false).
 // The only effect of this is that the button's class list will be set accordingly, such
@@ -124,7 +125,7 @@ export function MenuButton(props = {})
                                                   </div>
                                               </div>
 
-    return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"}`}
+    return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"} ${props.id}`}
                 data-menu-button-id={props.id}>
                     <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
                         {currentItemText}
@@ -165,6 +166,7 @@ export function MenuButton(props = {})
 
 MenuButton.defaultProps =
 {
+    id: "undefined-menu-button",
     title: "?",
     icon: "fas fa-question",
     items: [],

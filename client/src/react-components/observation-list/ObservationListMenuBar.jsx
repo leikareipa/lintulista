@@ -33,7 +33,30 @@ export function ObservationListMenuBar(props = {})
 {
     ObservationListMenuBar.validate_props(props);
 
-    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"}`.trim()}>
+    const [isBarSticky, setIsBarSticky] = React.useState(false);
+
+    // Make the action bar sticky if the user has scrolled far enough down the page.
+    React.useEffect(()=>
+    {
+        window.addEventListener("scroll", update_sticky_scroll);
+        return ()=>{window.removeEventListener("scroll", update_sticky_scroll)};
+
+        function update_sticky_scroll()
+        {
+            const stickThresholdY = 220;
+
+            if (!isBarSticky && (window.scrollY > stickThresholdY))
+            {
+                setIsBarSticky(true);
+            }
+            else if (isBarSticky && (window.scrollY <= stickThresholdY))
+            {
+                setIsBarSticky(false);
+            }
+        }
+    });
+
+    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"} ${isBarSticky? "sticky" : ""}`.trim()}>
 
                {/* A search field that allows the user to search for specific bird species to be added as
                  * observations.*/}
@@ -51,7 +74,7 @@ export function ObservationListMenuBar(props = {})
                                {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
                            ]}
                            initialItemIdx={1}
-                           showTooltip={true}/>
+                           showTooltip={!isBarSticky}/>
 
                {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
                  * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
