@@ -357,7 +357,7 @@ function intro_element(hasEditRights)
     
     return <div className="intro">
                <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
-               <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
+               <p>Löydät sivun käyttöohjeet <a href="/guide/" target="_blank" rel="noopener noreferred">
                <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
                ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
                {hasEditRights? <p>

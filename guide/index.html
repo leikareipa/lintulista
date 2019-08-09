@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lintulista! - Käyttöohje</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="index.css">
+    </head>
+    <body>
+        <div id="header">
+            <h1>
+                <i class="fas fa-feather-alt"></i>
+                Lintulistan käyttöohje
+            </h1>
+        </div>
+
+        <div id="content">
+            <div id="navi-bar">
+                <div>Aiheet:</div>
+            </div>
+            <div id="body-text"></div>
+        </div>
+
+        <script>
+            const qa = Object.freeze(
+            [
+                {
+                    q: "Tervetuloa Lintulistan käyttöohjeeseen!",
+                    a: "..."
+                },
+                {
+                    q: "Second Q...",
+                    a: "..."
+                },
+            ]);
+
+            // Append the QA text.
+            qa.forEach((entry, idx)=>
+            {
+                const q = document.createElement("h3");
+                q.appendChild(document.createTextNode(entry.q));
+
+                const a = document.createElement("p");
+                a.appendChild(document.createTextNode(entry.a));
+
+                const link = document.createElement("a");
+                link.name = `q${idx+1}`;
+                link.appendChild(q);
+
+                const dst = document.getElementById("body-text");
+                dst.appendChild(link);
+                dst.appendChild(a);
+            });
+
+            // Add Q links to the navi bar.
+            qa.forEach((entry, idx)=>
+            {
+                const q = document.createElement("span");
+                q.appendChild(document.createTextNode(entry.q));
+
+                const link = document.createElement("a");
+                link.href = `#q${idx+1}`;
+                link.appendChild(q);
+
+                const dst = document.getElementById("navi-bar");
+                dst.appendChild(link);
+            });
+        </script>
+    </body>
+</html>
