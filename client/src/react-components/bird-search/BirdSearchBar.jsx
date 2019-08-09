@@ -41,18 +41,27 @@ export function BirdSearchBar(props = {})
         {
             const clickedOnSearchElement = (()=>
             {
-                let node = clickEvent.target;
-                while (node)
+                let targetNode = clickEvent.target;
+            
+                // Kludge to detect clicks on the browser's scroll bar. We want to allow the
+                // search results to remain open while the user operates the scroll bar, so
+                // we'll return true to facilitate that.
+                if (targetNode && targetNode.tagName.toLowerCase() === "html")
                 {
-                    if (node.classList &&
-                        (node.classList.contains("BirdSearchResultsDisplay") ||
-                         node.classList.contains("BirdSearchResult") ||
-                         node.classList.contains("BirdSearchBar")))
+                    return true;
+                }
+
+                while (targetNode)
+                {
+                    if (targetNode.classList &&
+                        (targetNode.classList.contains("BirdSearchResultsDisplay") ||
+                         targetNode.classList.contains("BirdSearchResult") ||
+                         targetNode.classList.contains("BirdSearchBar")))
                     {
                         return true;
                     }
 
-                    node = node.parentNode;
+                    targetNode = targetNode.parentNode;
                 }
 
                 return false;
@@ -71,7 +80,7 @@ export function BirdSearchBar(props = {})
         {
             panic(`Invalid state value "${state}".`);
         }
-
+        
         switch (state)
         {
             case "inactive":
@@ -89,6 +98,7 @@ export function BirdSearchBar(props = {})
     }, [state]);
 
     return <div className="BirdSearchBar">
+
                <input className={`search-field ${state}`.trim()}
                       ref={searchRef}
                       type="search"
@@ -104,9 +114,11 @@ export function BirdSearchBar(props = {})
                       spellCheck="false"
                       placeholder=""
                       autoComplete="off"/>
+
                 <div className="icon">
                     <i className="fas fa-search"/>
                 </div>
+                
            </div>
 
     function got_focus(gotIt)
