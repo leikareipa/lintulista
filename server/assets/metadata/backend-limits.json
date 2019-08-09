@@ -5,6 +5,6 @@
     {
         "editKeyLength": 60,
         "viewKeyLength": 7,
-        "ipHashLength": 16
+        "ipHashLength": 10
     }
 }
