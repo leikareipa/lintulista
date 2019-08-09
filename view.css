@@ -530,7 +530,7 @@ footer
     display: block;
 }
 
-.ObservationListElement,
+.ObservationCard,
 .ObservationListElementGhost
 {
     position: relative;
@@ -550,7 +550,7 @@ footer
     display: none;
 }
 
-.ObservationListElement > .PlainTag.lis-laji
+.ObservationCard > .PlainTag.lis-laji
 {
     padding: 6px;
     padding-left: 8px;
@@ -569,7 +569,7 @@ footer
     z-index: 5;
 }
 
-.ObservationListElement > .order-tag
+.ObservationCard > .order-tag
 {
     font-size: 80%;
     font-family: sans-serif;
@@ -586,7 +586,7 @@ footer
     z-index: 4; /* Above the bird thumbnail.*/
 }
 
-.ObservationListElement .BirdThumbnail,
+.ObservationCard .BirdThumbnail,
 .ObservationListElementGhost .BirdThumbnail
 {
     position: relative;
@@ -606,8 +606,8 @@ footer
     box-shadow: none;
 }
 
-.ObservationListElement > .card,
-.ObservationListElementGhost > .card
+.ObservationCard > .info,
+.ObservationListElementGhost > .info
 {
     font-family: "Nunito", serif;
     font-size: 98%;
@@ -624,7 +624,7 @@ footer
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
 }
 
-.ObservationListElementGhost > .card
+.ObservationListElementGhost > .info
 {
     width: 194px;
     margin-top: -15px;
@@ -635,7 +635,7 @@ footer
     box-shadow: none;
 }
 
-.ObservationListElement > .card > .ObservationInfo
+.ObservationCard > .info > .ObservationInfo
 {
     opacity: 1;
     transform: rotateY(0);
@@ -645,14 +645,14 @@ footer
     white-space: nowrap;
 }
 
-.ObservationListElement > .card > .ObservationInfo.hidden
+.ObservationCard > .info > .ObservationInfo.hidden
 {
     opacity: 0;
     transform: rotateX(80deg);
     visibility: hidden;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .bird-name,
+.ObservationCard > .info > .ObservationInfo > .bird-name,
 .ObservationListElementGhost > .card > .ObservationInfo > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
@@ -660,14 +660,14 @@ footer
     font-size: 90%;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .date,
+.ObservationCard > .info > .ObservationInfo > .date,
 .ObservationListElementGhost > .card > .ObservationInfo > .date
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);
 }
 
-.ObservationListElement > .AsyncIconButtonBar
+.ObservationCard > .AsyncIconButtonBar
 {
     opacity: 1;
     visibility: visible;
@@ -685,7 +685,7 @@ footer
 }
 
 /* A triangle.*/
-.ObservationListElement > .AsyncIconButtonBar:after
+.ObservationCard > .AsyncIconButtonBar:after
 {
     position: absolute;
     top: 0;
@@ -698,20 +698,20 @@ footer
     border-color: transparent #f3f3f3 transparent transparent;
 }
 
-.ObservationListElement > .AsyncIconButtonBar.hidden
+.ObservationCard > .AsyncIconButtonBar.hidden
 {
     opacity: 0;
     visibility: hidden;
     transform: translateX(-3px);
 }
 
-.ObservationListElement > .AsyncIconButtonBar > .buttons
+.ObservationCard > .AsyncIconButtonBar > .buttons
 {
     display: flex;
     flex-direction: column;
 }
 
-.ObservationListElement > .AsyncIconButtonBar > .buttons > *
+.ObservationCard > .AsyncIconButtonBar > .buttons > *
 {
     color: #3591e7;
     cursor: pointer;
@@ -720,7 +720,7 @@ footer
     flex: 1;
 }
 
-.ObservationListElement > .AsyncIconButtonBar > .buttons > *:hover
+.ObservationCard > .AsyncIconButtonBar > .buttons > *:hover
 {
     color: #277ecf;
 }

@@ -21,9 +21,10 @@ header
 
 header > #title
 {
+    transform: rotate(-2deg);
     position: absolute;
     top: 38px;
-    left: 15%;
+    left: 14%;
     color: #f1f1f1;
 }
 
@@ -38,6 +39,7 @@ header > #title > #app-name
 
 header > #title > #subtitle
 {
+    transform: rotate(2deg);
     font-family: sans-serif;
     font-size: 70%;
     margin-top: -24px;
@@ -166,7 +168,7 @@ footer
     background-color: rgb(185, 58, 58);
 }
 
-.ObservationListElement
+.ObservationCard
 {
     position: relative;
     color: black;
@@ -179,7 +181,7 @@ footer
     flex-direction: column;
 }
 
-.ObservationListElement .BirdThumbnail
+.ObservationCard .BirdThumbnail
 {
     position: relative;
     width: 150px;
@@ -190,7 +192,7 @@ footer
     z-index: 2;
 }
 
-.ObservationListElement > .card
+.ObservationCard > .card
 {
     font-family: "Nunito", serif;
     font-size: 98%;
@@ -207,7 +209,7 @@ footer
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
 }
 
-.ObservationListElement > .card > .ObservationInfo
+.ObservationCard > .card > .ObservationInfo
 {
     opacity: 1;
     transform: rotateY(0);
@@ -216,27 +218,27 @@ footer
     transition: all 0.2s linear;
 }
 
-.ObservationListElement > .card > .ObservationInfo.hidden
+.ObservationCard > .card > .ObservationInfo.hidden
 {
     opacity: 0;
     transform: rotateX(80deg);
     visibility: hidden;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .bird-name
+.ObservationCard > .card > .ObservationInfo > .bird-name
 {
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
     font-size: 90%;
 }
 
-.ObservationListElement > .card > .ObservationInfo > .date
+.ObservationCard > .card > .ObservationInfo > .date
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.6);
 }
 
-.ObservationListElement > .AsyncIconButtonBar
+.ObservationCard > .AsyncIconButtonBar
 {
     display: none;
 }

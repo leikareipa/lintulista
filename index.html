@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lintulista</title>
+        <title>Lintulista!</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <link href="https://fonts.googleapis.com/css?family=Damion|Nunito&display=swap" rel="stylesheet"> 
@@ -81,7 +81,7 @@
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
         <script type="module">
-            import {ObservationListElement} from "./client/dist/react-components/observation-list/ObservationListElement.js"
+            import {ObservationCard} from "./client/dist/react-components/observation-list/ObservationCard.js"
             import {CreateNewListButton} from "./client/dist/react-components/buttons/CreateNewListButton.js";
             import {backend_access} from "./client/dist/backend-access.js";
             import {observation} from "./client/dist/observation.js";
@@ -112,7 +112,7 @@
                             return date;
                         })();
 
-                        return React.createElement(ObservationListElement,
+                        return React.createElement(ObservationCard,
                         {
                             key: idx,
                             observation: observation(

@@ -8,7 +8,6 @@
 
 import {panic, panic_if_not_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
-import {QueryObservationPlace} from "../dialogs/QueryObservationPlace.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {AsyncIconButtonBar} from "../buttons/AsyncIconButtonBar.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
@@ -16,9 +15,9 @@ import {ObservationInfo} from "./ObservationInfo.js";
 import {darken_viewport} from "../../darken_viewport.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 
-export function ObservationListElement(props = {})
+export function ObservationCard(props = {})
 {
-    ObservationListElement.validate_props(props);
+    ObservationCard.validate_props(props);
 
     // For watching whether the mouse is currently hovering over this element.
     const [mouseHovering, setMouseHovering] = React.useState(false);
@@ -51,12 +50,12 @@ export function ObservationListElement(props = {})
         pulseDateElement: ()=>{},
     }
 
-    return <div className="ObservationListElement"
+    return <div className="ObservationCard"
                 onMouseOver={()=>setMouseHovering(true)}
                 onMouseLeave={()=>setMouseHovering(false)}>
                     {props.tag}
                     <BirdThumbnail bird={observationData.bird}/>
-                    <div className="card">
+                    <div className="info">
                         <ObservationInfo observation={observationData}
                                          setAnimationCallbacks={(animCallbacks)=>{animation = animCallbacks;}}/>
                     </div>
@@ -121,38 +120,6 @@ export function ObservationListElement(props = {})
         });
     }
 
-    // When a button is pressed to change the observation's place. Will prompt the user to
-    // enter a new place name, then submits the given place name to the server to be saved.
-    // Takes in a callback to reset the button's state.
-    async function button_change_observation_place({resetButtonState})
-    {
-        resetButtonState();
-
-        await popup_dialog(QueryObservationPlace,
-        {
-            maxPlaceNameLength: props.maxPlaceNameLength,
-            observation: observationData,
-            onAccept: async(newPlace)=>
-            {
-                // Send the new place string to the server.
-                if (newPlace !== null)
-                {
-                    const updatedObservation = await props.requestChangeObservationPlace(observationData, newPlace);
-
-                    if (updatedObservation)
-                    {
-                        pulse_changed_elements(observationData, updatedObservation);
-                        setObservationData(updatedObservation);
-                    }
-                    else
-                    {
-                        panic("Failed to update the place of an observation.");
-                    }
-                }
-            }
-        });
-    }
-
     // Compares the old data (the current observation parameters) with proposed new ones;
     // any new parameters that differ from the existing ones will cause the corresponding
     // DOM elements to be given a brief animation to indicate to the user that their values
@@ -166,7 +133,7 @@ export function ObservationListElement(props = {})
     }
 }
 
-ObservationListElement.defaultProps =
+ObservationCard.defaultProps =
 {
     callbackSetActionBarEnabled: ()=>{},
     showOrderTag: false,
@@ -174,7 +141,7 @@ ObservationListElement.defaultProps =
     tag: <></>,
 }
 
-ObservationListElement.validate_props = function(props)
+ObservationCard.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.observation);
 

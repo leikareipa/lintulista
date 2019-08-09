@@ -9,7 +9,7 @@
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
 import {ObservationListActionBar} from "./ObservationListActionBar.js";
-import {ObservationListElement} from "./ObservationListElement.js";
+import {ObservationCard} from "./ObservationCard.js";
 import {ObservationListFooter} from "./ObservationListFooter.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
@@ -95,7 +95,7 @@ export function ObservationList(props = {})
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortListBy}/>
 
-               {/* A list of ObservationListElement components, one for each observation the user has made.*/}
+               {/* A list of ObservationCard components, one for each observation the user has made.*/}
                <div className={`observation-cards ${sortListBy}`.trim()}
                     key={elementsKey}>
                         {observationElements.length? observationElements.map(e=>e.element) : intro_element(props.backend.hasEditRights)}
@@ -179,15 +179,15 @@ export function ObservationList(props = {})
 
         return {
             observation: obs,
-            element: <ObservationListElement observation={obs}
-                                             key={obs.bird.species}
-                                             tag={tag}
-                                             allowEditing={props.backend.hasEditRights}
-                                             maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
-                                             callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
-                                             requestDeleteObservation={async(self)=>await delete_observation(self)}
-                                             requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
-                                             requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
+            element: <ObservationCard observation={obs}
+                                      key={obs.bird.species}
+                                      tag={tag}
+                                      allowEditing={props.backend.hasEditRights}
+                                      maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
+                                      callbackSetActionBarEnabled={(boolState)=>setActionBarEnabled(boolState)}
+                                      requestDeleteObservation={async(self)=>await delete_observation(self)}
+                                      requestChangeObservationDate={async(self, newDate)=>await set_observation_date(self, newDate)}
+                                      requestChangeObservationPlace={async(self, newPlace)=>await set_observation_place(self, newPlace)}/>
         };
     }
 
