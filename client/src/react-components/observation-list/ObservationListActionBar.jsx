@@ -51,7 +51,7 @@ export function ObservationListActionBar(props = {})
                                {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
                            ]}
                            initialItemIdx={1}
-                           showTooltip={false}/>
+                           showTooltip={true}/>
 
                {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
                  * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when

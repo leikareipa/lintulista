@@ -86,42 +86,29 @@ export function ObservationList(props = {})
         }
     }, [sortListBy]);
 
-    console.log("Rerendering the observation list.");
-
-    // The element displayed in the observation list when the list is empty (i.e. when
-    // there are no observations).
-    const emptyElement = <div className="intro">
-                             <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
-                             <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
-                                <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
-                                ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
-                             {props.backend.hasEditRights
-                                 ? <p>
-                                       Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään&nbsp;
-                                       <i className="fas fa-search fa-xs"/> lintulajin nimi. Halutun tuloksen
-                                       kohdalla paina <i className="fas fa-plus-circle fa-xs"/>-symbolia lisätäksesi se listaan!
-                                   </p>
-                                 : <></>}
-                         </div>
-
-    console.log("-------- Finished redrawing the observation list.");
     return <div className="ObservationList">
+
+               {/* A collection of controls with which the user can alter aspects of the list; for instance,
+                 * the sorting order of its elements.*/}
                <ObservationListActionBar enabled={actionBarEnabled}
                                          backend={props.backend}
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortListBy}/>
-               <div className={`elements ${sortListBy}`.trim()}
+
+               {/* A list of ObservationListElement components, one for each observation the user has made.*/}
+               <div className={`observation-cards ${sortListBy}`.trim()}
                     key={elementsKey}>
-                        {observationElements.length? observationElements.map(e=>e.element) : emptyElement}
+                        {observationElements.length? observationElements.map(e=>e.element) : intro_element(props.backend.hasEditRights)}
                </div>
+
+               {/* Displays general information about the list's state - like the number of observations.*/}
                <ObservationListFooter numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observation_list_to_csv_file}/>
+                                      
            </div>
 
     function redraw_elements_list()
     {
-        console.log("Triggered element redraw.");
-
         renderCount.elements++;
         setElementsKey(elementsKey+1);
     }
@@ -130,8 +117,6 @@ export function ObservationList(props = {})
     //
     function create_observation_elements()
     {
-        console.log("Regenerating observation elements.");
-
         // For the 100 Lajia challenge, we want to insert three kinds of elements: (1) ghost
         // elements for species that are included in the challenge but which the user hasn't
         // yet observed; (2) regular elements for species that the user has observed and which
@@ -208,8 +193,6 @@ export function ObservationList(props = {})
 
     function sort_observation_list()
     {
-        console.log("Sorting the observation list.");
-
         const sorter = (()=>
         {
             switch (sortListBy)
@@ -362,4 +345,23 @@ ObservationList.validate_props = function(props)
     panic_if_undefined(props.backend);
 
     return;
+}
+
+// Returns the element to be displayed over the observation list when the list is empty.
+function intro_element(hasEditRights)
+{
+    panic_if_not_type("boolean", hasEditRights);
+    
+    return <div className="intro">
+               <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
+               <p>Löydät sivun käyttöohjeet <a href="/ohjeet/" target="_blank" rel="noopener noreferred">
+               <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
+               ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
+               {hasEditRights? <p>
+                                   Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään&nbsp;
+                                   <i className="fas fa-search fa-xs"/> lintulajin nimi. Halutun tuloksen
+                                   kohdalla paina <i className="fas fa-plus-circle fa-xs"/>-symbolia lisätäksesi se listaan!
+                               </p>
+                             : <></>}
+           </div>
 }
