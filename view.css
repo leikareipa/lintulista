@@ -178,7 +178,7 @@ footer
     pointer-events: none;
 }
 
-.ObservationList > .ObservationListActionBar
+.ObservationList > .ObservationListMenuBar
 {
     display: flex;
     flex-direction: row;
@@ -198,46 +198,46 @@ footer
     transition: transform 0.25s linear;
 }
 
-.ObservationList > .ObservationListActionBar.disabled
+.ObservationList > .ObservationListMenuBar.disabled
 {
     opacity: 0;
     transform: translateY(2px) rotateX(4deg);
 }
 
-.ObservationList > .ObservationListActionBar.enabled
+.ObservationList > .ObservationListMenuBar.enabled
 {
     opacity: 1;
     transform: translateY(0) rotateX(0deg);
 }
 
-.ObservationList > .ObservationListActionBar > *
+.ObservationList > .ObservationListMenuBar > *
 {
     flex-grow: 1;
 }
 
-.ObservationList > .ObservationListActionBar > .lock i
+.ObservationList > .ObservationListMenuBar > .lock i
 {
     color: #f9f9f9;
     transform: scale(1.5);
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton
+.ObservationList > .ObservationListMenuBar > .MenuButton
 {
     position: relative;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .icon
+.ObservationList > .ObservationListMenuBar > .MenuButton > .icon
 {
     color: #f9f9f9;
 }
 
 /* Font Awesome icons.*/
-.ObservationList > .ObservationListActionBar > .MenuButton > .icon i
+.ObservationList > .ObservationListMenuBar > .MenuButton > .icon i
 {
     transform: scale(1.5);
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .tooltip
+.ObservationList > .ObservationListMenuBar > .MenuButton > .tooltip
 {
     white-space: nowrap;
     position: absolute;
@@ -257,7 +257,7 @@ footer
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .tooltip::after
+.ObservationList > .ObservationListMenuBar > .MenuButton > .tooltip::after
 {
     position: absolute;
     bottom: -8px;
@@ -271,7 +271,7 @@ footer
     border-color: #f9f9f9 transparent transparent transparent;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown
 {
     user-select: none;
     -moz-user-select: none;
@@ -289,7 +289,7 @@ footer
     transform: translateX(-50%);
     z-index: 1000;
 }
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.active
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.active
 {
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
@@ -297,7 +297,7 @@ footer
     animation-duration: 0.15s;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .title
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .title
 {
     padding-top: 2px;
     padding-bottom: 2px;
@@ -307,7 +307,7 @@ footer
     border-radius: 4px 4px 0 0;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div
 {
     color: black;
     padding-top: 2px;
@@ -316,24 +316,24 @@ footer
     cursor: pointer;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:last-child
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div:last-child
 {
     border-radius: 0 0 4px 4px;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown > .items > div:hover
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div:hover
 {
     transform: scale(1.1);
     background-color: white;
     border-radius: 0;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.inactive
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.inactive
 {
     display: none;
 }
 
-.ObservationList > .ObservationListActionBar > .MenuButton > .dropdown.active
+.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.active
 {
     display: block;
 }

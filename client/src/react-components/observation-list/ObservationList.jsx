@@ -8,9 +8,9 @@
 
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {ObservationListElementGhost} from "./ObservationListElementGhost.js";
-import {ObservationListActionBar} from "./ObservationListActionBar.js";
-import {ObservationCard} from "./ObservationCard.js";
+import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationListFooter} from "./ObservationListFooter.js";
+import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
@@ -53,7 +53,7 @@ export function ObservationList(props = {})
     // corresponding syntactical rules for that.
     //
     // Note that if you change the initial value, you should change the initial value of the
-    // sorting menu index in the ObservationListActionBar element of this component also.
+    // sorting menu index in the ObservationListMenuBar element of this component also.
     //
     const [sortListBy, setSortListBy] = React.useState("date");
 
@@ -90,7 +90,7 @@ export function ObservationList(props = {})
 
                {/* A collection of controls with which the user can alter aspects of the list; for instance,
                  * the sorting order of its elements.*/}
-               <ObservationListActionBar enabled={actionBarEnabled}
+               <ObservationListMenuBar enabled={actionBarEnabled}
                                          backend={props.backend}
                                          callbackAddObservation={add_observation}
                                          callbackSetListSorting={setSortListBy}/>

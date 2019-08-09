@@ -29,11 +29,11 @@ import {MenuButton} from "../buttons/MenuButton.js";
 // via props.enabled. The only effect of this is that the component's class list will be
 // appended with "enabled" or "disabled", accordingly.
 //
-export function ObservationListActionBar(props = {})
+export function ObservationListMenuBar(props = {})
 {
-    ObservationListActionBar.validate_props(props);
+    ObservationListMenuBar.validate_props(props);
 
-    return <div className={`ObservationListActionBar ${props.enabled? "enabled" : "disabled"}`.trim()}>
+    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"}`.trim()}>
 
                {/* A search field that allows the user to search for specific bird species to be added as
                  * observations.*/}
@@ -67,12 +67,12 @@ export function ObservationListActionBar(props = {})
            </div>
 }
 
-ObservationListActionBar.defaultProps =
+ObservationListMenuBar.defaultProps =
 {
     enabled: true,
 }
 
-ObservationListActionBar.validate_props = function(props)
+ObservationListMenuBar.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.backend);
     panic_if_not_type("function", props.callbackAddObservation, props.callbackSetListSorting);
