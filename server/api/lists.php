@@ -104,7 +104,7 @@ function create_new_list()
         $keys = ["editKey"=>ListKey::generate_random_edit_key(),
                  "viewKey"=>ListKey::generate_random_view_key()];
 
-        $wasSuccessful = $database->create_new_list($keys, time(), $ipHash);
+        $wasSuccessful = $database->create_new_list($keys, $ipHash);
 
         if ($wasSuccessful === true)
         {

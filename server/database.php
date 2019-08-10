@@ -180,7 +180,7 @@ class DatabaseAccess
     //
     // Generally, if false is returned, you might generate a new set of keys and try again.
     //
-    function create_new_list(array $keys, int $timestamp, string $creatorHash)
+    function create_new_list(array $keys, string $creatorHash)
     {
         $backendLimits = new BackendLimits();
 
@@ -198,8 +198,8 @@ class DatabaseAccess
             exit(ReturnObject::failure("Was asked to add a list to the database, but one or more of the given keys are invalid."));
         }
 
-        $returnValue = $this->database_command("INSERT INTO lintulista_lists (view_key, edit_key, creation_timestamp, creator_hash) VALUES (?, ?, ?, ?)",
-                                               [$keys["viewKey"], $keys["editKey"], $timestamp, $creatorHash]);
+        $returnValue = $this->database_command("INSERT INTO lintulista_lists (view_key, edit_key, creator_hash) VALUES (?, ?, ?)",
+                                               [$keys["viewKey"], $keys["editKey"], $creatorHash]);
 
         switch ($returnValue)
         {
