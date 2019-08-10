@@ -8,21 +8,21 @@
 
 import {panic_if_not_type} from "../../assert.js";
 
-// Displays a footer at the bottom of the screen; providing information like the total
-// number of observations in the current list.
+// Displays footnotes at the bottom of the list (or of the screen); providing information like
+// the total number of observations in the current list.
 //
 // The current number of observations in the list can be given via props.numObservationsInList.
 //
-// A callback for when the user requests to download the list's contents as a CSV file
-// should be provided via props.callbackDownloadList.
+// A callback for when the user requests to download the list's contents as a CSV file should
+// be provided via props.callbackDownloadList.
 //
-export function ObservationListFooter(props = {})
+export function ObservationListFootnotes(props = {})
 {
-    ObservationListFooter.validate_props(props);
+    ObservationListFootnotes.validate_props(props);
 
     const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajihavaintoja. Niiden lukumäärä päivittyy tähän.</>
                                                                 : <>
-                                                                      Listassa on&nbsp;
+                                                                      listassa on&nbsp;
                                                                       <span style={{fontWeight:"bold"}}>
                                                                           {props.numObservationsInList}
                                                                       </span> laji{props.numObservationsInList !== 1? "a" : ""}.
@@ -30,11 +30,11 @@ export function ObservationListFooter(props = {})
 
     const observationDownloadElement = !props.numObservationsInList? <></>
                                                                    : <span onClick={props.callbackDownloadList}
-                                                                           style={{textDecoration:"underline", cursor:"pointer"}}>
+                                                                           style={{textDecoration:"underline", cursor:"pointer", fontVariant:"normal"}}>
                                                                          Lataa CSV:nä
                                                                      </span>
 
-    return <div className="ObservationListFooter">
+    return <div className="ObservationListFootnotes">
                <div className="observation-count">
                    <i className="fas fa-info-circle"/>&nbsp;
                    {observationCountElement}&nbsp;
@@ -43,7 +43,7 @@ export function ObservationListFooter(props = {})
            </div>
 }
 
-ObservationListFooter.validate_props = function(props)
+ObservationListFootnotes.validate_props = function(props)
 {
     panic_if_not_type("object", props);
     panic_if_not_type("number", props.numObservationsInList);

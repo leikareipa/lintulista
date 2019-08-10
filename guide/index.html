@@ -10,7 +10,7 @@
     <body>
         <div id="header">
             <h1>
-                <i class="fas fa-feather-alt"></i>
+                <i class="fas fa-feather-alt" style="color: #4695f0;"></i>
                 Lintulistan käyttöohje
             </h1>
         </div>
@@ -23,8 +23,9 @@
         </div>
 
         <script>
-            const qa = Object.freeze(
-            [
+            // The QA (question and answer) pairs that make up the documentation. These
+            // will be printed onto the page as-is.
+            const qa = Object.freeze([
                 {
                     q: "Tervetuloa Lintulistan käyttöohjeeseen!",
                     a: "..."
@@ -35,7 +36,7 @@
                 },
             ]);
 
-            // Append the QA text.
+            // Append the QA sections to the document.
             qa.forEach((entry, idx)=>
             {
                 const q = document.createElement("h3");

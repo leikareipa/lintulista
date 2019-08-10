@@ -7,15 +7,15 @@
 "use strict";
 
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
+import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
-import {ObservationListFooter} from "./ObservationListFooter.js";
 import {ObservationCardGhost} from "./ObservationCardGhost.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
-// A list of the birds in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
+// A list of the birds singled out in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 // In the future, this array might be located in some other file, but for now it's made its home here.
 const sataLajia = Object.freeze(
 [
@@ -221,7 +221,7 @@ export function ObservationList(props = {})
                </div>
 
                {/* Displays general information about the list's state - like the number of observations.*/}
-               <ObservationListFooter numObservationsInList={props.backend.observations().length}
+               <ObservationListFootnotes numObservationsInList={props.backend.observations().length}
                                       callbackDownloadList={save_observations_to_csv_file}/>
                                       
            </div>
