@@ -141,6 +141,8 @@ class DatabaseAccess
                 }
             }
 
+            $this->log_event(100, null);
+
             return array_unique($nonce, SORT_REGULAR);
         }
         // Otherwise, return valid observations.
@@ -157,6 +159,15 @@ class DatabaseAccess
             {
                 $returnObservations[] = ["species"=>$obs["species"],
                                          "timestamp"=>$obs["timestamp"]];
+            }
+
+            if ($isEditKey)
+            {
+                $this->log_event(4, $listId);
+            }
+            else
+            {
+                $this->log_event(5, $listId);
             }
 
             return $returnObservations;
@@ -192,9 +203,27 @@ class DatabaseAccess
 
         switch ($returnValue)
         {
-            case 1062: return false; // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. The given keys are probably already in use.
-            case 0: return true;     // Successfully added the list.
-            default: return -1;      // Something went badly wrong.
+            // Success.
+            case 0:
+            {
+                $listId = $this->get_list_id_of_key($keys["viewKey"], false);
+
+                $this->log_event(0, $listId);
+
+                return true;
+            }
+            // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. The given keys are probably already in use.
+            case 1062:
+            {
+                $this->log_event(101, null);
+
+                return false;
+            }
+            // Something went badly wrong.
+            default:
+            {
+                return -1;
+            }
         }
     }
 
@@ -211,6 +240,8 @@ class DatabaseAccess
 
         $this->database_command("DELETE FROM lintulista_observations WHERE list_id = ? AND species = ?",
                                 [$listId, $speciesName]);
+
+        $this->log_event(2, $listId);
 
         return;
     }
@@ -256,13 +287,43 @@ class DatabaseAccess
             {
                 $this->database_command("UPDATE lintulista_observations SET " . join(", ", $combinedValues) . " WHERE list_id = ? AND species = ?",
                                         [$listId, $species]);
+
+                $this->log_event(3, $listId);
             }
         }
         else
         {
             $this->database_command("INSERT INTO lintulista_observations (list_id, species, `timestamp`) VALUES (?, ?, ?)",
                                     [$listId, $species, $timestamp]);
+
+            $this->log_event(1, $listId);
         }
+
+        return;
+    }
+
+    // Logs database events, like list creation and access.
+    //
+    // Event ids:
+    //
+    //     SUCCESSES
+    //
+    //     0 = Create a new list
+    //     1 = Add a new observation
+    //     2 = Remove an existing observation
+    //     3 = Update an existing observation
+    //     4 = Get observations with a view key
+    //     5 = Get observations with an edit key
+    //
+    //     FAILURES
+    //
+    //     100 = Attempt to get observations with an unrecognized key
+    //     101 = Attempt to create a new list with a key already in use
+    //
+    private function log_event(int $eventId, /*int or null*/ $targetListId)
+    {
+        $this->database_command("INSERT INTO lintulista_event_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
+                                [time(), $eventId, $targetListId]);
 
         return;
     }
