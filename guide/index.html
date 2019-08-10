@@ -17,48 +17,185 @@
 
         <div id="content">
             <div id="navi-bar">
-                <div>Aiheet:</div>
+                <h4>Aiheet</h4>
             </div>
             <div id="body-text"></div>
         </div>
 
         <script>
-            // The QA (question and answer) pairs that make up the documentation. These
-            // will be printed onto the page as-is.
+            // The QA (question and answer) pairs that make up the documentation. These will
+            // be printed onto the page as-is.
+            //
+            // Note that each answer is given as an array of strings, where each string will
+            // be encased in <p></p> on the page - i.e. each string is a paragraph.
+            //
+            // Special strings:
+            //
+            //     #NB#: Nota bene. Will be expanded to '<span class="nota-bene"></span>'.
+            //
             const qa = Object.freeze([
                 {
                     q: "Tervetuloa Lintulistan käyttöohjeeseen!",
-                    a: "..."
+                    a: [`Tämä ohje opastaa sinut alkuun Lintulistan käytössä sekä tarjoaa kysymys/vastaus-pareja yleisimpiin
+                         Lintulistan toimintoihin.`,
+                        
+                        `Halutessasi voit myös osoittaa suoran kysymyksen <a href="mailto:sw@tarpeeksihyvaesoft.com">
+                        sähköpostitse</a>.`]
                 },
                 {
-                    q: "Second Q...",
-                    a: "..."
+                    q: "Pikainen käyttöönotto-opas",
+                    a: [`Ottaaksesi Lintulistan käyttöön, sinun tarvitsee vain selata <a href="../" target="_blank">Lintulistan
+                        etusivulle</a> ja näpäyttää sen sinistä <i>Luo uusi lista</i> -nappia. Järjestelmä luo sinulle listan,
+                        johon voit ryhtyä merkitsemään havaintojasi.`,
+
+                        `Listojen määrää per käyttäjä ei ole rajoitettu, ja voitkin esimerkiksi luoda uuden listan jokaista linturetkeä
+                        varten ja samalla pitää pitkäaikaisempaa listaa vuosihavaintoja varten.`,
+
+                        `#NB# Luodessasi uuden listan, järjestelmä ilmoittaa sinulle linkin, jonka kautta pääset listalle.
+                        Tarvitset linkkiä joka kerta, kun haluat käyttää listaa - pidä se siis visusti tallessa! Hukattua linkkiä
+                        ei voi palauttaa; mutta listan havaintotietoja voi kysellä <a href="mailto:sw@tarpeeksihyvaesoft.com">
+                        sähköpostitse</a>.`,
+                    
+                        `#NB# Kullakin listalla on kaksi linkkiä: julkinen ja yksityinen. Yksityisen linkin saat haltuusi, kun
+                        luot uuden listan; se on muotoa "/lintulista/edit/bi4ztqasw8zdcq..." (esimerkiksi). Kuka tahansa listan yksityisen linkin
+                        haltija voi muokata listan sisältöä - älä siis luovuta yksityistä linkkiä tuntemattomille äläkä käytä sitä julkisilla
+                        laitteilla. Listan julkinen linkki taas on muotoa "/lintulista/jzycpmf" (esimerkiksi) - sillä voi vain katsella
+                        listan sisältöä ja se on tarkoitettu muille jaettavaksi. Löydät listasi julkisen linkin kirjautumalla
+                        listaan yksityisellä linkillä ja klikkaamalla sivun ylälaidan <i class="fas fa-unlock-alt"></i>-symbolia.
+                        Julkista linkkiä käytettäessä näet sivun ylälaidassa <i class="fas fa-lock"></i>-symbolin.`,
+                    
+                        `Luotuasi uuden listan voit avata sen linkin selaimessa, jolloin löydät itsesi lintulistasi etusivulta.`,
+                    
+                        `Merkitsemäsi lintuhavainnot ilmestyvät kuvina listan ruudetulle alueelle. Lisätäksesi uuden havainnon, kirjoita
+                        halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
+                        <i class="fas fa-plus"></i>-symbolia. Jos laji on jo listassa, näyttää hakutulos <i class="fas fa-plus"></i>-symbolin
+                        sijaan havaintopäivämäärän. Alla näet esimerkkinä havainnon Kattohaikarasta; havainnon päivämäärä on merkitty
+                        lajinimen alapuolelle.`,
+
+                        `<img src="./assets/images/kattohaikara.png">`,
+                    
+                        `Listasivun vasemmassa alalaidassa näet listassa olevien lajihavaintojen kokonaismäärän. Sivun ylälaitaan taas
+                        liimautuu <i class="fas fa-search"></i>-hakupalkki silloin, kun vierität sivua alaspäin.`]
+                },
+                {
+                    q: "Miten lisään listaan uuden havainnon?",
+                    a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
+                        <i class="fas fa-plus"></i>-symbolia. Jos laji on jo listassa, näyttää hakutulos <i class="fas fa-plus"></i>-symbolin
+                        sijaan havaintopäivämäärän.`,
+                        
+                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                },
+                {
+                    q: "Miten muutan listassa olevan havainnon päivämäärää?",
+                    a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
+                        <i class="fas fa-clock"></i>-symbolia.`,
+                        
+                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                },
+                {
+                    q: "Miten poistan listassa olevan havainnon?",
+                    a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
+                        <i class="fas fa-eraser"></i>-symbolia. Lintulista pyytää sinulta vielä varmistuksen poistolle.`,
+                        
+                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                },
+                {
+                    q: "Miten poistan luomani listan?",
+                    a: [`Listaa itsessään ei voi poistaa, mutta voit poistaa yksitellen sen havainnot ja jättää tyhjän listan
+                         jälkeesi.`]
+                },
+                {
+                    q: `Mitä sivun ylälaidan <i class="fas fa-unlock-alt"></i> <i class="fas fa-lock"></i> -symbolit tarkoittavat?`,
+                    a: [`Kuhunkin listaan pääsee kahdella linkillä: yksityisellä ja julkisella. Symbolit kuvastavat näitä kahta tapaa.`,
+                    
+                        `Yksityistä linkkiä käyttämällä saa valtuudet muokata listaa, jonka merkiksi sivun ylälaidassa näytetään avointa
+                        lukkoa <i class="fas fa-unlock-alt"></i>.`,
+                        
+                        `Julkisella linkillä listaa voi katsella mutta ei muokata, jonka merkiksi näytetään suljettu lukko
+                        <i class="fas fa-lock"></i>.`]
+                },
+                {
+                    q: "Voiko havaintoon lisätä kuvia, kommentteja tai muuta tietoa?",
+                    a: [`Toistaiseksi voit muokata vain havainnon päivämäärää. Muunlaisen sisällön lisääminen saattaa olla
+                         mahdollista tulevaisuudessa; voit lähettää ehdotuksesi <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>.`]
+                },
+                {
+                    q: "Miksi joistakin lintulajeista ei ole kuvaa?",
+                    a: [`Lintulistan lintukuvat tulevat <a href="http://www.luontoportti.com">LuontoPortista</a>. Aivan kaikista linnuista ei
+                         kuitenkaan ole kuvaa saatavilla.`]
+                },
+                {
+                    q: "Kuka on ottanut Lintulistassa käytetyt kuvat?",
+                    a: [`Lintulistan lintukuvat tulevat <a href="http://www.luontoportti.com">LuontoPortista</a>.`]
+                },
+                {
+                    q: "Kuka teki Lintulistan?",
+                    a: [`Lintulistan on tehnyt suomalainen koodiluola <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>.`]
+                },
+                {
+                    q: "Olen kadottanut listani linkin! Pystyttekö palauttamaan sen?",
+                    a: [`Hups! Valitettavasti linkkiä ei voi palauttaa, koska Lintulista ei kerää käyttäjistään tunnistetietoja. Yksittäisen
+                         listan omistajaa ei siten voida varmistaa.`,
+                         
+                         `Voit kuitenkin lähestyä meitä <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>
+                         ja tiedustella mahdollisuutta saada kopio kyseisen listan julkisista tiedoista, jonka jälkeen voit luoda uuden
+                         listan ja lisätä sinne lajihavainnot yksitellen.`]
+                },
+                {
+                    q: "Miten lisään listaani lajin, jota ei löydy Lintulistan haulla?",
+                    a: [`Lähetähän halutun lajin nimi <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>, niin selvitetään sen lisääminen
+                         Lintulistan hakutietoihin.`,
+                        
+                        `Tällä hetkellä Lintulistan pitäisi sisältää kaikki Suomessa vapaina tavattavat lajit sekä joitakin erikoisuuksia.`]
+                },
+                {
+                    q: "Mikä on 100 Lajia -haaste?",
+                    a: [`BirdLife Suomi haastaa harrastajat tunnistamaan sata lintulajia yhden vuoden aikana. Voit saada
+                         lisätietoa aiheesta BirdLifen <a href="https://www.birdlife.fi/lintuharrastus/100lintulajia/">
+                         Tunnista 100 lintulajia</a> -sivulta.`,
+                        
+                        `Löydät Lintulistasta 100 Lajia -haastemoodin painamalla sivun ylälaidan <i class="fas fa-list-ul"></i>-symbolia
+                        ja valitsemalla avautuvasta valikosta <i>100 Lajia -haaste</i>. Tässä moodissa listassasi näkyy muiden havaintojen
+                        lisäksi 150 helpoksi havaittavaksi luokiteltua lajia.`,
+                    
+                        `Muistathan, että listasivun vasemmasta alalaidasta näet listasi lajihavaintomäärän. Et siis joudu laskemaan niitä
+                         käsin.`]
+                },
+                {
+                    q: "Onko Lintulista saatavilla englanniksi (tai muilla kielillä)?",
+                    a: [`Lintulista on tällä hetkellä saatavilla vain suomeksi ja suomenkielisillä lajinimillä.`]
                 },
             ]);
 
             // Append the QA sections to the document.
             qa.forEach((entry, idx)=>
             {
+                const qa = document.createElement("div");
+                qa.classList.add("qa");
+
                 const q = document.createElement("h3");
-                q.appendChild(document.createTextNode(entry.q));
+                q.innerHTML = entry.q;
 
                 const a = document.createElement("p");
-                a.appendChild(document.createTextNode(entry.a));
+                a.innerHTML = entry.a.reduce((string, paragraph)=>(string + "<p>" + paragraph + "</p>"))
+                                     .replace(/#NB#/g, `<span class="nota-bene"></span>`);
 
-                const link = document.createElement("a");
-                link.name = `q${idx+1}`;
-                link.appendChild(q);
+                const anchor = document.createElement("a");
+                anchor.name = `q${idx+1}`;
+                anchor.appendChild(q);
+
+                qa.appendChild(anchor);
+                qa.appendChild(a);
 
                 const dst = document.getElementById("body-text");
-                dst.appendChild(link);
-                dst.appendChild(a);
+                dst.appendChild(qa);
             });
 
-            // Add Q links to the navi bar.
+            // Add Q anchor links to the navi bar.
             qa.forEach((entry, idx)=>
             {
                 const q = document.createElement("span");
-                q.appendChild(document.createTextNode(entry.q));
+                q.innerHTML = entry.q;
 
                 const link = document.createElement("a");
                 link.href = `#q${idx+1}`;

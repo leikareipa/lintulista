@@ -501,9 +501,8 @@ footer
 .ObservationList > .ObservationListFootnotes > .observation-count
 {
     background-color: #3d3d3d;
-    color: #f1f1f1;
+    color: #e0e0e0;
     padding: 7px;
-    padding-left: 11px;
     padding-right: 11px;
     font-family: sans-serif;
     border-radius: 0 4px 0 0;

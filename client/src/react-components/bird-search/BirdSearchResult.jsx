@@ -22,7 +22,8 @@ export function BirdSearchResult(props = {})
     })();
 
     return <div className={`BirdSearchResult ${!hasBeenPreviouslyObserved? "not-previously-observed" : ""}`.trim()}>
-                <BirdThumbnail bird={props.bird} useLazyLoading={false}/>
+                <BirdThumbnail bird={props.bird}
+                               useLazyLoading={false}/>
                 <div className="card">
                     <div className="bird-name">
                         {props.bird.species}
