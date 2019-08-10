@@ -143,6 +143,8 @@ const httpRequests = Object.freeze(
                 }
             })();
 
+            panic_if_not_type("array", birds);
+
             return birds.map(b=>bird(
             {
                 order: b.order,
@@ -224,6 +226,8 @@ const httpRequests = Object.freeze(
                 }
             })();
 
+            panic_if_not_type("array", observationData);
+
             observationData.filter(obs=>!is_known_bird_species(obs.species))
                            .forEach(unknownObs=>
             {
@@ -290,7 +294,16 @@ const httpRequests = Object.freeze(
         {
             try
             {
-                return JSON.parse(responseData).keys;
+                const jsonData = JSON.parse(responseData);
+
+                if ((typeof jsonData.keys !== "object") ||
+                    (typeof jsonData.keys.viewKey !== "string") ||
+                    (typeof jsonData.keys.editKey !== "string"))
+                {
+                    return false;
+                }
+
+                return jsonData.keys;
             }
             catch (error)
             {
