@@ -3,18 +3,12 @@ body
     background-color: white;
     color: black;
     margin: 0;
-    margin-top: 15px;
     margin-bottom: 50px;
 }
 
 h1, h2, h3, h4
 {
     margin: 0;
-}
-
-h2, h3, h4
-{
-    margin-bottom: -5px;
 }
 
 h1, h3
@@ -33,6 +27,11 @@ img
     left: 50%;
     transform: translateX(-50%);
     border-radius: 3px;
+}
+
+.fas
+{
+    color: #3791f8;
 }
 
 #header
@@ -101,7 +100,7 @@ img
 
 .qa
 {
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 
 .qa:last-child
@@ -124,6 +123,7 @@ img
 
 .nota-bene:after
 {
-    font-style: italic;
+
+    font-weight: bold;
     content: "Huom! ";
 }

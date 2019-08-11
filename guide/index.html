@@ -10,7 +10,7 @@
     <body>
         <div id="header">
             <h1>
-                <i class="fas fa-feather-alt" style="color: #4695f0;"></i>
+                <i class="fas fa-feather-alt"></i>
                 Lintulistan käyttöohje
             </h1>
         </div>
@@ -39,7 +39,7 @@
                     a: [`Tämä ohje opastaa sinut alkuun Lintulistan käytössä sekä tarjoaa kysymys/vastaus-pareja yleisimpiin
                          Lintulistan toimintoihin.`,
                         
-                        `Halutessasi voit myös osoittaa suoran kysymyksen <a href="mailto:sw@tarpeeksihyvaesoft.com">
+                        `Jos ohje ei sisällä kaipaamaasi tietoa, voit osoittaa kysymyksesi <a href="mailto:sw@tarpeeksihyvaesoft.com">
                         sähköpostitse</a>.`]
                 },
                 {
@@ -51,64 +51,68 @@
                         `Listojen määrää per käyttäjä ei ole rajoitettu, ja voitkin esimerkiksi luoda uuden listan jokaista linturetkeä
                         varten ja samalla pitää pitkäaikaisempaa listaa vuosihavaintoja varten.`,
 
-                        `#NB# Luodessasi uuden listan, järjestelmä ilmoittaa sinulle linkin, jonka kautta pääset listalle.
-                        Tarvitset linkkiä joka kerta, kun haluat käyttää listaa - pidä se siis visusti tallessa! Hukattua linkkiä
-                        ei voi palauttaa; mutta listan havaintotietoja voi kysellä <a href="mailto:sw@tarpeeksihyvaesoft.com">
-                        sähköpostitse</a>.`,
+                        `#NB# Luodessasi uuden listan, järjestelmä ilmoittaa sinulle linkin. Linkki toimii käyttäjätunnuksena,
+                        jota tarvitaan listan käyttöön. Hukattua linkkiä ei voi palauttaa, joten pidäthän sen visusti tallessa.`,
                     
-                        `#NB# Kullakin listalla on kaksi linkkiä: julkinen ja yksityinen. Yksityisen linkin saat haltuusi, kun
-                        luot uuden listan; se on muotoa "/lintulista/edit/bi4ztqasw8zdcq..." (esimerkiksi). Kuka tahansa listan yksityisen linkin
-                        haltija voi muokata listan sisältöä - älä siis luovuta yksityistä linkkiä tuntemattomille äläkä käytä sitä julkisilla
-                        laitteilla. Listan julkinen linkki taas on muotoa "/lintulista/jzycpmf" (esimerkiksi) - sillä voi vain katsella
+                        `Kullakin uudella listalla on kaksi linkkiä: julkinen ja yksityinen. Yksityisen linkin saat haltuusi, kun
+                        luot listan; se on muotoa "/lintulista/edit/..." (loppuosa 60 merkkiä). Kuka tahansa yksityisen
+                        linkin haltija voi muokata listan sisältöä. Parasta on, että et luovuta yksityistä linkkiä tuntemattomille
+                        tai käytä sitä julkisilla laitteilla.`,
+                        
+                        `Listan julkinen linkki taas on muotoa "/lintulista/..." (loppuosa 7 merkkiä) - sillä voi ainoastaan katsella
                         listan sisältöä ja se on tarkoitettu muille jaettavaksi. Löydät listasi julkisen linkin kirjautumalla
-                        listaan yksityisellä linkillä ja klikkaamalla sivun ylälaidan <i class="fas fa-unlock-alt"></i>-symbolia.
+                        sisään yksityisellä linkillä ja klikkaamalla sivun ylälaidan <i class="fas fa-unlock-alt"></i>-symbolia.
                         Julkista linkkiä käytettäessä näet sivun ylälaidassa <i class="fas fa-lock"></i>-symbolin.`,
                     
-                        `Luotuasi uuden listan voit avata sen linkin selaimessa, jolloin löydät itsesi lintulistasi etusivulta.`,
+                        `Luotuasi uuden listan voit avata sille ilmoitetun linkin selaimessa, jolloin löydät itsesi lintulistasi
+                        etusivulta. Merkitsemäsi lajihavainnot tulevat ilmestymään kuvina listan ruudetulle alueelle.`,
                     
-                        `Merkitsemäsi lintuhavainnot ilmestyvät kuvina listan ruudetulle alueelle. Lisätäksesi uuden havainnon, kirjoita
+                        `Lisätäksesi uuden havainnon, kirjoita
                         halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
-                        <i class="fas fa-plus"></i>-symbolia. Jos laji on jo listassa, näyttää hakutulos <i class="fas fa-plus"></i>-symbolin
-                        sijaan havaintopäivämäärän. Alla näet esimerkkinä havainnon Kattohaikarasta; havainnon päivämäärä on merkitty
+                        <i class="fas fa-plus"></i>-symbolia. Jos tästä lajista on jo havainto listassa, näyttää hakutulos
+                        <i class="fas fa-times" style="color: crimson;"></i>-symbolin, jota klikkaamalla voit poistaa havainnon.
+                        Alla näet esimerkkinä havainnon Kattohaikarasta; havainnon päivämäärä on merkitty
                         lajinimen alapuolelle.`,
 
                         `<img src="./assets/images/kattohaikara.png">`,
                     
-                        `Listasivun vasemmassa alalaidassa näet listassa olevien lajihavaintojen kokonaismäärän. Sivun ylälaitaan taas
+                        `Sivun vasemmassa alalaidassa näet listassa olevien lajihavaintojen kokonaismäärän. Sivun ylälaitaan taas
                         liimautuu <i class="fas fa-search"></i>-hakupalkki silloin, kun vierität sivua alaspäin.`]
                 },
                 {
                     q: "Miten lisään listaan uuden havainnon?",
                     a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
-                        <i class="fas fa-plus"></i>-symbolia. Jos laji on jo listassa, näyttää hakutulos <i class="fas fa-plus"></i>-symbolin
-                        sijaan havaintopäivämäärän.`,
+                        <i class="fas fa-plus"></i>-symbolia. Jos laji on jo listassa, näyttää hakutulos
+                        <i class="fas fa-times" style="color: crimson;"></i>-symbolin, jolla havainnon voi poistaa.`,
                         
-                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                        `#NB# Havaintoja voi lisätä ja poistaa vain listan yksityistä linkkiä käyttämällä.`]
                 },
                 {
                     q: "Miten muutan listassa olevan havainnon päivämäärää?",
                     a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
                         <i class="fas fa-clock"></i>-symbolia.`,
                         
-                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                        `#NB# Havaintojen tietoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
                 },
                 {
                     q: "Miten poistan listassa olevan havainnon?",
                     a: [`Kirjoita halutun lajin nimi sivu ylälaidan <i class="fas fa-search"></i>-hakukenttään ja paina hakutuloksessa
-                        <i class="fas fa-eraser"></i>-symbolia. Lintulista pyytää sinulta vielä varmistuksen poistolle.`,
+                        <i class="fas fa-times" style="color: crimson;"></i>-symbolia. Lintulista pyytää sinulta vielä varmistuksen poistolle.`,
                         
-                        `#NB# Havaintoja voi muokata vain listan yksityistä linkkiä käyttämällä.`]
+                        `#NB# Havaintoja voi poistaa vain listan yksityistä linkkiä käyttämällä.`]
                 },
                 {
                     q: "Miten poistan luomani listan?",
-                    a: [`Listaa itsessään ei voi poistaa, mutta voit poistaa yksitellen sen havainnot ja jättää tyhjän listan
-                         jälkeesi.`]
+                    a: [`Listaa itsessään ei voi poistaa, mutta voit poistaa sen havainnot yksitellen ja jättää tyhjän listan
+                         jälkeesi.`,
+                        
+                        `#NB# Listan tietojen poistaminen ei ole mahdollista, jos olet hukannut listan yksityisen avaimen.`]
                 },
                 {
                     q: `Mitä sivun ylälaidan <i class="fas fa-unlock-alt"></i> <i class="fas fa-lock"></i> -symbolit tarkoittavat?`,
                     a: [`Kuhunkin listaan pääsee kahdella linkillä: yksityisellä ja julkisella. Symbolit kuvastavat näitä kahta tapaa.`,
                     
-                        `Yksityistä linkkiä käyttämällä saa valtuudet muokata listaa, jonka merkiksi sivun ylälaidassa näytetään avointa
+                        `Yksityistä linkkiä käyttämällä saat valtuudet muokata listaa; jonka merkiksi sivun ylälaidassa näytetään avointa
                         lukkoa <i class="fas fa-unlock-alt"></i>.`,
                         
                         `Julkisella linkillä listaa voi katsella mutta ei muokata, jonka merkiksi näytetään suljettu lukko
@@ -133,37 +137,66 @@
                     a: [`Lintulistan on tehnyt suomalainen koodiluola <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>.`]
                 },
                 {
-                    q: "Olen kadottanut listani linkin! Pystyttekö palauttamaan sen?",
-                    a: [`Hups! Valitettavasti linkkiä ei voi palauttaa, koska Lintulista ei kerää käyttäjistään tunnistetietoja. Yksittäisen
-                         listan omistajaa ei siten voida varmistaa.`,
+                    q: "Olen kadottanut listani yksityisen linkin! Pystyttekö palauttamaan sen?",
+                    a: [`Hups! Valitettavasti linkkiä ei voi palauttaa, koska Lintulista ei kerää käyttäjistään sellaisia tunnistetietoja,
+                         joilla yksittäisen listan omistaja voitaisiin varmistaa.`,
                          
                          `Voit kuitenkin lähestyä meitä <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>
-                         ja tiedustella mahdollisuutta saada kopio kyseisen listan julkisista tiedoista, jonka jälkeen voit luoda uuden
-                         listan ja lisätä sinne lajihavainnot yksitellen.`]
+                         ja tiedustella mahdollisuutta saada kopio listan julkisista tiedoista, jolloin voit luoda uuden
+                         listan ja lisäillä sinne lajihavainnot uudelleen.`]
+                },
+                {
+                    q: "Olen kadottanut listani julkisen linkin! Pystyttekö palauttamaan sen?",
+                    a: [`Löydät listasi julkisen linkin kirjautumalla sisään yksityisellä linkillä ja klikkaamalla sivun ylälaidan
+                         <i class="fas fa-unlock-alt"></i>-symbolia.`]
+                },
+                {
+                    q: "Voinko muuttaa listani yksityistä linkkiä?",
+                    a: [`Linkkiä ei valitettavasti voi muuttaa; mutta voit luoda uuden listan ja lisäillä sinne yksitellen
+                        aiemman listan havainnot.`]
                 },
                 {
                     q: "Miten lisään listaani lajin, jota ei löydy Lintulistan haulla?",
-                    a: [`Lähetähän halutun lajin nimi <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>, niin selvitetään sen lisääminen
+                    a: [`Lähetähän halutun lajin nimen <a href="mailto:sw@tarpeeksihyvaesoft.com">sähköpostitse</a>, niin selvitetään sen lisääminen
                          Lintulistan hakutietoihin.`,
                         
-                        `Tällä hetkellä Lintulistan pitäisi sisältää kaikki Suomessa vapaina tavattavat lajit sekä joitakin erikoisuuksia.`]
+                        `Tällä hetkellä Lintulistan haun pitäisi sisältää kaikki Suomessa vapaina tavattavat lajit sekä joitakin erikoisuuksia.`]
                 },
                 {
                     q: "Mikä on 100 Lajia -haaste?",
                     a: [`BirdLife Suomi haastaa harrastajat tunnistamaan sata lintulajia yhden vuoden aikana. Voit saada
-                         lisätietoa aiheesta BirdLifen <a href="https://www.birdlife.fi/lintuharrastus/100lintulajia/">
+                         lisätietoa haasteesta BirdLifen <a href="https://www.birdlife.fi/lintuharrastus/100lintulajia/">
                          Tunnista 100 lintulajia</a> -sivulta.`,
                         
-                        `Löydät Lintulistasta 100 Lajia -haastemoodin painamalla sivun ylälaidan <i class="fas fa-list-ul"></i>-symbolia
-                        ja valitsemalla avautuvasta valikosta <i>100 Lajia -haaste</i>. Tässä moodissa listassasi näkyy muiden havaintojen
-                        lisäksi 150 helpoksi havaittavaksi luokiteltua lajia.`,
+                        `Löydät 100 Lajia -haastemoodin Lintulistasta painamalla sivun ylälaidan <i class="fas fa-list-ul"></i>-symbolia
+                        ja valitsemalla avautuvasta valikosta <i>100 Lajia -haaste</i>. Tässä moodissa listassasi näkyy havaintojesi
+                        lisäksi 150 BirdLifen helpoksi havaittavaksi luokittelemaa lajia. Voit koittaa kerätä ne kaikki!`,
                     
-                        `Muistathan, että listasivun vasemmasta alalaidasta näet listasi lajihavaintomäärän. Et siis joudu laskemaan niitä
-                         käsin.`]
+                        `Muistathan, että listasivun vasemmassa alalaidassa näet listasi kokonaislajihavaintomäärän.`]
                 },
                 {
                     q: "Onko Lintulista saatavilla englanniksi (tai muilla kielillä)?",
-                    a: [`Lintulista on tällä hetkellä saatavilla vain suomeksi ja suomenkielisillä lajinimillä.`]
+                    a: [`Lintulista on toistaiseksi saatavana vain suomeksi ja suomenkielisillä lajinimillä.`]
+                },
+                {
+                    q: "Mitä tietoja Lintulista kerää käyttäjistään?",
+                    a: [`Lintulista ei kerää käyttäjistään yksityistä tietoa.`,
+                    
+                        `Julkinen IP-osoitteesi tallentuu järjestelmään osittaisessa, anonymisoidussa muodossa luodessasi uuden listan.
+                        Tieto ei yksilöi sinua henkilökohtaisesti eikä se näy julkisesti.`,
+                        
+                        `Merkitsemistäsi lajihavainnoista tallennetaan lajinimi ja havaintoaika.`,
+                    
+                        `Voit myös tarkastella Lintulistan lähdekoodia GitHubissa,
+                        <a href="https://www.github.com/leikareipa/lintulista/">leikareipa/lintulista</a>.`]
+                },
+                {
+                    q: "Millä ohjelmointikielillä Lintulista on toteutettu?",
+                    a: [`Lintulista on toteutettu pääsääntöisesti JavaScriptillä Reactia avuksi käyttäen. Palvelinpuoli on PHP:tä.`]
+                },
+                {
+                    q: "Onko Lintulista avointa lähdekoodia?",
+                    a: [`On! Löydät sen GitHubista, <a href="https://www.github.com/leikareipa/lintulista/">leikareipa/lintulista</a>.`]
                 },
             ]);
 
