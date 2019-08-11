@@ -160,7 +160,7 @@ export function ObservationList(props = {})
                     }
                     else
                     {
-                        error(`Could not deöete the observation of ${bird.species}.`);
+                        error(`Could not delete the observation of ${bird.species}.`);
                     }
                 }
             });
@@ -296,37 +296,27 @@ export function ObservationList(props = {})
         if (!bird)
         {
             panic(`Unknown species '${speciesName}'.`);
+            return {};
         }
 
-        return {
-            observation: observation({bird, date:new Date()}),
-            element: <ObservationCardGhost key={`ghost-of-${speciesName}`}
-                                           speciesName={speciesName}/>
-        };
-    }
-
-    function observation_card(obs, tag = <></>)
-    {
-        panic_if_not_type("object", obs, tag);
-
-        /// Temporary implementation; will be replaced.
-        if ((sortListBy === "sata-lajia") &&
-            !sataLajia.includes(obs.bird.species))
-        {
-            tag = <PlainTag text="Lisälaji"/>;
-        }
+        const obs = observation({bird, date:new Date()});
 
         return {
             observation: obs,
             element: <ObservationCard observation={obs}
-                                      key={obs.bird.species}
-                                      tag={tag}
-                                      allowEditing={props.backend.hasEditRights}
-                                      maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
-                                      callbackSetActionBarEnabled={(boolState)=>setIsMenuBarEnabled(boolState)}
-                                      requestDeleteObservation={async()=>await observationDataMutator.delete_observation(obs)}
-                                      requestChangeObservationDate={async(newDate)=>await observationDataMutator.set_observation_date(obs, newDate)}
-                                      requestChangeObservationPlace={async(newPlace)=>await observationDataMutator.set_observation_place(obs, newPlace)}/>
+                                      isGhost={true}
+                                      key={obs.bird.species}/>
+        };
+    }
+
+    function observation_card(obs)
+    {
+        panic_if_not_type("object", obs);
+
+        return {
+            observation: obs,
+            element: <ObservationCard observation={obs}
+                                      key={obs.bird.species}/>
         };
     }
 
