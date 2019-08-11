@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined} from "./assert.js";
+import {panic_if_undefined, is_function} from "./assert.js";
 import {darken_viewport} from "./darken_viewport.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
@@ -27,6 +27,9 @@ import {darken_viewport} from "./darken_viewport.js";
 //     The benefit of using callbacks is that they can access the dialog's return data prior
 //     to the dialog element being removed. The dialog will not be removed before the respective
 //     callback's Promise resolves.
+//
+// A callback to be called when the dialog closes (whether the user accepted or rejected it)
+// can be provided via props.onClose. The callback will be provided no parameters.
 //
 // The dialog component to be rendered should be provided via 'dialog', which should be a
 // React component that calls props.onDialogAccept/props.onDialogReject when the dialog is
@@ -59,7 +62,7 @@ export function open_modal_dialog(dialog, parameters = {})
             ...parameters,
             onDialogAccept: async(returnData)=>
             {
-                if (typeof parameters.onAccept === "function")
+                if (is_function(parameters.onAccept))
                 {
                     await parameters.onAccept(returnData);
                 }
@@ -69,7 +72,7 @@ export function open_modal_dialog(dialog, parameters = {})
             },
             onDialogReject: async()=>
             {
-                if (typeof parameters.onReject === "function")
+                if (is_function(parameters.onReject))
                 {
                     await parameters.onReject();
                 }
@@ -92,6 +95,11 @@ export function open_modal_dialog(dialog, parameters = {})
         }
 
         dialogContainer.remove();
+
+        if (is_function(parameters.onClose))
+        {
+            parameters.onClose();
+        }
 
         await shades.remove();
     }
