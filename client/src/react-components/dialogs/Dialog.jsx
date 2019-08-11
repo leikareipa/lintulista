@@ -97,16 +97,25 @@ export function Dialog(props = {})
 
         function handle_key(keyEvent)
         {
+            if (props.disableTabKey &&
+                (keyEvent.key === "Tab"))
+            {
+                keyEvent.preventDefault();
+                return;
+            }
+
             if (props.enterAccepts &&
                 (keyEvent.key === "Enter"))
             {
                 setAcceptViaCode(true);
+                return;
             }
 
             if (props.escRejects &&
                 (keyEvent.key === "Escape"))
             {
                 setRejectViaCode(true);
+                return;
             }
         }
     }, []);
@@ -204,6 +213,7 @@ Dialog.defaultProps =
     acceptButtonText: "Tallenna",
     rejectButtonIcon: "fas fa-times",
     rejectButtonText: "Peruuta",
+    disableTabKey: true,
     enterAccepts: false,
     escRejects: true,
 }
