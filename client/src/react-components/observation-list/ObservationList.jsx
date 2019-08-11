@@ -10,11 +10,9 @@ import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
-import {ObservationCardGhost} from "./ObservationCardGhost.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
-import {PlainTag} from "../tags/PlainTag.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 // A list of the birds singled out in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
@@ -57,9 +55,9 @@ export function ObservationList(props = {})
     // Note that if you change the initial value, you should change the initial value of
     // the sorting menu index in the ObservationListMenuBar element of this component also.
     //
-    const [sortListBy, setSortListBy] = React.useState("date");
+    const [sortListBy, setSortListBy] = React.useState(props.backend.observations().length? "date" : "sata-lajia");
 
-    const [renderCount,] = React.useState(()=>({total:0, elements:0}));
+    const [renderCount,] = React.useState(()=>({total:0, elements:0, isInitialRender:true}));
     renderCount.total++;
 
     // An array providing for each observation in the list its corresponding React element.
@@ -85,6 +83,8 @@ export function ObservationList(props = {})
             sort_observation_cards();
             redraw_observation_cards();
         }
+
+        renderCount.isInitialRender = false;
     }, [sortListBy]);
 
      // Functions that can modify the underlying observation data.
@@ -132,6 +132,8 @@ export function ObservationList(props = {})
                 return;
             }
 
+            setIsMenuBarEnabled(false);
+
             // Ask the user to confirm the deletion of the observation; and if they do so,
             // remove it.
             await open_modal_dialog(QueryObservationDeletion,
@@ -162,7 +164,8 @@ export function ObservationList(props = {})
                     {
                         error(`Could not delete the observation of ${bird.species}.`);
                     }
-                }
+                },
+                onClose: ()=>{setIsMenuBarEnabled(true)},
             });
         },
 
@@ -237,7 +240,7 @@ export function ObservationList(props = {})
                {/* A list of ObservationCard components, one for each observation the user has made.*/}
                <div className={`observation-cards ${sortListBy}`.trim()}
                     key={observationCardsKey}>
-                        {observationCards.length? observationCards.map(c=>c.element) : intro_element(props.backend.hasEditRights)}
+                        {observationCards.map(card=>card.element)}
                </div>
 
                {/* Displays general information about the list's state - like the number of observations.*/}
@@ -358,23 +361,4 @@ ObservationList.validate_props = function(props)
     panic_if_undefined(props.backend);
 
     return;
-}
-
-// Returns the element to be displayed over the observation list when the list is empty.
-function intro_element(hasEditRights)
-{
-    panic_if_not_type("boolean", hasEditRights);
-    
-    return <div className="intro">
-               <h3><i className="fas fa-feather-alt"/> Tervetuloa Lintulistalle!</h3>
-               <p>Löydät sivun käyttöohjeet <a href="/guide/" target="_blank" rel="noopener noreferred">
-               <i className="fas fa-link fa-sm"/> tästä</a>. Ohjeet sisältävät mm. tärkeää yksityisyystietoa,
-               ja niiden vilkaiseminen onkin suosisteltua ennen sivuston varsinaista käyttöönottoa.</p>
-               {hasEditRights? <p>
-                                   Kun haluat ryhtyä merkitsemään havaintojasi, kirjoita ylälaidan hakukenttään&nbsp;
-                                   <i className="fas fa-search fa-xs"/> lintulajin nimi. Halutun tuloksen
-                                   kohdalla paina <i className="fas fa-plus-circle fa-xs"/>-symbolia lisätäksesi se listaan!
-                               </p>
-                             : <></>}
-           </div>
 }

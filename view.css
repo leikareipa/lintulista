@@ -191,9 +191,6 @@ footer
     height: 45px;
     line-height: 45px;
     z-index: 41; /* Above observation list elements.*/
-    transform: none;
-
-    transition: transform 0.25s linear;
 }
 
 .ObservationList > .ObservationListMenuBar.sticky
@@ -202,18 +199,6 @@ footer
     position: sticky;
     top: 0;
     right: 0;
-}
-
-.ObservationList > .ObservationListMenuBar.disabled
-{
-    opacity: 0;
-    transform: translateY(2px) rotateX(4deg);
-}
-
-.ObservationList > .ObservationListMenuBar.enabled
-{
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
 }
 
 .ObservationList > .ObservationListMenuBar > *
@@ -511,21 +496,6 @@ footer
     padding-right: 11px;
     font-family: sans-serif;
     border-radius: 0 4px 0 0;
-}
-
-.ObservationList > .observation-cards > .intro
-{
-    font-size: 115%;
-    font-family: "Delius", sans-serif;
-    color: rgb(238, 104, 42);
-    width: 550px;
-    text-align: left;
-    padding: 30px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: 25px;
-    border-radius: 0px;
-    background-color: #f9f9f9;
 }
 
 .ObservationList > .observation-cards
@@ -850,19 +820,17 @@ footer
 {
     outline: none;
     border-radius: 4px;
-    border: none;
-    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.4);
     padding-right: 15px;
     padding-left: 15px;
     background-color: white;
     transition: box-shadow 0.1s ease-in-out;
+    border: 1px solid #e1e1e1;
     min-height: 47px;
 }
 
-.Dialog > .form > .fields input:focus,
-.Dialog > .form > .fields input:hover
+.Dialog > .form > .fields input:focus
 {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    border: 1px solid #3591e7;
 }
 
 .Dialog.QueryObservationDate > .form > .fields > .date-bar

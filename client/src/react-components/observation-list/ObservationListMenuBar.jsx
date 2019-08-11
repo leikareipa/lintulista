@@ -78,7 +78,7 @@ export function ObservationListMenuBar(props = {})
                                {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
                                {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
                            ]}
-                           initialItemIdx={1}
+                           initialItemIdx={props.backend.observations().length? 1/*Päivä*/ : 2/*100 Lajia*/}
                            showTooltip={!isBarSticky}/>
 
                {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
