@@ -7,7 +7,7 @@
 "use strict";
 
 import {panic_if_undefined} from "./assert.js";
-import {animate} from "./animate.js";
+import {darken_viewport} from "./darken_viewport.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
 // the container when the user accepts or rejects the dialog.
@@ -34,20 +34,25 @@ import {animate} from "./animate.js";
 //
 // The parameters (props) to be passed to the dialog component are given via args.parameters;
 // which should be an object containing the desired parameters.
-// 
+//
 export function open_modal_dialog(dialog, parameters = {})
 {
     panic_if_undefined(dialog);
 
     const dialogContainer = document.createElement("div");
 
-    return new Promise(resolve=>
+    // Will be used to darken the viewport.
+    let shades = null;
+
+    return (async()=>
     {
         if (!dialogContainer)
         {
             panic("Can't find the container to render the observation list into.");
             return;
         }
+
+        shades = await darken_viewport({z:110, opacity:0.5})
 
         const dialogElement = React.createElement(dialog,
         {
@@ -60,7 +65,7 @@ export function open_modal_dialog(dialog, parameters = {})
                 }
 
                 close_this_dialog();
-                resolve(returnData);
+                return returnData;
             },
             onDialogReject: async()=>
             {
@@ -70,13 +75,13 @@ export function open_modal_dialog(dialog, parameters = {})
                 }
 
                 close_this_dialog();
-                resolve(null);
+                return null;
             },
         });
 
         document.body.appendChild(dialogContainer);
         ReactDOM.render(dialogElement, dialogContainer);
-    });
+    })();
 
     // Removes the dialog from the DOM.
     async function close_this_dialog()
@@ -87,5 +92,7 @@ export function open_modal_dialog(dialog, parameters = {})
         }
 
         dialogContainer.remove();
+
+        await shades.remove();
     }
 }

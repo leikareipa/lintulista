@@ -422,9 +422,9 @@ footer
     z-index: 20;
 }
 
-.BirdSearchResult.not-previously-observed > .AsyncIconButton
+.BirdSearchResult > .AsyncIconButton
 {
-    color: #3591e7;
+    color: crimson;
     position: absolute;
     bottom: -10px;
     right: -15px;
@@ -435,6 +435,11 @@ footer
     box-shadow: 0 0px 3px rgba(0, 0, 0, 0.4);
     border-radius: 50%;
     font-size: 175%;
+}
+
+.BirdSearchResult.not-previously-observed > .AsyncIconButton
+{
+    color: #3591e7;
 }
 
 .BirdSearchResult .BirdThumbnail

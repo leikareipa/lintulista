@@ -7,9 +7,11 @@
 "use strict";
 
 import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
+import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationCardGhost} from "./ObservationCardGhost.js";
+import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
 import {PlainTag} from "../tags/PlainTag.js";
@@ -120,31 +122,48 @@ export function ObservationList(props = {})
             }
         },
 
-        delete_observation: async function(targetObservation)
+        delete_observation: async function(bird)
         {
-            const elementIdx = observationCards.map(c=>c.observation.bird.species).findIndex(species=>(species === targetObservation.bird.species));
-    
-            if ((elementIdx !== -1) && await props.backend.delete_observation(targetObservation))
+            const obs = observationCards.map(o=>o.observation).find(obs=>(obs.bird.species === bird.species));
+
+            if (!obs)
             {
-                const speciesName = observationCards[elementIdx].observation.bird.species;
-    
-                if ((sortListBy === "sata-lajia") && sataLajia.includes(speciesName))
-                {
-                    observationCards.splice(elementIdx, 1,
-                                                ghost_observation_card(speciesName));
-                }
-                else
-                {
-                    observationCards.splice(elementIdx, 1);
-                }
-                
-                sort_observation_cards();
-                redraw_observation_cards();
+                panic("Was asked to delete an observation of a species of which no observation exists.");
+                return;
             }
-            else
+
+            // Ask the user to confirm the deletion of the observation; and if they do so,
+            // remove it.
+            await open_modal_dialog(QueryObservationDeletion,
             {
-                error(`Could not deöete the observation of ${bird.species}.`);
-            }
+                observation: obs,
+                onAccept: async()=>
+                {
+                    const elementIdx = observationCards.map(c=>c.observation.bird.species).findIndex(species=>(species === obs.bird.species));
+    
+                    if ((elementIdx !== -1) && await props.backend.delete_observation(obs))
+                    {
+                        const speciesName = observationCards[elementIdx].observation.bird.species;
+            
+                        if ((sortListBy === "sata-lajia") && sataLajia.includes(speciesName))
+                        {
+                            observationCards.splice(elementIdx, 1,
+                                                        ghost_observation_card(speciesName));
+                        }
+                        else
+                        {
+                            observationCards.splice(elementIdx, 1);
+                        }
+                        
+                        sort_observation_cards();
+                        redraw_observation_cards();
+                    }
+                    else
+                    {
+                        error(`Could not deöete the observation of ${bird.species}.`);
+                    }
+                }
+            });
         },
 
         // Alters an existing observation's date to match the given year, month (1-12), and
@@ -212,6 +231,7 @@ export function ObservationList(props = {})
                <ObservationListMenuBar enabled={isMenuBarEnabled}
                                        backend={props.backend}
                                        callbackAddObservation={observationDataMutator.add_observation}
+                                       callbackRemoveObservation={observationDataMutator.delete_observation}
                                        callbackSetListSorting={setSortListBy}/>
 
                {/* A list of ObservationCard components, one for each observation the user has made.*/}
@@ -222,7 +242,7 @@ export function ObservationList(props = {})
 
                {/* Displays general information about the list's state - like the number of observations.*/}
                <ObservationListFootnotes numObservationsInList={props.backend.observations().length}
-                                      callbackDownloadList={save_observations_to_csv_file}/>
+                                         callbackDownloadList={save_observations_to_csv_file}/>
                                       
            </div>
 
@@ -304,9 +324,9 @@ export function ObservationList(props = {})
                                       allowEditing={props.backend.hasEditRights}
                                       maxPlaceNameLength={props.backend.backend_limits().maxPlaceNameLength}
                                       callbackSetActionBarEnabled={(boolState)=>setIsMenuBarEnabled(boolState)}
-                                      requestDeleteObservation={async(self)=>await observationDataMutator.delete_observation(self)}
-                                      requestChangeObservationDate={async(self, newDate)=>await observationDataMutator.set_observation_date(self, newDate)}
-                                      requestChangeObservationPlace={async(self, newPlace)=>await observationDataMutator.set_observation_place(self, newPlace)}/>
+                                      requestDeleteObservation={async()=>await observationDataMutator.delete_observation(obs)}
+                                      requestChangeObservationDate={async(newDate)=>await observationDataMutator.set_observation_date(obs, newDate)}
+                                      requestChangeObservationPlace={async(newPlace)=>await observationDataMutator.set_observation_place(obs, newPlace)}/>
         };
     }
 
@@ -330,7 +350,7 @@ export function ObservationList(props = {})
 
     async function save_observations_to_csv_file()
     {
-        let csvString = "Ensihavainto, Laji, Heimo, Lahko\n";
+        let csvString = "Ensimerkintä, Laji, Heimo, Lahko\n";
 
         props.backend.observations().forEach(obs=>
         {

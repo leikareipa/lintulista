@@ -7,7 +7,7 @@
 "use strict";
 
 import {backend_access} from "../../backend-access.js";
-import { is_defined } from "../../assert.js";
+import {is_defined} from "../../assert.js";
 
 // Displays a multi-step button, whose contents change depending on how many steps have
 // been taken.

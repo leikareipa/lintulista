@@ -12,9 +12,13 @@ import {BirdSearchBar} from "./BirdSearchBar.js";
 // object with which the component can query the backend for the list of known birds, the
 // user's current observations, etc.
 //
-// A callback provided via props.callbackSelectedBird will be called when the user clicks on
-// a search result. The callback will be passed one parameter: a bird() object representing
-// the type of bird that was clicked.
+// The callback provided via props.callbackAddObservation will be called when the user clicks
+// to add to the list a search result whose bird is not already on the list. The callback
+// will be passed one parameter: a bird() object representing the type of bird in question.
+//
+// The callback provided via props.callbackRemoveObservation will be called when the user
+// clicks to remove from the list a search result whose bird is on the list. The callback
+// will be passed one parameter: a bird() object representing the type of bird in question.
 //
 export function BirdSearch(props = {})
 {
@@ -77,20 +81,33 @@ export function BirdSearch(props = {})
 
             return <BirdSearchResult key={bird.species}
                                      bird={bird}
-                                     clickCallback={select_bird}
-                                     dateObserved={observation? observation.dateString : null}
-                                     allowAddingToList={props.backend.hasEditRights}/>;
+                                     observation={observation? observation : null}
+                                     userHasEditRights={props.backend.hasEditRights}
+                                     callbackAddObservation={add_bird_to_list}
+                                     callbackRemoveObservation={remove_bird_from_list}/>;
         }
     }
 
-    // Called when the user selects one of the search results.
-    async function select_bird(bird)
+    // Called when the user selects to add the search result's bird to their list of
+    // observations. The 'bird' parameter is expected to be a bird() object.
+    async function add_bird_to_list(bird)
     {
         panic_if_not_type("object", bird);
 
-        await props.callbackSelectedBird(bird);
+        await props.callbackAddObservation(bird);
 
         reset_search_results();
+    }
+
+    // Called when the ser selects to remove the search result's bird from their list of
+    // observations. The 'bird' parameter is expected to be a bird() object.
+    async function remove_bird_from_list(bird)
+    {
+        panic_if_not_type("object", bird);
+
+        reset_search_results();
+
+        await props.callbackRemoveObservation(bird);
     }
 
     function reset_search_results()
@@ -108,7 +125,7 @@ BirdSearch.defaultProps =
 BirdSearch.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.backend);
-    panic_if_not_type("function", props.callbackSelectedBird);
+    panic_if_not_type("function", props.callbackAddObservation);
 
     return;
 }

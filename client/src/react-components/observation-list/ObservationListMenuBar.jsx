@@ -21,6 +21,10 @@ import {MenuButton} from "../buttons/MenuButton.js";
 // be provided via props.callbackOnAddObservation. It will be passed one parameter: a bird()
 // object describing the species of which the user wants an observation added.
 //
+// A callback for when the user requests an existing observation to be removed from the
+// list is to be provided via props.callbackOnAddObservation. It will be passed one parameter:
+// a bird() object describing the species of which the user wants an observation added.
+//
 // A callback for when the user requests to change the list's sorting order is to be
 // provided via props.callbackSetListSorting. It will be passed one parameter: a string
 // describing the new sorting order.
@@ -58,10 +62,11 @@ export function ObservationListMenuBar(props = {})
 
     return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"} ${isBarSticky? "sticky" : ""}`.trim()}>
 
-               {/* A search field that allows the user to search for specific bird species to be added as
-                 * observations.*/}
+               {/* A search field that allows the user to search for specific bird species to be added or
+                 * removed as observations.*/}
                <BirdSearch backend={props.backend}
-                           callbackSelectedBird={props.callbackAddObservation}/>
+                           callbackAddObservation={props.callbackAddObservation}
+                           callbackRemoveObservation={props.callbackRemoveObservation}/>
 
                {/* A button with which the user can change the sorting order of the observation list.*/}
                <MenuButton icon="fas fa-list-ul fa-fw"
