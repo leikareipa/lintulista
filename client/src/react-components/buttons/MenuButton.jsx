@@ -127,7 +127,7 @@ export function MenuButton(props = {})
 
     return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"} ${props.id}`}
                 data-menu-button-id={props.id}>
-                    <div className="tooltip" style={{display:(props.showTooltip? "auto" : "none")}}>
+                    <div className="tooltip" style={{display:(props.showTooltip? "initial" : "none")}}>
                         {currentItemText}
                     </div>
                     <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
