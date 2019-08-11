@@ -12,7 +12,7 @@ export function BirdSearchResult(props = {})
     // A button element the user can press to add or remove the search result to/from the
     // list, depending on whether they already have an observation of this bird on their
     // list.
-    const editButton = (()=>
+    const addAndRemoveButton = (()=>
     {
         if (!props.userHasEditRights)
         {
@@ -35,6 +35,25 @@ export function BirdSearchResult(props = {})
         }
     })();
 
+    // If the bird of the search result has been observed, this element displays the date
+    // of that observation and a button that lets the user change that date.
+    const dateElement = (()=>
+    {
+        if (props.observation)
+        {
+            return <>
+                       <i className="fas fa-clock"
+                          style={{color:"#3791f8", marginRight:"5px", cursor:"pointer"}}
+                          onClick={()=>props.callbackChangeObservationDate(props.bird)}/>
+                       {props.observation.dateString}
+                   </>
+        }
+        else
+        {
+            return <>Ei havaintoa listassa</>
+        }
+    })();
+
     return <div className={`BirdSearchResult ${!props.observation? "not-previously-observed" : ""}`.trim()}>
 
                 <BirdThumbnail bird={props.bird}
@@ -47,13 +66,13 @@ export function BirdSearchResult(props = {})
                         {props.bird.species}
                     </div>
                     <div className="date-observed">
-                        {props.observation? props.observation.dateString : <>Ei havaintoa listassa</> }
+                        {dateElement}
                     </div>
                 </div>
 
-                {/* A button the user can press to e.g. add or remove this observation to/from
+                {/* A button the user can press to add or remove this observation to/from
                   * their list.*/}
-                {editButton}
+                {addAndRemoveButton}
            </div>
 }
 

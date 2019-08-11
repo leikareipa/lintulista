@@ -375,7 +375,7 @@ footer
 {
     position: absolute;
     top: 45px; /* Below the search input field.*/
-    right: calc(12% + 129px); /* Level with the search input field.*/
+    right: calc(12% + 100px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
@@ -401,7 +401,7 @@ footer
     align-items: center;
     border-radius: 4px;
     margin-top: 4px;
-    box-shadow: 0 -23px 15px 57px rgba(15, 7, 0, 0.15);
+    box-shadow: 0 0px 15px 30px rgba(15, 7, 0, 0.15);
 
     position: relative;
     z-index: 20;
@@ -424,7 +424,7 @@ footer
 
 .BirdSearchResult.not-previously-observed > .AsyncIconButton
 {
-    color: #3591e7;
+    color: #3791f8;
 }
 
 .BirdSearchResult .BirdThumbnail

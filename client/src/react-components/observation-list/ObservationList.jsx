@@ -10,6 +10,7 @@ import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
+import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {observation} from "../../observation.js";
@@ -149,8 +150,7 @@ export function ObservationList(props = {})
             
                         if ((sortListBy === "sata-lajia") && sataLajia.includes(speciesName))
                         {
-                            observationCards.splice(elementIdx, 1,
-                                                        ghost_observation_card(speciesName));
+                            observationCards.splice(elementIdx, 1, ghost_observation_card(speciesName));
                         }
                         else
                         {
@@ -169,35 +169,61 @@ export function ObservationList(props = {})
             });
         },
 
-        // Alters an existing observation's date to match the given year, month (1-12), and
-        // day (1-31). Returns the updated observation; or null on error.
-        set_observation_date: async function(existingObservation, {year, month, day})
+        set_observation_date: async function(bird)
         {
-            panic_if_undefined(existingObservation, year, month, day);
+            panic_if_not_type("object", bird);
 
-            const newDate = new Date();
-            newDate.setFullYear(year);
-            newDate.setMonth(month-1);
-            newDate.setDate(day);
+            const existingObservation = observationCards.map(o=>o.observation).find(obs=>(obs.bird.species === bird.species));
 
-            const modifiedObservation = observation(
+            if (!existingObservation)
             {
-                ...existingObservation,
-                date: newDate,
+                panic("Was asked to set the date of an observation of a species of which no observation exists.");
+                return;
+            }
+
+            setIsMenuBarEnabled(false);
+
+            // Ask the user to confirm the deletion of the observation; and if they do so,
+            // remove it.
+            await open_modal_dialog(QueryObservationDate,
+            {
+                observation: existingObservation,
+                onAccept: async({year, month, day})=>
+                {
+                    const newDate = new Date();
+                    
+                    newDate.setFullYear(year);
+                    newDate.setMonth(month-1);
+                    newDate.setDate(day);
+
+                    const modifiedObservation = observation(
+                    {
+                        ...existingObservation,
+                        date: newDate,
+                    });
+
+                    if (!(await props.backend.put_observation(modifiedObservation)))
+                    {
+                        return null;
+                    }
+
+                    const cardIdx = observationCards.map(o=>o.observation).findIndex(obs=>(obs.bird.species === bird.species));
+
+                    if (cardIdx === -1)
+                    {
+                        panic("Unable to find the observation card whose date was modified.");
+                    }
+
+                    observationCards.splice(cardIdx, 1, observation_card(modifiedObservation))
+
+                    if (sortListBy === "date")
+                    {
+                        sort_observation_cards();
+                        redraw_observation_cards();
+                    }
+                },
+                onClose: ()=>{setIsMenuBarEnabled(true)},
             });
-
-            if (!(await props.backend.put_observation(modifiedObservation)))
-            {
-                return null;
-            }
-
-            if (sortListBy === "date")
-            {
-                sort_observation_cards();
-                redraw_observation_cards();
-            }
-
-            return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
         },
 
         // Alters an existing observation's place. Returns the updated observation; or null
@@ -235,6 +261,7 @@ export function ObservationList(props = {})
                                        backend={props.backend}
                                        callbackAddObservation={observationDataMutator.add_observation}
                                        callbackRemoveObservation={observationDataMutator.delete_observation}
+                                       callbackChangeObservationDate={observationDataMutator.set_observation_date}
                                        callbackSetListSorting={setSortListBy}/>
 
                {/* A list of ObservationCard components, one for each observation the user has made.*/}

@@ -84,7 +84,8 @@ export function BirdSearch(props = {})
                                      observation={observation? observation : null}
                                      userHasEditRights={props.backend.hasEditRights}
                                      callbackAddObservation={add_bird_to_list}
-                                     callbackRemoveObservation={remove_bird_from_list}/>;
+                                     callbackRemoveObservation={remove_bird_from_list}
+                                     callbackChangeObservationDate={change_observation_date}/>;
         }
     }
 
@@ -99,7 +100,7 @@ export function BirdSearch(props = {})
         reset_search_results();
     }
 
-    // Called when the ser selects to remove the search result's bird from their list of
+    // Called when the user selects to remove the search result's bird from their list of
     // observations. The 'bird' parameter is expected to be a bird() object.
     async function remove_bird_from_list(bird)
     {
@@ -108,6 +109,14 @@ export function BirdSearch(props = {})
         reset_search_results();
 
         await props.callbackRemoveObservation(bird);
+    }
+
+    // Called when the user selects to change the date of an observation.
+    async function change_observation_date(bird)
+    {
+        reset_search_results();
+
+        await props.callbackChangeObservationDate(bird);
     }
 
     function reset_search_results()

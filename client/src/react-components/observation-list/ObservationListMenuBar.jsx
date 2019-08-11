@@ -66,7 +66,8 @@ export function ObservationListMenuBar(props = {})
                  * removed as observations.*/}
                <BirdSearch backend={props.backend}
                            callbackAddObservation={props.callbackAddObservation}
-                           callbackRemoveObservation={props.callbackRemoveObservation}/>
+                           callbackRemoveObservation={props.callbackRemoveObservation}
+                           callbackChangeObservationDate={props.callbackChangeObservationDate}/>
 
                {/* A button with which the user can change the sorting order of the observation list.*/}
                <MenuButton icon="fas fa-list-ul fa-fw"
