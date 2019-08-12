@@ -112,7 +112,7 @@ export function BirdSearchBar(props = {})
                       onFocus={()=>got_focus(true)}
                       onChange={handle_input_event}
                       spellCheck="false"
-                      placeholder=""
+                      placeholder="Hae lajia"
                       autoComplete="off"/>
 
                <i className="icon fas fa-search" style={{color:(state === "active"? "black" : "#f1f1f1")}}/>

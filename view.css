@@ -17,6 +17,8 @@ body
 
     position: relative;
     z-index: 1;
+
+    font-family: "Delius", sans-serif;
 }
 
 footer
@@ -39,14 +41,14 @@ footer
 #content > #header
 {
     background-color: #646464;
-    padding-bottom: 205px;
+    padding-bottom: 185px;
 }
 
 #app-title
 {
-    transform: rotate(-2deg);
+    transform: rotate(1deg);
     position: absolute;
-    top: 38px;
+    top: 20px;
     left: 14%;
     z-index: 2;
 }
@@ -54,10 +56,10 @@ footer
 #app-name
 {
     position: relative;
+    font-family: "Beth Ellen";
     z-index: 1;
-    color: #f1f1f1;
-    font-family: "Damion", cursive;
-    font-size: 450%;
+    color: #dbdbdb;
+    font-size: 250%;
 }
 
 #observation-list
@@ -95,21 +97,19 @@ footer
 .app-menu
 {
     position: absolute;
-    z-index: 1;
-    top: 59px;
-    left: calc(14% + 300px); /* Next to the app title.*/
+    z-index: 3;
+    top: 75px;
+    left: calc(14% + 55px); /* Next to the app title.*/
     display: flex;
     flex-direction: row;
 }
 
 .app-menu > .app-menu-item
 {
-    font-family: sans-serif;
-    font-variant: small-caps;
     text-align: center;
     margin: 7px;
     margin-right: 5px;
-    color: #f1f1f1;
+    color: #dbdbdb;
     padding: 15px;
     border-bottom: 4px solid rgba(0, 0, 0, 0.2);
     flex: 1;
@@ -181,7 +181,7 @@ footer
 
     width: 370px;
     position: absolute;
-    top: -130px;
+    top: -101px;
     right: 14%;
     color: rgba(241, 241, 241, 0.45);
     opacity: 1;
@@ -223,7 +223,7 @@ footer
 
 .ObservationList > .ObservationListMenuBar > .buttons > .lock i
 {
-    color: #f9f9f9;
+    color: #f1f1f1;
     transform: scale(1.5);
 }
 
@@ -234,7 +234,7 @@ footer
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon
 {
-    color: #f9f9f9;
+    color: #f1f1f1;
 }
 
 /* Font Awesome icons.*/
@@ -247,34 +247,19 @@ footer
 {
     white-space: nowrap;
     position: absolute;
-    top: -35px;
+    top: -45px;
     left: 50%;
-    transform: translateX(-50%);
-    background-color: #f9f9f9;
-    color: #000000;
-    border-radius: 3px;
-    font-size: 90%;
-    font-family: sans-serif;
+    background-color: #63bde0;
+    color: #ffffff;
+    border-radius: 13px 13px 13px 4px;
+    font-size: 88%;
+    font-family: "Nunito";
     line-height: 100%;
-    padding: 8px;
+    padding: 11px;
     padding-left: 13px;
     padding-right: 13px;
     min-width: 45px;
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
-}
-
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip::after
-{
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    content: " ";
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 8px 8px 0 8px;
-    border-color: #f9f9f9 transparent transparent transparent;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown
@@ -386,8 +371,8 @@ footer
     position: relative;
     z-index: 21;
 
-    color: #f1f1f1;
-    border-radius: 3px;
+    color: #dbdbdb;
+    border-radius: 13px;
     background-color: transparent;
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -395,7 +380,8 @@ footer
 .BirdSearchBar > .search-field:focus
 {
     color: black;
-    background-color: #f1f1f1;   
+    background-color: #f1f1f1;
+    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
 .BirdSearchBar > .icon
@@ -405,7 +391,7 @@ footer
     top: -44px;
     left: 15px;
     z-index: 22;
-    color: #f1f1f1;
+    color: #dbdbdb;
     pointer-events: none;
 }
 
@@ -437,7 +423,7 @@ footer
     padding-bottom: 17px;
     display: flex;
     align-items: center;
-    border-radius: 3px;
+    border-radius: 7px;
     margin-top: 4px;
     box-shadow: 0 0px 15px 30px rgba(15, 7, 0, 0.15);
 
@@ -649,7 +635,8 @@ footer
 
 .Dialog
 {
-    min-width: 400px;
+    font-family: serif;
+    min-width: 450px;
     padding-top: 0px;
     padding-bottom: 1px;
     background-color: #f9f9f9;
