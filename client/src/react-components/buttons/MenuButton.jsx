@@ -27,7 +27,8 @@ import {panic_if_not_type, warn} from "../../assert.js";
 // A callback for when the user clicks on the button can be provided via props.callbackOnButtonClick.
 // It will be passed no parameters.
 //
-// The menu's title is to be provided via props.title.
+// The menu's title is to be provided via props.title. If an empty string is given, the
+// dropdown will be rendered without a title element.
 //
 // The menu's items can be provided via props.items as an array of objects of the
 // following form:
@@ -117,10 +118,11 @@ export function MenuButton(props = {})
 
     const dropDownMenu = !props.items.length? <></>
                                             : <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
-                                                  <div className="title">
-                                                      {props.title}
-                                                  </div>
                                                   <div className="items">
+                                                      {props.title.length? <div className="title">
+                                                                               {props.title}
+                                                                           </div>
+                                                                         : <></>}
                                                       {itemElements}
                                                   </div>
                                               </div>
