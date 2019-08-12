@@ -34,13 +34,12 @@
     }
 }
 
-@media only screen and (max-width: 1200px)
+@media only screen and (max-width: 1250px)
 {
     #app-title
     {
-
-        left: 4%;
-        top: 9px;
+        left: 5%;
+        top: 7px;
         font-size: 90%;
     }
 
@@ -67,7 +66,7 @@
 
     .BirdSearchResultsDisplay
     {
-        right: calc(12% + 132px);
+        right: calc(12% + 131px);
     }
 
     .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
@@ -86,15 +85,16 @@
 {
     #app-title
     {
-        left: 50%;
-        transform: translateX(-50%);
+        transform: none;
+        left: 5%;
         top: 5px;
+        font-size: 80%;
     }
 
     #content > #header
     {
         background-color: #646464;
-        padding-bottom: 190px;
+        padding-bottom: 170px;
     }
 
     .ObservationList > .ObservationListMenuBar
@@ -133,6 +133,7 @@
         padding: 3px;
         padding-right: 7px;
         background-color: rgba(0, 0, 0, 0.2);
+        color: #f1f1f1;
     }
 }
 

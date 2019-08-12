@@ -115,7 +115,7 @@ export function BirdSearchBar(props = {})
                       placeholder=""
                       autoComplete="off"/>
 
-               <i className="icon fas fa-search"/>
+               <i className="icon fas fa-search" style={{color:(state === "active"? "black" : "#f1f1f1")}}/>
                 
            </div>
 

@@ -35,7 +35,7 @@ export function QueryObservationDate(props = {})
     let year = props.observation.date.getFullYear();
 
     return <Dialog component="QueryObservationDate"
-                   title="Merkitse havaintopäivä"
+                   title="Muokkaa havaintopäivää"
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>

@@ -28,7 +28,7 @@ export function BirdSearchResult(props = {})
         }
         else
         {
-            return <AsyncIconButton icon="fas fa-times"
+            return <AsyncIconButton icon="fas fa-backspace"
                                     title={`Poista ${props.bird.species} listasta`}
                                     titleClicked="Poistetaan listasta..."
                                     task={()=>props.callbackRemoveObservation(props.bird)}/>
@@ -42,8 +42,8 @@ export function BirdSearchResult(props = {})
         if (props.observation)
         {
             return <>
-                       <i className="fas fa-clock"
-                          style={{color:"transparent", marginRight:"5px", cursor:"pointer", WebkitTextStroke:"1px rgba(0, 0, 0, 0.6)"}}
+                       <i className="fas fa-pen fa-sm"
+                          style={{marginRight:"5px", cursor:"pointer", color:"transparent", WebkitTextStroke:"1px rgba(0, 0, 0, 0.6)"}}
                           title="Muuta päivämäärää"
                           onClick={()=>props.callbackChangeObservationDate(props.bird)}/>
                        {props.observation.dateString}
