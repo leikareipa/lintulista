@@ -40,6 +40,10 @@ import {panic_if_not_type, warn} from "../../assert.js";
 //
 // Note that the menu currently does not allow items to have tick boxes or the like.
 //
+// Alternatively, instead of menu items, you can provide a custom drop-down menu via
+// props.customMenu. It should be a React element as returned from React.createElement()
+// (or as JSX).
+//
 // The index of the initial active item can be given via props.initialItemIdx as a 0-
 // indexed integer.
 //
@@ -91,9 +95,34 @@ export function MenuButton(props = {})
                                           clickEvent.target.classList &&
                                           clickEvent.target.classList.contains("item"));
 
+            const clickedOnTitle = Boolean(clickedOnSelf &&
+                                           clickEvent.target.classList &&
+                                           clickEvent.target.classList.contains("title"));
+
+            const clickedOnCustomMenu = (()=>
+            {
+                if (!props.customMenu)
+                {
+                    return false;
+                }
+
+                let node = clickEvent.target;
+                while (node)
+                {
+                    if (node.classList && node.classList.contains("custom-menu"))
+                    {
+                        return true;
+                    }
+
+                    node = node.parentNode;
+                }
+
+                return false;
+            })();
+
             if (clickedOnSelf)
             {
-                if (!clickedOnItem)
+                if (!clickedOnItem && !clickedOnTitle && !clickedOnCustomMenu)
                 {
                     dropdownVisible? hide_dropdown() : show_dropdown();
                     props.callbackOnButtonClick();
@@ -116,16 +145,34 @@ export function MenuButton(props = {})
         </div>
     ));
 
-    const dropDownMenu = !props.items.length? <></>
-                                            : <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
-                                                  <div className="items">
-                                                      {props.title.length? <div className="title">
-                                                                               {props.title}
-                                                                           </div>
-                                                                         : <></>}
-                                                      {itemElements}
-                                                  </div>
-                                              </div>
+    const dropDownMenu = (()=>
+    {
+        if (props.customMenu)
+        {
+            return <div className={`dropdown custom-menu ${dropdownVisible? "active" : "inactive"}`}>
+                        {props.customMenu}
+                   </div>
+        }
+        else
+        {
+            if (!props.items.length)
+            {
+                return <></>;
+            }
+            else
+            {
+                return <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
+                           <div className="items">
+                               {props.title.length? <div className="title">
+                                                        {props.title}
+                                                    </div>
+                                                  : <></>}
+                               {itemElements}
+                           </div>
+                       </div>
+            }
+        }
+    })();
 
     return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"} ${props.id}`}
                 data-menu-button-id={props.id}>
@@ -159,7 +206,7 @@ export function MenuButton(props = {})
 
     function show_dropdown()
     {
-        if (props.items.length)
+        if (props.items.length || props.customMenu)
         {
             setDropdownVisible(true);
         }
@@ -175,7 +222,8 @@ MenuButton.defaultProps =
     enabled: true,
     initialItemIdx: 0,
     showTooltip: true,
-    callbackOnButtonClick: ()=>{}
+    callbackOnButtonClick: ()=>{},
+    customMenu: false,
 }
 
 MenuButton.validate_props = function(props)
