@@ -49,6 +49,8 @@ export function ObservationListMenuBar(props = {})
     // Make the action bar sticky if the user has scrolled far enough down the page.
     React.useEffect(()=>
     {
+        update_sticky_scroll();
+        
         window.addEventListener("scroll", update_sticky_scroll);
         return ()=>{window.removeEventListener("scroll", update_sticky_scroll)};
 
