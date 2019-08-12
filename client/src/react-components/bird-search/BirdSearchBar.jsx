@@ -115,9 +115,7 @@ export function BirdSearchBar(props = {})
                       placeholder=""
                       autoComplete="off"/>
 
-                <div className="icon">
-                    <i className="fas fa-search"/>
-                </div>
+               <i className="icon fas fa-search"/>
                 
            </div>
 

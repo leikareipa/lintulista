@@ -37,7 +37,14 @@ export function ObservationListMenuBar(props = {})
 {
     ObservationListMenuBar.validate_props(props);
 
+    const responsive =
+    {
+        compact: ()=>window.matchMedia("(max-width: 1200px)"),
+    }
+
     const [isBarSticky, setIsBarSticky] = React.useState(false);
+
+    const [showAboutButton, setShowLinkListButton] = React.useState(responsive.compact().matches);
 
     // Make the action bar sticky if the user has scrolled far enough down the page.
     React.useEffect(()=>
@@ -60,6 +67,11 @@ export function ObservationListMenuBar(props = {})
         }
     });
 
+    responsive.compact().addListener((mediaMatch)=>
+    {
+        setShowLinkListButton(mediaMatch.matches);
+    });
+
     return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"} ${isBarSticky? "sticky" : ""}`.trim()}>
 
                {/* A search field that allows the user to search for specific bird species to be added or
@@ -68,32 +80,85 @@ export function ObservationListMenuBar(props = {})
                            callbackAddObservation={props.callbackAddObservation}
                            callbackRemoveObservation={props.callbackRemoveObservation}
                            callbackChangeObservationDate={props.callbackChangeObservationDate}/>
+                           
+               <div className="buttons">
+                   {/* A button with which the user can change the sorting order of the observation list.*/}
+                   <MenuButton icon="fas fa-list-ul fa-fw"
+                               title="Listan järjestys"
+                               id="list-sorting"
+                               items={
+                               [
+                                   {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
+                                   {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
+                                   {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
+                               ]}
+                               initialItemIdx={props.backend.observations().length? 1/*Päivä*/ : 2/*100 Lajia*/}
+                               showTooltip={!isBarSticky && !responsive.compact().matches}/>
 
-               {/* A button with which the user can change the sorting order of the observation list.*/}
-               <MenuButton icon="fas fa-list-ul fa-fw"
-                           title="Listan järjestys"
-                           id="list-order"
-                           items={
-                           [
-                               {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
-                               {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
-                               {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
-                           ]}
-                           initialItemIdx={props.backend.observations().length? 1/*Päivä*/ : 2/*100 Lajia*/}
-                           showTooltip={!isBarSticky}/>
+                    {showAboutButton? <MenuButton icon="fas fa-question fa-fw"
+                                                  title="Tietoja"
+                                                  id="list-info"
+                                                  showTooltip={false}
+                                                  customMenu={
+                                                      <div>
+                                                          <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
 
-               {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
-                 * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
-                 * accessing with an edit key) will direct the browser to a version of the list using the view
-                 * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
-               <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
-                  title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                  href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
-                  rel="noopener noreferrer"
-                  target="_blank">
-                      <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>
-               </a>
+                                                          <i className="fas fa-info fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          <a href="./guide/" target="_blank" rel="noopener noreferrer">
+                                                              Käyttöohje
+                                                          </a><br/>
+                                                          
+                                                          <i className="fas fa-envelope-open fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          <a href="mailto:sw@tarpeeksihyvaesoft.com">
+                                                              Yhteydenotto
+                                                          </a><br/>
+                                                          
+                                                          <i className="fas fa-crow fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          Kuvat:&nbsp;
+                                                          <a href="http://www.luontoportti.com/" target="_blank" rel="noopener noreferrer">
+                                                              LuontoPortti
+                                                          </a>
+                                                      </div>
+                                                  }/>
+                                       : <></>}
+
+                   {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
+                     * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
+                     * accessing with an edit key) will direct the browser to a version of the list using the view
+                     * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
+                   <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
+                      title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
+                      href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
+                      rel="noopener noreferrer"
+                      target="_blank">
+                           <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>
+                   </a>
+               </div>
+
            </div>
+
+    function open_asset(assetName)
+    {
+        panic_if_not_type("string", assetName);
+
+        switch (assetName)
+        {
+            case "user-guide":
+            {
+                break;
+            }
+            case "luontoportti":
+            {
+                break;
+            }
+            case "yhteydenotto":
+            {
+                break;
+            }
+
+            default: panic("Unknown asset name."); break;
+        }
+    }
 }
 
 ObservationListMenuBar.defaultProps =

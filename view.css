@@ -169,6 +169,16 @@ footer
     cursor: auto;
 }
 
+.MenuButton > .dropdown > .items > *:first-child
+{
+    border-radius: 4px 4px 0 0;
+}
+
+.MenuButton > .dropdown > .items > *:last-child
+{
+    border-radius: 0 0 4px 4px;
+}
+
 .BirdThumbnail
 {
     user-select: none;
@@ -180,12 +190,12 @@ footer
 {
     display: flex;
     flex-direction: row;
-    width: 400px;
-    position: relative;
-    top: -139px;
+    justify-content: flex-start;
+
+    width: 370px;
+    position: absolute;
+    top: -130px;
     right: 14%;
-    margin: 0;
-    margin-left: auto;
     color: rgba(241, 241, 241, 0.45);
     opacity: 1;
     height: 45px;
@@ -193,20 +203,29 @@ footer
     z-index: 41; /* Above observation list elements.*/
 }
 
+.ObservationList > .ObservationListMenuBar > .buttons
+{
+    margin-left: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 120px;
+    justify-content: flex-end;
+}
+
 .ObservationList > .ObservationListMenuBar.sticky
 {
-    margin-right: 15px;
-    position: sticky;
+    position: fixed;
     top: 0;
-    right: 0;
+    right: 15px;
 }
 
-.ObservationList > .ObservationListMenuBar > *
+.ObservationList > .ObservationListMenuBar > .buttons *
 {
     flex-grow: 1;
+    margin-left: 0px;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton.sticky-search
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.sticky-search
 {
     transform: none;
     background-color: red;
@@ -215,29 +234,29 @@ footer
     right: 0;
 }
 
-.ObservationList > .ObservationListMenuBar > .lock i
+.ObservationList > .ObservationListMenuBar > .buttons > .lock i
 {
     color: #f9f9f9;
     transform: scale(1.5);
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton
 {
     position: relative;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .icon
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon
 {
     color: #f9f9f9;
 }
 
 /* Font Awesome icons.*/
-.ObservationList > .ObservationListMenuBar > .MenuButton > .icon i
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon i
 {
     transform: scale(1.5);
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .tooltip
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip
 {
     white-space: nowrap;
     position: absolute;
@@ -257,7 +276,7 @@ footer
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .tooltip::after
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip::after
 {
     position: absolute;
     bottom: -8px;
@@ -271,7 +290,7 @@ footer
     border-color: #f9f9f9 transparent transparent transparent;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown
 {
     user-select: none;
     -moz-user-select: none;
@@ -289,7 +308,21 @@ footer
     transform: translateX(-50%);
     z-index: 1000;
 }
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.active
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.custom-menu
+{
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    cursor: auto;
+    min-width: 220px;
+    text-align: left;
+    padding-bottom: 5px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.active
 {
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
@@ -297,17 +330,16 @@ footer
     animation-duration: 0.15s;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .title
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title
 {
     padding-top: 2px;
     padding-bottom: 2px;
     color: rgb(8, 8, 8);
     background-color: white;
     cursor: auto;
-    border-radius: 4px 4px 0 0;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > div
 {
     color: black;
     padding-top: 2px;
@@ -316,25 +348,40 @@ footer
     cursor: pointer;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div:last-child
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > div:hover
 {
-    border-radius: 0 0 4px 4px;
-}
-
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown > .items > div:hover
-{
-    border-radius: 0;
     background-color: rgba(255, 255, 255, 0.9);
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.inactive
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title:hover
+{
+    background-color: white;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.inactive
 {
     display: none;
 }
 
-.ObservationList > .ObservationListMenuBar > .MenuButton > .dropdown.active
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.active
 {
     display: block;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch
+{
+    flex: 2;
+    flex-shrink: 0;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar
+{
+    text-align: left;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar input
+{
+    width: 100%;
 }
 
 .BirdSearchBar > .search-field
@@ -356,16 +403,14 @@ footer
     border-radius: 3px;
     background-color: transparent;
     background-color: rgba(0, 0, 0, 0.2);
-
-    transition: width 0.15s linear;
 }
 
 .BirdSearchBar > .icon
 {
-    position: absolute;
-    top: 1px;
-    left: 38px;
-
+    text-align: left;
+    position: relative;
+    top: -44px;
+    left: 15px;
     z-index: 22;
     color: #f1f1f1;
     pointer-events: none;
@@ -374,8 +419,8 @@ footer
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 45px; /* Below the search input field.*/
-    right: calc(12% + 100px); /* Level with the search input field.*/
+    top: 49px; /* Below the search input field.*/
+    right: calc(12% + 101px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
@@ -504,7 +549,7 @@ footer
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    transform: translateY(-85px);
+    transform: translateY(-40px);
 }
 
 .ObservationList > .observation-cards.sata-lajia > .ObservationCardGhost
@@ -530,42 +575,6 @@ footer
 .ObservationCardGhost
 {
     display: none;
-}
-
-.ObservationCard > .PlainTag.lis-laji
-{
-    padding: 6px;
-    padding-left: 8px;
-    padding-right: 8px;
-    background-color: rgb(241, 200, 14);
-    color: black;
-    border-radius: 5px;
-    box-shadow: 0px 10px 2px -5px rgba(0, 0, 0, 0.1);
-    font-size: 80%;
-    font-family: sans-serif;
-
-    position: absolute;
-    left: calc(50% - 40px);
-    transform: translateX(-50%);
-    top: 4px;
-    z-index: 5;
-}
-
-.ObservationCard > .order-tag
-{
-    font-size: 80%;
-    font-family: sans-serif;
-    background-color: rgb(207, 147, 34);
-    color: rgba(255, 255, 255, 0.85);
-    padding: 5px;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px -3px rgba(0, 0, 0, 0.4);
-
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 58px;
-    z-index: 4; /* Above the bird thumbnail.*/
 }
 
 .ObservationCard > .BirdThumbnail,
@@ -634,70 +643,6 @@ footer
     color: rgba(0, 0, 0, 0.6);
 }
 
-.ObservationCard > .AsyncIconButtonBar
-{
-    opacity: 1;
-    visibility: visible;
-    font-size: 130%;
-    z-index: 3;
-    transition: all 0.35s ease-in-out;
-    border-radius: 0 8px 8px 8px;
-    background-color: #f3f3f3;
-    box-shadow: -10px 10px 1px -2px rgba(0, 0, 0, 0.2);
-
-    position: absolute;
-    top: 5px;
-    right: -12px;
-    z-index: 5;
-}
-
-/* A triangle.*/
-.ObservationCard > .AsyncIconButtonBar:after
-{
-    position: absolute;
-    top: 0;
-    left: -8px;
-    content: " ";
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 8px 10px 0;
-    border-color: transparent #f3f3f3 transparent transparent;
-}
-
-.ObservationCard > .AsyncIconButtonBar.hidden
-{
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-3px);
-}
-
-.ObservationCard > .AsyncIconButtonBar > .buttons
-{
-    display: flex;
-    flex-direction: column;
-}
-
-.ObservationCard > .AsyncIconButtonBar > .buttons > *
-{
-    color: #3591e7;
-    cursor: pointer;
-    padding: 7px;
-    margin: 5px;
-    flex: 1;
-}
-
-.ObservationCard > .AsyncIconButtonBar > .buttons > *:hover
-{
-    color: #277ecf;
-}
-
-.AsyncIconButtonBar > .buttons > .AsyncIconButton.disabled
-{
-    color: rgba(0, 0, 0, 0.2);
-    cursor: auto;
-}
-
 .Dialog
 {
     min-width: 400px;
@@ -717,7 +662,7 @@ footer
     /* Center in the viewport.*/
     position: fixed;
     transform: translateX(-50%);
-    top: 40px;
+    top: 20px;
     left: 50%;
 }
 

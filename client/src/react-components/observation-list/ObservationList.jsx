@@ -191,7 +191,7 @@ export function ObservationList(props = {})
                 onAccept: async({year, month, day})=>
                 {
                     const newDate = new Date();
-                    
+
                     newDate.setFullYear(year);
                     newDate.setMonth(month-1);
                     newDate.setDate(day);
@@ -370,7 +370,7 @@ export function ObservationList(props = {})
 
     async function save_observations_to_csv_file()
     {
-        let csvString = "Ensimerkintä, Laji, Heimo, Lahko\n";
+        let csvString = "Ensihavainto, Laji, Heimo, Lahko\n";
 
         props.backend.observations().forEach(obs=>
         {

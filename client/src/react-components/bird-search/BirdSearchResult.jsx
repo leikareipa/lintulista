@@ -43,7 +43,8 @@ export function BirdSearchResult(props = {})
         {
             return <>
                        <i className="fas fa-clock"
-                          style={{color:"#3791f8", marginRight:"5px", cursor:"pointer"}}
+                          style={{color:"transparent", marginRight:"5px", cursor:"pointer", WebkitTextStroke:"1px rgba(0, 0, 0, 0.6)"}}
+                          title="Muuta päivämäärää"
                           onClick={()=>props.callbackChangeObservationDate(props.bird)}/>
                        {props.observation.dateString}
                    </>

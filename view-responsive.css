@@ -1,0 +1,152 @@
+@media only screen and (max-width: 1800px)
+{
+    #app-title
+    {
+        left: 10%;
+    }
+
+    .app-menu
+    {
+        left: calc(10% + 300px);
+    }
+    
+    .ObservationList > .ObservationListMenuBar
+    {
+        right: 10%;
+    }
+}
+
+@media only screen and (max-width: 1600px)
+{
+    #app-title
+    {
+        left: 5%;
+    }
+
+    .app-menu
+    {
+        left: calc(5% + 300px);
+    }
+    
+    .ObservationList > .ObservationListMenuBar
+    {
+        right: 5%;
+    }
+}
+
+@media only screen and (max-width: 1200px)
+{
+    #app-title
+    {
+
+        left: 4%;
+        top: 9px;
+        font-size: 90%;
+    }
+
+    .app-menu
+    {
+        display: none;
+    }
+
+    .ObservationList > .ObservationListMenuBar > .buttons
+    {
+        flex-basis: 155px; /* Initial width + extra for one new icon.*/
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        top: -85px;
+        width: 405px;
+    }
+
+    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
+    {
+        transform: translateX(-60%);
+    }
+
+    .BirdSearchResultsDisplay
+    {
+        right: calc(12% + 132px);
+    }
+
+    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
+    {
+        transform: translateX(-68%);
+    }
+
+    #content > #header
+    {
+        background-color: #646464;
+        padding-bottom: 120px;
+    }
+}
+
+@media only screen and (max-width: 800px)
+{
+    #app-title
+    {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 5px;
+    }
+
+    #content > #header
+    {
+        background-color: #646464;
+        padding-bottom: 190px;
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        width: 90vw;
+        top: -88px;
+    }
+
+    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
+    {
+        transform: translateX(-72%);
+    }
+
+    .ObservationList > .ObservationListFootnotes > .observation-count
+    {
+        width: 100vw;
+    }
+
+    .ObservationList > .ObservationListMenuBar.sticky
+    {
+        right: 0;
+        width: 99vw;
+    }
+
+    .BirdSearchResultsDisplay
+    {
+        left: 0;
+        top: 45px;
+    }
+}
+
+@media only screen and (max-width: 700px)
+{
+    .ObservationList > .ObservationListFootnotes > .observation-count
+    {
+        padding: 3px;
+        padding-right: 7px;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+@media only screen and (max-width: 500px)
+{
+    .Dialog.QueryObservationDate,
+    .Dialog.QueryObservationDeletion
+    {
+        max-width: 90vw;
+        min-width: 90vw;
+    }
+
+    .BirdSearchResult
+    {
+        width: 85vw;
+    }
+}
