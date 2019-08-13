@@ -39,7 +39,7 @@ export function ObservationListMenuBar(props = {})
 
     const responsive =
     {
-        compact: ()=>window.matchMedia("(max-width: 1250px)"),
+        compact: ()=>window.matchMedia("(max-width: 1200px)"),
     }
 
     const [isBarSticky, setIsBarSticky] = React.useState(false);
@@ -105,17 +105,17 @@ export function ObservationListMenuBar(props = {})
                                                       <div>
                                                           <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
 
-                                                          <i className="fas fa-info fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          <i className="fas fa-info fa-fw" style={{marginRight:"8px", color:"#63bde0"}}/>
                                                           <a href="./guide/" target="_blank" rel="noopener noreferrer">
                                                               Käyttöohje
                                                           </a><br/>
                                                           
-                                                          <i className="fas fa-envelope-open fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          <i className="fas fa-envelope-open fa-fw" style={{marginRight:"8px", color:"#63bde0"}}/>
                                                           <a href="mailto:sw@tarpeeksihyvaesoft.com">
                                                               Yhteydenotto
                                                           </a><br/>
                                                           
-                                                          <i className="fas fa-crow fa-fw" style={{marginRight:"10px", color:"#3591e7"}}/>
+                                                          <i className="fas fa-crow fa-fw" style={{marginRight:"8px", color:"#63bde0"}}/>
                                                           Kuvat:&nbsp;
                                                           <a href="http://www.luontoportti.com/" target="_blank" rel="noopener noreferrer">
                                                               LuontoPortti

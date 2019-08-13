@@ -7,7 +7,7 @@
 
     .app-menu
     {
-        left: calc(10% + 300px);
+        left: calc(10% + 55px);
     }
     
     .ObservationList > .ObservationListMenuBar
@@ -25,7 +25,7 @@
 
     .app-menu
     {
-        left: calc(5% + 300px);
+        left: calc(5% + 55px);
     }
     
     .ObservationList > .ObservationListMenuBar
@@ -34,7 +34,7 @@
     }
 }
 
-@media only screen and (max-width: 1250px)
+@media only screen and (max-width: 1200px)
 {
     #app-title
     {
@@ -59,11 +59,6 @@
         width: 405px;
     }
 
-    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
-    {
-        transform: translateX(-60%);
-    }
-
     .BirdSearchResultsDisplay
     {
         right: calc(12% + 131px);
@@ -71,7 +66,7 @@
 
     .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
     {
-        transform: translateX(-68%);
+        transform: translateX(-55%);
     }
 
     #content > #header
@@ -105,7 +100,7 @@
 
     .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
     {
-        transform: translateX(-72%);
+        transform: translateX(-65%);
     }
 
     .ObservationList > .ObservationListFootnotes > .observation-count
