@@ -19,37 +19,6 @@ header
     padding-bottom: 205px;
 }
 
-header > #title
-{
-    transform: rotate(-2deg);
-    position: absolute;
-    top: 38px;
-    left: 14%;
-    color: #f1f1f1;
-}
-
-header > #title > #app-name
-{
-    font-family: "Beth Ellen", cursive;
-    font-size: 300%;
-
-    position: relative;
-    z-index: 0;
-}
-
-header > #title > #subtitle
-{
-    transform: rotate(2deg);
-    font-family: sans-serif;
-    font-size: 70%;
-    margin-top: -24px;
-    text-align: right;
-    font-style: italic;
-
-    position: relative;
-    z-index: 1;
-}
-
 footer
 {
     color: rgb(117, 117, 117);
@@ -57,6 +26,23 @@ footer
     font-size: 85%;
     padding-top: 40px;
     padding-bottom: 20px;
+}
+
+#app-title
+{
+    position: absolute;
+    top: 45px;
+    left: 14%;
+    z-index: 2;
+}
+
+#app-name
+{
+    position: relative;
+    font-family: "Beth Ellen";
+    z-index: 1;
+    color: white;
+    font-size: 250%;
 }
 
 #content
@@ -110,6 +96,38 @@ footer
     text-align: left;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.app-menu
+{
+    font-family: "Delius", sans-serif;
+    position: absolute;
+    z-index: 3;
+    top: 65px;
+    left: calc(14% + 280px); /* Next to the app title.*/
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+}
+
+.app-menu > .app-menu-item
+{
+    text-align: center;
+    margin: 7px;
+    margin-right: 5px;
+    color: #f9f9f9;
+    padding: 15px;
+}
+
+.app-menu > .app-menu-item a
+{
+    text-decoration: none;
+}
+
+.app-menu > .app-menu-item:hover
+{
+    color: white;
+    border-bottom: 4px solid #f1f1f1;
 }
 
 .CreateNewListButton

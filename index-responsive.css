@@ -1,0 +1,41 @@
+@media only screen and (max-width: 1000px)
+{
+    #app-title
+    {
+        left: 5%;
+    }
+
+    .app-menu
+    {
+        left: calc(5% + 280px);
+    }
+}
+
+@media only screen and (max-width: 850px)
+{
+    .app-menu
+    {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 87px;
+        width: 300px;
+    }
+
+    .app-menu div:nth-child(2)
+    {
+        display: none;
+    }
+
+    #app-title
+    {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 25px;
+    }
+
+    #content > #header
+    {
+        padding-bottom: 105px;
+    }
+}
+

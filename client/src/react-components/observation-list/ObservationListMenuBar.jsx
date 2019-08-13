@@ -39,7 +39,7 @@ export function ObservationListMenuBar(props = {})
 
     const responsive =
     {
-        compact: ()=>window.matchMedia("(max-width: 1200px)"),
+        compact: ()=>window.matchMedia("(max-width: 1100px)"),
     }
 
     const [isBarSticky, setIsBarSticky] = React.useState(false);
