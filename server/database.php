@@ -141,7 +141,7 @@ class DatabaseAccess
                 }
             }
 
-            $this->log_event(100, null);
+            $this->log_error(100, null);
 
             return array_unique($nonce, SORT_REGULAR);
         }
@@ -215,7 +215,7 @@ class DatabaseAccess
             // 1062 = MySQLi ER_DUP_ENTRY, duplicate entry. The given keys are probably already in use.
             case 1062:
             {
-                $this->log_event(101, null);
+                $this->log_error(101, null);
 
                 return false;
             }
@@ -302,11 +302,9 @@ class DatabaseAccess
         return;
     }
 
-    // Logs database events, like list creation and access.
+    // Logs end-user events, like list creation and access.
     //
     // Event ids:
-    //
-    //     SUCCESSES
     //
     //     0 = Create a new list
     //     1 = Add a new observation
@@ -315,11 +313,6 @@ class DatabaseAccess
     //     4 = Get observations with a view key
     //     5 = Get observations with an edit key
     //
-    //     FAILURES
-    //
-    //     100 = Attempt to get observations with an unrecognized key
-    //     101 = Attempt to create a new list with a key already in use
-    //
     private function log_event(int $eventId, /*int or null*/ $targetListId)
     {
         $this->database_command("INSERT INTO lintulista_event_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
@@ -327,6 +320,22 @@ class DatabaseAccess
 
         return;
     }
+
+    // Logs end-user errors, like trying to access database information with an incorrect key.
+    //
+    // Event ids:
+    //
+    //     100 = Attempt to get observations with an unrecognized key
+    //     101 = Attempt to create a new list with a key already in use
+    //
+    private function log_error(int $eventId, /*int or null*/ $targetListId)
+    {
+        $this->database_command("INSERT INTO lintulista_error_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
+                                [time(), $eventId, $targetListId]);
+
+        return;
+    }
+
 
     // Returns the observation of the given species in the given list; or an empty array if
     // no such observation could be found.
