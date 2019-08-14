@@ -102,7 +102,7 @@
 
                     const numObservationCards = Math.min(30, Math.max(3, (Math.floor(window.innerWidth / observationCardWidth) + 1)));
                     
-                    const randomObservations = Array(numObservationCards).fill().map((elem, idx)=>
+                    const randomObservations = Array(numObservationCards).fill().reduce((cardArray, card, idx)=>
                     {
                         const randomDate = (()=>
                         {
@@ -113,7 +113,7 @@
                             return date;
                         })();
 
-                        return React.createElement(ObservationCard,
+                        cardArray.push(React.createElement(ObservationCard,
                         {
                             key: idx,
                             observation: observation(
@@ -123,17 +123,23 @@
                                 {
                                     let bird;
                                     let loopCount = 0;
-                                    const maxLoops = 1000;
+                                    const maxNumLoops = 1000;
 
-                                    do { bird = knownBirds[Math.floor(Math.random() * knownBirds.length)]; }
-                                    while (!(bird.thumbnailUrl === bird.nullThumbnailUrl) && (++loopCount < maxLoops));
+                                    do
+                                    {
+                                        bird = knownBirds[Math.floor(Math.random() * knownBirds.length)];
+                                    }
+                                    while ((bird.thumbnailUrl === bird.nullThumbnailUrl) ||
+                                           cardArray.map(c=>c.props.observation.bird.species).includes(bird.species) &&
+                                           (++loopCount < maxNumLoops));
 
-                                    return ((loopCount >= maxLoops)? null : bird);
+                                    return bird;
                                 })(),
                             }),
-                            shades: null,
-                        });
-                    });
+                        }));
+
+                        return cardArray;
+                    }, []);
 
                     const container = document.getElementById("random-observations");
 
