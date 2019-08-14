@@ -35,18 +35,9 @@
             import {backend_access} from "./client/dist/backend-access.js";
             import {error} from "./client/dist/assert.js";
 
-            // Grab from the address bar the id of the observation list to be operated on.
-            const listKey = (()=>
-            {
-                const params = new URLSearchParams(window.location.search);
-
-                if (!params.has("list"))
-                {
-                    return null;
-                }
-
-                return params.get("list");
-            })();
+            // We expect a ?list= parameter to be provided in the URL that gives us the key
+            // of the lsit we are expected to operate on. 
+            const listKey = "<?php echo $_GET["list"]; ?>".split("/").pop();
 
             // Start the app.
             (async()=>
