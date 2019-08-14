@@ -22,14 +22,14 @@ export function BirdSearchResult(props = {})
         if (!props.observation)
         {
             return <AsyncIconButton icon="fas fa-plus"
-                                    title={`Lisää listaan ${props.bird.species}`}
+                                    title={`Lisää ${props.bird.species} listaan`}
                                     titleClicked="Lisätään listaan..."
                                     task={()=>props.callbackAddObservation(props.bird)}/>
         }
         else
         {
             return <AsyncIconButton icon="fas fa-eraser"
-                                    title={`Poista listasta ${props.bird.species}`}
+                                    title={`Poista ${props.bird.species} listasta`}
                                     titleClicked="Poistetaan listasta..."
                                     task={()=>props.callbackRemoveObservation(props.bird)}/>
         }
@@ -41,13 +41,11 @@ export function BirdSearchResult(props = {})
     {
         if (props.observation)
         {
-            return <>
-                       <i className="fas fa-pen fa-xs"
-                          style={{transform:"translateY(-2px)",marginRight:"5px", cursor:"pointer", color:"rgba(0, 0, 0, 0.6)"}}
-                          title="Muuta päivämäärää"
-                          onClick={()=>props.callbackChangeObservationDate(props.bird)}/>
+            return <span className="edit-date"
+                         onClick={()=>props.callbackChangeObservationDate(props.bird)}
+                         title="Muokkaa havaintopäivämäärää">
                        {props.observation.dateString}
-                   </>
+                   </span>
         }
         else
         {
