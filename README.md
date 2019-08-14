@@ -18,7 +18,13 @@ The app depends on Babel for JSX and minification. You can install the required 
 $ npm install @babel/core @babel/cli @babel/preset-react babel-preset-minify
 ```
 
-Once you have Babel installed as per above, you can build the app by running [build.sh](build.sh) (or by directly executing `./node_modules/.bin/babel js/ --out-dir dist/`).
+Once you have Babel installed as per above, you can build the app with
+```
+$ cd build
+$ ./build-dev.sh
+```
+
+substituting `build-dev.sh` with `build-release.sh` for release builds. The compiled files will be placed in the [client/dist/](client/dist/) directory, from which [index.html](index.html) and [view.html](view.html) will pick them up as appropriate.
 
 #### Database
 *(Coming.)*
