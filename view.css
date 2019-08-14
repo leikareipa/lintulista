@@ -23,7 +23,7 @@ body
 
 footer
 {
-    font-family: "Delious", sans-serif;
+    font-family: sans-serif;
     color: rgb(128, 128, 128);
     padding-top: 0;
     padding-bottom: 35px;
@@ -53,7 +53,7 @@ footer
     position: absolute;
     top: 46px;
     left: 13%;
-    z-index: 2;
+    z-index: 0;
 }
 
 #app-name
@@ -514,23 +514,13 @@ footer
 
 .ObservationList > .ObservationListFootnotes
 {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    font-variant: small-caps;
-    font-size: 90%;
+    background-color: transparent;
+    color: #e1e1e1;
+    font-family: "Delius", sans-serif;
+    position: absolute;
+    top: -90px;
+    left: 13%;
     text-align: left;
-}
-
-.ObservationList > .ObservationListFootnotes > .observation-count
-{
-    background-color: #3d3d3d;
-    color: #e4e4e4;
-    padding: 7px;
-    padding-right: 11px;
-    font-family: sans-serif;
-    border-radius: 0 4px 0 0;
 }
 
 .ObservationList > .observation-cards

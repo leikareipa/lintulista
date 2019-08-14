@@ -20,9 +20,9 @@ export function ObservationListFootnotes(props = {})
 {
     ObservationListFootnotes.validate_props(props);
 
-    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajihavaintoja. Niiden lukumäärä päivittyy tähän.</>
+    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajihavaintoja.</>
                                                                 : <>
-                                                                      listassa on&nbsp;
+                                                                      Listassa on&nbsp;
                                                                       <span style={{fontWeight:"bold"}}>
                                                                           {props.numObservationsInList}
                                                                       </span> laji{props.numObservationsInList !== 1? "a" : ""}.
@@ -36,7 +36,6 @@ export function ObservationListFootnotes(props = {})
 
     return <div className="ObservationListFootnotes">
                <div className="observation-count">
-                   <i className="fas fa-crow"/>&nbsp;
                    {observationCountElement}&nbsp;
                    {observationDownloadElement}
                </div>
