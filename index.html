@@ -7,6 +7,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito|Delius|Beth+Ellen&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" type="text/css" href="view-animations.css">
         <link rel="stylesheet" type="text/css" href="index-responsive.css">
     </head>
     <body>
@@ -92,6 +93,20 @@
             {
                 const knownBirds = await backend_access.get_known_birds_list();
 
+                // Render a button with which the user can create a new list.
+                {
+                    const container = document.getElementById("create-new-list");
+
+                    if (!container)
+                    {
+                        panic("Can't find a required container!");
+                    }
+                    else
+                    {
+                        ReactDOM.render(React.createElement(CreateNewListButton), container);
+                    }
+                }
+
                 // Render a random selection of observations. (In the future, we might draw
                 // a random sample from user-submitted observations, but for now, since there
                 // are very few of those, we just generate random observations on the spot.)
@@ -149,23 +164,7 @@
                     }
                     else
                     {
-                        ReactDOM.unmountComponentAtNode(container)
                         ReactDOM.render(randomObservations, document.getElementById("random-observations"));
-                    }
-                }
-
-                // Render a button with which the user can create a new list.
-                {
-                    const container = document.getElementById("create-new-list");
-
-                    if (!container)
-                    {
-                        panic("Can't find a required container!");
-                    }
-                    else
-                    {
-                        ReactDOM.unmountComponentAtNode(container)
-                        ReactDOM.render(React.createElement(CreateNewListButton), container);
                     }
                 }
             })();

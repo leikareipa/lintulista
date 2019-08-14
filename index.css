@@ -62,6 +62,28 @@ footer
     justify-content: center;
     background-color: transparent;
     margin-bottom: -130px;
+    min-height: 359px;
+}
+
+#random-observations:empty::before
+{
+    display: inline-block;
+    font-style: bold;
+    font-variant: normal;
+    text-rendering: auto;
+
+    position: relative;
+    top: 0;
+
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    content: "\f110";
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 900;
+    animation: fa-spin 2.7s infinite linear;
+    font-size: 700%;
+    color: #2884ee;
 }
 
 #content > *
@@ -143,6 +165,10 @@ footer
     max-width: 425px;
     display: inline-block;
     color: black;
+
+    animation-name: animation-flip-new-list-button-frames;
+    animation-timing-function: linear;
+    animation-duration: 0.6s;
 }
 
 .CreateNewListButton > .button
