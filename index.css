@@ -9,14 +9,24 @@ body
     color: rgb(216, 216, 216);
     text-align: center;
     margin: 0;
+
+    background-color: #dbdbdb;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 }
 
 header
 {
     position: relative;
-    background-color: #b7b7b7;
-    color: #f0f0f0;
-    padding-bottom: 205px;
+    color: #ffffff;
+    padding-bottom: 220px;
+    background-color: #727272;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+
+    border-radius: 0 0 0 200px;
 }
 
 footer
@@ -26,13 +36,14 @@ footer
     font-size: 85%;
     padding-top: 40px;
     padding-bottom: 20px;
+    background-color: transparent;
 }
 
 #app-title
 {
     position: absolute;
-    top: 45px;
-    left: 14%;
+    top: 46px;
+    left: 13%;
     z-index: 2;
 }
 
@@ -41,8 +52,7 @@ footer
     position: relative;
     font-family: "Beth Ellen";
     z-index: 1;
-    color: white;
-    font-size: 250%;
+    font-size: 275%;
 }
 
 #content
@@ -50,12 +60,8 @@ footer
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #dbdbdb;
+    background-color: transparent;
     margin-bottom: -130px;
-
-    background-size: 20px 20px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 }
 
 #content > *
@@ -66,7 +72,7 @@ footer
 #info
 {
     font-size: 90%;
-    color: rgb(216, 216, 216);
+    color: rgb(0, 0, 0);
     background-color: #464646;
     margin-top: 50px;
     display: flex;
@@ -75,6 +81,7 @@ footer
     flex-wrap: wrap;
     justify-content: center;
     padding-top: 30px;
+    background-color: transparent;
 }
 
 #info > .entry
@@ -103,7 +110,7 @@ footer
     font-family: "Delius", sans-serif;
     position: absolute;
     z-index: 3;
-    top: 65px;
+    top: 75px;
     left: calc(14% + 280px); /* Next to the app title.*/
     display: flex;
     flex-direction: row;
@@ -115,7 +122,6 @@ footer
     text-align: center;
     margin: 7px;
     margin-right: 5px;
-    color: #f9f9f9;
     padding: 15px;
 }
 
@@ -126,13 +132,12 @@ footer
 
 .app-menu > .app-menu-item:hover
 {
-    color: white;
-    border-bottom: 4px solid #f1f1f1;
+    border-bottom: 4px dotted;
 }
 
 .CreateNewListButton
 {
-    margin-top: 40px;
+    margin-top: 45px;
     height: auto;
     width: 100%;
     max-width: 425px;
@@ -155,7 +160,7 @@ footer
     color: rgb(255, 255, 255);
     border: 1px solid transparent;
     flex: 2;
-    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 7px 3px -4px rgba(0, 0, 0, 0.15);
 
     display: flex;
     flex-direction: column;
@@ -172,7 +177,7 @@ footer
 .CreateNewListButton > .button.step-1:active
 {
     transform: translateY(-20px);
-    box-shadow: none;
+    box-shadow: 0px 5px 3px -4px rgba(0, 0, 0, 0.15);
 }
 
 .CreateNewListButton > .button.step-3
@@ -229,7 +234,7 @@ footer
 
 .ObservationCard > .observation-info > .bird-name
 {
-    color: rgba(0, 0, 0, 0.9);
+    color: rgba(0, 0, 0, 1);
     font-weight: bold;
     font-size: 90%;
 }
@@ -237,7 +242,7 @@ footer
 .ObservationCard > .observation-info > .date
 {
     font-size: 80%;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .ObservationCard > .AsyncIconButtonBar

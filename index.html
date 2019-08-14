@@ -4,7 +4,7 @@
         <title>Lintulista!</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link href="https://fonts.googleapis.com/css?family=Damion|Nunito|Delius|Beth+Ellen&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Nunito|Delius|Beth+Ellen&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="index.css">
         <link rel="stylesheet" type="text/css" href="index-responsive.css">
@@ -12,7 +12,10 @@
     <body>
         <header>
             <div id="app-title" style="white-space: nowrap;">
-                <span id="app-name">Lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-15px);"></i></span>
+                <span id="app-name">
+                    Lintulista
+                    <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-15px); z-index: 2;"></i>
+                </span>
             </div>
 
             <div class="app-menu">
@@ -29,23 +32,22 @@
 
         <div id="info">
             <div class="entry">
-                <div class="title">Mikä on Lintulista?</div>
+                <div class="title">Mihin Lintulistaa käytetään?</div>
                 <div class="text">
                     <p>Lintulistalla pidät kätevästi kirjaa eri lintulajien ensihavainnoistasi.</p>
-                    <p>Pääset tarkastelemaan tekemiäsi havaintoja kuvallisesta listasta havaintopäivämäärän, heimon
-                    tai lajin mukaan järjesteltynä.</p>
+                    <p>Pääset tarkastelemaan tekemiäsi lajihavaintoja kuvallisesta listasta havaintopäivämäärän
+                    tai lajin nimen mukaan järjesteltynä.</p>
                     <p>Lintulista on taulukko-ohjelmaa mielenkiintoisempi tapa pysyä kartalla havainnoistaan!</p>
                 </div>
             </div>
             <div class="entry">
                 <div class="title">Mitä käyttäjältä vaaditaan?</div>
                 <div class="text">
-                    <p>Lintulistan käyttö ei vaadi maksua, rekisteröitymistä eikä henkilökohtaisten tietojen
-                    luovuttamista; tarvitset vain modernin nettiselaimen.</p>
-                    <p>Voit luoda itsellesi yhden tai useamman listan (kts. sininen nappi, yllä), jonka jälkeen pääset
+                    <p>Lintulistan käyttö on ilmaista; tarvitset vain modernin nettiselaimen.</p>
+                    <p>Voit luoda itsellesi yhden tai useamman listan, jonka jälkeen pääset
                     merkitsemään havaintojasi.</p>
-                    <p>Listojen määrää per käyttäjä ei ole rajoitettu, ja voitkin esimerkiksi joko luoda uuden listan
-                    kutakin linturetkeä varten tai käyttää vain yhtä listaa kunkin vuoden ensihavaintojen merkitsemiseen.</p>
+                    <p>Voit vaikkapa luoda erillisen listan kutakin linturetkeä
+                    varten sekä pitää pidempiaikaisempaa listaa koko vuoden ensihavaintojen merkitsemiseen.</p>
     
                 </div>
             </div>
@@ -53,21 +55,18 @@
                 <div class="title">Miten käytän Lintulistaa?</div>
                 <div class="text">
                     <p>Kun olet luonut itsellesi listan (kts. sininen nappi, yllä), järjestelmä ilmoittaa sinulle
-                    linkin, jonka kautta pääset katselemaan ja muokkaamaan listaa. Tarvitset linkin käyttääksesi
-                    listaa, joten kopioi se varmaan talteen!</p>
-                    <p>Kuka tahansa linkin haltija kykenee muokkaamaan luomaasi listaa. Älä siis käytä linkkiä julkisilla
-                    tietokoneilla tai luovuta sitä tuntemattomille.</p>
-                    <p>Huomaa, että listaan antamasi tiedot ovat julkisia. Niiden säilymistä palvelussa ei
-                    kuitenkaan voida taata, joten talletathan itsellesi kopion aika-ajoin.</p>
+                    linkin, jonka kautta pääset muokkaamaan listaa.</p>
+                    <p>Mutta ennen kuin luot uuden listan, luethan tarkoin Lintulistan käyttöohjeet, joihin löydät linkin
+                    sivun ylälaidan valikosta.</p>
+                    <p>Huomaa, että listaan antamasi tiedot ovat julkisia. Tietojen saatavuutta ei voida taata.</p>
                 </div>
             </div>
             <div class="entry">
                 <div class="title">Kuka teki Lintulistan?</div>
                 <div class="text">
-                    <p>Lintulistan on luonut suomalainen Tarpeeksi Hyvae Soft. Voit ottaa tekijään yhteyttä
-                    <a href="mailto:sw@tarpeeksihyvaesoft.com">tästä</a>.
+                    <p>Lintulistan on väkertänyt suomalainen koodiluola <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>.
                     <p>Lintujen kuvat tulevat <a href="http://www.luontoportti.com">LuontoPortista</a>. Lintulista
-                    ja LuontoPortti eivät muutoin liity toisiinsa.</p>
+                    ja LuontoPortti eivät kuitenkaan muutoin liity toisiinsa.</p>
                     <p>Lintulista on avointa lähdekoodia - löydät sen myös
                     <a href="https://www.github.com/leikareipa/lintulista">GitHubista</a>.</p>
                 </div>

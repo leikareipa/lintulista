@@ -1,36 +1,13 @@
-@media only screen and (max-width: 1800px)
+@media only screen and (max-width: 1600px)
 {
     #app-title
     {
         left: 10%;
     }
 
-    .app-menu
-    {
-        left: calc(10% + 55px);
-    }
-    
     .ObservationList > .ObservationListMenuBar
     {
         right: 10%;
-    }
-}
-
-@media only screen and (max-width: 1600px)
-{
-    #app-title
-    {
-        left: 5%;
-    }
-
-    .app-menu
-    {
-        left: calc(5% + 55px);
-    }
-    
-    .ObservationList > .ObservationListMenuBar
-    {
-        right: 5%;
     }
 }
 
@@ -38,69 +15,30 @@
 {
     #app-title
     {
-        left: 5%;
-        top: 7px;
-        font-size: 90%;
-    }
-
-    .app-menu
-    {
-        display: none;
-    }
-
-    .ObservationList > .ObservationListMenuBar > .buttons
-    {
-        flex-basis: 155px; /* Initial width + extra for one new icon.*/
+        left: 7%;
     }
 
     .ObservationList > .ObservationListMenuBar
     {
-        top: -85px;
-        width: 405px;
-    }
-
-    .BirdSearchResultsDisplay
-    {
-        right: calc(12% + 131px);
-    }
-
-    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
-    {
-        transform: translateX(-55%);
-    }
-
-    #content > #header
-    {
-        background-color: #646464;
-        padding-bottom: 120px;
+        right: 7%;
     }
 }
 
-@media only screen and (max-width: 800px)
+@media only screen and (max-width: 900px)
 {
     #app-title
     {
         transform: none;
-        left: 5%;
-        top: 5px;
-        font-size: 80%;
-    }
-
-    #content > #header
-    {
-        background-color: #646464;
-        padding-bottom: 170px;
+        left: 2%;
+        top: 15px;
     }
 
     .ObservationList > .ObservationListMenuBar
     {
-        width: 90vw;
-        top: -88px;
-    }
-
-    .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.list-info > .dropdown
-    {
-        transform: translateX(-65%);
+        width: 95vw;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -90px;
     }
 
     .ObservationList > .ObservationListFootnotes > .observation-count
@@ -118,6 +56,11 @@
     {
         left: 0;
         top: 45px;
+    }
+
+    #content > #header
+    {
+        border-radius: 0;
     }
 }
 

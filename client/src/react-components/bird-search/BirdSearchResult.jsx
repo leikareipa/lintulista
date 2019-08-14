@@ -36,14 +36,14 @@ export function BirdSearchResult(props = {})
     })();
 
     // If the bird of the search result has been observed, this element displays the date
-    // of that observation and a button that lets the user change that date.
+    // of that observation and a button that lets the user change that date.    
     const dateElement = (()=>
     {
         if (props.observation)
         {
             return <>
-                       <i className="fas fa-pen fa-sm"
-                          style={{marginRight:"5px", cursor:"pointer", color:"transparent", WebkitTextStroke:"1px rgba(0, 0, 0, 0.6)"}}
+                       <i className="fas fa-pen fa-xs"
+                          style={{transform:"translateY(-2px)",marginRight:"5px", cursor:"pointer", color:"transparent", WebkitTextStroke:"1px rgba(0, 0, 0, 0.6)"}}
                           title="Muuta päivämäärää"
                           onClick={()=>props.callbackChangeObservationDate(props.bird)}/>
                        {props.observation.dateString}

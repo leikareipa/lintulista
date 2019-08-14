@@ -18,12 +18,6 @@
         left: 50%;
         transform: translateX(-50%);
         top: 87px;
-        width: 300px;
-    }
-
-    .app-menu div:nth-child(2)
-    {
-        display: none;
     }
 
     #app-title
@@ -39,3 +33,17 @@
     }
 }
 
+@media only screen and (max-width: 550px)
+{
+    /* Hide the 'contact' option from the menu. Contact information is also
+     * found at the bottom of the page, so this isn't a crucial menu item.*/
+    .app-menu div:nth-child(2)
+    {
+        display: none;
+    }
+
+    .app-menu
+    {
+        width: 300px;
+    }
+}
