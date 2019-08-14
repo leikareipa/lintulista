@@ -40,12 +40,13 @@
     {
         transform: none;
         left: 2%;
-        top: 15px;
+        top: 5px;
     }
 
     .ObservationList > .ObservationListFootnotes
     {
         left: 2%;
+        top: -135px;
     }
 
     .ObservationList > .ObservationListMenuBar

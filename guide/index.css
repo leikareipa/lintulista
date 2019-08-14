@@ -39,8 +39,7 @@ img
 {
     background-color: white;
     text-align: left;
-    height: 70px;
-    line-height: 70px;
+    padding: 20px;
     box-shadow: 0 0px 6px 2px rgba(0, 0, 0, 0.2);
     padding-left: 5%;
     margin-bottom: 30px;
@@ -58,12 +57,13 @@ img
 #content > #body-text
 {
     flex: 1;
+    margin-right: 10px;
 }
 
 #content > #navi-bar
 {
     border-radius: 10px 0 0 0;
-    margin-right: 50px;
+    margin-right: 20px;
     padding: 20px;
     margin-left: calc(-275px - 50px - 20px);
     flex-basis: 275px;
@@ -97,6 +97,11 @@ img
     max-width: 600px;
     margin-left: 40px;
     background-color: rgba(0, 0, 110, 0.04);
+}
+
+.a
+{
+    margin-left: 20px;
 }
 
 .qa
