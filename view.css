@@ -203,7 +203,7 @@ footer
 .ObservationList > .ObservationListMenuBar.sticky
 {
     position: fixed;
-    top: 0;
+    top: 2px;
     right: 15px;
 }
 
@@ -359,7 +359,7 @@ footer
 .BirdSearchBar > .search-field
 {
     width: 230px;
-    height: 40px;
+    height: 45px;
     outline: none;
     padding: 10px;
     padding-top: 15px;
@@ -372,7 +372,7 @@ footer
     z-index: 21;
 
     color: black;
-    border-radius: 13px;
+    border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
@@ -391,7 +391,7 @@ footer
 .BirdSearchResultsDisplay
 {
     position: absolute;
-    top: 45px; /* Below the search input field.*/
+    top: 49px; /* Below the search input field.*/
     right: calc(12% + 131px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
@@ -416,7 +416,7 @@ footer
     padding-bottom: 17px;
     display: flex;
     align-items: center;
-    border-radius: 13px;
+    border-radius: 8px 8px 16px 8px;
     margin-top: 4px;
     box-shadow: 0 20px 15px 30px rgba(15, 7, 0, 0.2);
 
