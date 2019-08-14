@@ -41,11 +41,20 @@ export function BirdSearchResult(props = {})
     {
         if (props.observation)
         {
-            return <span className="edit-date"
-                         onClick={()=>props.callbackChangeObservationDate(props.bird)}
-                         title="Muokkaa havaintopäivämäärää">
-                       {props.observation.dateString}
-                   </span>
+            if (props.userHasEditRights)
+            {
+                return <span className="edit-date"
+                             onClick={()=>props.callbackChangeObservationDate(props.bird)}
+                             title="Muokkaa havaintopäivämäärää">
+                                 {props.observation.dateString}
+                       </span>
+            }
+            else
+            {
+                return <>
+                           {props.observation.dateString}
+                       </>
+            }
         }
         else
         {
