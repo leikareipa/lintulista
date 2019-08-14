@@ -1,0 +1,11 @@
+@media only screen and (max-width: 1200px)
+{
+    #content
+    {
+        width
+    }
+    #content > #navi-bar
+    {
+        display: none;
+    }
+}

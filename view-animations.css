@@ -114,3 +114,11 @@
     0% { transform: rotateX(90deg); }
     100% { transform: rotateX(0deg); }
 }
+
+@keyframes animation-flip-new-list-button-frames
+{
+    0% { opacity: 0; transform: translateY(-130px) rotateY(90deg); }
+    60% { opacity: 1; transform: translateY(0px) rotateY(0deg); }
+    80% { opacity: 1; transform: translateY(-5px) rotateY(0deg); }
+    100% { opacity: 1; transform: translateY(0px) rotateY(0deg); }
+}

@@ -272,7 +272,7 @@ footer
     width: 200px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0px 15px 20px rgba(15, 7, 0, 0.15);
+    box-shadow: 0 20px 15px 20px rgba(15, 7, 0, 0.2);
 
     position: absolute;
     top: 50px;
@@ -321,7 +321,7 @@ footer
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .item:hover
 {
     background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.1);
+    transform: scale(1.06);
     border-radius: 4px;
 }
 
@@ -365,7 +365,7 @@ footer
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 4px;
-    padding-left: 44px;
+    padding-left: 41px; /* Make room for the embedded search icon on the left.*/
     border: none;
 
     position: relative;
@@ -410,15 +410,15 @@ footer
     font-size: 98%;
     width: 380px; /* Width of the parent container minus padding.*/
     color: black;
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
     padding: 6px;
-    padding-top: 17px;
-    padding-bottom: 17px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
     border-radius: 13px;
     margin-top: 4px;
-    box-shadow: 0 0px 15px 30px rgba(15, 7, 0, 0.15);
+    box-shadow: 0 20px 15px 30px rgba(15, 7, 0, 0.2);
 
     position: relative;
     z-index: 20;
@@ -426,22 +426,21 @@ footer
 
 .BirdSearchResult > .AsyncIconButton
 {
-    color: #f9f9f9;
+    color: #f1f1f1;
     position: absolute;
-    bottom: -15px;
-    right: -15px;
+    bottom: -25px;
+    right: 20%;
     width: 65px;
     height: 65px;
     line-height: 65px;
-    background-color: rgb(184, 30, 61);
+    background-color: rgb(184, 30, 30);
     border-radius: 50%;
-    border: 4px solid #f9f9f9;
-    font-size: 150%;
+    border: 4px solid #f1f1f1;
+    font-size: 125%;
 }
 
 .BirdSearchResult.not-previously-observed > .AsyncIconButton
 {
-    font-size: 160%;
     background-color: #3578d8;
 }
 
@@ -463,12 +462,12 @@ footer
 
 .BirdSearchResult .BirdThumbnail
 {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     margin-left: 15px;
     margin-right: 23px;
     border-radius: 50%;
-    border: 7px solid white;
+    border: 10px solid white;
     box-shadow: 0 0px 7px -4px rgba(0, 0, 0, 1);
 }
 
