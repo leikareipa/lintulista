@@ -68,7 +68,7 @@ class DatabaseAccess
     {
         // Connect to the database.
         {
-            $databaseCredentials = json_decode(file_get_contents("../../lintulista-sql.json"), true);
+            $databaseCredentials = json_decode(file_get_contents("../../../lintulista-sql.json"), true);
 
             if (!$databaseCredentials ||
                 !isset($databaseCredentials["host"]) ||
@@ -231,8 +231,10 @@ class DatabaseAccess
     function remove_observations_of_species_from_list(string $listKey, string $speciesName)
     {
         // Silently fail if the key isn't valid.
-        if (!$this->key_exists($listKey))
+        if (!$this->is_edit_key($listKey))
         {
+            $this->log_error(103, null);
+
             return;
         }
 
@@ -252,8 +254,10 @@ class DatabaseAccess
     function put_observation_to_list(string $listKey, array $observation)
     {
         // Silently fail if the key isn't valid.
-        if (!$this->key_exists($listKey))
+        if (!$this->is_edit_key($listKey))
         {
+            $this->log_error(102, null);
+
             return;
         }
 
@@ -304,7 +308,7 @@ class DatabaseAccess
 
     // Logs end-user events, like list creation and access.
     //
-    // Event ids:
+    // Event ids (valid range: 0-255):
     //
     //     0 = Create a new list
     //     1 = Add a new observation
@@ -323,10 +327,12 @@ class DatabaseAccess
 
     // Logs end-user errors, like trying to access database information with an incorrect key.
     //
-    // Event ids:
+    // Event ids (valid range: 0-255):
     //
     //     100 = Attempt to get observations with an unrecognized key
     //     101 = Attempt to create a new list with a key already in use
+    //     102 = Attempt to PUT an observation with a non-edit key
+    //     103 = Attempt to DELETE an observation with a non-edit key
     //
     private function log_error(int $eventId, /*int or null*/ $targetListId)
     {
