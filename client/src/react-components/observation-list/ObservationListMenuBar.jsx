@@ -44,8 +44,6 @@ export function ObservationListMenuBar(props = {})
 
     const [isBarSticky, setIsBarSticky] = React.useState(false);
 
-    const [showAboutButton, setShowLinkListButton] = React.useState(responsive.compact().matches);
-
     // Make the action bar sticky if the user has scrolled far enough down the page.
     React.useEffect(()=>
     {
@@ -67,11 +65,6 @@ export function ObservationListMenuBar(props = {})
                 setIsBarSticky(false);
             }
         }
-    });
-
-    responsive.compact().addListener((mediaMatch)=>
-    {
-        setShowLinkListButton(mediaMatch.matches);
     });
 
     return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"} ${isBarSticky? "sticky" : ""}`.trim()}>
@@ -128,7 +121,7 @@ export function ObservationListMenuBar(props = {})
                      * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
                    <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
                       title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                      href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
+                      href={props.backend.hasEditRights? `./katso/${props.backend.viewKey}` : null}
                       rel="noopener noreferrer"
                       target="_blank">
                            <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>
@@ -136,29 +129,6 @@ export function ObservationListMenuBar(props = {})
                </div>
 
            </div>
-
-    function open_asset(assetName)
-    {
-        panic_if_not_type("string", assetName);
-
-        switch (assetName)
-        {
-            case "user-guide":
-            {
-                break;
-            }
-            case "luontoportti":
-            {
-                break;
-            }
-            case "yhteydenotto":
-            {
-                break;
-            }
-
-            default: panic("Unknown asset name."); break;
-        }
-    }
 }
 
 ObservationListMenuBar.defaultProps =
