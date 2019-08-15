@@ -68,6 +68,11 @@
         left: 0;
         top: 45px;
     }
+    
+    .BirdSearchResult
+    {
+        border-radius: 8px 16px 16px 16px;
+    }
 
     #content > #header
     {

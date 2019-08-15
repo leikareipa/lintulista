@@ -58,7 +58,7 @@ export function BirdSearchResult(props = {})
         }
         else
         {
-            return <>Ei havaintoa listassa</>
+            return <>Ei havaintoa</>
         }
     })();
 
