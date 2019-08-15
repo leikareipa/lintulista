@@ -368,7 +368,7 @@ export function ObservationList(props = {})
         observationCards.sort(sorter);
     }
 
-    async function save_observations_to_csv_file()
+    function save_observations_to_csv_file()
     {
         let csvString = "Ensihavainto, Laji, Heimo, Lahko\n";
 

@@ -8,7 +8,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule (.*) view.php?list=$1 [L]
 
-RewriteCond %{REQUEST_URI} ^.*/katso/.*$
+RewriteCond %{REQUEST_URI} ^.*/katsele/.*$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l

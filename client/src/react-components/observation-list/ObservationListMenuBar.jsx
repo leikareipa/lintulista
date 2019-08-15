@@ -98,17 +98,15 @@ export function ObservationListMenuBar(props = {})
                                    <div>
                                        <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
 
-                                       &bull;&nbsp;
                                        <a href="./guide/" target="_blank" rel="noopener noreferrer">
                                            Käyttöohje
                                        </a><br/>
-                                    
-                                       &bull;&nbsp;
+
                                        <a href="mailto:sw@tarpeeksihyvaesoft.com">
                                            Yhteydenotto
                                        </a><br/>
 
-                                       &bull; Kuvat:&nbsp;
+                                       Kuvat:&nbsp;
                                        <a href="http://www.luontoportti.com/" target="_blank" rel="noopener noreferrer">
                                            LuontoPortti
                                        </a>
@@ -121,7 +119,7 @@ export function ObservationListMenuBar(props = {})
                      * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
                    <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
                       title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                      href={props.backend.hasEditRights? `./katso/${props.backend.viewKey}` : null}
+                      href={props.backend.hasEditRights? `./katsele/${props.backend.viewKey}` : null}
                       rel="noopener noreferrer"
                       target="_blank">
                            <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>

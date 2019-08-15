@@ -16,7 +16,7 @@
             <div id="header"></div>
 
             <div id="app-title">
-                <span id="app-name">Lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-15px);"></i></span>
+                <span id="app-name">Lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
             </div>
 
             <div id="observation-list"></div>
@@ -37,7 +37,7 @@
 
             // We expect a ?list= parameter to be provided in the URL that gives us the key
             // of the lsit we are expected to operate on. 
-            const listKey = "<?php echo $_GET["list"]; ?>".split("/").pop();
+            const listKey = `<?php echo $_GET["list"]; ?>`.split("/").pop();
 
             // Start the app.
             (async()=>

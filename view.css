@@ -416,7 +416,7 @@ footer
     padding-bottom: 17px;
     display: flex;
     align-items: center;
-    border-radius: 8px 8px 16px 8px;
+    border-radius: 16px 8px 16px 16px;
     margin-top: 4px;
     box-shadow: 0 20px 15px 30px rgba(15, 7, 0, 0.2);
 
