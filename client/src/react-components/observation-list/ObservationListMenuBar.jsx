@@ -37,12 +37,20 @@ export function ObservationListMenuBar(props = {})
 {
     ObservationListMenuBar.validate_props(props);
 
+    // Various media queries for in-code handling of responsive styling.
     const responsive =
     {
-        compact: ()=>window.matchMedia("(max-width: 900px)"),
+        // When the menu bar (and the page's layout in general) is large enough to
+        // accommodate us showing tooltips on menu buttons.
+        largeEnoughForTooltips: window.matchMedia("(min-width: 500px)"),
     }
 
+    // A sticky bar will be displayed somewhere on the page (e.g. top corner) regardless
+    // of the window's scroll position.
     const [isBarSticky, setIsBarSticky] = React.useState(false);
+
+    const [allowMenuButtonTooltips, setAllowMenuButtonTooltips] = React.useState(responsive.largeEnoughForTooltips.matches);
+    responsive.largeEnoughForTooltips.addListener((e)=>setAllowMenuButtonTooltips(e.matches));
 
     // Make the action bar sticky if the user has scrolled far enough down the page.
     React.useEffect(()=>
@@ -85,10 +93,10 @@ export function ObservationListMenuBar(props = {})
                                [
                                    {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
                                    {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
-                                   {text:"100 Lajia -haaste", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
+                                   {text:"100 Lajia", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
                                ]}
                                initialItemIdx={props.backend.observations().length? 1/*Päivä*/ : 2/*100 Lajia*/}
-                               showTooltip={!isBarSticky && !responsive.compact().matches}/>
+                               showTooltip={!isBarSticky && allowMenuButtonTooltips}/>
 
                    <MenuButton icon="fas fa-question fa-fw"
                                title="Tietoja"

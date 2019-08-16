@@ -36,16 +36,21 @@
 
 @media only screen and (max-width: 900px)
 {
+    #content > #header
+    {
+        padding-bottom: 220px;
+    }
+
     #app-title
     {
         transform: none;
-        left: 2%;
+        left: 2.5%;
         top: 5px;
     }
 
     .ObservationList > .ObservationListFootnotes
     {
-        left: 2%;
+        left: 2.5%;
         top: -135px;
     }
 
@@ -68,7 +73,7 @@
         left: 0;
         top: 45px;
     }
-    
+
     .BirdSearchResult
     {
         border-radius: 8px 16px 16px 16px;
