@@ -85,16 +85,16 @@ export function CreateNewListButton(props = {})
 
         "2":
             <div>
-                <i className="fas fa-spinner fa-spin fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
+                <i className="fas fa-crow fa-spin fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
                 Luodaan uutta listaa, odotahan...
             </div>,
 
         "3":
             <div>
-                <i className="fas fa-link fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
-                    Luotiin uusi lista. Nappaa <a href={`./muokkaa/${newListKeys.editKey}`}
-                                           target="_blank"
-                                           rel="noopener noreferrer">linkki</a> talteen.
+                <i className="fas fa-check fa-lg" style={{marginLeft:"-16px",marginRight: "16px"}}/>
+                Luotiin uusi lista! Nappaa <a href={`./muokkaa/${newListKeys.editKey}`}
+                                              target="_blank"
+                                              rel="noopener noreferrer">linkki</a> talteen.
             </div>,
 
         "fail":
