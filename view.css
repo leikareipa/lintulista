@@ -509,9 +509,18 @@ footer
     cursor: pointer; /* The element is clickable.*/
 }
 
-.BirdSearchResult > .card > .date-observed > .edit-date:hover
+/* Show a pen icon next to the element.*/
+.BirdSearchResult > .card > .date-observed > .edit-date:hover::after
 {
-    color: #3578d8;
+    display: inline-block;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    content: "\f304";
+    font-size: 85%;
+    font-weight: 900;
+    margin-left: 5px;
 }
 
 .BirdSearchResult > .card > .classification
@@ -659,6 +668,11 @@ footer
     transform: translateX(-50%);
     top: 20px;
     left: 50%;
+}
+
+.Dialog.QueryObservationDate
+{
+    min-width: 400px;
 }
 
 .Dialog > .title

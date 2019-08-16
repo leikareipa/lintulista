@@ -44,8 +44,7 @@ export function BirdSearchResult(props = {})
             if (props.userHasEditRights)
             {
                 return <span className="edit-date"
-                             onClick={()=>props.callbackChangeObservationDate(props.bird)}
-                             title="Muokkaa havaintopäivämäärää">
+                             onClick={()=>props.callbackChangeObservationDate(props.bird)}>
                                  {props.observation.dateString}
                        </span>
             }
