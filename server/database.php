@@ -64,6 +64,23 @@ class DatabaseAccess
     // A constant salt value; will not change on repeated invocations of the script.
     private $pepper;
 
+    // Enable/disable read/write access to the database; either fully or on the level of
+    // individual groups of actions.
+    //
+    // For instance, to allow all other write access but disable error-logging, you might set
+    // DATABASE_WRITE_ACCESS = (true | self::DBIO_EVENT_LOG) - i.e. omitting the DBIO_ERROR_LOG
+    // flag.
+    //
+    // To disable all write access to the database, you would unset the first bit of
+    // DATABASE_WRITE_ACCESS; e.g. DATABASE_WRITE_ACCESS = false. Even if followed by other
+    // flags which specify to allow writing on a group - e.g. DATABASE_WRITE_ACCESS = (false |
+    // self::DBIO_EVENT_LOG) - no writing will be allowed.
+    //
+    const DBIO_EVENT_LOG = 0x2; // log_event().
+    const DBIO_ERROR_LOG = 0x4; // log_error().
+    const DATABASE_WRITE_ACCESS = (true | self::DBIO_EVENT_LOG | self::DBIO_ERROR_LOG);
+    const DATABASE_READ_ACCESS = (true);
+
     function __construct()
     {
         // Connect to the database.
@@ -148,7 +165,7 @@ class DatabaseAccess
         // Otherwise, return valid observations.
         else
         {
-            $isEditKey = $this->is_edit_key($listKey);
+            $isEditKey = $this->is_existing_edit_key($listKey);
             $listId = $this->get_list_id_of_key($listKey, false);
 
             $observations = $this->database_query("SELECT species, `timestamp` FROM lintulista_observations WHERE list_id = ?",
@@ -231,7 +248,7 @@ class DatabaseAccess
     function remove_observations_of_species_from_list(string $listKey, string $speciesName)
     {
         // Silently fail if the key isn't valid.
-        if (!$this->is_edit_key($listKey))
+        if (!$this->is_existing_edit_key($listKey))
         {
             $this->log_error(103, null);
 
@@ -254,7 +271,7 @@ class DatabaseAccess
     function put_observation_to_list(string $listKey, array $observation)
     {
         // Silently fail if the key isn't valid.
-        if (!$this->is_edit_key($listKey))
+        if (!$this->is_existing_edit_key($listKey))
         {
             $this->log_error(102, null);
 
@@ -319,8 +336,11 @@ class DatabaseAccess
     //
     private function log_event(int $eventId, /*int or null*/ $targetListId)
     {
-        $this->database_command("INSERT INTO lintulista_event_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
-                                [time(), $eventId, $targetListId]);
+        if ($this->has_write_access(self::DBIO_EVENT_LOG))
+        {
+            $this->database_command("INSERT INTO lintulista_event_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
+                                    [time(), $eventId, $targetListId]);
+        }
 
         return;
     }
@@ -336,8 +356,11 @@ class DatabaseAccess
     //
     private function log_error(int $eventId, /*int or null*/ $targetListId)
     {
-        $this->database_command("INSERT INTO lintulista_error_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
-                                [time(), $eventId, $targetListId]);
+        if ($this->has_write_access(self::DBIO_ERROR_LOG))
+        {
+            $this->database_command("INSERT INTO lintulista_error_log (`timestamp`, event_id, target_list_id) VALUES (?, ?, ?)",
+                                    [time(), $eventId, $targetListId]);
+        }
 
         return;
     }
@@ -373,7 +396,7 @@ class DatabaseAccess
     }
 
     // Returns true if the given list key is an existing edit key.
-    private function is_edit_key(string $listKey): bool
+    private function is_existing_edit_key(string $listKey): bool
     {
         $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE edit_key = ?",
                                           [$listKey]);
@@ -382,7 +405,7 @@ class DatabaseAccess
     }
 
     // Returns true if the given list key is an existing view key.
-    private function is_view_key(string $listKey): bool
+    private function is_existing_view_key(string $listKey): bool
     {
         $response = $this->database_query("SELECT list_id FROM lintulista_lists WHERE view_key = ?",
                                           [$listKey]);
@@ -433,6 +456,11 @@ class DatabaseAccess
     // E.g. database_query("SELECT * FROM table WHERE x = ?", [10]) returns such columns' values where x = 10.
     private function database_query(string $queryString, array $parameters): array
     {
+        if (!$this->has_read_access())
+        {
+            exit(ReturnObject::failure("The database cannot perform the requested action at this time."));
+        }
+
         $stmt = mysqli_prepare($this->database, $queryString);
 
         mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
@@ -464,6 +492,11 @@ class DatabaseAccess
     //
     private function database_command(string $commandString, array $parameters): int
     {
+        if (!$this->has_write_access())
+        {
+            exit(ReturnObject::failure("The database cannot perform the requested action at this time."));
+        }
+
         $stmt = mysqli_prepare($this->database, $commandString);
 
         mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
@@ -471,6 +504,18 @@ class DatabaseAccess
         mysqli_stmt_execute($stmt);
 
         return mysqli_errno($this->database);
+    }
+
+    private function has_write_access(int $operation = 1)
+    {
+        return ((self::DATABASE_WRITE_ACCESS & 1) &&
+                (self::DATABASE_WRITE_ACCESS & $operation));
+    }
+
+    private function has_read_access(int $operation = 1)
+    {
+        return ((self::DATABASE_READ_ACCESS & 1) &&
+                (self::DATABASE_READ_ACCESS & $operation));
     }
 }
 
