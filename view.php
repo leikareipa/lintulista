@@ -16,7 +16,7 @@
             <div id="header"></div>
 
             <div id="app-title">
-                <span id="app-name">Lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
+                <span id="app-name">lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
             </div>
 
             <div id="observation-list"></div>
