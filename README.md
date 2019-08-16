@@ -42,16 +42,16 @@ Here are rough estimates of the required browser versions to run the app. Browse
             <br>Chrome
         </th>
         <th align="center" width="90">
+            <img alt="Firefox" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_24x24.png">
+            <br>Firefox
+        </th>
+        <th align="center" width="90">
             <img alt="Opera" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_24x24.png">
             <br>Opera
         </th>
         <th align="center" width="90">
             <img alt="Safari" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_24x24.png">
             <br>Safari
-        </th>
-        <th align="center" width="90">
-            <img alt="Firefox" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_24x24.png">
-            <br>Firefox
         </th>
         <th align="center" width="90">
             <img alt="Edge" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_24x24.png">
@@ -66,7 +66,7 @@ Here are rough estimates of the required browser versions to run the app. Browse
         <td align="center"><i>TBA</i></td>
         <td align="center"><i>TBA</i></td>
         <td align="center"><i>TBA</i></td>
-        <td align="center">No</td>
+        <td align="center"><i>TBA</i></td>
         <td align="center">No</td>
         <td align="center">No</td>
     </tr>
