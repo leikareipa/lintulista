@@ -13,10 +13,11 @@
     </head>
     <body>
         <div id="content">
-            <div id="header"></div>
 
-            <div id="app-title">
-                <span id="app-name">lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
+            <div id="header">
+                <div id="app-title">
+                    <span id="app-name">lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
+                </div>
             </div>
 
             <div id="observation-list"></div>
@@ -26,6 +27,7 @@
                 &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
                 &bull; Includes content from <a href="http://www.luontoportti.com">LuontoPortti</a>
             </footer>
+            
         </div>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
@@ -44,7 +46,7 @@
             {
                 if (!listKey)
                 {
-                    error("A list id must be provided.");
+                    error("A list key must be provided.");
                     return;
                 }
 
