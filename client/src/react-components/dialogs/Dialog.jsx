@@ -152,7 +152,7 @@ export function Dialog(props = {})
 
     const dialogRef = React.useRef();
 
-    return <div className={`Dialog ${props.component} animation-fadein`} ref={dialogRef}>
+    return <div className={`Dialog ${props.component}`} ref={dialogRef}>
                 <div className="title">
                     <i className="title-icon fas fa-feather-alt"/> {props.title}
                 </div>
