@@ -7,10 +7,9 @@
  * 
  * Provides functions for interacting with Lintulista's database.
  * 
- * Work in progress.
- * 
  */
 
+require_once "random-observation-list.php";
 require_once "backend-limits.php";
 require_once "known-birds.php";
 require_once "list-key.php";
@@ -138,29 +137,7 @@ class DatabaseAccess
         // Generate random nonce observations.
         if (!$this->key_exists($listKey))
         {
-            $nonce = [];
-            $knownBirds = (new KnownBirds)->public_data();
-            $numBirds = (count($knownBirds) - 1);
-
-            // Note: Duplicate species count toward the total count but are removed prior to
-            // returning, so the number of nonces returned may be some fewer than this number.
-            $numNoncesToGenerate = random_int(0, $numBirds);
-
-            for ($i = 0; $i < $numNoncesToGenerate; $i++)
-            {
-                $birdSpecies = $knownBirds[random_int(0, $numBirds)]["species"];
-                $timestamp = random_int((time() - 47304000), time());
-
-                // Add the nonce to the list if one by this species doesn't already exist there.
-                if (array_search($birdSpecies, array_map(function($bird){return $bird["species"];}, $nonce)) === false)
-                {
-                    $nonce[] = ["species"=>$birdSpecies, "timestamp"=>$timestamp];
-                }
-            }
-
-            $this->log_error(100, null);
-
-            return array_unique($nonce, SORT_REGULAR);
+            return (new RandomObservationList())->get_list();
         }
         // Otherwise, return valid observations.
         else
