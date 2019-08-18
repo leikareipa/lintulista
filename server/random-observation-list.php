@@ -13,9 +13,6 @@ require_once "known-birds.php";
 // exact same list a few times in succession. Used for e.g. returning semi-random results
 // to queries made with invalid list keys.
 //
-// The most recently-returned list will be saved to disk and loaded in on successive
-// instances of the class.
-//
 // Usage: Call get_list().
 //
 class RandomObservationList
@@ -78,17 +75,26 @@ class RandomObservationList
         return array_unique($observations, SORT_REGULAR);
     }
 
+    // Generates a set of random observations as a pair of index/timestamp (where the
+    // index is to the list of known bird species), and saves it to disk.
     private function generate_random_observation_list()
     {
-        $numBirds = count((new KnownBirds)->public_data());
-        $numReuses = random_int(0, 2); // How many times we'll allow the same list to be returned.
-        $numObservations = random_int(0, $numBirds);
+        // How many times we'll allow the generated list to be reused before a new one is
+        // required to be generated.
+        $numReuses = 0;
+        if (random_int(0, 1000) === 0)
+        {
+            $numReuses = random_int(1, 7);
+        }
+
+        $numKnownBirds = count((new KnownBirds)->public_data());
+        $numObservationsToGenerate = random_int(0, $numKnownBirds);
         $timeDelta = random_int(0, 47304000);
 
         $observations = [];
-        for ($i = 0; $i < $numObservations; $i++)
+        for ($i = 0; $i < $numObservationsToGenerate; $i++)
         {
-            $observations[] = random_int(0, ($numBirds - 1));
+            $observations[] = random_int(0, ($numKnownBirds - 1));
             $observations[] = random_int((time() - $timeDelta), time());
         }
 
@@ -96,7 +102,7 @@ class RandomObservationList
         fflush($this->outputFile);
         rewind($this->outputFile);
 
-        fprintf($this->outputFile, "%d %d %s", $numReuses, $numObservations, implode(" ", $observations));
+        fprintf($this->outputFile, "%d %d %s", $numReuses, $numObservationsToGenerate, implode(" ", $observations));
         fflush($this->outputFile);
         rewind($this->outputFile);
     }
@@ -113,14 +119,14 @@ class RandomObservationList
         $contents = explode(" ", file_get_contents($this->outputFilename));
 
         $numReuses = ($contents[0] - 1);
-        $numObservations = $contents[1];
-        $observations = array_slice($contents, 2, ($numObservations * 2));
-
         if ($numReuses < 0)
         {
             $this->generate_random_observation_list();
             return;
         }
+
+        $numObservations = $contents[1];
+        $observations = array_slice($contents, 2, ($numObservations * 2));
 
         ftruncate($this->outputFile, 0);
         fflush($this->outputFile);
