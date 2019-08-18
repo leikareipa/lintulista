@@ -73,7 +73,7 @@ The data are laid out in four tables, as described below.
 | Field        | Type                  | Null | Key | Default | Extra          |
 |--------------|-----------------------|------|-----|---------|----------------|
 | list_id      | mediumint(8) unsigned | NO   | PRI | NULL    | auto_increment |
-| view_key     | varchar(7)            | NO   | UNI | NULL    |                |
+| view_key     | varchar(9)            | NO   | UNI | NULL    |                |
 | edit_key     | varchar(60)           | NO   | UNI | NULL    |                |
 | creator_hash | text                  | NO   |     | NULL    |                |
 

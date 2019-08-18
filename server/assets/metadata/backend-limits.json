@@ -4,7 +4,7 @@
     "limits":
     {
         "editKeyLength": 60,
-        "viewKeyLength": 7,
+        "viewKeyLength": 9,
         "ipHashLength": 10
     }
 }
