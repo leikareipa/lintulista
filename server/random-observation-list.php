@@ -20,9 +20,14 @@ require_once "known-birds.php";
 //
 class RandomObservationList
 {
-    const OUTPUT_FILENAME = "../../../lintulista-random-observation-list.txt";
+    private $outputFilename;
 
     private $outputFile;
+
+    function __construct()
+    {
+        $this->outputFilename = ($_SERVER['DOCUMENT_ROOT'] . "/../lintulista-random-observation-list.txt");
+    }
 
     // Returns a list of random observations as an array of the following form:
     //
@@ -37,14 +42,14 @@ class RandomObservationList
     //
     function get_list(): array
     {
-        $this->outputFile = fopen(self::OUTPUT_FILENAME, "c+");
+        $this->outputFile = fopen($this->outputFilename, "c+");
         flock($this->outputFile, LOCK_EX);
 
         $this->update_random_observations_list();
 
         fflush($this->outputFile);
         rewind($this->outputFile);
-        $contents = explode(" ", file_get_contents(self::OUTPUT_FILENAME));
+        $contents = explode(" ", file_get_contents($this->outputFilename));
 
         $numObservations = $contents[1];
         $observationData = array_slice($contents, 2, ($numObservations * 2));
@@ -98,14 +103,14 @@ class RandomObservationList
 
     private function update_random_observations_list()
     {
-        if (!filesize(self::OUTPUT_FILENAME))
+        if (!filesize($this->outputFilename))
         {
             $this->generate_random_observation_list();
             return;
         }
 
         rewind($this->outputFile);
-        $contents = explode(" ", file_get_contents(self::OUTPUT_FILENAME));
+        $contents = explode(" ", file_get_contents($this->outputFilename));
 
         $numReuses = ($contents[0] - 1);
         $numObservations = $contents[1];

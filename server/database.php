@@ -84,7 +84,7 @@ class DatabaseAccess
     {
         // Connect to the database.
         {
-            $databaseCredentials = json_decode(file_get_contents("../../../lintulista-sql.json"), true);
+            $databaseCredentials = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../lintulista-sql.json"), true);
 
             if (!$databaseCredentials ||
                 !isset($databaseCredentials["host"]) ||
