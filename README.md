@@ -69,6 +69,7 @@ The path to the credentials file can be set in [server/database.php](server/data
 The data are laid out in four tables, as described below.
 
 **Table 1: lintulista_lists**. Stores metadata about each user-created observation list.
+
 | Field        | Type                  | Null | Key | Default | Extra          |
 |--------------|-----------------------|------|-----|---------|----------------|
 | list_id      | mediumint(8) unsigned | NO   | PRI | NULL    | auto_increment |
@@ -83,6 +84,7 @@ Fields:
 - creator_hash: An anonymized identifier of the list's creator; a substring of the hash of remote IP + pepper. Intended not to identify an individual but to give some idea of where the list originated, relative to the other lists.
 
 **Table 2: lintulista_observations**. Stores observations added by users across all lists.
+
 | Field     | Type                  | Null | Key | Default | Extra          |
 |-----------|-----------------------|------|-----|---------|----------------|
 | id        | int(10) unsigned      | NO   | PRI | NULL    | auto_increment |
@@ -97,6 +99,7 @@ Fields:
 - species: A string giving the name of the species observed (e.g. "Idänuunilintu"). This must be a species name recognized by Lintulista.
 
 **Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the developer; stores information about events and errors related to the user's interaction with Lintulista. Since, depending on the type of activity, the error log might grow considerably larger than the event log, for which reason they've been separated into their own tables. The table layout is identical.
+
 | Field          | Type                  | Null | Key | Default | Extra          |
 |----------------|-----------------------|------|-----|---------|----------------|
 | id             | int(10) unsigned      | NO   | PRI | NULL    | auto_increment |
