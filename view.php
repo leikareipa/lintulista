@@ -47,6 +47,13 @@
                 if (!listKey)
                 {
                     error("A list key must be provided.");
+
+                    /// TODO. For now, jump back to the main page. But later on, we should handle
+                    /// this error in a better way.
+                    window.location.replace(window.location.href.replace(/\/view\.php.*/, "")
+                                                                .replace(/\/katsele\/.*/, "")
+                                                                .replace(/\/muokkaa\/.*/, ""));
+
                     return;
                 }
 
