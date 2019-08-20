@@ -22,7 +22,6 @@
             <div class="app-menu">
                 <div class="app-menu-item"><a href="./guide/" target="_blank" rel="noopener noreferrer">käyttöohje</a></div>
                 <div class="app-menu-item"><a href="mailto:sw@tarpeeksihyvaesoft.com">yhteydenotto</a></div>
-                <div class="app-menu-item"><a href="http://www.luontoportti.com/" target="_blank" rel="noopener noreferrer">kuvat: LuontoPortti</a></div>
             </div>
         </header>
 
@@ -66,8 +65,6 @@
                 <div class="title">Kuka teki Lintulistan?</div>
                 <div class="text">
                     <p>Lintulistan on kirjoittanut suomalainen koodiluola <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>.
-                    <p>Lintujen kuvat tulevat <a href="http://www.luontoportti.com">LuontoPortista</a>. Lintulista
-                    ja LuontoPortti eivät kuitenkaan muutoin liity toisiinsa.</p>
                     <p>Lintulista on avointa lähdekoodia - löydät sen myös
                     <a href="https://www.github.com/leikareipa/lintulista">GitHubista</a>.</p>
                 </div>
@@ -77,7 +74,6 @@
         <footer>
             <a href="https://www.github.com/leikareipa/lintulista">Lintulista</a>
             &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
-            &bull; Includes content from <a href="http://www.luontoportti.com">LuontoPortti</a>
         </footer>
 
         <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
@@ -144,7 +140,7 @@
                                     {
                                         bird = knownBirds[Math.floor(Math.random() * knownBirds.length)];
                                     }
-                                    while ((bird.thumbnailUrl === bird.nullThumbnailUrl) ||
+                                    while (/*(bird.thumbnailUrl === bird.nullThumbnailUrl) ||*/
                                            cardArray.map(c=>c.props.observation.bird.species).includes(bird.species) &&
                                            (++loopCount < maxNumLoops));
 

@@ -1,9 +1,6 @@
 # Lintulista
 Lintulista is a Finnish language web app for hobbyist birdwatchers to keep track of their sightings.
 
-![](images/screenshots/lintulista-beta.1.png)
-(The bird thumbnails are sourced from [LuontoPortti](http://www.luontoportti.com/).)
-
 With an easy-to-use interface and emphasis on visual presentation, Lintulista offers an interesting and accessible way to record your sightings - a good alternative to plain Excel tables.
 
 You can find Lintulista live on the web [here](http://www.tarpeeksihyvaesoft.com/lintulista/). Note that the app is currently in beta, so you may still encounter issues that will be absent in more mature versions.
@@ -202,8 +199,6 @@ Below are rough estimates of the required browser versions to run Lintulista. Br
 </table>
 
 # Credits
-The bird images used in Lintulista come from [LuontoPortti](http://www.luontoportti.com/).
-
 Lintulista uses the [React](https://reactjs.org/) library for most of its UI.
 
 Lintulista makes use of certain fonts from [Google Fonts](https://fonts.google.com/): Nunito, Delius, and Beth Ellen.

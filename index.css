@@ -135,7 +135,7 @@ footer
     left: calc(10% + 270px); /* Next to the app title.*/
     display: flex;
     flex-direction: row;
-    width: 500px;
+    width: 330px;
 }
 
 .app-menu > .app-menu-item

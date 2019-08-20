@@ -25,7 +25,6 @@
             <footer>
                 <a href="https://www.github.com/leikareipa/lintulista">Lintulista</a>
                 &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
-                &bull; Includes content from <a href="http://www.luontoportti.com">LuontoPortti</a>
             </footer>
             
         </div>

@@ -113,11 +113,6 @@ export function ObservationListMenuBar(props = {})
                                        <a href="mailto:sw@tarpeeksihyvaesoft.com">
                                            Yhteydenotto
                                        </a><br/>
-
-                                       Kuvat:&nbsp;
-                                       <a href="http://www.luontoportti.com/" target="_blank" rel="noopener noreferrer">
-                                           LuontoPortti
-                                       </a>
                                    </div>
                                }/>
 

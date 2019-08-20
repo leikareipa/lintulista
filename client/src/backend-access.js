@@ -150,8 +150,7 @@ const httpRequests = Object.freeze(
                 order: b.order,
                 family: b.family,
                 species: b.species,
-                thumbnailUrl: (b.thumbnail? `http://www.luontoportti.com/suomi/images/${b.thumbnail}`
-                                          : null),
+                thumbnailUrl: null,
             }));
         }
         else
