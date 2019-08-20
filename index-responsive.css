@@ -20,6 +20,16 @@
         top: 87px;
     }
 
+    #image-lacking-notice
+    {
+        top: 3px;
+        left: 0;
+        right: 0;
+        transform: none;
+        padding: 5px;
+        border-top-left-radius: 0;
+    }
+
     #app-title
     {
         left: 50%;
@@ -30,20 +40,5 @@
     #content > #header
     {
         padding-bottom: 105px;
-    }
-}
-
-@media only screen and (max-width: 550px)
-{
-    /* Hide the 'contact' option from the menu. Contact information is also
-     * found at the bottom of the page, so this isn't a crucial menu item.*/
-    .app-menu div:nth-child(2)
-    {
-        display: none;
-    }
-
-    .app-menu
-    {
-        width: 300px;
     }
 }
