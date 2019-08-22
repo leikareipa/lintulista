@@ -84,13 +84,13 @@
         <script type="module">
             import {ObservationCard} from "./client/dist/react-components/observation-list/ObservationCard.js"
             import {CreateNewListButton} from "./client/dist/react-components/buttons/CreateNewListButton.js";
-            import {backend_access} from "./client/dist/backend-access.js";
-            import {observation} from "./client/dist/observation.js";
+            import {BackendAccess} from "./client/dist/backend-access.js";
+            import {Observation} from "./client/dist/observation.js";
 
             // Run the app.
             (async()=>
             {
-                const knownBirds = await backend_access.get_known_birds_list();
+                const knownBirds = await BackendAccess.get_known_birds_list();
 
                 // Render a button with which the user can create a new list.
                 {
@@ -130,7 +130,7 @@
                         cardArray.push(React.createElement(ObservationCard,
                         {
                             key: idx,
-                            observation: observation(
+                            observation: Observation(
                             {
                                 date: randomDate,
                                 bird: (()=>

@@ -35,7 +35,7 @@
         <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
         <script type="module">
             import {render_observation_list} from "./client/dist/render/render-observation-list.js";
-            import {backend_access} from "./client/dist/backend-access.js";
+            import {BackendAccess} from "./client/dist/backend-access.js";
             import {error} from "./client/dist/assert.js";
 
             // We expect a ?list= parameter to be provided in the URL that gives us the key
@@ -58,7 +58,7 @@
                     return;
                 }
 
-                const backend = await backend_access(listKey);
+                const backend = await BackendAccess(listKey);
 
                 // If viewing with an edit key, hide it from the address bar to prevent its leaking
                 // to an over-the-shoulder viewer or the like.

@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {backend_access} from "../../backend-access.js";
+import {BackendAccess} from "../../backend-access.js";
 import {is_defined} from "../../assert.js";
 
 // Displays a multi-step button, whose contents change depending on how many steps have
@@ -49,7 +49,7 @@ export function CreateNewListButton(props = {})
             {
                 (async()=>
                 {
-                    const keys = await backend_access.create_new_list();
+                    const keys = await BackendAccess.create_new_list();
                     
                     if (keys)
                     {

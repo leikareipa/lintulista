@@ -22,7 +22,7 @@ const observedImages = new Set([placeholderThumbnailUrl]);
 // point the actual image is substituted.
 //
 // The bird whose thumbnail image is to be displayed should be provided via props.bird as a
-// bird() object.
+// Bird() object.
 //
 // Lazy loading of the thumbnail image can get enabled/disabled via props.useLazyLoading.
 //

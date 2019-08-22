@@ -8,17 +8,17 @@ import {BirdSearchBar} from "./BirdSearchBar.js";
 // list of known birds; and displays a dynamic list of search results matching the user's
 // query.
 //
-// Backend access should be provided via props.backend, which should be a backend_access()
+// Backend access should be provided via props.backend, which should be a BackendAccess()
 // object with which the component can query the backend for the list of known birds, the
 // user's current observations, etc.
 //
 // The callback provided via props.callbackAddObservation will be called when the user clicks
 // to add to the list a search result whose bird is not already on the list. The callback
-// will be passed one parameter: a bird() object representing the type of bird in question.
+// will be passed one parameter: a Bird() object representing the type of bird in question.
 //
 // The callback provided via props.callbackRemoveObservation will be called when the user
 // clicks to remove from the list a search result whose bird is on the list. The callback
-// will be passed one parameter: a bird() object representing the type of bird in question.
+// will be passed one parameter: a Bird() object representing the type of bird in question.
 //
 export function BirdSearch(props = {})
 {
@@ -90,7 +90,7 @@ export function BirdSearch(props = {})
     }
 
     // Called when the user selects to add the search result's bird to their list of
-    // observations. The 'bird' parameter is expected to be a bird() object.
+    // observations. The 'bird' parameter is expected to be a Bird() object.
     async function add_bird_to_list(bird)
     {
         panic_if_not_type("object", bird);
@@ -101,7 +101,7 @@ export function BirdSearch(props = {})
     }
 
     // Called when the user selects to remove the search result's bird from their list of
-    // observations. The 'bird' parameter is expected to be a bird() object.
+    // observations. The 'bird' parameter is expected to be a Bird() object.
     async function remove_bird_from_list(bird)
     {
         panic_if_not_type("object", bird);

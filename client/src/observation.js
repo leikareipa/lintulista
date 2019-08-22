@@ -8,7 +8,7 @@
 
 import {warn, panic_if_undefined} from "./assert.js";
 
-export function observation(args = {})
+export function Observation(args = {})
 {
     panic_if_undefined(args.date, args.bird);
 

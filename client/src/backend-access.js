@@ -4,15 +4,15 @@
  * 
  * Provides functions for client-to-backend interaction.
  * 
- * The only exported object is backend_access().
+ * The only exported object is BackendAccess().
  * 
  */
 
 "use strict";
 
 import {error, panic_if_undefined, warn, panic_if_not_type, panic} from "./assert.js";
-import {observation} from "./observation.js";
-import {bird} from "./bird.js";
+import {Observation} from "./observation.js";
+import {Bird} from "./bird.js";
 
 // Functions that interact with Lintulista's backend via HTTP.
 const httpRequests = Object.freeze(
@@ -119,7 +119,7 @@ const httpRequests = Object.freeze(
     },
 
     // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
-    // be added as observations. The list will be returned as an array of bird() objects;
+    // be added as observations. The list will be returned as an array of Bird() objects;
     // or, on failure, as an empty array.
     get_known_birds_list: async function()
     {
@@ -145,19 +145,19 @@ const httpRequests = Object.freeze(
 
             panic_if_not_type("array", birds);
 
-            return birds.map(b=>bird(
+            return birds.map(b=>Bird(
             {
                 order: b.order,
                 family: b.family,
                 species: b.species,
                 thumbnailUrl: (()=>
                 {
-                    if (!bird.thumbnailFilename[b.species])
+                    if (!Bird.thumbnailFilename[b.species])
                     {
                         return null;
                     }
 
-                    return ("./server/assets/images/bird-thumbnails/" + bird.thumbnailFilename[b.species]);
+                    return ("./server/assets/images/bird-thumbnails/" + Bird.thumbnailFilename[b.species]);
                 })(),
             }));
         }
@@ -204,7 +204,7 @@ const httpRequests = Object.freeze(
         }
     },
 
-    // Returns as an array of observation() objects the observations associated with the
+    // Returns as an array of Observation() objects the observations associated with the
     // given list; or, on failure, an empty array. You should provide as the second parameter
     // a list of the birds accepted as valid observees. Any observations submitted from the
     // server that are not found on this list will be ignored.
@@ -242,7 +242,7 @@ const httpRequests = Object.freeze(
             });
 
             return observationData.filter(obs=>is_known_bird_species(obs.species))
-                                  .map(obs=>observation(
+                                  .map(obs=>Observation(
             {
                 bird: knownBirds.find(b=>(b.species === obs.species)),
                 date: new Date(obs.timestamp*1000),
@@ -326,7 +326,7 @@ const httpRequests = Object.freeze(
 });
 
 // Provides mediated access to the given list's data in Lintulista's backend.
-export async function backend_access(listKey)
+export async function BackendAccess(listKey)
 {
     const backendLimits = Object.freeze(await httpRequests.get_backend_limits());
 
@@ -445,5 +445,5 @@ export async function backend_access(listKey)
 }
 
 // Convenience aliases.
-backend_access.create_new_list = ()=>httpRequests.create_new_list();
-backend_access.get_known_birds_list = ()=>httpRequests.get_known_birds_list();
+BackendAccess.create_new_list = ()=>httpRequests.create_new_list();
+BackendAccess.get_known_birds_list = ()=>httpRequests.get_known_birds_list();

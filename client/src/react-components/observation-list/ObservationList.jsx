@@ -13,7 +13,7 @@ import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationCard} from "./ObservationCard.js";
-import {observation} from "../../observation.js";
+import {Observation} from "../../observation.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 // A list of the birds singled out in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
@@ -94,7 +94,7 @@ export function ObservationList(props = {})
         // Called when the user requests us to add a new observation into the list.
         add_observation: async function(bird)
         {
-            const obs = observation({bird, date:new Date(), place:""});
+            const obs = Observation({bird, date:new Date(), place:""});
 
             if (await props.backend.put_observation(obs))
             {
@@ -196,7 +196,7 @@ export function ObservationList(props = {})
                     newDate.setMonth(month-1);
                     newDate.setDate(day);
 
-                    const modifiedObservation = observation(
+                    const modifiedObservation = Observation(
                     {
                         ...existingObservation,
                         date: newDate,
@@ -232,7 +232,7 @@ export function ObservationList(props = {})
         {
             panic_if_undefined(existingObservation, newPlace);
 
-            const modifiedObservation = observation(
+            const modifiedObservation = Observation(
             {
                 ...existingObservation,
                 place: newPlace,
@@ -329,7 +329,7 @@ export function ObservationList(props = {})
             return {};
         }
 
-        const obs = observation({bird, date:new Date()});
+        const obs = Observation({bird, date:new Date()});
 
         return {
             observation: obs,

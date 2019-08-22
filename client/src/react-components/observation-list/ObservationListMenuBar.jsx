@@ -18,12 +18,12 @@ import {MenuButton} from "../buttons/MenuButton.js";
 // should be provided via props.backend.
 //
 // A callback for when the user requests a new observation to be added to the list is to
-// be provided via props.callbackOnAddObservation. It will be passed one parameter: a bird()
+// be provided via props.callbackOnAddObservation. It will be passed one parameter: a Bird()
 // object describing the species of which the user wants an observation added.
 //
 // A callback for when the user requests an existing observation to be removed from the
 // list is to be provided via props.callbackOnAddObservation. It will be passed one parameter:
-// a bird() object describing the species of which the user wants an observation added.
+// a Bird() object describing the species of which the user wants an observation added.
 //
 // A callback for when the user requests to change the list's sorting order is to be
 // provided via props.callbackSetListSorting. It will be passed one parameter: a string
