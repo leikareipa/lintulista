@@ -113,6 +113,10 @@ export function ObservationListMenuBar(props = {})
                                        <a href="mailto:sw@tarpeeksihyvaesoft.com">
                                            Yhteydenotto
                                        </a><br/>
+
+                                       <a href="./guide/images.html" target="_blank" rel="noopener noreferrer">
+                                           Kuvien tiedot
+                                       </a><br/>
                                    </div>
                                }/>
 

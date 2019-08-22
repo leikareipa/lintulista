@@ -167,13 +167,6 @@ footer
     border-radius: 0 0 13px 13px;
 }
 
-.BirdThumbnail
-{
-    user-select: none;
-    -moz-user-select: none;
-    pointer-events: none;
-}
-
 .ObservationList > .ObservationListMenuBar
 {
     display: flex;

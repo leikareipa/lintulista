@@ -274,10 +274,3 @@ footer
 {
     display: none;
 }
-
-.BirdThumbnail
-{
-    user-select: none;
-    -moz-user-select: none;
-    pointer-events: none;
-}
