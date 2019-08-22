@@ -97,21 +97,6 @@ footer
     color: white;
 }
 
-#image-lacking-notice
-{
-    z-index: 0; /* Below the title text.*/
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px;
-    border-radius: 2px;
-    font-size: 85%;
-    font-family: sans-serif;
-    color: rgb(63, 50, 7);
-    background-color: #ffd037;
-}
-
 .app-menu
 {
     position: absolute;

@@ -150,7 +150,15 @@ const httpRequests = Object.freeze(
                 order: b.order,
                 family: b.family,
                 species: b.species,
-                thumbnailUrl: null,
+                thumbnailUrl: (()=>
+                {
+                    if (!bird.thumbnailFilename[b.species])
+                    {
+                        return null;
+                    }
+
+                    return ("./server/assets/images/bird-thumbnails/" + bird.thumbnailFilename[b.species]);
+                })(),
             }));
         }
         else

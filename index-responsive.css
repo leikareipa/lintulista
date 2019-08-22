@@ -20,16 +20,6 @@
         top: 87px;
     }
 
-    #image-lacking-notice
-    {
-        top: 3px;
-        left: 0;
-        right: 0;
-        transform: none;
-        padding: 5px;
-        border-top-left-radius: 0;
-    }
-
     #app-title
     {
         left: 50%;

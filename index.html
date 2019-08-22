@@ -13,11 +13,6 @@
     <body>
         <header>
 
-            <div id="image-lacking-notice">
-                <i class="fas fa-exclamation-triangle"></i>
-                Lintukuvat ovat tilapäisesti poissa käytöstä.
-            </div>
-            
             <div id="app-title" style="white-space: nowrap;">
                 <span id="app-name">
                     lintulista
@@ -147,7 +142,7 @@
                                     {
                                         bird = knownBirds[Math.floor(Math.random() * knownBirds.length)];
                                     }
-                                    while (/*(bird.thumbnailUrl === bird.nullThumbnailUrl) ||*/
+                                    while ((bird.thumbnailUrl === bird.nullThumbnailUrl) ||
                                            cardArray.map(c=>c.props.observation.bird.species).includes(bird.species) &&
                                            (++loopCount < maxNumLoops));
 

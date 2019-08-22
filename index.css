@@ -126,21 +126,6 @@ footer
     margin-bottom: 10px;
 }
 
-#image-lacking-notice
-{
-    z-index: 0;
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px;
-    border-radius: 2px;
-    font-size: 85%;
-    font-family: sans-serif;
-    color: rgb(63, 50, 7);
-    background-color: #ffd037;
-}
-
 .app-menu
 {
     font-family: "Delius", sans-serif;

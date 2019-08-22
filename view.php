@@ -16,11 +16,6 @@
 
             <div id="header">
 
-                <div id="image-lacking-notice">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Lintukuvat ovat tilapäisesti poissa käytöstä.
-                </div>
-
                 <div id="app-title">
                     <span id="app-name">lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
                 </div>
