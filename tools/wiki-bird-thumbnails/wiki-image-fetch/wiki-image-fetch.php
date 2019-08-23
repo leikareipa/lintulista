@@ -5,12 +5,11 @@
  * 2019 Tarpeeksi Hyvae Soft /
  * Lintulista
  * 
- * Selects for all of Lintulista's known bird species a random image from Wikimedia. The
- * image will be stored as Wikimedia URLs into the output file wiki-image-fetch-output.txt.
+ * Selects for a given bird species a random image from Wikimedia. The image will be stored
+ * as Wikimedia URLs into the output file wiki-image-fetch-output.txt.
  * 
  * NOTE: The script does not guarantee that an image returned of a particular species is
- * in fact of that species, or even of a bird in general. The script simply relies on
- * Wikimedia hosting relevant content.
+ * in fact of that species, or even of a bird in general.
  * 
  */
 
