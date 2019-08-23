@@ -14,31 +14,43 @@
  * 
  */
 
-$species = file_get_contents("latin-species.txt");
-$species = explode("\n", $species);
-
+$knownSpecies = json_decode(file_get_contents("known-species.json"), true);
+$targetSpecies = explode("\n", file_get_contents("target-species.txt"));
 $output = fopen("wiki-image-fetch-output.txt", "w");
 
-foreach ($species as $idx=>$bird)
+foreach ($targetSpecies as $idx=>$bird)
 {
-    // [0] will be the species name in Latin, and [1] the species name in Finnish.
-    $bird = explode(",", $bird);
-
-    $imageUrl = select_random_image_url($bird[0]);
-
-    if ($imageUrl)
+    if (array_key_exists($bird, $knownSpecies))
     {
-        fputs($output, "{$bird[1]}^{$imageUrl}\n");
+        $speciesLatinName = $knownSpecies[$bird];
     }
     else
     {
-        fputs($output, "{$bird[1]}^-\n");
+        printf("\nUnknown species \"{$bird}\". Skipping it.\n");
+        continue;
     }
 
-    printf("\rParsed %d of %d.", $idx+1, count($species));
+    $imageUrl = select_random_image_url($speciesLatinName);
 
-    sleep(1);
+    if ($imageUrl)
+    {
+        fputs($output, "{$bird}^{$imageUrl}\n");
+    }
+    else
+    {
+        fputs($output, "{$bird}^-\n");
+    }
+
+    printf("\rParsed %d of %d.", $idx+1, count($targetSpecies));
+
+    // Don't hammer the server with too many requests per unit of time.
+    if ($idx !== (count($targetSpecies) - 1))
+    {
+        sleep(1);
+    }
 }
+
+printf("\nFinished parsing.\n");
 
 // Fetches Wikimedia's Commons or Species page for the given bird species (whose name is
 // to be given in Latin with spaces replaced by underscores, e.g. Branta_ruficollis), and
@@ -51,7 +63,8 @@ function select_random_image_url(string $latinSpeciesName): string
 
     $htmlData = file_get_contents("https://commons.wikimedia.org/wiki/Category:{$latinSpeciesName}");
 
-    // See whether this is a redirecting page; and if so, grab the target page's HTML, instead.
+    // See whether this is a redirecting page; and if so, grab the target page's HTML,
+    // instead.
     if (preg_match("/This category is located at <b><a href=\"(\/wiki\/Category:[^\"]+)/", $htmlData, $redirectMatch))
     {
         $htmlData = file_get_contents("https://commons.wikimedia.org{$redirectMatch[1]}");
