@@ -8,10 +8,6 @@
  * Selects for all of Lintulista's known bird species a random image from Wikimedia. The
  * image will be stored as Wikimedia URLs into the output file wiki-image-fetch-output.txt.
  * 
- * NOTE: Although this script is intended to generate a list of images, Wikimedia also
- * hosts other types of media, and since the script performs no filtering for file type,
- * content like videos or sound files may also be output.
- * 
  * NOTE: The script does not guarantee that an image returned of a particular species is
  * in fact of that species, or even of a bird in general. The script simply relies on
  * Wikimedia hosting relevant content.
@@ -63,7 +59,7 @@ function select_random_image_url(string $latinSpeciesName): string
 
     // Extract from the HTML the filenames of the images of this species, and return from
     // among them a random one.
-    if (preg_match_all("/\/wiki\/File:[^\"]*/", $htmlData, $birdImageFilenames))
+    if (preg_match_all("/\/wiki\/File:[^\"]*?.(?i)(png|jpe?g)(?-i)/", $htmlData, $birdImageFilenames))
     {
         return "https://commons.wikimedia.org{$birdImageFilenames[0][random_int(0, count($birdImageFilenames[0])-1)]}";
     }
