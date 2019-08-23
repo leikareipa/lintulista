@@ -389,6 +389,11 @@ export async function BackendAccess(listKey)
         observations: ()=>localCache.observations,
         backend_limits: ()=>backendLimits,
 
+        refresh_observation_cache: async()=>
+        {
+            await localCache.refresh_observations();
+        },
+
         // Removes the given observation from the server-side list of observations. Updates
         // the local cache of observations, accordingly. Returns true if successful; false
         // otherwise.

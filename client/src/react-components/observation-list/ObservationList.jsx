@@ -94,7 +94,7 @@ export function ObservationList(props = {})
         // Called when the user requests us to add a new observation into the list.
         add_observation: async function(bird)
         {
-            const obs = Observation({bird, date:new Date(), place:""});
+            const obs = Observation({bird, date:new Date()});
 
             if (await props.backend.put_observation(obs))
             {
@@ -224,32 +224,6 @@ export function ObservationList(props = {})
                 },
                 onClose: ()=>{setIsMenuBarEnabled(true)},
             });
-        },
-
-        // Alters an existing observation's place. Returns the updated observation; or null
-        // on error.
-        set_observation_place: async function(existingObservation, newPlace)
-        {
-            panic_if_undefined(existingObservation, newPlace);
-
-            const modifiedObservation = Observation(
-            {
-                ...existingObservation,
-                place: newPlace,
-            });
-            
-            if (!(await props.backend.put_observation(modifiedObservation)))
-            {
-                return null;
-            }
-
-            if (sortListBy === "place")
-            {
-                sort_observation_cards();
-                redraw_observation_cards();
-            }
-
-            return (props.backend.observations().find(obs=>obs.bird.species === existingObservation.bird.species) || null);
         },
     });
 
