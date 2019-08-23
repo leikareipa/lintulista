@@ -86,8 +86,6 @@ image_metadata_s MainWindow::get_image_metadata(const QString html)
     {
         metadata.authorName = authorNameMatch.captured(1);
 
-        /// Temp hack.
-        metadata.authorName.remove("</a>");
         metadata.authorName.replace("&amp;", "&");
     }
     else
