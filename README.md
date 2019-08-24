@@ -6,11 +6,10 @@ With an easy-to-use interface and emphasis on visual presentation, Lintulista of
 You can find Lintulista live on the web [here](http://www.tarpeeksihyvaesoft.com/lintulista/). Note that the app is currently in beta, so you may still encounter issues that will be absent in more mature versions.
 
 **Features**
-- Quick, easy, and free to use - no login or account creation
-- Share your list with others via a URL
+- Easy and convenient to use - no account creation or login required
+- Visually compelling - sightings are displayed as images rather than as plain text
+- Share your sightings with others via a URL
 - Integrates BirdLife Finland's 100 Lajia challenge
-- Automatic count of species sighted
-- Download sightings to a CSV file
 
 # Code
 Lintulista's code comes in two 'modules' if you will: the client, and the server. The client handles the end-user UI and so on, while the server takes care of backend duties like managing access to the database.
