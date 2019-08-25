@@ -11,6 +11,8 @@ You can find Lintulista live on the web [here](http://www.tarpeeksihyvaesoft.com
 - Share your sightings with others via a URL
 - Integrates BirdLife Finland's 100 Lajia challenge
 
+![](images/screenshots/lintulista-beta.1.png)
+
 # Code
 Lintulista's code comes in two 'modules' if you will: the client, and the server. The client handles the end-user UI and so on, while the server takes care of backend duties like managing access to the database.
 
@@ -198,6 +200,8 @@ Below are rough estimates of the required browser versions to run Lintulista. Br
 </table>
 
 # Credits
+The bird thumbnails used in Lintulista come from photographs taken by a variety of authors. Please see [guide/images.html](guide/images.html) for a full list.
+
 Lintulista uses the [React](https://reactjs.org/) library for most of its UI.
 
 Lintulista makes use of certain fonts from [Google Fonts](https://fonts.google.com/): Nunito, Delius, and Beth Ellen.
