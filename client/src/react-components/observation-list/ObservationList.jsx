@@ -37,6 +37,13 @@ const sataLajia = Object.freeze(
     "Valkoposkihanhi","Varis","Varpunen","Varpushaukka","Varpuspöllö","Västäräkki","Viherpeippo","Vihervarpunen","Viirupöllö","Viitakerttunen",
 ]);
 
+// Lintulista's main component; displays the user's list of observations as a series of
+// ObservationCards. Also provides means to search the list for particular observations
+// and to add/delete/modify observations.
+//
+// Access to the user's list of observations on Lintulista's backend is to be provided
+// via props.backend as a BackendAccess() object.
+//
 export function ObservationList(props = {})
 {
     ObservationList.validate_props(props);

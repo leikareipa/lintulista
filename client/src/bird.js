@@ -8,6 +8,7 @@
 
 import {panic_if_not_type} from "./assert.js";
 
+// Represents a bird of a given kind, identified by its species name, family, and order.
 export function Bird(args = {})
 {
     panic_if_not_type("object", args);

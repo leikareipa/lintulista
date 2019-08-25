@@ -2,6 +2,8 @@
  * 2019 Tarpeeksi Hyvae Soft
  * Lintulista
  * 
+ * Provides functions for asserting conditions, displaying error messages, and the like.
+ * 
  */
 
 "use strict";

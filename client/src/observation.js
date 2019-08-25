@@ -8,6 +8,7 @@
 
 import {warn, panic_if_undefined} from "./assert.js";
 
+// Represents an observation of a given bird at a given time.
 export function Observation(args = {})
 {
     panic_if_undefined(args.date, args.bird);

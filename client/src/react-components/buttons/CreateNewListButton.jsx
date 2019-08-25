@@ -6,14 +6,13 @@
 
 "use strict";
 
+import {is_defined, panic_if_not_type} from "../../assert.js";
 import {BackendAccess} from "../../backend-access.js";
-import {is_defined} from "../../assert.js";
 
-// Displays a multi-step button, whose contents change depending on how many steps have
-// been taken.
+// Displays a multi-step button for creating a new list; the button's contents change
+// depending on how many steps have been taken.
 //
-// For now, the steps are simply hard-coded for creating a new lists; but in the future,
-// this might be made into a more generalized button for multi-step interaction.
+// This component takes in no props at this time.
 //
 export function CreateNewListButton(props = {})
 {
@@ -113,5 +112,7 @@ export function CreateNewListButton(props = {})
 
 CreateNewListButton.validate_props = function(props)
 {
+    panic_if_not_type("object", props);
+
     return;
 }

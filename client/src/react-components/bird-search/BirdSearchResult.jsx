@@ -4,7 +4,30 @@ import {panic_if_not_type} from "../../assert.js"
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 
-// An element displaying information about an individual search result.
+// An element displaying information about an individual bird search result.
+//
+// The bird of which this is a search result of is to be provided via props.bird as a
+// Bird() object.
+//
+// If the user's list of observations already includes this bird, that observation is
+// to be provided via props.observation as an Observation() object; otherwise, this prop
+// can be set to null.
+//
+//     If the user has previously observed this bird, the search result display will be
+//     modified to include options to alter the observation - like it's date and so on.
+//
+// A callback for when the user asks to add the bird to their list of observations is to
+// be provided via props.callbackAddObservation. The function will be called with one
+// parameter: props.bird.
+//
+// A callback for when the user asks to remove the bird from their list of observations
+// is to be provided via props.callbackRemoveObservation. The function will be called with
+// one parameter: props.bird.
+//
+// A callback for when the user asks to change the date of the observation of which this
+// is a search result of is to be provided via props.callbackChangeObservationDate. The
+// function will be called with one parameter: props.bird.
+//
 export function BirdSearchResult(props = {})
 {
     BirdSearchResult.validate_props(props);
@@ -86,12 +109,14 @@ export function BirdSearchResult(props = {})
 BirdSearchResult.defaultProps =
 {
     userHasEditRights: false,
+    observation: null,
 }
 
 BirdSearchResult.validate_props = function(props)
 {
     panic_if_not_type("object", props);
-    panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation);
+    panic_if_not_type("boolean", props.userHasEditRights);
+    panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation, callbackChangeObservationDate);
 
     return;
 }
