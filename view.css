@@ -464,7 +464,6 @@ footer
     margin-left: 10px;
     margin-right: 28px;
     border-radius: 50%;
-
     border: 10px solid white;
     box-shadow: -5px 0px 7px -2px rgba(0, 0, 0, 0.3);
 }
@@ -583,6 +582,7 @@ footer
     border: 16px solid #f3f3f3;
     box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
     z-index: 2;
+    background-color: #f3f3f3;
 }
 
 .ObservationCardGhost > .BirdThumbnail
