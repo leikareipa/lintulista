@@ -91,8 +91,6 @@
             // Run the app.
             (async()=>
             {
-                const knownBirds = await BackendAccess.get_known_birds_list();
-
                 // Render a button with which the user can create a new list.
                 {
                     const container = document.getElementById("create-new-list");
@@ -107,9 +105,45 @@
                     }
                 }
 
-                // Render a random selection of observations. (In the future, we might draw
-                // a random sample from user-submitted observations, but for now, since there
-                // are very few of those, we just generate random observations on the spot.)
+                render_random_observation_cards();
+            })();
+
+            const resizeTimer = {timeout: 200};
+            let prevWindowWidth = window.innerWidth;
+            window.onresize = ()=>
+            {
+                // The list of random observation cards is dependent on window size,
+                // so update it when the window resizes.
+                {
+                    // Only update the list if the window is now bigger than it was
+                    // previously and if that size difference exceeds a threshold.
+                    if (prevWindowWidth &&
+                        ((window.innerWidth - prevWindowWidth) < 400))
+                    {
+                        return;
+                    }
+
+                    prevWindowWidth = window.innerWidth;
+
+                    if (!resizeTimer.handle)
+                    {
+                        resizeTimer.handle = setTimeout(async()=>
+                        {
+                            await render_random_observation_cards();
+                            
+                            resizeTimer.handle = null;
+                        }, resizeTimer.timeout);
+                    }
+                }
+            }
+
+            // Render a random selection of observations. (In the future, we might draw
+            // a random sample from user-submitted observations, but for now, since there
+            // are very few of those, we just generate random observations on the spot.)
+            async function render_random_observation_cards()
+            {
+                const knownBirds = await BackendAccess.get_known_birds_list();
+
                 if (knownBirds.length)
                 {
                     // Assumed (approximate) width in pixels of a single observation card element.
@@ -145,8 +179,8 @@
                                         bird = knownBirds[Math.floor(Math.random() * knownBirds.length)];
                                     }
                                     while ((bird.thumbnailUrl === bird.nullThumbnailUrl) ||
-                                           cardArray.map(c=>c.props.observation.bird.species).includes(bird.species) &&
-                                           (++loopCount < maxNumLoops));
+                                        cardArray.map(c=>c.props.observation.bird.species).includes(bird.species) &&
+                                        (++loopCount < maxNumLoops));
 
                                     return bird;
                                 })(),
@@ -160,14 +194,15 @@
 
                     if (!container)
                     {
-                        panic("Can't find a required container!");
+                        panic("Can't find the required container!");
                     }
                     else
                     {
-                        ReactDOM.render(randomObservations, document.getElementById("random-observations"));
+                        ReactDOM.unmountComponentAtNode(container)
+                        ReactDOM.render(randomObservations, container);
                     }
                 }
-            })();
+            }
         </script>
       </script>
     </body>

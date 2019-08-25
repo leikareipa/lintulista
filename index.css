@@ -165,7 +165,7 @@ footer
     display: inline-block;
     color: black;
 
-    animation-name: animation-flip-new-list-button-frames;
+    animation-name: animation-reveal-new-list-button-frames;
     animation-timing-function: ease-in;
     animation-duration: 0.55s;
 }
