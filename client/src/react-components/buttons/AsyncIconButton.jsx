@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {error, panic_if_not_type, is_function} from "../../assert.js";
+import {error, panic_if_not_type, is_function, throw_if_not_true} from "../../assert.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -145,4 +145,111 @@ AsyncIconButton.validate_props = function(props)
     panic_if_not_type("object", props);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+AsyncIconButton.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container;
+
+    // Normal button.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(AsyncIconButton,
+            {
+                icon: "fas fa-times",
+                title: "Test1",
+                printTitle: true,
+                titleWhenClicked: "Test1-Clicked",
+                task: ()=>{},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.textContent === "Test1")]);
+
+        // Test the button.
+        {
+            throw_if_not_true([()=>(container.childNodes.length === 1)]);
+
+            const buttonElement = container.childNodes[0];
+
+            throw_if_not_true([()=>(buttonElement.tagName.toLowerCase() === "span"),
+                               ()=>(buttonElement.classList.contains("enabled")),
+                               ()=>(!buttonElement.classList.contains("waiting")),
+                               ()=>(!buttonElement.classList.contains("disabled"))]);
+
+            // Activate the button.
+            {
+                ReactTestUtils.act(()=>{buttonElement.dispatchEvent(new MouseEvent("click", {bubbles: true}))});
+
+                throw_if_not_true([()=>(container.textContent === "Test1-Clicked"),
+                                   ()=>(buttonElement.classList.contains("waiting")),
+                                   ()=>(!buttonElement.classList.contains("enabled")),
+                                   ()=>(!buttonElement.classList.contains("disabled"))]);
+            }
+        }
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Button without a task (should start out and remain disabled, even if requested to be enabled).
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(AsyncIconButton,
+            {
+                icon: "fas fa-times",
+                enabled: true,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.childNodes.length === 1)]);
+
+        const buttonElement = container.childNodes[0];
+
+        throw_if_not_true([()=>(buttonElement.classList.contains("disabled"))]);
+
+        // Activate the button (nothing should happen, since it's disabled).
+        {
+            ReactTestUtils.act(()=>{buttonElement.dispatchEvent(new MouseEvent("click", {bubbles: true}))});
+
+            throw_if_not_true([()=>(buttonElement.classList.contains("disabled")),
+                               ()=>(!buttonElement.classList.contains("waiting")),
+                               ()=>(!buttonElement.classList.contains("enabled"))]);
+        }
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }

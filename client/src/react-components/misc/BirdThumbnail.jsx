@@ -155,7 +155,7 @@ BirdThumbnail.test = ()=>
             ReactDOM.render(unitElement, container);
         });
 
-        throw_if_not_true([()=>container.childNodes.length === 1]);
+        throw_if_not_true([()=>(container.childNodes.length === 1)]);
 
         const thumbnailElement = container.childNodes[0];
 

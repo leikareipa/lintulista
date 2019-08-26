@@ -20,6 +20,7 @@ td, th
 {
     padding: 10px;
     border: none;
+    font-weight: normal;
 }
 
 .pass

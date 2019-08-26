@@ -46,14 +46,14 @@ export function BirdSearchResult(props = {})
         {
             return <AsyncIconButton icon="fas fa-plus"
                                     title={`Lisää ${props.bird.species} listaan`}
-                                    titleClicked="Lisätään listaan..."
+                                    titleWhenClicked="Lisätään listaan..."
                                     task={()=>props.callbackAddObservation(props.bird)}/>
         }
         else
         {
             return <AsyncIconButton icon="fas fa-eraser"
                                     title={`Poista ${props.bird.species} listasta`}
-                                    titleClicked="Poistetaan listasta..."
+                                    titleWhenClicked="Poistetaan listasta..."
                                     task={()=>props.callbackRemoveObservation(props.bird)}/>
         }
     })();
