@@ -116,7 +116,7 @@ BirdSearchResult.validate_props = function(props)
 {
     panic_if_not_type("object", props);
     panic_if_not_type("boolean", props.userHasEditRights);
-    panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation, callbackChangeObservationDate);
+    panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation, props.callbackChangeObservationDate);
 
     return;
 }
