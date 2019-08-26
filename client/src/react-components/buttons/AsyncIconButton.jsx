@@ -66,12 +66,12 @@ export function AsyncIconButton(props = {})
     {
         props.giveCallbackTriggerPress(handle_click);
     }
-    
+
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={handle_click}
                  title={props.printTitle? "" : currentTitle}>
                      <i className={currentIcon}/>
-                     {props.printTitle? <><br/>{props.title}</> : <></>}
+                     {props.printTitle? <><br/>{currentTitle}</> : <></>}
            </span>
 
     // Called when the button is clicked.
@@ -135,7 +135,7 @@ AsyncIconButton.defaultProps =
 {
     enabled: true,
     title: null,
-    titleClicked: null,
+    titleWhenClicked: null,
     printTitle: false,
     icon: "fas fa-question",
 }
