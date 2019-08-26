@@ -61,13 +61,6 @@
 
                 const backend = await BackendAccess(listKey);
 
-                // If viewing with an edit key, hide it from the address bar to prevent its leaking
-                // to an over-the-shoulder viewer or the like.
-                if (backend.hasEditRights)
-                {
-                    window.history.replaceState({}, document.title, window.location.pathname.replace(listKey, ""));
-                }
-
                 render_observation_list(backend);
             })();
         </script>
