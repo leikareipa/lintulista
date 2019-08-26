@@ -8,16 +8,17 @@
     <body>
         <!-- The unit tests' results will be generated as a table, here.-->
 
+        <script src="../../client/react/react.js"></script>
+        <script src="../../client/react/react-dom.js"></script>
+        <script src="../../client/react/react-dom-test-utils.js"></script>
         <script type="module">
-            import {Observation} from "../../client/dist/observation.js";
-            import {Bird} from "../../client/dist/bird.js";
-
-            const testTitle = "Lintulista - Plain JS objects";
+            import {ScrollerLabel} from "../../client/dist/react-components/scroller-label/ScrollerLabel.js";
+            
+            const testTitle = "Lintulista - React components";
 
             const unitTestResults =
             [
-                {unitName:"Bird", passes:Bird.test()},
-                {unitName:"Observation", passes:Observation.test()},
+                {unitName:"ScrollerLabel", passes:ScrollerLabel.test()},
             ]
 
             // Output the test results into a HTML table.
