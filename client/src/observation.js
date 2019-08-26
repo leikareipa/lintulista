@@ -42,19 +42,27 @@ export function Observation(args = {})
 // Runs basic tests on this unit. Returns true if all tests passed; false otherwise.
 Observation.test = ()=>
 {
-    const dateMilliseconds = 1567214553000
+    const dateInMilliseconds = 1567214553700
+    const date = new Date(dateInMilliseconds);
     const bird = Bird({species:"Test1", family:"Test2", order:"Test3", thumbnailUrl:"Test4"});
-    const observation = Observation({bird, date: new Date(dateMilliseconds)});
+    const observation = Observation({bird, date});
 
-    const expect = [()=>(observation.bird.species === "Test1"),
+    const expectedUnixTimestamp = Math.round(date.getTime() / 1000);
+    const expectedTimeString = String(date.getHours()).padStart(2, "0") + ":" +
+                               String(date.getMinutes()).padStart(2, "0");
+    const expectedDateString = date.getDate() + ". " +
+                               (new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(date) + "ta") + " " +
+                               date.getFullYear();
+
+    const expect = [()=>(Object.isFrozen(observation)),
+                    ()=>(observation.bird.species === "Test1"),
                     ()=>(observation.bird.family === "Test2"),
                     ()=>(observation.bird.order === "Test3"),
                     ()=>(observation.bird.thumbnailUrl === "Test4"),
-                    ()=>(observation.date.getTime() === dateMilliseconds),
-                    ()=>(observation.unixTimestamp === 1567214553),
-                    ()=>(observation.dateString === "31. elokuuta 2019"),
-                    ()=>(observation.timeString === "04:22"),
-                    ()=>(Object.isFrozen(observation))];
+                    ()=>(observation.date.getTime() === dateInMilliseconds),
+                    ()=>(observation.unixTimestamp === expectedUnixTimestamp),
+                    ()=>(observation.dateString === expectedDateString),
+                    ()=>(observation.timeString === expectedTimeString)];
                     
     const expectFailed = expect.filter(test=>!test());
     
