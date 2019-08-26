@@ -79,3 +79,38 @@ export function debug(debugMessage = "")
 {
     console.debug(`Lintulista: ${debugMessage}`);
 }
+
+// Takes in an array of functions, and returns true if the return values of all the
+// functions in the array evaluate to strictly true. False is returned otherwise.
+//
+// For instance,
+//
+//     expect_true([()=>(1 === 1),
+//                  ()=>(2 == "2")])
+//
+// will return true, as both functions return strictly true. On the other hand,
+//
+//     expect_true([()=>(1 === 1),
+//                  ()=>(1 === 2)])
+//
+// and
+//
+//     expect_true([()=>(1 === 1),
+//                  ()=>({})])
+// 
+// will return false, as the second function in neither case returns strictly true.
+//
+export function expect_true(expect = [])
+{
+    panic_if_not_type("array", expect);
+
+    const expectFailed = expect.map((test, idx)=>({run:test, idx})).filter(test=>(test.run() !== true));
+
+    if (expectFailed.length)
+    {
+        console.error(...["Not strictly true:\n",
+                          ...expectFailed.map(failedTest=>`#${failedTest.idx+1}: ${failedTest.run.toString()}\n`)]);
+    }
+
+    return !expectFailed.length;
+}

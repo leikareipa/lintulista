@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {warn, panic_if_undefined} from "./assert.js";
+import {warn, panic_if_undefined, expect_true} from "./assert.js";
 import {Bird} from "./bird.js";
 
 // Represents an observation of a given bird at a given time.
@@ -54,22 +54,13 @@ Observation.test = ()=>
                                (new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(date) + "ta") + " " +
                                date.getFullYear();
 
-    const expect = [()=>(Object.isFrozen(observation)),
-                    ()=>(observation.bird.species === "Test1"),
-                    ()=>(observation.bird.family === "Test2"),
-                    ()=>(observation.bird.order === "Test3"),
-                    ()=>(observation.bird.thumbnailUrl === "Test4"),
-                    ()=>(observation.date.getTime() === dateInMilliseconds),
-                    ()=>(observation.unixTimestamp === expectedUnixTimestamp),
-                    ()=>(observation.dateString === expectedDateString),
-                    ()=>(observation.timeString === expectedTimeString)];
-                    
-    const expectFailed = expect.filter(test=>!test());
-    
-    expectFailed.forEach(failedTest=>
-    {
-        console.error("Test failed: " + failedTest.toString());
-    })
-
-    return !expectFailed.length;
+    return expect_true([()=>(Object.isFrozen(observation)),
+                        ()=>(observation.bird.species === "Test1"),
+                        ()=>(observation.bird.family === "Test2"),
+                        ()=>(observation.bird.order === "Test3"),
+                        ()=>(observation.bird.thumbnailUrl === "Test4"),
+                        ()=>(observation.date.getTime() === dateInMilliseconds),
+                        ()=>(observation.unixTimestamp === expectedUnixTimestamp),
+                        ()=>(observation.dateString === expectedDateString),
+                        ()=>(observation.timeString === expectedTimeString)]);
 }
