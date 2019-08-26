@@ -210,25 +210,5 @@ void MainWindow::on_pushButton_skip_clicked()
 // Paste here the output of wiki-image-fetch.php.
 void MainWindow::populate_images_list()
 {
-    this->images << "Amerikanmustalintu^https://commons.wikimedia.org/wiki/File:Black_Scoters,_Tiscornia_Park,_17_November_2012_(8198627638).jpg"
-                 << "Pikkuliitäjä^https://commons.wikimedia.org/wiki/File:800,Manx_shearwater.jpg"
-                 << "Myrskykeiju^https://commons.wikimedia.org/wiki/File:148_-_LEACH%27S_STORM-PETREL_(9-15-2918)_MAS_pelagic_trip,_out_of_bar_harbor,_me_-01_(44106789154).jpg"
-                 << "Suula^https://commons.wikimedia.org/wiki/File:Northern-Gannet-2.jpg"
-                 << "Keisarikotka^https://commons.wikimedia.org/wiki/File:Eastern_Imperial_Eagle.jpg"
-                 << "Neitokurki^https://commons.wikimedia.org/wiki/File:Demoiselle_Crane_(Grus_virgo)_(8079417550).jpg"
-                 << "Jänkäkurppa^https://commons.wikimedia.org/wiki/File:Lymnocryptes_minimus_(Marek_Szczepanek).jpg"
-                 << "Hietatiira^https://commons.wikimedia.org/wiki/File:Gelochelidon_nilotica_vanrossemi.jpg"
-                 << "Mustatiira^https://commons.wikimedia.org/wiki/File:%C4%8Cor%C3%ADk_%C4%8Dierny_(Chlidonias_niger)_a_(4644831482).jpg"
-                 << "Ruusulokki^https://commons.wikimedia.org/wiki/File:Ross%27s_Gull_(Rhodostethia_rosea)_1_(cropped).jpg"
-                 << "Kyläpöllönen^https://commons.wikimedia.org/wiki/File:Otus_scops_1_(Bohu%C5%A1_%C4%8C%C3%AD%C4%8Del).jpg"
-                 << "Kehrääjä^https://commons.wikimedia.org/wiki/File:%D0%9E%D0%B1%D1%8B%D0%BA%D0%BD%D0%BE%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%B7%D0%BE%D0%B4%D0%BE%D0%B9.jpg"
-                 << "Alppikiitäjä^https://commons.wikimedia.org/wiki/File:Alpine_swift_at_Koytendag,_SE_Turkmenistan_.jpg"
-                 << "Ylänkökiuru^https://commons.wikimedia.org/wiki/File:Bimaculated_Lark_(Melanocorypha_bimaculata).jpg"
-                 << "Valkosiipikiuru^https://commons.wikimedia.org/wiki/File:White-winged_Lark_-_Kazakistan_S4E0496_(16947462615).jpg"
-                 << "Räystäspääsky^https://commons.wikimedia.org/wiki/File:Mehlschwalbe.jpg"
-                 << "Koskikara^https://commons.wikimedia.org/wiki/File:01_vwam-10-12.jpg"
-                 << "Kirjorastas^https://commons.wikimedia.org/wiki/File:White%27s_Thrush_-_Taiwan_S4E8185_(17027482527).jpg"
-                 << "Viirusirkkalintu^https://commons.wikimedia.org/wiki/File:Locustella_lanceolata_photo.jpg"
-                 << "Amurinuunilintu^https://commons.wikimedia.org/wiki/File:Eastern_crowned_warbler.jpg"
-                 << "Mustaviklo^https://commons.wikimedia.org/wiki/File:14107739813_Jpg_(106032381).jpeg";
+    this->images << "Tukkakoskelo^https://commons.wikimedia.org/wiki/File:Red-breasted_merganser_(Adult_male_in_breeding_plumage)_(6796583115).jpg";
 }

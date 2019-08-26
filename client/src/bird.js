@@ -429,7 +429,7 @@ Bird.thumbnailFilename =
  	"Tunturihaukka":"45c1412f-a22c-4b71-8347-386857adeeb4.jpg",
  	"Harakka":"4755b784-aeba-445d-9fe1-4c4eac07b434.jpg",
  	"Kyhmyhaahka":"47876b4e-ca43-4260-8e5b-bb88a9d0adc7.jpg",
- 	"Tukkakoskelo":"48eb5b4f-4470-4ed7-b1d9-a68342190b54.jpg",
+ 	"Tukkakoskelo":"20443aa7-a60a-4c01-8fd5-ec930f26118c.jpg",
  	"Aropääskykahlaaja":"502d27ab-6807-4147-a519-ca8aef905bc4.jpg",
  	"Kuukkeli":"503ef07f-4db5-4513-9790-9c70920e31cb.jpg",
  	"Sinipyrstö":"54a54241-e4c9-4b17-bae9-eee69e7892d2.jpg",

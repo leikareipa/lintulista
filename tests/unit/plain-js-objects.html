@@ -39,7 +39,7 @@
                     unitName.appendChild(document.createTextNode(result.unitName));
 
                     const testResult = document.createElement("td");
-                    testResult.appendChild(document.createTextNode(result.passed? "Passed" : "Failed"));
+                    testResult.appendChild(document.createTextNode(result.passed? "passes" : "fails"));
 
                     newRow.appendChild(unitName);
                     newRow.appendChild(testResult)
