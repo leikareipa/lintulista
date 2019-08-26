@@ -32,8 +32,8 @@
             
         </div>
 
-        <script src="https://unpkg.com/react@16.8.6/umd/react.development.js" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.development.js" crossorigin="anonymous"></script>
+        <script src="./client/react/react.js"></script>
+        <script src="./client/react/react-dom.js"></script>
         <script type="module">
             import {render_observation_list} from "./client/dist/render/render-observation-list.js";
             import {BackendAccess} from "./client/dist/backend-access.js";

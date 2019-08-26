@@ -16,7 +16,7 @@ You can find Lintulista live on the web [here](http://www.tarpeeksihyvaesoft.com
 # Code
 Lintulista's code comes in two 'modules' if you will: the client, and the server. The client handles the end-user UI and so on, while the server takes care of backend duties like managing access to the database.
 
-The client, the code for which you'll find under [client/](client/), is written with JavaScript, and uses the React library for most of the UI functionality.
+The client, the code for which you'll find under [client/](client/), is written with JavaScript, and uses the React library (currently, version 16.8.6) for most of the UI functionality.
 
 The server, the code for which you'll find under [server/](server/), is written with PHP of up to version 7.0.
 
@@ -123,6 +123,7 @@ You may need to adapt the file to fit your particular web hosting etc.
 #### Deploying
 To deploy Lintulista on a server, copy into a directory on the server the following files (maintaining the directory structure):
 - client/dist/*
+- client/react/*
 - client/assets/*
 - server/*
 - guide/*
@@ -131,6 +132,8 @@ To deploy Lintulista on a server, copy into a directory on the server the follow
 - index.html
 - index-*.css
 - .htaccess
+
+The [client/react/](client/react/) directory by default contains the developmental version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
 
 ### Server-to-client API
 The server provides the client a REST-like API for interacting with the database.
