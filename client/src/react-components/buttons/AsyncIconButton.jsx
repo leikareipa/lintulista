@@ -190,7 +190,7 @@ AsyncIconButton.test = ()=>
 
             // Activate the button.
             {
-                ReactTestUtils.act(()=>{buttonElement.dispatchEvent(new MouseEvent("click", {bubbles: true}))});
+                ReactTestUtils.Simulate.click(buttonElement);
 
                 throw_if_not_true([()=>(container.textContent === "Test1-Clicked"),
                                    ()=>(buttonElement.classList.contains("waiting")),
@@ -235,7 +235,7 @@ AsyncIconButton.test = ()=>
 
         // Activate the button (nothing should happen, since it's disabled).
         {
-            ReactTestUtils.act(()=>{buttonElement.dispatchEvent(new MouseEvent("click", {bubbles: true}))});
+            ReactTestUtils.Simulate.click(buttonElement);
 
             throw_if_not_true([()=>(buttonElement.classList.contains("disabled")),
                                ()=>(!buttonElement.classList.contains("waiting")),

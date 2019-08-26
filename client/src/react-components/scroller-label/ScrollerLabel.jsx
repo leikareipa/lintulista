@@ -150,8 +150,8 @@ ScrollerLabel.test = ()=>
         // Scrolling up.
         {
             // Scroll from "maaliskuu" to "huhtikuu".
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
 
             throw_if_not_true([()=>(container.textContent === "huhtikuuta")]);
         }
@@ -159,12 +159,12 @@ ScrollerLabel.test = ()=>
         // Scrolling down.
         {
             // Scroll from "huhtikuu" back to "maaliskuu".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             // Scroll from "maaliskuu" to "helmikuu".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             throw_if_not_true([()=>(container.textContent === "helmikuuta")]);
         }
@@ -172,18 +172,18 @@ ScrollerLabel.test = ()=>
         // Wrapping around when scrolling.
         {
             // Scroll from "helmikuu" to "tammikuu".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             // Wrap over from "tammikuu" to "joulukuu".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             throw_if_not_true([()=>(container.textContent === "joulukuuta")]);
 
             // Wrap over from "joulukuu" to "tammikuu".
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
 
             throw_if_not_true([()=>(container.textContent === "tammikuuta")]);
         }
@@ -229,8 +229,8 @@ ScrollerLabel.test = ()=>
         // Scrolling up.
         {
             // Scroll from "1" to "2".
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
 
             throw_if_not_true([()=>(container.textContent === "2")]);
         }
@@ -238,12 +238,12 @@ ScrollerLabel.test = ()=>
         // Scrolling down.
         {
             // Scroll from "2" back to "1".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             // Scroll from "1" to "0".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             throw_if_not_true([()=>(container.textContent === "0")]);
         }
@@ -251,14 +251,14 @@ ScrollerLabel.test = ()=>
         // Wrapping around when scrolling.
         {
             // Wrap over from "0" to "2".
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollDown);
+            ReactTestUtils.Simulate.mouseUp(scrollDown);
 
             throw_if_not_true([()=>(container.textContent === "2")]);
 
             // Wrap over from "2" to "0".
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
-            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
 
             throw_if_not_true([()=>(container.textContent === "0")]);
         }
