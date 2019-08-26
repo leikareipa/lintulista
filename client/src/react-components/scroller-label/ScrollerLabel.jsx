@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type, error, warn, panic} from "../../assert.js";
+import {panic_if_undefined, panic_if_not_type, error, warn, panic, throw_if_not_true} from "../../assert.js";
 import {Scroller} from "./Scroller.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
@@ -47,11 +47,13 @@ export function ScrollerLabel(props = {})
 
     return <div className="ScrollerLabel">
                <Scroller icon="fas fa-caret-up fa-2x"
+                         additionalClassName="up"
                          callback={()=>scroll_value(1)}/>
                <div className="value">
                    {`${displayable_value()}${props.suffix || ""}`}
                </div>
                <Scroller icon="fas fa-caret-down fa-2x"
+                         additionalClassName="down"
                          callback={()=>scroll_value(-1)}/>
            </div>
 
@@ -105,4 +107,169 @@ ScrollerLabel.validate_props = function(props)
     }
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+ScrollerLabel.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container;
+
+    // Scroller with named months.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container)
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(ScrollerLabel,
+            {
+                type: "month-name",
+                language: "fi",
+                value: 3, // 3rd month of the year; "maaliskuu".
+                min: 0,
+                max: 11,
+                suffix: "ta", // E.g. "maaliskuuTA".
+                onChange: ()=>{},
+            });
+
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.textContent === "maaliskuuta")]);
+
+        const scrollUp = container.querySelector(".Scroller.up");
+        const scrollDown = container.querySelector(".Scroller.down");
+
+        throw_if_not_true([()=>(scrollUp instanceof HTMLElement),
+                           ()=>(scrollDown instanceof HTMLElement)]);
+
+        // Scrolling up.
+        {
+            // Scroll from "maaliskuu" to "huhtikuu".
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "huhtikuuta")]);
+        }
+
+        // Scrolling down.
+        {
+            // Scroll from "huhtikuu" back to "maaliskuu".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            // Scroll from "maaliskuu" to "helmikuu".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "helmikuuta")]);
+        }
+
+        // Wrapping around when scrolling.
+        {
+            // Scroll from "helmikuu" to "tammikuu".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            // Wrap over from "tammikuu" to "joulukuu".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "joulukuuta")]);
+
+            // Wrap over from "joulukuu" to "tammikuu".
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "tammikuuta")]);
+        }
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Scroller with integers.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container)
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(ScrollerLabel,
+            {
+                type: "integer",
+                value: 1,
+                min: 0,
+                max: 2,
+                onChange: ()=>{},
+            });
+
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.textContent === "1")]);
+
+        const scrollUp = container.querySelector(".Scroller.up");
+        const scrollDown = container.querySelector(".Scroller.down");
+
+        throw_if_not_true([()=>(scrollUp instanceof HTMLElement),
+                           ()=>(scrollDown instanceof HTMLElement)]);
+
+        // Scrolling up.
+        {
+            // Scroll from "1" to "2".
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "2")]);
+        }
+
+        // Scrolling down.
+        {
+            // Scroll from "2" back to "1".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            // Scroll from "1" to "0".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "0")]);
+        }
+
+        // Wrapping around when scrolling.
+        {
+            // Wrap over from "0" to "2".
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollDown.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "2")]);
+
+            // Wrap over from "2" to "0".
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mousedown", {bubbles: true}))});
+            ReactTestUtils.act(()=>{scrollUp.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}))});
+
+            throw_if_not_true([()=>(container.textContent === "0")]);
+        }
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }
