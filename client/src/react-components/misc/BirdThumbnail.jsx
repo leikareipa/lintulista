@@ -6,7 +6,8 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {Bird} from "../../bird.js";
 
 // For lazy image loading. The placeholder image we'll display when the real image is yet
 // to be lazily loaded in.
@@ -24,7 +25,7 @@ const observedImages = new Set([placeholderThumbnailUrl]);
 // The bird whose thumbnail image is to be displayed should be provided via props.bird as a
 // Bird() object.
 //
-// Lazy loading of the thumbnail image can get enabled/disabled via props.useLazyLoading.
+// Lazy loading of the thumbnail image can be enabled/disabled via props.useLazyLoading.
 //
 export function BirdThumbnail(props = {})
 {
@@ -126,4 +127,52 @@ BirdThumbnail.validate_props = function(props)
     panic_if_not_type("object", props, props.bird);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+BirdThumbnail.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container;
+
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        const bird = Bird({species:"Test1", family:"", order:"", thumbnailUrl:"test-image.png"})
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(BirdThumbnail,
+            {
+                bird,
+                useLazyLoading: false,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>container.childNodes.length === 1]);
+
+        const thumbnailElement = container.childNodes[0];
+
+        throw_if_not_true([()=>(thumbnailElement.tagName.toLowerCase() === "img"),
+                           ()=>(thumbnailElement.getAttribute("src") === "test-image.png"),
+                           ()=>(thumbnailElement.getAttribute("referrerpolicy") === "no-referrer")]);
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    /// TODO: Test lazy loading of the thumbnail image.
+
+    return true;
 }

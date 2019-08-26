@@ -119,7 +119,7 @@ ScrollerLabel.test = ()=>
     try
     {
         container = document.createElement("div");
-        document.body.appendChild(container)
+        document.body.appendChild(container);
 
         // Render the component.
         ReactTestUtils.act(()=>
@@ -135,6 +135,7 @@ ScrollerLabel.test = ()=>
                 onChange: ()=>{},
             });
 
+            ReactDOM.unmountComponentAtNode(container);
             ReactDOM.render(unitElement, container);
         });
 

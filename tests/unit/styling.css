@@ -16,7 +16,7 @@ table
     width: 250px;
 }
 
-table td, th
+td, th
 {
     padding: 10px;
     border: none;
@@ -30,4 +30,5 @@ table td, th
 .fail
 {
     background-color: crimson;
+    color: white;
 }

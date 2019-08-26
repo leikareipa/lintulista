@@ -13,12 +13,14 @@
         <script src="../../client/react/react-dom-test-utils.js"></script>
         <script type="module">
             import {ScrollerLabel} from "../../client/dist/react-components/scroller-label/ScrollerLabel.js";
+            import {BirdThumbnail} from "../../client/dist/react-components/misc/BirdThumbnail.js";
             
             const testTitle = "Lintulista - React components";
 
             const unitTestResults =
             [
                 {unitName:"ScrollerLabel", passes:ScrollerLabel.test()},
+                {unitName:"BirdThumbnail", passes:BirdThumbnail.test()},
             ]
 
             // Output the test results into a HTML table.
