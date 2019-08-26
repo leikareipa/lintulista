@@ -35,6 +35,27 @@ export function Bird(args = {})
     return publicInterface;
 }
 
+// Runs basic tests on this unit. Returns true if all tests passed; false otherwise.
+Bird.test = ()=>
+{
+    const bird = Bird({species:"Test1", family:"Test2", order:"Test3", thumbnailUrl:"Test4"});
+
+    const expect = [()=>(bird.species === "Test1"),
+                    ()=>(bird.family === "Test2"),
+                    ()=>(bird.order === "Test3"),
+                    ()=>(bird.thumbnailUrl === "Test4"),
+                    ()=>(Object.isFrozen(bird))];
+        
+    const expectFailed = expect.filter(test=>!test());
+
+    expectFailed.forEach(failedTest=>
+    {
+        console.error("Test failed: " + failedTest.toString());
+    })
+
+    return !expectFailed.length;
+}
+
 // For each known bird in Lintulista, a corresponding thumbnail filename. The files
 // referenced are found in "server/assets/images/bird-thumbnails/".
 Bird.thumbnailFilename =

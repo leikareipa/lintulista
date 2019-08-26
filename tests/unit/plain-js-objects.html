@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Unit test results</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="plain-js-objects.css">
+    </head>
+    <body>
+        <!-- The unit tests' results will be generated as a table, here.-->
+
+        <script type="module">
+            import {Observation} from "../../client/dist/observation.js";
+            import {Bird} from "../../client/dist/bird.js";
+
+            const testTitle = "Lintulista - Plain JS objects";
+
+            const unitTestResults =
+            [
+                {unitName:"Bird", passed:Bird.test()},
+                {unitName:"Observation", passed:Observation.test()},
+            ]
+
+            // Output the test results into a HTML table.
+            {
+                const resultsTableElement = document.createElement("table");
+
+                const header = document.createElement("th");
+                header.setAttribute("colspan", "2");
+                header.appendChild(document.createTextNode(testTitle));
+                header.style.backgroundColor = "lightgray";
+                resultsTableElement.appendChild(header);
+
+                unitTestResults.forEach(result=>
+                {
+                    const newRow = document.createElement("tr");
+                    newRow.className = (result.passed? "pass" : "fail");
+                    
+                    const unitName = document.createElement("td");
+                    unitName.appendChild(document.createTextNode(result.unitName));
+
+                    const testResult = document.createElement("td");
+                    testResult.appendChild(document.createTextNode(result.passed? "Passed" : "Failed"));
+
+                    newRow.appendChild(unitName);
+                    newRow.appendChild(testResult)
+                    resultsTableElement.appendChild(newRow);
+                });
+
+                document.body.appendChild(resultsTableElement);
+                document.body.appendChild(document.createTextNode(Date()));
+            }
+        </script>
+    </body>
+</html>
