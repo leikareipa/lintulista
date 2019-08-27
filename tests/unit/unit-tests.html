@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Unit test results</title>
+        <title>Lintulista - unit test results</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="unit-tests.css">
     </head>
     <body>
-        <!-- The unit tests' results will be generated as a table, here.-->
+        <div id="title">
+            Lintulista - unit test results
+        </div>
+
+        <div id="overall-result">
+            <!-- An icon indicating whether all results succeeded or some failed will appear here.-->
+        </div>
+
+        <br>
+        <div id="individual-results">
+            <!-- The names of the individual units tested will appear here.-->
+        </div>
+
+        <br>
+        <div id="finish-date">
+            <!-- The time and date at which the tests finished will appear here.-->
+        </div>
 
         <script src="../../client/react/react.js"></script>
         <script src="../../client/react/react-dom.js"></script>
@@ -21,8 +38,6 @@
             import {BirdSearch} from "../../client/dist/react-components/bird-search/BirdSearch.js";
             import {Bird} from "../../client/dist/bird.js";
 
-            const testTitle = "Lintulista - Unit tests";
-
             const unitTestResults =
             [
                 {unitName:"Bird", passes:Bird.test()},
@@ -33,37 +48,35 @@
                 {unitName:"BirdSearchBar", passes:BirdSearchBar.test()},
                 {unitName:"BirdSearchResult", passes:BirdSearchResult.test()},
                 {unitName:"BirdSearch", passes:BirdSearch.test()},
-            ]
+            ];
 
-            // Output the test results into a HTML table.
+            document.getElementById("overall-result").classList.add(unitTestResults.every(test=>test.passes)? "pass" : "fail");
+
+            unitTestResults.forEach((result, idx)=>
             {
-                const resultsTableElement = document.createElement("table");
+                const nameElement = document.createElement("span");
+                nameElement.style.whiteSpace = "nowrap";
 
-                const header = document.createElement("th");
-                header.setAttribute("colspan", "2");
-                header.appendChild(document.createTextNode(testTitle));
-                header.style.backgroundColor = "lightgray";
-                resultsTableElement.appendChild(header);
-
-                unitTestResults.forEach(result=>
+                if (result.passes)
                 {
-                    const newRow = document.createElement("tr");
-                    newRow.className = (result.passes? "pass" : "fail");
-                    
-                    const unitName = document.createElement("td");
-                    unitName.appendChild(document.createTextNode(result.unitName));
+                    nameElement.className = "pass";
+                }
+                else
+                {
+                    nameElement.className = "fail";
+                    nameElement.setAttribute("title", `${result.unitName} fails`);
+                }
 
-                    const testResult = document.createElement("td");
-                    testResult.appendChild(document.createTextNode(result.passes? "passes" : "fails"));
+                nameElement.appendChild(document.createTextNode(result.unitName));
+                document.getElementById("individual-results").appendChild(nameElement);
 
-                    newRow.appendChild(unitName);
-                    newRow.appendChild(testResult)
-                    resultsTableElement.appendChild(newRow);
-                });
+                if (idx < (unitTestResults.length - 1))
+                {
+                    document.getElementById("individual-results").appendChild(document.createTextNode(", "));
+                }
+            });
 
-                document.body.appendChild(resultsTableElement);
-                document.body.appendChild(document.createTextNode(Date()));
-            }
+            document.getElementById("finish-date").appendChild(document.createTextNode(Date()));
         </script>
     </body>
 </html>
