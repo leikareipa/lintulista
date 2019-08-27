@@ -165,7 +165,7 @@ BirdSearchBar.validateProps = function(props)
 BirdSearchBar.test = ()=>
 {
     // The container we'll render instances of the component into for testing.
-    let container;
+    let container = {remove:()=>{}};
 
     try
     {
@@ -205,9 +205,11 @@ BirdSearchBar.test = ()=>
 
         /// TODO: Test the onFocus callback.
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {

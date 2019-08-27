@@ -127,7 +127,7 @@ BirdSearchResult.validate_props = function(props)
 BirdSearchResult.test = ()=>
 {
     // The container we'll render instances of the component into for testing.
-    let container;
+    let container = {remove:()=>{}};
 
     // Search result of a bird of whom there is a previous observation but without us having
     // edit rights to that observation.
@@ -174,9 +174,11 @@ BirdSearchResult.test = ()=>
                            ()=>(infoCardBirdName.textContent === "Alli"),
                            ()=>(infoCardObservationDate.textContent === "1. tammikuuta 1970")]);
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
@@ -229,9 +231,11 @@ BirdSearchResult.test = ()=>
                            ()=>(infoCardObservationDate.textContent === "1. tammikuuta 1970"),
                            ()=>(addRemoveButton.getAttribute("title").startsWith("Poista"))]);
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
@@ -282,9 +286,11 @@ BirdSearchResult.test = ()=>
                            ()=>(infoCardObservationDate.textContent === "Ei havaintoa"),
                            ()=>(addRemoveButton.getAttribute("title").startsWith("Lisää"))]);
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
@@ -333,9 +339,11 @@ BirdSearchResult.test = ()=>
                            ()=>(infoCardBirdName.textContent === "Alli"),
                            ()=>(infoCardObservationDate.textContent === "Ei havaintoa")]);
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {

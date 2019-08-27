@@ -151,7 +151,7 @@ AsyncIconButton.validate_props = function(props)
 AsyncIconButton.test = ()=>
 {
     // The container we'll render instances of the component into for testing.
-    let container;
+    let container = {remove:()=>{}};
 
     // Normal button.
     try
@@ -199,9 +199,11 @@ AsyncIconButton.test = ()=>
             }
         }
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
@@ -242,9 +244,11 @@ AsyncIconButton.test = ()=>
                                ()=>(!buttonElement.classList.contains("enabled"))]);
         }
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {

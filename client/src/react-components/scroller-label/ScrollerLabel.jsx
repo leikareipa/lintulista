@@ -113,7 +113,7 @@ ScrollerLabel.validate_props = function(props)
 ScrollerLabel.test = ()=>
 {
     // The container we'll render instances of the component into for testing.
-    let container;
+    let container = {remove:()=>{}};
 
     // Scroller with named months.
     try
@@ -188,9 +188,11 @@ ScrollerLabel.test = ()=>
             throw_if_not_true([()=>(container.textContent === "tammikuuta")]);
         }
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
@@ -263,9 +265,11 @@ ScrollerLabel.test = ()=>
             throw_if_not_true([()=>(container.textContent === "0")]);
         }
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {

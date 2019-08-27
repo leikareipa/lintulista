@@ -115,16 +115,16 @@ export function expect_true(expect = [])
     return !expectFailed.length;
 }
 
-// Takes in an array of functions, and throws if the return values of any of the
-// functions in the array fail to evaluate to strictly true. See expect_true()
-// for more details.
+// Takes in an array of functions, and throws "assertion failure" if the return values
+// of any of the functions in the array fail to evaluate to strictly true. See
+// expect_true() for more info.
 export function throw_if_not_true(expect = [])
 {
     panic_if_not_type("array", expect);
 
     if (!expect_true(expect))
     {
-        throw new Error();
+        throw "assertion failure";
     }
 
     return;

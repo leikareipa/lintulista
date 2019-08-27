@@ -145,7 +145,7 @@ BirdSearch.validate_props = function(props)
 BirdSearch.test = ()=>
 {
     // The container we'll render instances of the component into for testing.
-    let container;
+    let container = {remove:()=>{}};
 
     try
     {
@@ -233,9 +233,11 @@ BirdSearch.test = ()=>
 
         /// TODO: Test for search results hiding when input field loses focus.
     }
-    catch
+    catch (error)
     {
-        return false;
+        if (error === "assertion failure") return false;
+
+        throw error;
     }
     finally
     {
