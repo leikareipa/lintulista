@@ -12,12 +12,13 @@
         <script src="../../client/react/react-dom.js"></script>
         <script src="../../client/react/react-dom-test-utils.js"></script>
         <script type="module">
-            import {Observation} from "../../client/dist/observation.js";
-            import {Bird} from "../../client/dist/bird.js";
+            import {BirdSearchResult} from "../../client/dist/react-components/bird-search/BirdSearchResult.js";
+            import {AsyncIconButton} from "../../client/dist/react-components/buttons/AsyncIconButton.js";
             import {ScrollerLabel} from "../../client/dist/react-components/scroller-label/ScrollerLabel.js";
             import {BirdThumbnail} from "../../client/dist/react-components/misc/BirdThumbnail.js";
-            import {AsyncIconButton} from "../../client/dist/react-components/buttons/AsyncIconButton.js";
+            import {Observation} from "../../client/dist/observation.js";
             import {BirdSearch} from "../../client/dist/react-components/bird-search/BirdSearch.js";
+            import {Bird} from "../../client/dist/bird.js";
 
             const testTitle = "Lintulista - Unit tests";
 
@@ -28,6 +29,7 @@
                 {unitName:"ScrollerLabel", passes:ScrollerLabel.test()},
                 {unitName:"BirdThumbnail", passes:BirdThumbnail.test()},
                 {unitName:"AsyncIconButton", passes:AsyncIconButton.test()},
+                {unitName:"BirdSearchResult", passes:BirdSearchResult.test()},
                 {unitName:"BirdSearch", passes:BirdSearch.test()},
             ]
 

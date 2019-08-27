@@ -1,8 +1,10 @@
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js"
+import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {Observation} from "../../observation.js";
+import {Bird} from "../../bird.js";
 
 // An element displaying information about an individual bird search result.
 //
@@ -119,4 +121,226 @@ BirdSearchResult.validate_props = function(props)
     panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation, props.callbackChangeObservationDate);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+BirdSearchResult.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container;
+
+    // Search result of a bird of whom there is a previous observation but without us having
+    // edit rights to that observation.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const bird = Bird({species:"Alli", family:"", order:""});
+            const observation = Observation({bird:Bird({species:"Alli", family:"", order:""}), date:new Date(0)});
+
+            const unitElement = React.createElement(BirdSearchResult,
+            {
+                bird,
+                observation,
+                userHasEditRights: false,
+                callbackAddObservation: ()=>{},
+                callbackRemoveObservation: ()=>{},
+                callbackChangeObservationDate: ()=>{},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const searchResult = container.querySelector(".BirdSearchResult");
+        const birdThumbnail = container.querySelector(".BirdThumbnail");
+        const infoCard = container.querySelector(".card");
+        const infoCardBirdName = infoCard.querySelector(".bird-name");
+        const infoCardObservationDate = infoCard.querySelector(".date-observed");
+        const addRemoveButton = container.querySelector(".AsyncIconButton");
+        const changeDate = infoCardObservationDate.querySelector(".edit-date");
+
+        throw_if_not_true([()=>(searchResult !== null),
+                           ()=>(birdThumbnail !== null),
+                           ()=>(addRemoveButton === null),// We have no edit rights, so we shouldn't have a means to edit.
+                           ()=>(changeDate === null),// We have no edit rights, so we shouldn't have a means to edit.
+                           ()=>(infoCard !== null),
+                           ()=>(infoCardBirdName !== null),
+                           ()=>(infoCardObservationDate !== null),
+                           ()=>(infoCardBirdName.textContent === "Alli"),
+                           ()=>(infoCardObservationDate.textContent === "1. tammikuuta 1970")]);
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Search result of a bird of whom there is a previous observation and with the user having
+    // edit rights to that observation.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const bird = Bird({species:"Alli", family:"", order:""});
+            const observation = Observation({bird:Bird({species:"Alli", family:"", order:""}), date:new Date(0)});
+
+            const unitElement = React.createElement(BirdSearchResult,
+            {
+                bird,
+                observation,
+                userHasEditRights: true,
+                callbackAddObservation: ()=>{},
+                callbackRemoveObservation: ()=>{},
+                callbackChangeObservationDate: ()=>{},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const searchResult = container.querySelector(".BirdSearchResult");
+        const birdThumbnail = container.querySelector(".BirdThumbnail");
+        const infoCard = container.querySelector(".card");
+        const infoCardBirdName = infoCard.querySelector(".bird-name");
+        const infoCardObservationDate = infoCard.querySelector(".date-observed");
+        const addRemoveButton = container.querySelector(".AsyncIconButton");
+        const changeDate = infoCardObservationDate.querySelector(".edit-date");
+
+        throw_if_not_true([()=>(searchResult !== null),
+                           ()=>(birdThumbnail !== null),
+                           ()=>(addRemoveButton !== null),
+                           ()=>(infoCard !== null),
+                           ()=>(changeDate !== null),
+                           ()=>(infoCardBirdName !== null),
+                           ()=>(infoCardObservationDate !== null),
+                           ()=>(infoCardBirdName.textContent === "Alli"),
+                           ()=>(infoCardObservationDate.textContent === "1. tammikuuta 1970"),
+                           ()=>(addRemoveButton.getAttribute("title").startsWith("Poista"))]);
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Search result of a bird of whom there is not a previous observation and with the user having
+    // edit rights to add the bird as a new observation.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const bird = Bird({species:"Alli", family:"", order:""});
+
+            const unitElement = React.createElement(BirdSearchResult,
+            {
+                bird,
+                userHasEditRights: true,
+                callbackAddObservation: ()=>{},
+                callbackRemoveObservation: ()=>{},
+                callbackChangeObservationDate: ()=>{},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const searchResult = container.querySelector(".BirdSearchResult");
+        const birdThumbnail = container.querySelector(".BirdThumbnail");
+        const infoCard = container.querySelector(".card");
+        const infoCardBirdName = infoCard.querySelector(".bird-name");
+        const infoCardObservationDate = infoCard.querySelector(".date-observed");
+        const addRemoveButton = container.querySelector(".AsyncIconButton");
+        const changeDate = infoCardObservationDate.querySelector(".edit-date");
+
+        throw_if_not_true([()=>(searchResult !== null),
+                           ()=>(birdThumbnail !== null),
+                           ()=>(addRemoveButton !== null),
+                           ()=>(infoCard !== null),
+                           ()=>(changeDate === null),// There is no observation, so we shouldn't have means to edit it.
+                           ()=>(infoCardBirdName !== null),
+                           ()=>(infoCardObservationDate !== null),
+                           ()=>(infoCardBirdName.textContent === "Alli"),
+                           ()=>(infoCardObservationDate.textContent === "Ei havaintoa"),
+                           ()=>(addRemoveButton.getAttribute("title").startsWith("Lisää"))]);
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Search result of a bird of whom there is not a previous observation.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const bird = Bird({species:"Alli", family:"", order:""});
+
+            const unitElement = React.createElement(BirdSearchResult,
+            {
+                bird,
+                userHasEditRights: false,
+                callbackAddObservation: ()=>{},
+                callbackRemoveObservation: ()=>{},
+                callbackChangeObservationDate: ()=>{},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const searchResult = container.querySelector(".BirdSearchResult");
+        const birdThumbnail = container.querySelector(".BirdThumbnail");
+        const infoCard = container.querySelector(".card");
+        const infoCardBirdName = infoCard.querySelector(".bird-name");
+        const infoCardObservationDate = infoCard.querySelector(".date-observed");
+        const addRemoveButton = container.querySelector(".AsyncIconButton");
+        const changeDate = infoCardObservationDate.querySelector(".edit-date");
+
+        throw_if_not_true([()=>(searchResult !== null),
+                           ()=>(birdThumbnail !== null),
+                           ()=>(infoCard !== null),
+                           ()=>(addRemoveButton === null),// There's no observation, so we shouldn't have a means to edit it.
+                           ()=>(changeDate === null),// There's no observation, so we shouldn't have a means to edit it.
+                           ()=>(infoCardBirdName !== null),
+                           ()=>(infoCardObservationDate !== null),
+                           ()=>(infoCardBirdName.textContent === "Alli"),
+                           ()=>(infoCardObservationDate.textContent === "Ei havaintoa")]);
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }
