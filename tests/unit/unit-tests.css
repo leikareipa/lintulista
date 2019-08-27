@@ -6,23 +6,6 @@ body
     color: rgb(109, 109, 109);
 }
 
-table
-{
-    color: black;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    text-align: left;
-    border-collapse:collapse;
-    width: 300px;
-}
-
-td, th
-{
-    padding: 10px;
-    border: none;
-    font-weight: normal;
-}
-
 .pass
 {
     color: rgb(60, 179, 96);

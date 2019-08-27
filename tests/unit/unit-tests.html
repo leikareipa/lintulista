@@ -38,43 +38,52 @@
             import {BirdSearch} from "../../client/dist/react-components/bird-search/BirdSearch.js";
             import {Bird} from "../../client/dist/bird.js";
 
-            const unitTestResults =
+            const unitsToTest =
             [
-                {unitName:"Bird", passes:Bird.test()},
-                {unitName:"Observation", passes:Observation.test()},
-                {unitName:"ScrollerLabel", passes:ScrollerLabel.test()},
-                {unitName:"BirdThumbnail", passes:BirdThumbnail.test()},
-                {unitName:"AsyncIconButton", passes:AsyncIconButton.test()},
-                {unitName:"BirdSearchBar", passes:BirdSearchBar.test()},
-                {unitName:"BirdSearchResult", passes:BirdSearchResult.test()},
-                {unitName:"BirdSearch", passes:BirdSearch.test()},
+                Bird,
+                Observation,
+                ScrollerLabel,
+                BirdThumbnail,
+                AsyncIconButton,
+                BirdSearchBar,
+                BirdSearchResult,
+                BirdSearch,
             ];
 
-            document.getElementById("overall-result").classList.add(unitTestResults.some(test=>!test.passes)? "fail" : "pass");
-
-            unitTestResults.forEach((result, idx)=>
+            // Run the tests.
+            let someTestsFail = false;
+            unitsToTest.forEach((unit, idx)=>
             {
-                const nameElement = document.createElement("span");
-                nameElement.style.whiteSpace = "nowrap";
+                const testPasses = unit.test();
 
-                if (result.passes)
-                {
-                    nameElement.className = "pass";
-                }
-                else
-                {
-                    nameElement.className = "fail";
-                    nameElement.setAttribute("title", `${result.unitName} fails`);
-                }
+                someTestsFail = (!testPasses || someTestsFail);
 
-                nameElement.appendChild(document.createTextNode(result.unitName));
-                document.getElementById("individual-results").appendChild(nameElement);
-
-                if (idx < (unitTestResults.length - 1))
+                // Add the result of this unit's test to the HTML.
                 {
-                    document.getElementById("individual-results").appendChild(document.createTextNode(", "));
+                    const nameElement = document.createElement("span");
+                    nameElement.style.whiteSpace = "nowrap";
+
+                    if (testPasses)
+                    {
+                        nameElement.className = "pass";
+                    }
+                    else
+                    {
+                        nameElement.className = "fail";
+                        nameElement.setAttribute("title", `${unit.name} fails`);
+                    }
+
+                    nameElement.appendChild(document.createTextNode(unit.name));
+                    document.getElementById("individual-results").appendChild(nameElement);
+
+                    if (idx < (unitsToTest.length - 1))
+                    {
+                        document.getElementById("individual-results").appendChild(document.createTextNode(", "));
+                    }
                 }
             });
+
+            document.getElementById("overall-result").classList.add(someTestsFail? "fail" : "pass");
 
             document.getElementById("finish-date").appendChild(document.createTextNode(Date()));
         </script>
