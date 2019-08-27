@@ -50,7 +50,7 @@
                 {unitName:"BirdSearch", passes:BirdSearch.test()},
             ];
 
-            document.getElementById("overall-result").classList.add(unitTestResults.every(test=>test.passes)? "pass" : "fail");
+            document.getElementById("overall-result").classList.add(unitTestResults.some(test=>!test.passes)? "fail" : "pass");
 
             unitTestResults.forEach((result, idx)=>
             {
