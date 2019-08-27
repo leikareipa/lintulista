@@ -14,6 +14,7 @@
         <script type="module">
             import {BirdSearchResult} from "../../client/dist/react-components/bird-search/BirdSearchResult.js";
             import {AsyncIconButton} from "../../client/dist/react-components/buttons/AsyncIconButton.js";
+            import {BirdSearchBar} from "../../client/dist/react-components/bird-search/BirdSearchBar.js";
             import {ScrollerLabel} from "../../client/dist/react-components/scroller-label/ScrollerLabel.js";
             import {BirdThumbnail} from "../../client/dist/react-components/misc/BirdThumbnail.js";
             import {Observation} from "../../client/dist/observation.js";
@@ -29,6 +30,7 @@
                 {unitName:"ScrollerLabel", passes:ScrollerLabel.test()},
                 {unitName:"BirdThumbnail", passes:BirdThumbnail.test()},
                 {unitName:"AsyncIconButton", passes:AsyncIconButton.test()},
+                {unitName:"BirdSearchBar", passes:BirdSearchBar.test()},
                 {unitName:"BirdSearchResult", passes:BirdSearchResult.test()},
                 {unitName:"BirdSearch", passes:BirdSearch.test()},
             ]

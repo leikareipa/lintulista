@@ -1,6 +1,6 @@
 "use strict";
 
-import {panic_if_not_type, panic} from "../../assert.js";
+import {panic_if_not_type, panic, throw_if_not_true} from "../../assert.js";
 
 // A search bar that allows the user to enter a string to be compared against the names of
 // a set of birds.
@@ -159,4 +159,60 @@ BirdSearchBar.validateProps = function(props)
     }
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+BirdSearchBar.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container;
+
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        let currentSearchString = "nothing";
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(BirdSearchBar,
+            {
+                callbackOnChange: (string)=>{currentSearchString = string;},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        // Test that changes to the input field get passed on to the onChange callback.
+        {
+            const inputField = container.querySelector("input");
+
+            throw_if_not_true([()=>(inputField !== null)]);
+
+            inputField.value = "blub blab"
+            ReactTestUtils.Simulate.change(inputField);
+
+            throw_if_not_true([()=>(currentSearchString === inputField.value)]);
+
+            inputField.value = ""
+            ReactTestUtils.Simulate.change(inputField);
+
+            throw_if_not_true([()=>(currentSearchString.length === 0)]);
+        }
+
+        /// TODO: Test the onFocus callback.
+    }
+    catch
+    {
+        return false;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }
