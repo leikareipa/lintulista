@@ -6,8 +6,10 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {Observation} from "../../observation.js";
+import {Bird} from "../../bird.js";
 
 // Displays information about an observation - like a thumbnail of the species, the species
 // name, and the date of the observation.
@@ -54,4 +56,91 @@ ObservationCard.validate_props = function(props)
     panic_if_not_type("boolean", props.isGhost);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+ObservationCard.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container = {remove:()=>{}};
+
+    const bird = Bird({species:"Naakka", family:"", order:""});
+
+    // Test a normal ObservationCard.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(ObservationCard,
+            {
+                observation: Observation({bird, date:new Date(0)}),
+                isGhost: false,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.querySelector(".ObservationCard") !== null),
+                           ()=>(container.querySelector(".BirdThumbnail") !== null),
+                           ()=>(container.querySelector(".observation-info") !== null),
+                           ()=>(container.querySelector(".observation-info > .bird-name") !== null),
+                           ()=>(container.querySelector(".observation-info > .bird-name").textContent === bird.species),
+                           ()=>(container.querySelector(".observation-info > .date") !== null),
+                           ()=>(container.querySelector(".observation-info > .date").textContent === "1. tammikuuta 1970")]);
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Test a ghost ObservationCard.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(ObservationCard,
+            {
+                observation: Observation({bird, date:new Date(0)}),
+                isGhost: true,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        throw_if_not_true([()=>(container.querySelector(".ObservationCardGhost") !== null),
+                           ()=>(container.querySelector(".BirdThumbnail") !== null),
+                           ()=>(container.querySelector(".observation-info") !== null),
+                           ()=>(container.querySelector(".observation-info > .bird-name") !== null),
+                           ()=>(container.querySelector(".observation-info > .bird-name").textContent === bird.species),
+                           ()=>(container.querySelector(".observation-info > .date") !== null),
+                           ()=>(container.querySelector(".observation-info > .date").textContent === "100 Lajia -haaste")]);
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }
