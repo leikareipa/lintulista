@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, warn} from "../../assert.js";
+import {panic_if_not_type, warn, throw_if_not_true} from "../../assert.js";
 
 // Renders a button associated with a drop-down menu that activates when the button is
 // clicked. The drop-down menu holds a set of items that the user can click on; when an
@@ -232,4 +232,173 @@ MenuButton.validate_props = function(props)
     panic_if_not_type("string", props.title, props.id);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+MenuButton.test = ()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container = {remove:()=>{}};
+
+    // Test a normal MenuButton without a visible tooltip.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(MenuButton,
+            {
+                icon: "fas fa-list-ul fa-fw",
+                title: "Title1",
+                id: "Test-Menu",
+                items:
+                [
+                    {text:"Option1", callbackOnSelect: ()=>{}},
+                    {text:"Option2", callbackOnSelect: ()=>{}},
+                ],
+                initialItemIdx: 1,
+                showTooltip: false,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const menuButton = container.querySelector(".MenuButton");
+        const tooltip = menuButton.querySelector(".tooltip");
+        const icon = menuButton.querySelector(".icon");
+        const dropdown = menuButton.querySelector(".dropdown");
+        const dropdownItems = dropdown.querySelector(".items");
+
+        throw_if_not_true([()=>(menuButton !== null),
+                           ()=>(icon !== null),
+                           ()=>(tooltip !== null),
+                           ()=>(dropdown !== null),
+                           ()=>(menuButton.classList.contains("Test-Menu")),
+                           ()=>(menuButton.classList.contains("enabled")),
+                           ()=>(tooltip.style.display === "none"),
+                           ()=>(tooltip.textContent === "Option2"),
+                           ()=>(icon.getAttribute("title") === "Title1"),
+                           ()=>(dropdown.classList.contains("inactive")),
+                           ()=>(dropdownItems.querySelector(".title") !== null),
+                           ()=>(dropdownItems.querySelector(".title").textContent === "Title1"),
+                           ()=>(dropdownItems.querySelectorAll(".item").length === 2),
+                           ()=>(dropdownItems.querySelectorAll(".item")[0].textContent === "Option1"),
+                           ()=>(dropdownItems.querySelectorAll(".item")[1].textContent === "Option2")]);
+
+        /// TODO: Test that the dropdown menu opens and is valid when the button is clicked.
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Test a normal MenuButton with a visible tooltip.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(MenuButton,
+            {
+                icon: "fas fa-list-ul fa-fw",
+                title: "Title1",
+                id: "Test-Menu",
+                items:
+                [
+                    {text:"Option1", callbackOnSelect: ()=>{}},
+                    {text:"Option2", callbackOnSelect: ()=>{}},
+                ],
+                initialItemIdx: 1,
+                showTooltip: true,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const tooltip = container.querySelector(".tooltip");
+
+        throw_if_not_true([()=>(tooltip !== null),
+                           ()=>(tooltip.style.display !== "none"),
+                           ()=>(tooltip.textContent === "Option2")]);
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    // Test a MenuButton that has a custom menu.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(MenuButton,
+            {
+                icon: "fas fa-list-ul fa-fw",
+                title: "Title1",
+                id: "Test-Menu",
+                customMenu:
+                    <div id="Custom1">
+                        Hello there.
+                    </div>,
+                initialItemIdx: 1,
+                showTooltip: true,
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const tooltip = container.querySelector(".tooltip");
+        const dropdown = container.querySelector(".dropdown");
+        const icon = container.querySelector(".icon");
+
+        throw_if_not_true([()=>(tooltip !== null),
+                           ()=>(dropdown !== null),
+                           ()=>(icon !== null),
+                           ()=>(icon.getAttribute("title") === "Title1"),
+                           ()=>(dropdown.childNodes.length === 1),// Should have one child: the custom menu.
+                           ()=>(dropdown.classList.contains("custom-menu"))]);
+
+        const customMenu = dropdown.childNodes[0];
+
+        throw_if_not_true([()=>(customMenu !== null),
+                           ()=>(customMenu.getAttribute("id") === "Custom1"),
+                           ()=>(customMenu.textContent === "Hello there.")]);
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }
