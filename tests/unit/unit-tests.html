@@ -76,7 +76,7 @@
                     else
                     {
                         nameElement.className = "fail";
-                        nameElement.setAttribute("title", `${unit.name} fails`);
+                        nameElement.title = `${unit.name} fails`;
                     }
 
                     nameElement.appendChild(document.createTextNode(unit.name));
@@ -89,7 +89,16 @@
                 }
             });
 
-            document.getElementById("overall-result").classList.add(someTestsFail? "fail" : "pass");
+            if (someTestsFail)
+            {
+                document.getElementById("overall-result").classList.add("fail");
+                document.getElementById("overall-result").title = "One or more tests fail";
+            }
+            else
+            {
+                document.getElementById("overall-result").classList.add("pass");
+                document.getElementById("overall-result").title = "All tests pass";
+            }
 
             document.getElementById("finish-date").appendChild(document.createTextNode(Date()));
         </script>
