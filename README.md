@@ -1,5 +1,5 @@
 # Lintulista
-Lintulista is a Finnish language web app for hobbyist birdwatchers to keep track of their sightings.
+Lintulista is a Finnish-language web app for hobbyist birdwatchers to keep track of their sightings.
 
 With an easy-to-use interface and emphasis on visual presentation, Lintulista offers an interesting and accessible way to record your sightings - a good alternative to plain Excel tables.
 
@@ -178,19 +178,33 @@ The `species` property provides the name of the species that was observed, and `
 
 The API is documented futher in-source, under [server/api/](server/api/).
 
-#### The list keys
+#### List keys
 The API identifies a given list by *key strings*, of which each list has two. One of the keys is called the *view key*, and the other the *edit key* - their form might be, for instance, "sbyodokwr" and "cm4y3pv2q...", respectively (the view key is nine characters in length, while the edit key has 60 characters, some of which are cut off in the example, here).
 
 When interacting with the API, the target list must be identified by providing its key via the `list` parameter; e.g. `/server/api/observations.php?list=sbyodokwr`.
 
 When a list is identified with a view key, the API will only allow read access (e.g. GET) to that list; whereas using the edit key grants both read and write access (GET, PUT, DELETE, etc.).
 
-#### API requests using invalid keys
+#### Security
+##### Passwords
+Lintulista does not provide users the option to secure lists with passwords.
+
+Although lists' edit keys are long enough to be very non-trivial for the average user to randomly guess, it is nonetheless feasible that a determined actor could discover them with some effort. Also, since the keys are passed as parameters in URLs in normal usage, traces of them will be embedded in server logs, browsing history, etc., from which they could leak to an outside user.
+
+There are two reasons for why passwords do not exist in Lintulista:
+- My own hosting plan does not provide HTTPS; user passwords would need to be sent via HTTP, and users' browsers would be warning them not to enter passwords on the site in the first place
+- I want Lintulista to be convenient to use - just create a list and put a link to it in your bookmarks, no password required
+
+The effects of unauthorized list access are limited by the fact that lists by design store no personal information. A malicious actor removing or modifying your observations is unfortunate and annoying, but not critical.
+
+That said, and hosting sorted, future versions of Lintulista may introduce optional passwords, which allow users to choose whether they want the convenience of free access or the added security of a password.
+
+##### API requests using invalid keys
 The API adopts the expectation that some users may attempt to guess other users' list keys to gain unauthorized access.
 
 To at least make that endeavor more time-consuming, the API will in most cases respond to requests with invalid keys by randomly-generated but superficially valid data. You can confirm this by issuing a couple of subsequent GET request to `/server/api/observations.php?list=eeeeeeeeeeee` and noting the changing output.
 
-Requests to modify data using a read-only view key or an invalid edit key will be ignored by the server, in most cases silently.
+Requests to modify data using a read-only view key or an invalid edit key will be ignored by the server - in most cases, silently.
 
 # Project status
 The project is currently in early functional beta.
