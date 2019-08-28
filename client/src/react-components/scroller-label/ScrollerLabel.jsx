@@ -185,6 +185,55 @@ ScrollerLabel.test = ()=>
 
             throw_if_not_true([()=>(container.textContent === "tammikuuta")]);
         }
+
+        // Scroll through and verify all month names.
+        {
+            throw_if_not_true([()=>(container.textContent === "tammikuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "helmikuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "maaliskuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "huhtikuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "toukokuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "kesäkuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "heinäkuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "elokuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "syyskuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "lokakuuta")]);
+            
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "marraskuuta")]);
+
+            ReactTestUtils.Simulate.mouseDown(scrollUp);
+            ReactTestUtils.Simulate.mouseUp(scrollUp);
+            throw_if_not_true([()=>(container.textContent === "joulukuuta")]);
+        }
     }
     catch (error)
     {
