@@ -13,13 +13,6 @@ You can find Lintulista live on the web [here](http://www.tarpeeksihyvaesoft.com
 
 ![](images/screenshots/lintulista-beta.1.png)
 
-# Code
-Lintulista's code comes in two 'modules' if you will: the client, and the server. The client handles the end-user UI and so on, while the server takes care of backend duties like managing access to the database.
-
-The client, the code for which you'll find under [client/](client/), is written with JavaScript, and uses the React library (currently, version 16.8.6) for most of the UI functionality.
-
-The server, the code for which you'll find under [server/](server/), is written with PHP of up to version 7.0.
-
 # Usage
 This section describes how to put Lintulista into use, either as an end-user or a developer.
 
@@ -29,6 +22,33 @@ For instance, you'll find instructions on how to set up and deploy Lintulista on
 You can find Lintulista's end-user documentation in the [guide/](guide/) directory; noting that the documentation is in Finnish.
 
 ## Developer
+
+### Introduction to the codebase
+
+Lintulista's codebase exhibits a three-way split:
+- Client
+- Server
+- Tests
+
+The client-side code, which you can find under [client/](client/), is written in JavaScript, and uses the [React](https://reactjs.org/) library (version 16.8.6; although version 16.9 may be adopted in the near future) for UI functionality. The client provides the user a graphical view to Lintulista's backend, as well as means to modify certain data in the backend. (Technically, the files [index.html](index.html) and [view.php](view.php) are also part of the client, as they serve as points of entry for the user's browser.)
+
+The server-side code, which you can find under [server/](client/), is written in PHP (up to version 7.0), and provides the client an API for interacting with the backend (e.g. the database).
+
+Additionally, implements for rudimentary automated testing are provided under [tests/](tests/).
+
+#### Non-code assets
+The repo also includes several non-code assets - most typically, image files. Perhaps the most notable of these assets is the collection of bird thumbnails under [server/assets/images/bird-thumbnails/](server/assets/images/bird-thumbnails/), which are hosted server-side and used by the client for decorating its view.
+
+Non-code assets are normally found under an `assets/` directory, e.g. [server/assets/](server/assets/) and [client/assets/](client/assets/).
+
+### Important concepts
+Before moving on to the rest of the sections, you may find it useful to briefly review the following core concepts and terminology underlying Lintulista.
+
+Lintulista offers the user a means to 'write down' their sightings of various bird species. As such, the client-side view operates on `lists` of these `observations`; each observation naming a particular species of bird and the date on which it was sighted. The user is free to choose how to organize their observations into lists - they may only ever use one list, for instance, or employ lists for thematic organization (e.g. a separate list for each year's observations). Consequently, the user's expected workflow in Lintulista is: `create list x`, `add/remove/modify observations in list x`.
+
+For reasons that will be explained in more detail later down, lists are not strictly user-specific (e.g. associated with a user account). Instead, once a user has created a list, anyone may access that list, provided that they have the list's `key` - a string that uniquely identifies the list. Each list has two keys: one for public access - with which the list is accessed in read-only mode - and one for private access - which grants its holder both read and write access to the list. These keys are known as `view key` and `edit key`, respectively. In using Lintulista, the list's key is passed along as a URL parameter, hence both the view key and the edit key are potentially publically visible any time one uses them.
+
+A different way to phrase the above is that there are no user accounts or passwords in Lintulista. Lists can be created, accessed, and modified potentially by anyone; although in many cases, write access is inhibited unless one has the edit key.
 
 ### Setting up
 
