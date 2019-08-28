@@ -23,7 +23,7 @@ The server, the code for which you'll find under [server/](server/), is written 
 # Usage
 This section describes how to put Lintulista into use, either as an end-user or a developer.
 
-For instance, you'll find instructions here on how to set up and deploy Lintulista on a server.
+For instance, you'll find instructions on how to set up and deploy Lintulista on a server.
 
 ## End-user
 You can find Lintulista's end-user documentation in the [guide/](guide/) directory; noting that the documentation is in Finnish.
@@ -33,7 +33,7 @@ You can find Lintulista's end-user documentation in the [guide/](guide/) directo
 ### Setting up
 
 #### Building
-Lintulista depends on Babel for JSX and minification. You can install the required dependencies by executing the following in the repo's root:
+Lintulista depends on [Babel](https://babeljs.io/) for JSX and minification. You can install the required dependencies by executing the following in the repo's root:
 ```
 $ npm install @babel/core @babel/cli @babel/preset-react babel-preset-minify
 ```
@@ -81,7 +81,7 @@ Fields:
 - list_id: Running row id.
 - view_key: An identifier with which the list's observations can be viewed (but not edited). This is provided by the user as a URL parameter when accessing the list.
 - edit_key: An identifier with which the list's observations can be both viewed and edited. This is provided by the user as a URL parameter when accessing the list.
-- creator_hash: An anonymized identifier of the list's creator; a substring of the hash of remote IP + pepper. Intended not to identify an individual but to give some idea of where the list originated, relative to the other lists.
+- creator_hash: An anonymized identifier of the list's creator; a substring of the hash of remote IP + pepper. Intended not to identify an individual but to give the administrator some idea of where the list originated relative to the other lists.
 
 **Table 2: lintulista_observations**. Stores observations added by users across all lists.
 
@@ -96,9 +96,9 @@ Fields:
 - id: Running row id.
 - list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list to which this observation belongs.
 - timestamp: A Unix timestamp (seconds from epoch) for when this observation was entered into the database.
-- species: A string giving the name of the species observed (e.g. "Idänuunilintu"). This must be a species name recognized by Lintulista.
+- species: A string giving the name of the species observed (e.g. "Idänuunilintu"). This must be a species name recognized by Lintulista (see [server/assets/metadata/known-birds.json](server/assets/metadata/known-birds.json) for a list of birds known to Lintulista).
 
-**Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the developer; stores information about events and errors related to the user's interaction with Lintulista. Since, depending on the type of activity, the error log might grow considerably larger than the event log, for which reason they've been separated into their own tables. The table layout is identical.
+**Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the developer; stores information about events and errors related to the user's interaction with Lintulista. As the error log might grow considerably larger than the event log (and so you might want to e.g. easily truncate the former at some point), they have been split into separate tables. Their table layout is identical.
 
 | Field          | Type                  | Null | Key | Default | Extra          |
 |----------------|-----------------------|------|-----|---------|----------------|
@@ -109,16 +109,16 @@ Fields:
 
 Fields:
 - id: Running row id.
-- timestamp: A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int to save space.
-- event_id: A code identifying the event/error. See [server/database.php](server/database.php) for a list of the codes.
+- timestamp: A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int (instead of 8 bytes, as in the other tables) to save space.
+- event_id: A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [server/database.php](server/database.php) for a list of the event and error codes.
 - target_list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL if e.g. no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key.
 
 #### The .htaccess file
 Lintulista comes with a pre-configured Apache `.htaccess` file for URL rewriting.
 
-For instance, the end-user can provide the URL `/lintulista/view.php?list=abc` as `/lintulista/katsele/abc` given the rewrite rules provided in this file.
+For instance, the end-user can provide the short-hand URL `/lintulista/katsele/abc`, which will be rewritten into `/lintulista/view.php?list=abc`.
 
-You may need to adapt the file to fit your particular web hosting etc.
+You may need to adapt this file to fit your particular type of web hosting etc.
 
 #### Deploying
 To deploy Lintulista on a server, copy into a directory on the server the following files (maintaining the directory structure):
@@ -133,7 +133,7 @@ To deploy Lintulista on a server, copy into a directory on the server the follow
 - index-*.css
 - .htaccess
 
-The [client/react/](client/react/) directory by default contains the developmental version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
+*Note!* By default, the [client/react/](client/react/) directory contains the developmental version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
 
 ### Server-to-client API
 The server provides the client a REST-like API for interacting with the database.
@@ -145,25 +145,23 @@ The API is documented in-source under [server/api/](server/api/).
 You can find the client-side API code in [client/src/backend-access.js](client/src/backend-access.js).
 
 #### Keys
-A given list in the database is identified by either of a set of two key strings: a view key, and an edit key.
+A given list in the database is identified by either of a set of two key strings: a view key, or an edit key.
 
 The view key can be used to GET public data associated with a list, such as its observations. The edit key can be used to GET, PUT, DELETE, etc. data associated with the list.
 
 In other words, the view key identifies a particular list and grants the client read access to it; while the edit key identifies a list and grants the client both read and write access to that list.
 
-When the client interacts with the API, it's expected to provide the key via the `list` URL parameter.
-
-For instance, to request all observations in a particular list, the client would send a GET request to `/server/api/observations.php?list=abc`, where `abc` is the list's view or edit key (since this is a GET request, both keys are valid).
+When interacting with the API, the client is expected to provide the key via the `list` URL parameter. For instance, to request all observations in a particular list, the client would send a GET request to `/server/api/observations.php?list=abc`, where `abc` is the list's view or edit key (since this is a GET request, both keys are valid).
 
 GET requests using an invalid/unrecognized key will in most cases return purposefully-generated random but superficially valid data.
 
 Requests to modify data using a read-only view key will in most cases be silently ignored by the server.
 
 # Project status
-The project is currently in functional beta.
+The project is currently in early functional beta.
 
 ## Browser compatibility
-Below are rough estimates of the required browser versions to run Lintulista. Browsers marked with "No" are expected to not be compatible at all.
+Below are rough estimates of the required browser versions to run Lintulista without transpilation. Browsers marked with "No" are expected to not be compatible at all.
 
 <table>
     <tr>
@@ -208,5 +206,7 @@ The bird thumbnails used in Lintulista come from photographs taken by a variety 
 Lintulista uses the [React](https://reactjs.org/) library for most of its UI.
 
 Lintulista makes use of certain fonts from [Google Fonts](https://fonts.google.com/): Nunito, Delius, and Beth Ellen.
+
+Certain icons from [Font Awesome](https://fontawesome.com/) are used in Lintulista's HTML.
 
 The browser icons used in the Browser compatibility section, above, come from [alrra](https://github.com/alrra)'s [Browser Logos](https://github.com/alrra/browser-logos) repository.
