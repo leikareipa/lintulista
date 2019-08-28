@@ -19,7 +19,7 @@ This section describes how to put Lintulista into use, either as an end-user or 
 For instance, you'll find instructions on how to set up and deploy Lintulista on a server.
 
 ## End-user
-You can find Lintulista's end-user documentation in the [guide/](guide/) directory; noting that the documentation is in Finnish.
+You can find Lintulista's end-user documentation in the [guide/](guide/) directory; noting that it is written in Finnish.
 
 ## Developer
 
@@ -50,7 +50,14 @@ For reasons that will be explained in more detail later down, lists are not stri
 
 A different way to phrase the above is that there are no user accounts or passwords in Lintulista. Lists can be created, accessed, and modified potentially by anyone; although in many cases, write access is inhibited unless one has the edit key.
 
-### Setting up
+### Setting up Lintulista
+This section describes how to build, configure, and deploy Lintulista from scratch. The process does involve a few steps, but is fairly straightforward overall.
+
+Setting up Lintulista involves the following steps:
+- building the code
+- preparing the database
+- configuring the .htaccess file
+- deploying the code and assets onto a server
 
 #### Building
 Lintulista depends on [Babel](https://babeljs.io/) for JSX and minification. You can install the required dependencies by executing the following in the repo's root:
@@ -67,10 +74,10 @@ $ ./build-dev.sh
 substituting `build-dev.sh` with `build-release.sh` for release builds. The compiled files will be placed in the [client/dist/](client/dist/) directory, from which [index.html](index.html) and [view.php](view.php) will pick them up as appropriate.
 
 #### Database
-Lintulista uses a MySQL database for storing user-generated data.
+Lintulista uses a MySQL database for storing user-generated data. The data span four tables, in total.
 
-##### Credentials
-You are expected to provide the database credentials in `lintulista-sql.json`, which is to take the following form:
+##### Access credentials
+You can to provide the credentials for accessing the database in `lintulista-sql.json`, which should have the following contents:
 ```
 {
 	"host": "...",
@@ -81,14 +88,14 @@ You are expected to provide the database credentials in `lintulista-sql.json`, w
 }
 ```
 
-The first four properties correspond to the parameters to PHP's `mysqli_connect()`. The last property, `pepper`, which you should also provide, is a string used to pepper certain hashes.
+The first four properties correspond to the parameters to PHP's `mysqli_connect()` function. The last property, `pepper` is a string used by Lintulista to pepper certain hashes - you can use e.g. a randomly-generated string of some length, dependent on your strategy of hashing.
 
-The path to the credentials file can be set in [server/database.php](server/database.php).
+You can set the path in which Lintulista looks for this file via the constructor to the DatabaseAccess class in [server/database.php](server/database.php).
 
 ##### Tables
-The data are laid out in four tables, as described below.
+The database's data are laid out in four tables, as described below.
 
-**Table 1: lintulista_lists**. Stores metadata about each user-created observation list.
+**Table 1: lintulista_lists**. Stores metadata about each user-created list.
 
 | Field        | Type                  | Null | Key | Default | Extra          |
 |--------------|-----------------------|------|-----|---------|----------------|
@@ -101,9 +108,9 @@ Fields:
 - list_id: Running row id.
 - view_key: An identifier with which the list's observations can be viewed (but not edited). This is provided by the user as a URL parameter when accessing the list.
 - edit_key: An identifier with which the list's observations can be both viewed and edited. This is provided by the user as a URL parameter when accessing the list.
-- creator_hash: An anonymized identifier of the list's creator; a substring of the hash of remote IP + pepper. Intended not to identify an individual but to give the administrator some idea of where the list originated relative to the other lists.
+- creator_hash: An anonymized identifier of the list's creator. A substring of the hash of remote IP + pepper. Intended not to identify an individual but to give the administrator some relative idea of which instance originated this list.
 
-**Table 2: lintulista_observations**. Stores observations added by users across all lists.
+**Table 2: lintulista_observations**. Stores all lists' observations.
 
 | Field     | Type                  | Null | Key | Default | Extra          |
 |-----------|-----------------------|------|-----|---------|----------------|
@@ -116,9 +123,9 @@ Fields:
 - id: Running row id.
 - list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list to which this observation belongs.
 - timestamp: A Unix timestamp (seconds from epoch) for when this observation was entered into the database.
-- species: A string giving the name of the species observed (e.g. "Idänuunilintu"). This must be a species name recognized by Lintulista (see [server/assets/metadata/known-birds.json](server/assets/metadata/known-birds.json) for a list of birds known to Lintulista).
+- species: A string giving the name of the species observed (e.g. "Alli"). This must be a species name recognized by Lintulista (see [here](server/assets/metadata/known-birds.json) for the list of birds known to Lintulista).
 
-**Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the developer; stores information about events and errors related to the user's interaction with Lintulista. As the error log might grow considerably larger than the event log (and so you might want to e.g. easily truncate the former at some point), they have been split into separate tables. Their table layout is identical.
+**Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the administrator; stores information about events and errors related to users' interaction with Lintulista. As the error log might grow considerably larger than the event log (and so you might want to e.g. easily truncate the former, at some point), they have been split into separate tables. Their table layout is identical, however.
 
 | Field          | Type                  | Null | Key | Default | Extra          |
 |----------------|-----------------------|------|-----|---------|----------------|
@@ -131,14 +138,12 @@ Fields:
 - id: Running row id.
 - timestamp: A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int (instead of 8 bytes, as in the other tables) to save space.
 - event_id: A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [server/database.php](server/database.php) for a list of the event and error codes.
-- target_list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL if e.g. no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key.
+- target_list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL - for instance, when no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key.
 
 #### The .htaccess file
-Lintulista comes with a pre-configured Apache `.htaccess` file for URL rewriting.
+Lintulista comes with a pre-configured Apache `.htaccess` file for URL rewriting. This allows the end-user access to more convenient URLs - e.g. `/lintulista/katsele/abc`, which will be rewritten into `/lintulista/view.php?list=abc`.
 
-For instance, the end-user can provide the short-hand URL `/lintulista/katsele/abc`, which will be rewritten into `/lintulista/view.php?list=abc`.
-
-You may need to adapt this file to fit your particular type of web hosting etc.
+You may need to adapt this file to fit your particular web hosting etc.
 
 #### Deploying
 To deploy Lintulista on a server, copy into a directory on the server the following files (maintaining the directory structure):
@@ -153,7 +158,7 @@ To deploy Lintulista on a server, copy into a directory on the server the follow
 - index-*.css
 - .htaccess
 
-*Note!* By default, the [client/react/](client/react/) directory contains the developmental version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
+*Note!* By default, the [client/react/](client/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
 
 ### Server-to-client API
 The server provides the client a REST-like API for interacting with the database.
