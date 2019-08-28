@@ -58,7 +58,6 @@ export function QueryObservationDate(props = {})
                            <ScrollerLabel type="month-name"
                                           min={1}
                                           max={12}
-                                          language="fi"
                                           suffix="ta"
                                           value={month}
                                           onChange={(value)=>{month = value}}/>

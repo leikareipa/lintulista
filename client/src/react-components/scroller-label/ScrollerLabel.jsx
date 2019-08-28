@@ -23,10 +23,8 @@ import {Scroller} from "./Scroller.js";
 //
 //     "integer" = an integer value, like 1, 10, 8744, etc.
 //     "month-name" = a string giving the name of a month, whose index is given by props.value
-//                    such that e.g. props.value = 2 displays the name of March.
-//
-// If the "month-name" type is used, a language hint can be given via props.language for
-// which language to display the month's name in.
+//                    such that e.g. props.value = 2 displays the name of March. Note that the
+//                    name will be displayed in Finnish.
 //
 // A function to be called when the value changes can be provided via props.onChange. It
 // will receive as a parameter the current value.
@@ -81,15 +79,16 @@ export function ScrollerLabel(props = {})
 
     // Returns as a string the name of the month with the given index (0-11), such that
     // e.g. 11 corresponds to December and 0 to January.
-    function month_name(idx = 0, language = "fi")
+    function month_name(idx = 0)
     {
-        return new Intl.DateTimeFormat(language, {month: "long"}).format(new Date().setMonth(idx % 12));
-    }
-}
+        const monthNamesFI =
+        [
+            "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
+            "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu",
+        ];
 
-ScrollerLabel.defaultProps =
-{
-    language: "fi",
+        return monthNamesFI[idx % 12];
+    }
 }
 
 ScrollerLabel.validate_props = function(props)
@@ -127,10 +126,9 @@ ScrollerLabel.test = ()=>
             const unitElement = React.createElement(ScrollerLabel,
             {
                 type: "month-name",
-                language: "fi",
                 value: 3, // 3rd month of the year; "maaliskuu".
-                min: 0,
-                max: 11,
+                min: 1,
+                max: 12,
                 suffix: "ta", // E.g. "maaliskuuTA".
                 onChange: ()=>{},
             });
@@ -144,8 +142,8 @@ ScrollerLabel.test = ()=>
         const scrollUp = container.querySelector(".Scroller.up");
         const scrollDown = container.querySelector(".Scroller.down");
 
-        throw_if_not_true([()=>(scrollUp instanceof HTMLElement),
-                           ()=>(scrollDown instanceof HTMLElement)]);
+        throw_if_not_true([()=>(scrollUp !== null),
+                           ()=>(scrollDown !== null)]);
 
         // Scrolling up.
         {
