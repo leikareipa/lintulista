@@ -163,7 +163,7 @@ export function Dialog(props = {})
                     <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
                         <AsyncIconButton task={accept}
                                          icon={`${props.acceptButtonIcon} fa-2x`}
-                                         printTitle={true}
+                                         titleIsAlwaysVisible={true}
                                          title={props.acceptButtonText}
                                          titleWhenClicked="Tallennetaan..."
                                          giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}/>

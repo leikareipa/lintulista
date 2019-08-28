@@ -32,8 +32,8 @@ import {error, panic_if_not_type, is_function, throw_if_not_true} from "../../as
 // Text to be shown when the cursor hovers over the button can be provided in props.title;
 // no text will be displayed if set to null. An alternate title text can be provided via
 // props.titleWhenClicked for when the button has been clicked. Optionally, you can set
-// props.printTitle to a truthy value to have the button's title (props.title, but not
-// props.titleWhenClicked) be rendered in text below the button, without the user having
+// props.titleIsAlwaysVisible to a truthy value to have the button's title (props.title, but
+// not props.titleWhenClicked) be rendered in text below the button, without the user having
 // to hover over the button.
 //
 // To have the button be rendered in a disabled state and not respond to user input, set
@@ -69,9 +69,9 @@ export function AsyncIconButton(props = {})
 
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={handle_click}
-                 title={props.printTitle? "" : currentTitle}>
+                 title={props.titleIsAlwaysVisible? "" : currentTitle}>
                      <i className={currentIcon}/>
-                     {props.printTitle? <><br/>{currentTitle}</> : <></>}
+                     {props.titleIsAlwaysVisible? <><br/>{currentTitle}</> : <></>}
            </span>
 
     // Called when the button is clicked.
@@ -136,7 +136,7 @@ AsyncIconButton.defaultProps =
     enabled: true,
     title: null,
     titleWhenClicked: null,
-    printTitle: false,
+    titleIsAlwaysVisible: false,
     icon: "fas fa-question",
 }
 
@@ -166,7 +166,7 @@ AsyncIconButton.test = ()=>
             {
                 icon: "fas fa-times",
                 title: "Test1",
-                printTitle: true,
+                titleIsAlwaysVisible: true,
                 titleWhenClicked: "Test1-Clicked",
                 task: ()=>{},
             });
