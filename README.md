@@ -160,27 +160,37 @@ To deploy Lintulista on a server, copy into a directory on the server the follow
 
 *Note!* By default, the [client/react/](client/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
 
-### Server-to-client API
-The server provides the client a REST-like API for interacting with the database.
+### The client-server API
+The server provides the client a REST-like API for interacting with the backend and database. You can find the server-side API code under [server/api/](server/api/), and the client-side code for interacting with the API in [client/src/backend-access.js](client/src/backend-access.js).
 
-For instance, to add an observation to the list `abc`, the client will issue a PUT request to `/server/api/observations.php?list=abc`, with the observation data in the request body.
+The API operates with requests like GET, PUT, etc. in tandem with a URL that provides a key to the list to act on - and possible additional data in the request body.
 
-The API is documented in-source under [server/api/](server/api/).
+For instance, to add an observation to a list (identified by the key `abcd`, of which more below), the client will issue a PUT request to `/server/api/observations.php?list=abcd`, with the request body containing the following JSON:
 
-You can find the client-side API code in [client/src/backend-access.js](client/src/backend-access.js).
+```
+{
+    species: "..."
+    timestamp: ...
+}
+```
 
-#### Keys
-A given list in the database is identified by either of a set of two key strings: a view key, or an edit key.
+The `species` property provides the name of the species that was observed, and `timestamp` the Unix time (seconds since epoch) that the observation was made. If an observation of this species already exists in this list, its timestamp will be updated to the one provided in this new request.
 
-The view key can be used to GET public data associated with a list, such as its observations. The edit key can be used to GET, PUT, DELETE, etc. data associated with the list.
+The API is documented futher in-source, under [server/api/](server/api/).
 
-In other words, the view key identifies a particular list and grants the client read access to it; while the edit key identifies a list and grants the client both read and write access to that list.
+#### The list keys
+The API identifies a given list by *key strings*, of which each list has two. One of the keys is called the *view key*, and the other the *edit key* - their form might be, for instance, "sbyodokwr" and "cm4y3pv2q...", respectively (the view key is nine characters in length, while the edit key has 60 characters, some of which are cut off in the example, here).
 
-When interacting with the API, the client is expected to provide the key via the `list` URL parameter. For instance, to request all observations in a particular list, the client would send a GET request to `/server/api/observations.php?list=abc`, where `abc` is the list's view or edit key (since this is a GET request, both keys are valid).
+When interacting with the API, the target list must be identified by providing its key via the `list` parameter; e.g. `/server/api/observations.php?list=sbyodokwr`.
 
-GET requests using an invalid/unrecognized key will in most cases return purposefully-generated random but superficially valid data.
+When a list is identified with a view key, the API will only allow read access (e.g. GET) to that list; whereas using the edit key grants both read and write access (GET, PUT, DELETE, etc.).
 
-Requests to modify data using a read-only view key will in most cases be silently ignored by the server.
+#### API requests using invalid keys
+The API adopts the expectation that some users may attempt to guess other users' list keys to gain unauthorized access.
+
+To at least make that endeavor more time-consuming, the API will in most cases respond to requests with invalid keys by randomly-generated but superficially valid data. You can confirm this by issuing a couple of subsequent GET request to `/server/api/observations.php?list=eeeeeeeeeeee` and noting the changing output.
+
+Requests to modify data using a read-only view key or an invalid edit key will be ignored by the server, in most cases silently.
 
 # Project status
 The project is currently in early functional beta.
