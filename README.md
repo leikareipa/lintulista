@@ -80,10 +80,10 @@ Lintulista uses a MySQL database for storing user-generated data. The data span 
 You can to provide the credentials for accessing the database in `lintulista-sql.json`, which should have the following contents:
 ```
 {
-	"host": "...",
-	"user": "...",
-	"password": "...",
-	"database": "...",
+    "host": "...",
+    "user": "...",
+    "password": "...",
+    "database": "...",
     "pepper": "..."
 }
 ```
@@ -166,7 +166,6 @@ The server provides the client a REST-like API for interacting with the backend 
 The API operates with requests like GET, PUT, etc. in tandem with a URL that provides a key to the list to act on - and possible additional data in the request body.
 
 For instance, to add an observation to a list (identified by the key `abcd`, of which more below), the client will issue a PUT request to `/server/api/observations.php?list=abcd`, with the request body containing the following JSON:
-
 ```
 {
     species: "..."
