@@ -1,34 +1,41 @@
-@media only screen and (max-width: 1000px)
+@media only screen and (max-width: 800px)
 {
-    #app-title
-    {
-        left: 5%;
-    }
-
     .app-menu
     {
-        left: calc(5% + 280px);
+        top: 38px;
+    }
+
+    #app-title
+    {
+        top: 12px;
+    }
+
+    header
+    {
+        padding-bottom: 140px;
     }
 }
 
-@media only screen and (max-width: 850px)
+
+@media only screen and (max-width: 650px)
 {
     .app-menu
     {
-        left: 50%;
-        transform: translateX(-50%);
-        top: 87px;
+        left: 0;
+        width: 100%;
+        top: 80px;
     }
 
     #app-title
     {
         left: 50%;
         transform: translateX(-50%);
-        top: 25px;
+        top: 15px;
     }
 
-    #content > #header
+    header
     {
-        padding-bottom: 105px;
+        padding-bottom: 180px;
+        border-radius: 0;
     }
 }

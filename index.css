@@ -132,9 +132,10 @@ footer
     position: absolute;
     z-index: 3;
     top: 75px;
-    left: calc(10% + 270px); /* Next to the app title.*/
+    left: calc(10% + 250px); /* Next to the app title.*/
     display: flex;
     flex-direction: row;
+    justify-content: center;
     width: 300px;
 }
 
