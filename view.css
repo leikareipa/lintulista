@@ -215,7 +215,7 @@ footer
     right: 0;
 }
 
-.ObservationList > .ObservationListMenuBar > .buttons > .lock i
+.ObservationList > .ObservationListMenuBar > .buttons > .lock .fas
 {
     color: #f1f1f1;
     transform: scale(1.5);
@@ -232,7 +232,7 @@ footer
 }
 
 /* Font Awesome icons.*/
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon i
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon .fas
 {
     transform: scale(1.5);
 }
@@ -349,7 +349,7 @@ footer
     width: 100%;
 }
 
-.BirdSearchBar > .search-field
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field
 {
     width: 230px;
     height: 45px;
@@ -368,13 +368,13 @@ footer
     background-color: #e1dfdf;
 }
 
-.BirdSearchBar > .search-field.active
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field.active
 {
     background-color: #f1f1f1;
     box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
 }
 
-.BirdSearchBar > .icon
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .icon
 {
     text-align: left;
     position: relative;
@@ -389,7 +389,7 @@ footer
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
-    right: calc(12% + 131px); /* Level with the search input field.*/
+    right: calc(12% + 127px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
