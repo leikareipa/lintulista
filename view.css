@@ -198,6 +198,7 @@ footer
     position: fixed;
     top: 2px;
     right: 16px;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons *
