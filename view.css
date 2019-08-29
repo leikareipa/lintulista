@@ -197,7 +197,7 @@ footer
 {
     position: fixed;
     top: 2px;
-    right: 15px;
+    right: 16px;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons *
@@ -261,7 +261,7 @@ footer
     -moz-user-select: none;
 
     color: white;
-    border-radius: 8px;
+    border-radius: 13px;
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -275,7 +275,7 @@ footer
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.custom-menu
 {
-    border-radius: 13px 3px 13px 13px;
+    border-radius: 13px 2px 13px 13px;
     background-color: white;
     color: black;
     cursor: auto;
@@ -314,8 +314,8 @@ footer
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .item:hover
 {
     background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.06);
-    border-radius: 4px;
+    transform: scale(1.08);
+    border-radius: 13px;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title:hover
@@ -344,14 +344,9 @@ footer
     text-align: left;
 }
 
-.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar input
-{
-    width: 100%;
-}
-
 .ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field
 {
-    width: 230px;
+    width: 100%;
     height: 45px;
     outline: none;
     padding: 10px;
@@ -389,7 +384,7 @@ footer
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
-    right: calc(12% + 127px); /* Level with the search input field.*/
+    right: calc(12% + 131px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
 }
 
