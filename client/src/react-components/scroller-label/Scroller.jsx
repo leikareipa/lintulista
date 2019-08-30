@@ -6,7 +6,8 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {delay} from "../../delay.js";
 
 // An element that when clicked, will call (or "fire") the callback function provided
 // via props.callback. If clicked and held, will keep firing at an interval until the
@@ -92,4 +93,75 @@ Scroller.validateProps = function(props)
     panic_if_not_type("function", props.callback);
 
     return;
+}
+
+// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
+Scroller.test = async()=>
+{
+    // The container we'll render instances of the component into for testing.
+    let container = {remove:()=>{}};
+
+    // Scroller with named months.
+    try
+    {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        // We'll do some async waiting, so prevent the container from showing while we do that.
+        container.style.display = "none";
+
+        let value = 0;
+
+        // Render the component.
+        ReactTestUtils.act(()=>
+        {
+            const unitElement = React.createElement(Scroller,
+            {
+                icon: "fas fa-caret-up fa-2x",
+                additionalClassName: "up",
+                callback: ()=>{value++},
+            });
+
+            ReactDOM.unmountComponentAtNode(container);
+            ReactDOM.render(unitElement, container);
+        });
+
+        const scroller = container.querySelector(".Scroller.up");
+
+        throw_if_not_true([()=>(scroller !== null)]);
+
+        // Clicking on the scroller. One firing of the click callback should occur.
+        {
+            throw_if_not_true([()=>(value === 0)]);
+
+            ReactTestUtils.Simulate.mouseDown(scroller);
+            ReactTestUtils.Simulate.mouseUp(scroller);
+
+            throw_if_not_true([()=>(value === 1)]);
+        }
+
+        // Clicking and holding the scroller. Multiple firings of the click callback should
+        // occur.
+        {
+            throw_if_not_true([()=>(value === 1)]);
+
+            ReactTestUtils.Simulate.mouseDown(scroller);
+            await delay(700);
+            ReactTestUtils.Simulate.mouseUp(scroller);
+
+            throw_if_not_true([()=>(value > 2)]);
+        }
+    }
+    catch (error)
+    {
+        if (error === "assertion failure") return false;
+
+        throw error;
+    }
+    finally
+    {
+        container.remove();
+    }
+
+    return true;
 }

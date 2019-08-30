@@ -98,11 +98,13 @@ body
     display: inline-block;
     width: 500px;
     max-width: 100%;
+    visibility: hidden;
 }
 
 #finish-date
 {
     margin: 25px;
+    color: rgb(128, 128, 128);
 }
 
 #title

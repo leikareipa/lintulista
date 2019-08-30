@@ -39,12 +39,14 @@
             import {Observation} from "../../client/dist/observation.js";
             import {BirdSearch} from "../../client/dist/react-components/bird-search/BirdSearch.js";
             import {MenuButton} from "../../client/dist/react-components/buttons/MenuButton.js";
+            import {Scroller} from "../../client/dist/react-components/scroller-label/Scroller.js";
             import {Bird} from "../../client/dist/bird.js";
 
             const unitsToTest =
             [
                 Bird,
                 Observation,
+                Scroller,
                 ScrollerLabel,
                 BirdThumbnail,
                 AsyncIconButton,
@@ -56,51 +58,57 @@
                 ObservationListMenuBar,
             ];
 
-            // Run the tests.
-            let someTestsFail = false;
-            unitsToTest.forEach((unit, idx)=>
+            // Run the tests, and print out the results.
+            (async()=>
             {
-                const testPasses = unit.test();
+                let someTestsFail = false;
 
-                someTestsFail = (!testPasses || someTestsFail);
-
-                // Add the result of this unit's test to the HTML.
+                for (const unit of unitsToTest)
                 {
-                    const nameElement = document.createElement("span");
-                    nameElement.style.whiteSpace = "nowrap";
+                    const testPasses = await unit.test();
 
-                    if (testPasses)
-                    {
-                        nameElement.className = "pass";
-                    }
-                    else
-                    {
-                        nameElement.className = "fail";
-                        nameElement.title = `${unit.name} fails`;
-                    }
+                    someTestsFail = (!testPasses || someTestsFail);
 
-                    nameElement.appendChild(document.createTextNode(unit.name));
-                    document.getElementById("individual-results").appendChild(nameElement);
-
-                    if (idx < (unitsToTest.length - 1))
+                    // Add the result of this unit's test to the HTML.
                     {
-                        document.getElementById("individual-results").appendChild(document.createTextNode(", "));
+                        const nameElement = document.createElement("span");
+                        nameElement.style.whiteSpace = "nowrap";
+
+                        if (testPasses)
+                        {
+                            nameElement.className = "pass";
+                        }
+                        else
+                        {
+                            nameElement.className = "fail";
+                            nameElement.title = `${unit.name} fails`;
+                        }
+
+                        nameElement.appendChild(document.createTextNode(unit.name));
+                        document.getElementById("individual-results").appendChild(nameElement);
+
+                        if (unit !== unitsToTest[unitsToTest.length-1])
+                        {
+                            document.getElementById("individual-results").appendChild(document.createTextNode(", "));
+                        }
                     }
                 }
-            });
 
-            if (someTestsFail)
-            {
-                document.getElementById("overall-result").classList.add("fail");
-                document.getElementById("overall-result").title = "One or more tests fail";
-            }
-            else
-            {
-                document.getElementById("overall-result").classList.add("pass");
-                document.getElementById("overall-result").title = "All tests pass";
-            }
+                if (someTestsFail)
+                {
+                    document.getElementById("overall-result").classList.add("fail");
+                    document.getElementById("overall-result").title = "One or more tests fail";
+                }
+                else
+                {
+                    document.getElementById("overall-result").classList.add("pass");
+                    document.getElementById("overall-result").title = "All tests pass";
+                }
 
-            document.getElementById("finish-date").appendChild(document.createTextNode(Date()));
+                document.getElementById("individual-results").style.visibility = "visible";
+
+                document.getElementById("finish-date").appendChild(document.createTextNode(Date()));
+            })();
         </script>
     </body>
 </html>
