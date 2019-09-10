@@ -24,7 +24,6 @@ You can find Lintulista's end-user documentation in the [guide/](guide/) directo
 ## Developer
 
 ### Introduction to the codebase
-
 Lintulista's codebase exhibits a three-way split:
 - Client
 - Server
@@ -252,6 +251,8 @@ Below are rough estimates of the required browser versions to run Lintulista wit
 The bird thumbnails used in Lintulista come from photographs taken by a variety of authors. Please see [guide/images.html](guide/images.html) for a full list.
 
 Lintulista uses the [React](https://reactjs.org/) library for most of its UI.
+
+The [FileSaver.js](https://github.com/eligrey/FileSaver.js/) library is used in Lintulista for exporting data to a local CSV file.
 
 Lintulista makes use of certain fonts from [Google Fonts](https://fonts.google.com/): Nunito, Delius, and Beth Ellen.
 
