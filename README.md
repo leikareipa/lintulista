@@ -96,48 +96,67 @@ The database's data are laid out in four tables, as described below.
 
 **Table 1: lintulista_lists**. Stores metadata about each user-created list.
 
-| Field        | Type                  | Null | Key | Default | Extra          |
-|--------------|-----------------------|------|-----|---------|----------------|
-| list_id      | mediumint(8) unsigned | NO   | PRI | NULL    | auto_increment |
-| view_key     | varchar(9)            | NO   | UNI | NULL    |                |
-| edit_key     | varchar(60)           | NO   | UNI | NULL    |                |
-| creator_hash | text                  | NO   |     | NULL    |                |
+```sql
+CREATE TABLE lintulista_lists (
+    list_id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    view_key VARCHAR(9) UNIQUE NOT NULL,
+    edit_key VARCHAR(60) UNIQUE NOT NULL,
+    creator_hash TEXT NOT NULL
+) CHARACTER SET utf8mb4;
+```
 
-Fields:
-- list_id: Running row id.
-- view_key: An identifier with which the list's observations can be viewed (but not edited). This is provided by the user as a URL parameter when accessing the list.
-- edit_key: An identifier with which the list's observations can be both viewed and edited. This is provided by the user as a URL parameter when accessing the list.
-- creator_hash: An anonymized identifier of the list's creator. A substring of the hash of remote IP + pepper. Intended not to identify an individual but to give the administrator some relative idea of which instance originated this list.
+| Column | Description |
+| ------ | ----------- |
+| list_id | Running row id. |
+| view_key | An identifier with which the list's observations can be viewed (but not edited). This is provided by the user as a URL parameter when accessing the list. |
+| edit_key | An identifier with which the list's observations can be both viewed and edited. This is provided by the user as a URL parameter when accessing the list. |
+| creator_hash | An anonymized identifier of the list's creator. A substring of the hash of remote IP + pepper. Intended not to identify an individual but to give the administrator some relative idea of which instance originated this list. |
 
 **Table 2: lintulista_observations**. Stores all lists' observations.
 
-| Field     | Type                  | Null | Key | Default | Extra          |
-|-----------|-----------------------|------|-----|---------|----------------|
-| id        | int(10) unsigned      | NO   | PRI | NULL    | auto_increment |
-| list_id   | mediumint(8) unsigned | NO   | MUL | NULL    |                |
-| timestamp | bigint(20)            | NO   |     | NULL    |                |
-| species   | text                  | NO   |     | NULL    |                |
+```sql
+CREATE TABLE lintulista_observations (
+    id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    list_id MEDIUMINT UNSIGNED NOT NULL,
+    timestamp BIGINT NOT NULL,
+    species TEXT NOT NULL,
+    INDEX (list_id)
+) CHARACTER SET utf8mb4;
+```
 
-Fields:
-- id: Running row id.
-- list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list to which this observation belongs.
-- timestamp: A Unix timestamp (seconds from epoch) for when this observation was entered into the database.
-- species: A string giving the name of the species observed (e.g. "Alli"). This must be a species name recognized by Lintulista (see [here](server/assets/metadata/known-birds.json) for the list of birds known to Lintulista).
+| Column | Description |
+| ------ | ----------- |
+| id | Running row id. |
+| list_id | Corresponds to a list_id in **lintulista_lists**, identifying the list to which this observation belongs. |
+| timestamp | A Unix timestamp (seconds from epoch) for when this observation was entered into the database. |
+| species | A string giving the name of the species observed (e.g. "Alli"). This must be a species name recognized by Lintulista (see [here](server/assets/metadata/known-birds.json) for the list of birds known to Lintulista). |
 
 **Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the administrator; stores information about events and errors related to users' interaction with Lintulista. As the error log might grow considerably larger than the event log (and so you might want to e.g. easily truncate the former, at some point), they have been split into separate tables. Their table layout is identical, however.
 
-| Field          | Type                  | Null | Key | Default | Extra          |
-|----------------|-----------------------|------|-----|---------|----------------|
-| id             | int(10) unsigned      | NO   | PRI | NULL    | auto_increment |
-| timestamp      | int(10) unsigned      | NO   |     | NULL    |                |
-| event_id       | tinyint(3) unsigned   | NO   |     | NULL    |                |
-| target_list_id | mediumint(8) unsigned | YES  |     | NULL    |                |
+```sql
+CREATE TABLE lintulista_event_log (
+    id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    event_id TINYINT UNSIGNED NOT NULL,
+    target_list_id MEDIUMINT UNSIGNED
+) CHARACTER SET utf8mb4;
+```
 
-Fields:
-- id: Running row id.
-- timestamp: A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int (instead of 8 bytes, as in the other tables) to save space.
-- event_id: A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [server/database.php](server/database.php) for a list of the event and error codes.
-- target_list_id: Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL - for instance, when no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key.
+```sql
+CREATE TABLE lintulista_error_log (
+    id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    event_id TINYINT UNSIGNED NOT NULL,
+    target_list_id MEDIUMINT UNSIGNED
+) CHARACTER SET utf8mb4;
+```
+
+| Column | Description |
+| ------ | ----------- |
+| id | Running row id. |
+| timestamp | A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int (instead of 8 bytes, as in the other tables) to save space. |
+| event_id | A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [server/database.php](server/database.php) for a list of the event and error codes. |
+| target_list_id | Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL - for instance, when no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key. |
 
 #### The .htaccess file
 Lintulista comes with a pre-configured Apache `.htaccess` file for URL rewriting. This allows the end-user access to more convenient URLs - e.g. `/lintulista/katsele/abc`, which will be rewritten into `/lintulista/view.php?list=abc`.
