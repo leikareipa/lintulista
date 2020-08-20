@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Lintulista's root (assumes that this file is in "lintulista/tests/unit/").-->
+        <base href="../../distributable/"/>
+        
         <title>Lintulista - unit test results</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="unit-tests.css">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+              integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+              crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../tests/unit/unit-tests.css">
     </head>
     <body>
         <div id="title">
@@ -25,22 +31,22 @@
             <!-- The time and date at which the tests finished will appear here.-->
         </div>
 
-        <script src="../../client/react/react.js"></script>
-        <script src="../../client/react/react-dom.js"></script>
-        <script src="../../client/react/react-dom-test-utils.js"></script>
+        <script src="./js/react/react.js"></script>
+        <script src="./js/react/react-dom.js"></script>
+        <script src="./js/react/react-dom-test-utils.js"></script>
         <script type="module">
-            import {ObservationListMenuBar} from "../../client/dist/react-components/observation-list/ObservationListMenuBar.js";
-            import {BirdSearchResult} from "../../client/dist/react-components/bird-search/BirdSearchResult.js";
-            import {AsyncIconButton} from "../../client/dist/react-components/buttons/AsyncIconButton.js";
-            import {ObservationCard} from "../../client/dist/react-components/observation-list/ObservationCard.js";
-            import {BirdSearchBar} from "../../client/dist/react-components/bird-search/BirdSearchBar.js";
-            import {ScrollerLabel} from "../../client/dist/react-components/scroller-label/ScrollerLabel.js";
-            import {BirdThumbnail} from "../../client/dist/react-components/misc/BirdThumbnail.js";
-            import {Observation} from "../../client/dist/observation.js";
-            import {BirdSearch} from "../../client/dist/react-components/bird-search/BirdSearch.js";
-            import {MenuButton} from "../../client/dist/react-components/buttons/MenuButton.js";
-            import {Scroller} from "../../client/dist/react-components/scroller-label/Scroller.js";
-            import {Bird} from "../../client/dist/bird.js";
+            import {ObservationListMenuBar} from "./js/react-components/observation-list/ObservationListMenuBar.js";
+            import {BirdSearchResult} from "./js/react-components/bird-search/BirdSearchResult.js";
+            import {AsyncIconButton} from "./js/react-components/buttons/AsyncIconButton.js";
+            import {ObservationCard} from "./js/react-components/observation-list/ObservationCard.js";
+            import {BirdSearchBar} from "./js/react-components/bird-search/BirdSearchBar.js";
+            import {ScrollerLabel} from "./js/react-components/scroller-label/ScrollerLabel.js";
+            import {BirdThumbnail} from "./js/react-components/misc/BirdThumbnail.js";
+            import {Observation} from "./js/observation.js";
+            import {BirdSearch} from "./js/react-components/bird-search/BirdSearch.js";
+            import {MenuButton} from "./js/react-components/buttons/MenuButton.js";
+            import {Scroller} from "./js/react-components/scroller-label/Scroller.js";
+            import {Bird} from "./js/bird.js";
 
             const unitsToTest =
             [

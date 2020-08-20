@@ -11,7 +11,7 @@ You can find Lintulista live on the web [here](https://www.tarpeeksihyvaesoft.co
 - Share your sightings with others via a URL
 - Integrates BirdLife Finland's 100 Lajia challenge
 
-![](images/screenshots/lintulista-beta.1.png)
+![](./images/screenshots/lintulista-beta.1.png)
 
 # Usage
 This section describes how to put Lintulista into use, either as an end-user or a developer.
@@ -19,7 +19,7 @@ This section describes how to put Lintulista into use, either as an end-user or 
 For instance, you'll find instructions on how to set up and deploy Lintulista on a server.
 
 ## End-user
-You can find Lintulista's end-user documentation in the [guide/](guide/) directory; noting that it is written in Finnish.
+You can find Lintulista's end-user documentation in the [distributable/guide/](./distributable/guide/) directory; noting that it is written in Finnish.
 
 ## Developer
 
@@ -27,18 +27,15 @@ You can find Lintulista's end-user documentation in the [guide/](guide/) directo
 Lintulista's codebase exhibits a three-way split:
 - Client
 - Server
-- Tests
+- Distributable
 
-The client-side code, which you can find under [client/](client/), is written in JavaScript, and uses the [React](https://reactjs.org/) library (version 16.8.6; although version 16.9 may be adopted in the near future) for UI functionality. The client provides the user a graphical view to Lintulista's backend, as well as means to modify certain data in the backend. (Technically, the files [index.html](index.html) and [view.php](view.php) are also part of the client, as they serve as points of entry for the user's browser.)
+The client-side code, which you can find under [source/client/](./source/client/), is written in JavaScript and uses the [React](https://reactjs.org/) library for UI functionality. The client provides the user a view to Lintulista's backend and means to request modifications to data stored in the backend.
 
-The server-side code, which you can find under [server/](client/), is written in PHP (up to version 7.0), and provides the client an API for interacting with the backend (e.g. the database).
+The server-side code, which you can find under [source/server/](./source/client/), is written in PHP 7.0. It provides the client an API for interacting with Lintulista's backend.
 
-Additionally, implements for rudimentary automated testing are provided under [tests/](tests/).
+Lintulista's distributable package is provided under [distributable/](./distributable). It combines the built client-side and server-side code - together with some auxiliary files - into a package that can be copied onto a server to host Lintulista there. (For further instructions on hosting, see [Setting up Lintulista](#setting-up-lintulista).)
 
-#### Non-code assets
-The repo also includes several non-code assets - most typically, image files. Perhaps the most notable of these assets is the collection of bird thumbnails under [server/assets/images/bird-thumbnails/](server/assets/images/bird-thumbnails/), which are hosted server-side and used by the client for decorating its view.
-
-Non-code assets are normally found under an `assets/` directory, e.g. [server/assets/](server/assets/) and [client/assets/](client/assets/).
+Additionally, implements for rudimentary automated testing are provided under [tests/](./tests/).
 
 ### Important concepts
 Before moving on to the rest of the sections, you may find it useful to briefly review the following core concepts and terminology underlying Lintulista.
@@ -53,24 +50,10 @@ A different way to phrase the above is that there are no user accounts or passwo
 This section describes how to build, configure, and deploy Lintulista from scratch. The process does involve a few steps, but is fairly straightforward overall.
 
 Setting up Lintulista involves the following steps:
-- building the code
-- preparing the database
-- configuring the .htaccess file
-- deploying the code and assets onto a server
-
-#### Building
-Lintulista depends on [Babel](https://babeljs.io/) for JSX and minification. You can install the required dependencies by executing the following in the repo's root:
-```
-$ npm install @babel/core @babel/cli @babel/preset-react babel-preset-minify
-```
-
-Once you have Babel installed as per above, you can build Lintulista with
-```
-$ cd build
-$ ./build-dev.sh
-```
-
-substituting `build-dev.sh` with `build-release.sh` for release builds. The compiled files will be placed in the [client/dist/](client/dist/) directory, from which [index.html](index.html) and [view.php](view.php) will pick them up as appropriate.
+1. Preparing the database
+2. Configuring the .htaccess file
+3. Building the code
+4. Deploying the code + assets onto the server
 
 #### Database
 Lintulista uses a MySQL database for storing user-generated data. The data span four tables, in total.
@@ -89,7 +72,7 @@ You can to provide the credentials for accessing the database in `lintulista-sql
 
 The first four properties correspond to the parameters to PHP's `mysqli_connect()` function. The last property, `pepper` is a string used by Lintulista to pepper certain hashes - you can use e.g. a randomly-generated string of some length, dependent on your strategy of hashing.
 
-You can set the path in which Lintulista looks for this file via the constructor to the DatabaseAccess class in [server/database.php](server/database.php).
+You can set the path in which Lintulista looks for this file via the constructor to the DatabaseAccess class in [source/server/database.php](./source/server/database.php).
 
 ##### Tables
 The database's data are laid out in four tables, as described below.
@@ -129,7 +112,7 @@ CREATE TABLE lintulista_observations (
 | id | Running row id. |
 | list_id | Corresponds to a list_id in **lintulista_lists**, identifying the list to which this observation belongs. |
 | timestamp | A Unix timestamp (seconds from epoch) for when this observation was entered into the database. |
-| species | A string giving the name of the species observed (e.g. "Alli"). This must be a species name recognized by Lintulista (see [here](server/assets/metadata/known-birds.json) for the list of birds known to Lintulista). |
+| species | A string giving the name of the species observed (e.g. "Alli"). This must be a species name recognized by Lintulista (see [here](./source/server/metadata/known-birds.json) for the list of birds known to Lintulista). |
 
 **Tables 3, 4: lintulista_event_log, lintulista_error_log**. For the administrator; stores information about events and errors related to users' interaction with Lintulista. As the error log might grow considerably larger than the event log (and so you might want to e.g. easily truncate the former, at some point), they have been split into separate tables. Their table layout is identical, however.
 
@@ -155,7 +138,7 @@ CREATE TABLE lintulista_error_log (
 | ------ | ----------- |
 | id | Running row id. |
 | timestamp | A Unix timestamp (seconds from epoch) for when this log entry was entered into the database. Stored as a 4-byte int (instead of 8 bytes, as in the other tables) to save space. |
-| event_id | A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [server/database.php](server/database.php) for a list of the event and error codes. |
+| event_id | A code identifying the event/error. See the comments for `log_event()` and `log_error()` in [source/server/database.php](./source/server/database.php) for a list of the event and error codes. |
 | target_list_id | Corresponds to a list_id in **lintulista_lists**, identifying the list of which this log entry is about. Can be NULL - for instance, when no particular list was implicated, such as when logging the error of a user attempting to access a list using an invalid key. |
 
 #### The .htaccess file
@@ -163,23 +146,29 @@ Lintulista comes with a pre-configured Apache `.htaccess` file for URL rewriting
 
 You may need to adapt this file to fit your particular web hosting etc.
 
-#### Deploying
-To deploy Lintulista on a server, copy into a directory on the server the following files (maintaining the directory structure):
-- client/dist/*
-- client/react/*
-- client/assets/*
-- server/*
-- guide/*
-- view.php
-- view-*.css
-- index.html
-- index-*.css
-- .htaccess
+#### Building
+Lintulista depends on [Babel](https://babeljs.io/) for JSX and minification. You can install the required dependencies by executing the following in the repo's root:
+```
+$ npm install @babel/core @babel/cli @babel/preset-react babel-preset-minify
+```
 
-*Note!* By default, the [client/react/](client/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js (but renaming them to react.js and react-dom.js, respectively).
+Once you have Babel installed as per above, you can build Lintulista with
+```
+$ ./build-dev.sh
+```
+
+substituting `build-dev.sh` with `build-release.sh` for release builds. The compiled files will be placed in the [distributable/js/](./distributable/js/) and [distributable/server/](./distributable/server/) directories, from which [distributable/index.html](./distributable/index.html) and [distributable/view.php](.distributable/view.php) will pick them up as appropriate.
+
+#### Deploying
+To host Lintulista on a server, follow these two steps:
+
+1. Build the source code (see [Building](#building) for instructions)
+2. Copy the [distributable/](./distributable) directory onto the server
+
+*Note:* By default, the [distributable/js/react/](./distributable/js/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js, renaming them to react.js and react-dom.js, respectively).
 
 ### The client-server API
-The server provides the client a REST-like API for interacting with the backend and database. You can find the server-side API code under [server/api/](server/api/), and the client-side code for interacting with the API in [client/src/backend-access.js](client/src/backend-access.js).
+The server provides the client a REST-like API for interacting with the backend and database. You can find the server-side API code under [source/server/api/](./source/server/api/), and the client-side code for interacting with the API in [source/client/backend-access.js](./source/client/backend-access.js).
 
 The API operates with requests like GET, PUT, etc. in tandem with a URL that provides a key to the list to act on - and possible additional data in the request body.
 
@@ -193,7 +182,7 @@ For instance, to add an observation to a list (identified by the key `abcd`, of 
 
 The `species` property provides the name of the species that was observed, and `timestamp` the Unix time (seconds since epoch) that the observation was made. If an observation of this species already exists in this list, its timestamp will be updated to the one provided in this new request.
 
-The API is documented futher in-source, under [server/api/](server/api/).
+The API is documented futher in-source, under [source/server/api/](./source/server/api/).
 
 #### List keys
 The API identifies a given list by *key strings*, of which each list has two. One of the keys is called the *view key*, and the other the *edit key* - their form might be, for instance, "sbyodokwr" and "cm4y3pv2q...", respectively (the view key is nine characters in length, while the edit key has 60 characters, some of which are cut off in the example, here).
@@ -267,7 +256,7 @@ Below are rough estimates of the required browser versions to run Lintulista wit
 </table>
 
 # Credits
-The bird thumbnails used in Lintulista come from photographs taken by a variety of authors. Please see [guide/images.html](guide/images.html) for a full list.
+The bird thumbnails used in Lintulista come from photographs taken by a variety of authors. Please see [distributable/guide/images.html](./distributable/guide/images.html) for a full list.
 
 Lintulista uses the [React](https://reactjs.org/) library for most of its UI.
 

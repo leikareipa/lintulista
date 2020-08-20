@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Lintulista's root (assumes that this test is in "lintulista/tests/integration/").-->
-        <base href="../../"/>
+        <!-- Lintulista's root (assumes that this file is in "lintulista/tests/integration/").-->
+        <base href="../../distributable/"/>
 
         <title>Lintulista! - Tests - Integration - Client-to-database</title>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+              integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+              crossorigin="anonymous">
         <style>
             body
             {
@@ -23,19 +26,19 @@
         </div>
 
         <div id="results" style="margin: 20px;"></div>
-        <div id="spinner" style="margin: 20px;"><i class="fas fa-spinner fa-spin"></i> Running tests</div>
+        <div id="spinner" style="margin: 20px;"><i class="fas fa-fw fa-spinner fa-spin"></i> Running tests...</div>
 
         <script type="module">
-            import {panic_if_not_type} from "./client/dist/assert.js";
-            import {BackendAccess} from "./client/dist/backend-access.js";
-            import {Observation} from "./client/dist/observation.js";
-            import {Bird} from "./client/dist/bird.js";
+            import {panic_if_not_type} from "./js/assert.js";
+            import {BackendAccess} from "./js/backend-access.js";
+            import {Observation} from "./js/observation.js";
+            import {Bird} from "./js/bird.js";
 
             (async()=>
             {
                 let backend = {};
 
-                add_header("List");
+                add_header("New list");
                 {
                     // Create a new list.
                     const keys = await BackendAccess.create_new_list();
@@ -120,7 +123,7 @@
 
                 icon.className = `fas ${succeeded? "fa-check" : "fa-times"} fa-fw`;
                 icon.style.marginRight = "7px";
-                icon.style.color = `${succeeded? "" : "red"}`;
+                icon.style.color = `${succeeded? "mediumseagreen" : "red"}`;
                 
                 container.appendChild(icon);
                 container.appendChild(text);
@@ -129,7 +132,7 @@
 
             function finish()
             {
-                add_header("Tests finished!");
+                document.body.appendChild(document.createTextNode("Tests finished!"));
                 document.getElementById("spinner").style.display = "none";
             }
         </script>
