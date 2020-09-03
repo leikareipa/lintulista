@@ -193,6 +193,11 @@ footer
     justify-content: flex-end;
 }
 
+.ObservationList > .ObservationListMenuBar.no-edit-rights > .buttons
+{
+    flex-basis: 105px;
+}
+
 .ObservationList > .ObservationListMenuBar.sticky
 {
     position: fixed;
@@ -214,6 +219,11 @@ footer
     position: sticky;
     top: 0;
     right: 0;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .lock.locked
+{
+    display: none;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .lock .fas
@@ -381,12 +391,18 @@ footer
     pointer-events: none;
 }
 
-.BirdSearchResultsDisplay
+.BirdSearchResultsDisplay,
+.BirdSearchResultsDisplay.edit-rights
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
     right: calc(12% + 131px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
+}
+
+.BirdSearchResultsDisplay.no-edit-rights
+{
+    right: calc(12% + 81px); /* Level with the search input field.*/
 }
 
 .BirdSearchResultsDisplay.active

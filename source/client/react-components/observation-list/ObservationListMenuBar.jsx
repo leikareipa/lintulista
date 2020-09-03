@@ -77,7 +77,9 @@ export function ObservationListMenuBar(props = {})
         }
     });
 
-    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"} ${isBarSticky? "sticky" : ""}`.trim()}>
+    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"}
+                                                   ${isBarSticky? "sticky" : ""}
+                                                   ${props.backend.hasEditRights? "edit-rights" : "no-edit-rights"}`.trim()}>
 
                {/* A search field that allows the user to search for specific bird species to be added or
                  * removed as observations.*/}
@@ -131,7 +133,9 @@ export function ObservationListMenuBar(props = {})
                       href={props.backend.hasEditRights? `./katsele/${props.backend.viewKey}` : null}
                       rel="noopener noreferrer"
                       target="_blank">
-                           <i className={props.backend.hasEditRights? "fas fa-unlock-alt fa-fw" : "fas fa-lock fa-fw"}/>
+                           {props.backend.hasEditRights
+                            ? <i className="fas fa-unlock fa-fw"/>
+                            : <i className="fas fa-lock fa-fw"/>}
                    </a>
                </div>
 
