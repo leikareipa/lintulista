@@ -163,7 +163,7 @@ substituting `build-dev.sh` with `build-release.sh` for release builds. The comp
 To host Lintulista's code and assets on a server, follow these two steps:
 
 1. Copy the contents of the [distributable/](./distributable) directory onto the server, e.g. inside a directory called "lintulista". This assumes you've first built the source code as per [Building](#building). \*
-2. If your base URL is not "/lintulista/" (e.g. not www.example.com/lintulista/), modify [distributable/view.php](./distributable/view.php)'s \<base href\> and the rewrite conditions in [distributable/.htaccess](./distributable/.htaccess) accordingly. This step is only required if using the Apache rewrite rules of [distributable/.htaccess](./distributable/.htaccess).
+2. If your base URL is not "/lintulista/" (e.g. not www.example.com/lintulista/), modify [distributable/view.php](./distributable/view.php) and [distributable/.htaccess](./distributable/.htaccess), accordingly.
 
 \* By default, the [distributable/js/react/](./distributable/js/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js, renaming them to react.js and react-dom.js, respectively).
 
