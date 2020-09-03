@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Lintulista!</title>
+        <base href="/lintulista/">
         <meta name="referrer" content="no-referrer">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -26,7 +27,7 @@
 
             <footer>
                 <a href="https://www.github.com/leikareipa/lintulista">Lintulista</a>
-                &bull; Designed & developed by <a href="http://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
+                &bull; Designed & developed by <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2019
                 &bull; Includes photos taken by <a href="./guide/images.html">a variety of authors</a>
             </footer>
             
