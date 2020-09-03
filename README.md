@@ -159,13 +159,13 @@ $ ./build-dev.sh
 
 substituting `build-dev.sh` with `build-release.sh` for release builds. The compiled files will be placed in the [distributable/js/](./distributable/js/) and [distributable/server/](./distributable/server/) directories, from which [distributable/index.html](./distributable/index.html) and [distributable/view.php](.distributable/view.php) will pick them up as appropriate.
 
-#### Deploying
-To host Lintulista on a server, follow these two steps:
+#### Deploying the code and assets
+To host Lintulista's code and assets on a server, follow these two steps:
 
-1. Build the source code (see [Building](#building) for instructions)
-2. Copy the [distributable/](./distributable) directory onto the server
+1. Copy the contents of the [distributable/](./distributable) directory onto the server, e.g. inside a directory called "lintulista". This assumes you've first built the source code as per [Building](#building). \*
+2. If your base URL is not "/lintulista/" (e.g. www.example.com/lintulista/), modify [distributable/view.php](./distributable/view.php)'s \<base href\> accordingly. This step is only required if using the Apache rewrite rules of [distributable/.htaccess](./distributable/.htaccess).
 
-*Note:* By default, the [distributable/js/react/](./distributable/js/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js, renaming them to react.js and react-dom.js, respectively).
+\* By default, the [distributable/js/react/](./distributable/js/react/) directory contains the developer version of React. For better performance in production, you might replace it with the minified production version; e.g. from https://unpkg.com/react@16.8.6/umd/react.production.min.js and https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js, renaming them to react.js and react-dom.js, respectively).
 
 ### The client-server API
 The server provides the client a REST-like API for interacting with the backend and database. You can find the server-side API code under [source/server/api/](./source/server/api/), and the client-side code for interacting with the API in [source/client/backend-access.js](./source/client/backend-access.js).
