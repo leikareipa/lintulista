@@ -40,16 +40,16 @@
             import {BackendAccess} from "./js/backend-access.js";
             import {error} from "./js/assert.js";
 
-            const urlParams = new URLSearchParams(window.location.search);
-
-            const listKey = (urlParams.get("list") || null);
+            // We expect a ?list= parameter to be provided in the URL that gives us the key
+            // of the lsit we are expected to operate on. 
+            const listKey = `<?php echo $_GET["list"]; ?>`.split("/").pop();
 
             // Start the app.
             (async()=>
             {
                 if (!listKey)
                 {
-                    console.error("Missing one or more required URL parameters.");
+                    error("A list key must be provided.");
 
                     /// TODO. For now, jump back to the main page. But later on, we should handle
                     /// this error in a better way.

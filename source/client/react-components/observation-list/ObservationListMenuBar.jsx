@@ -130,7 +130,7 @@ export function ObservationListMenuBar(props = {})
                      * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
                    <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
                       title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                      href={props.backend.hasEditRights? `./katsele/${props.backend.viewKey}` : null}
+                      href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
                       rel="noopener noreferrer"
                       target="_blank">
                            {props.backend.hasEditRights
