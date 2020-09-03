@@ -3,7 +3,7 @@ Lintulista is a Finnish-language web app for hobbyist birdwatchers to keep track
 
 With an easy-to-use interface and emphasis on visual presentation, Lintulista offers an interesting and accessible way to record your sightings - a good alternative to plain Excel tables.
 
-You can find Lintulista live on the web [here](https://www.tarpeeksihyvaesoft.com/lintulista/) (temporarily down - in the meantime, please see a video demonstration [here](https://www.youtube.com/watch?v=ncM-ybapv_g)!). Note that the app is currently in beta, so you may still encounter issues that will be absent in more mature versions.
+You can find Lintulista live on the web [here](https://www.tarpeeksihyvaesoft.com/lintulista/). Note that the app is currently in beta, so you may still encounter issues that will be absent in more mature versions.
 
 **Features**
 - Easy and convenient to use - no account creation or login required
