@@ -15,7 +15,7 @@
     </head>
     <body>
         <header>
-
+            
             <div id="app-title" style="white-space: nowrap;">
                 <span id="app-name">
                     lintulista
@@ -31,7 +31,33 @@
         </header>
 
         <div id="content">
-            <div id="random-observations" style="overflow: hidden; display: flex; justify-content: center;"></div>
+            <!-- A list of random bird observation cards. -->
+            <div id="random-observations" style="overflow: hidden; display: flex; flex-direction: row; justify-content: center;">
+                <?php
+                    // It takes a bit of time to load bird data from the backend etc., so
+                    // let's insert placeholder cards to take up visual space while the
+                    // actual data is on its way.
+
+                    $numPlaceholderCards = 30;
+
+                    for ($i = 0; $i < $numPlaceholderCards; $i++)
+                    {
+                        echo "<div class=\"ObservationCard\">".
+                             "   <img class=\"BirdThumbnail\"".
+                             "        referrerPolicy=\"no-referrer\"".
+                             "        src=\"./img/placeholder-bird-thumbnail.png\">".
+                             "   <div class=\"observation-info\">".
+                             "       <div class=\"bird-name\" style=\"color:transparent\">".
+                             "           ...".
+                             "       </div>".
+                             "       <div class=\"date\" style=\"color:transparent\">".
+                             "            ...".
+                             "       </div>".
+                             "   </div>".
+                             "</div>";
+                    }
+                ?>
+            </div>
             <div id="create-new-list"></div>
         </div>
 
@@ -100,7 +126,7 @@
 
                     if (!container)
                     {
-                        panic("Can't find a required container!");
+                        panic("Can't find the required container!");
                     }
                     else
                     {
@@ -150,11 +176,13 @@
                 if (knownBirds.length)
                 {
                     // Assumed (approximate) width in pixels of a single observation card element.
-                    const observationCardWidth = 200;
+                    const observationCardPixelWidth = 200;
 
-                    const numObservationCards = Math.min(30, Math.max(3, (Math.floor(window.innerWidth / observationCardWidth) + 1)));
+                    const maxNumCards = <?php echo $numPlaceholderCards ?>;
+                    const maxNumCardsInViewport = (Math.floor(window.innerWidth / observationCardPixelWidth) + 1);
+                    const numCards = Math.min(maxNumCards, Math.max(3, maxNumCardsInViewport));
                     
-                    const randomObservations = Array(numObservationCards).fill().reduce((cardArray, card, idx)=>
+                    const randomObservations = Array(numCards).fill().reduce((cardArray, card, idx)=>
                     {
                         const randomDate = (()=>
                         {
@@ -207,6 +235,5 @@
                 }
             }
         </script>
-      </script>
     </body>
 </html>
