@@ -42,15 +42,15 @@
 
                     for ($i = 0; $i < $numPlaceholderCards; $i++)
                     {
-                        echo "<div class=\"ObservationCard\">".
-                             "   <img class=\"BirdThumbnail\"".
-                             "        referrerPolicy=\"no-referrer\"".
-                             "        src=\"./img/placeholder-bird-thumbnail.png\">".
-                             "   <div class=\"observation-info\">".
-                             "       <div class=\"bird-name\" style=\"color:transparent\">".
+                        echo "<div class='ObservationCard'>".
+                             "   <img class='BirdThumbnail'".
+                             "        referrerPolicy='no-referrer'".
+                             "        src='./img/placeholder-bird-thumbnail.png'>".
+                             "   <div class='observation-info'>".
+                             "       <div class='bird-name' style='color:transparent'>".
                              "           ...".
                              "       </div>".
-                             "       <div class=\"date\" style=\"color:transparent\">".
+                             "       <div class='date' style='color:transparent'>".
                              "            ...".
                              "       </div>".
                              "   </div>".
@@ -176,13 +176,22 @@
                 if (knownBirds.length)
                 {
                     // Assumed (approximate) width in pixels of a single observation card element.
-                    const observationCardPixelWidth = 200;
+                    const cardPixelWidth = 200;
 
-                    const maxNumCards = <?php echo $numPlaceholderCards ?>;
-                    const maxNumCardsInViewport = (Math.floor(window.innerWidth / observationCardPixelWidth) + 1);
-                    const numCards = Math.min(maxNumCards, Math.max(3, maxNumCardsInViewport));
-                    
-                    const randomObservations = Array(numCards).fill().reduce((cardArray, card, idx)=>
+                    const numPlaceholderCards = <?php echo $numPlaceholderCards ?>;
+                    const numCardsFitInViewport = (Math.floor(window.innerWidth / cardPixelWidth) + 1);
+
+                    // There's (we assume) an even number of placeholder cards, so to properly
+                    // horizontally align the real cards on top of the placeholder cards, we
+                    // want an even number of real cards also.
+                    if ((numPlaceholderCards < 2) ||
+                        (numPlaceholderCards % 2) != 0)
+                    {
+                        window.alert("WARNING: Expected there to be an even number of placeholder cards.");
+                    }
+                    const numCardsToDraw = Math.min(numPlaceholderCards, (2 + Math.floor(numCardsFitInViewport / 2) * 2));
+
+                    const randomObservations = Array(numCardsToDraw).fill().reduce((cardArray, card, idx)=>
                     {
                         const randomDate = (()=>
                         {

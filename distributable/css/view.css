@@ -476,11 +476,6 @@ footer
     border-radius: 50%;
     border: 10px solid white;
     box-shadow: -5px 0px 7px -2px rgba(0, 0, 0, 0.3);
-
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
 }
 
 .BirdSearchResult > .card

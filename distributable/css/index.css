@@ -224,11 +224,6 @@ footer
     box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
     z-index: 2;
     background-color: #f3f3f3;
-
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
 }
 
 .ObservationCard > .observation-info
