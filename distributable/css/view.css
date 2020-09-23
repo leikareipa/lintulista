@@ -586,8 +586,8 @@ footer
 .ObservationCardGhost > .BirdThumbnail
 {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 16px solid #f3f3f3;
     box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
