@@ -5,6 +5,8 @@ With an easy-to-use interface and emphasis on visual presentation, Lintulista of
 
 You can find Lintulista live on the web [here](https://www.tarpeeksihyvaesoft.com/lintulista/). Note that the app is currently in beta, so you may still encounter issues that will be absent in more mature versions.
 
+That said, Lintulista is a summer project from 2019 and is not currently under active development. Issue reports (bugs, feature requests, etc.) will be pursued, however, so fire up.
+
 **Features**
 - Easy and convenient to use - no account creation or login required
 - Visually compelling - sightings are displayed as images rather than as plain text
