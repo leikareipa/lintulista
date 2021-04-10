@@ -1,7 +1,8 @@
-/misc/
+misc/
 .vscode/
 node_modules/
 lintulista-sql.json
+distributable/js/
 
 # Symlink in local repo.
 /lintulista
