@@ -16,6 +16,7 @@ import {MenuButton} from "../buttons/MenuButton.js";
 import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
 import {Button} from "../buttons/Button.js";
 import {Bird} from "../../bird.js";
+import { tr } from "../../translator.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can
 // control certain aspects of the observation list; like to select the order in which to
@@ -23,22 +24,6 @@ import {Bird} from "../../bird.js";
 //
 // This component needs access to Lintulista's backend, so a relevant backend() object
 // should be provided via props.backend.
-//
-// A callback for when the user requests a new observation to be added to the list is to
-// be provided via props.callbackOnAddObservation. It will be passed one parameter: a Bird()
-// object describing the species of which the user wants an observation added.
-//
-// A callback for when the user requests an existing observation to be removed from the
-// list is to be provided via props.callbackOnAddObservation. It will be passed one parameter:
-// a Bird() object describing the species of which the user wants an observation added.
-//
-// A callback for when the user requests to change the list's sorting order is to be
-// provided via props.callbackSetListSorting. It will be passed one parameter: a string
-// describing the new sorting order.
-//
-// Whether the action bar is enabled (true) or disabled (false) can be given as a boolean
-// via props.enabled. The only effect of this is that the component's class list will be
-// appended with "enabled" or "disabled", accordingly.
 //
 export function ObservationListMenuBar(props = {})
 {
@@ -49,20 +34,9 @@ export function ObservationListMenuBar(props = {})
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
     const setIs100LajiaMode = ReactRedux.useDispatch();
 
-    // Various media queries for in-code handling of responsive styling.
-    const responsive =
-    {
-        // When the menu bar (and the page's layout in general) is large enough to
-        // accommodate us showing tooltips on menu buttons.
-        largeEnoughForTooltips: window.matchMedia("(min-width: 500px)"),
-    }
-
     // A sticky bar will be displayed somewhere on the page (e.g. top corner) regardless
     // of the window's scroll position.
     const [isBarSticky, setIsBarSticky] = React.useState(false);
-
-    const [allowMenuButtonTooltips, setAllowMenuButtonTooltips] = React.useState(responsive.largeEnoughForTooltips.matches);
-    responsive.largeEnoughForTooltips.addListener((e)=>setAllowMenuButtonTooltips(e.matches));
 
     // Make the action bar sticky if the user has scrolled far enough down the page.
     React.useEffect(()=>
@@ -76,23 +50,17 @@ export function ObservationListMenuBar(props = {})
         {
             const stickThresholdY = 220;
 
-            if (!isBarSticky && (window.scrollY > stickThresholdY))
-            {
+            if (!isBarSticky && (window.scrollY > stickThresholdY)) {
                 setIsBarSticky(true);
             }
-            else if (isBarSticky && (window.scrollY <= stickThresholdY))
-            {
+            else if (isBarSticky && (window.scrollY <= stickThresholdY)) {
                 setIsBarSticky(false);
             }
         }
     });
 
-    return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"}
-                                                   ${isBarSticky? "sticky" : ""}
-                                                   ${isLoggedIn? "logged-in" : "not-logged-in"}`}>
+    return <div className={`ObservationListMenuBar ${isBarSticky? "sticky" : ""}`}>
 
-        {/* A search field that allows the user to search for specific bird species to be added or
-        * removed as observations.*/}
         <BirdSearch
             backend={props.backend}
         />
@@ -102,16 +70,16 @@ export function ObservationListMenuBar(props = {})
             <CheckBoxButton
                 iconChecked="fas fa-check-square fa-fw fa-lg"
                 iconUnchecked="fas fa-square fa-fw fa-lg"
-                tooltip="100 Lajia -haaste"
+                tooltip={tr("100 Species challenge")}
                 showTooltip={!isBarSticky}
-                title="Katso tilanteesi 100 Lajia -haasteessa"
+                title={tr("View your standing in the 100 Species challenge")}
                 isChecked={is100LajiaMode}
                 callbackOnButtonClick={(isChecked)=>setIs100LajiaMode({type: "set-100-lajia-mode", isEnabled: isChecked})}
             />
 
             <MenuButton
                 icon="fas fa-question fa-fw fa-lg"
-                title="Tietoja"
+                title={tr("Information")}
                 id="list-info"
                 showTooltip={false}
                 customMenu={
@@ -120,27 +88,26 @@ export function ObservationListMenuBar(props = {})
                         <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
 
                         <a href="./guide/" target="_blank" rel="noopener noreferrer">
-                            Käyttöohje
+                            {tr("User's guide")}
                         </a><br/>
 
                         <a href="mailto:sw@tarpeeksihyvaesoft.com">
-                            Yhteydenotto
+                            {tr("Contact us")}
                         </a><br/>
 
                         <a href="./guide/images.html" target="_blank" rel="noopener noreferrer">
-                            Kuvien tiedot
+                            {tr("Image info")}
                         </a><br/>
 
                     </div>
                 }
             />
             
-            {/* A button that allows the user to log in/out.*/}
             <Button
                 className={`lock ${isLoggedIn? "unlocked" : "locked"}`}
                 title={isLoggedIn
-                       ? "Kirjaudu ulos"
-                       : "Kirjaudu sisään muokataksesi listaa"}
+                       ? tr("Log out")
+                       : tr("Log in to edit the list")}
                 icon={isLoggedIn
                       ? "fas fa-user-shield fa-fw fa-lg"
                       : "fas fa-lock fa-fw fa-lg"}

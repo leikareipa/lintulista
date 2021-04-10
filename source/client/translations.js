@@ -31,4 +31,28 @@ export const translations = {
 
     "Logout failed":
         {fiFI: "Uloskirjautuminen epäonnistui"},
+
+    "Log in to edit the list":
+        {fiFI: "Kirjaudu sisään muokataksesi listaa"},
+
+    "Log out":
+        {fiFI: "Kirjaudu ulos"},
+
+    "Contact us":
+        {fiFI: "Yhteydenotto"},
+
+    "User's guide":
+        {fiFI: "Käyttöohje"},
+
+    "Information":
+        {fiFI: "Tietoa"},
+
+    "Image info":
+        {fiFI: "Kuvien tiedot"},
+
+    "100 Species challenge":
+        {fiFI: "100 Lajia -haaste"},
+
+    "View your standing in the 100 Species challenge":
+        {fiFI: "Katso tilanteesi 100 Lajia -haasteessa"},
 };
