@@ -9,12 +9,21 @@
 "use strict";
 
 import {darken_viewport} from "./darken_viewport.js"
+import {public_error} from "./throwable.js"
+
+export function public_assert(condition, failMessage = "")
+{
+    if (!condition) {
+        throw public_error(failMessage);
+    }
+
+    return;
+}
 
 export function panic(errorMessage = "")
 {
     // Draw a black screen over the entire page, blocking user interaction.
-    darken_viewport(
-    {
+    darken_viewport({
         opacity: 1,
         z: 1000, // Should be above everything else on the page.
     });

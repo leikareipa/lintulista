@@ -12,12 +12,12 @@ import {Bird} from "./bird.js";
 // Represents an observation of a given bird at a given time.
 export function Observation(args = {})
 {
-    panic_if_undefined(args.date, args.bird);
+    panic_if_undefined(args.bird);
 
-    if (!(args.date instanceof Date))
-    {
-        warn("Invalid date for the observation.");
-        return false;
+    const isGhost = !(args.date instanceof Date);
+
+    if (isGhost) {
+        args.date = new Date(0);
     }
 
     const timeString = String(args.date.getHours()).padStart(2, "0") + ":" +
@@ -27,8 +27,8 @@ export function Observation(args = {})
                        (new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(args.date) + "ta") + " " +
                        args.date.getFullYear();
 
-    const publicInterface = Object.freeze(
-    {
+    const publicInterface = Object.freeze({
+        isGhost,
         bird: args.bird,
         date: args.date,
         unixTimestamp: Math.round(args.date.getTime() / 1000),
@@ -37,6 +37,14 @@ export function Observation(args = {})
     });
     
     return publicInterface;
+}
+
+Observation.clone = function(observation = Observation)
+{
+    return Observation({
+        bird: Bird(observation.bird),
+        date: observation.date,
+    });
 }
 
 // Runs basic tests on this unit. Returns true if all tests passed; false otherwise.

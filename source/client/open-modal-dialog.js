@@ -6,8 +6,10 @@
 
 "use strict";
 
+import {error_popup} from "./message-popup.js";
 import {panic_if_undefined, is_function} from "./assert.js";
 import {darken_viewport} from "./darken_viewport.js";
+import { is_public_ll_error } from "./throwable.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
 // the container when the user accepts or rejects the dialog.
@@ -60,31 +62,40 @@ export function open_modal_dialog(dialog, parameters = {})
         const dialogElement = React.createElement(dialog,
         {
             ...parameters,
-            onDialogAccept: async(returnData)=>
-            {
-                if (is_function(parameters.onAccept))
-                {
-                    await parameters.onAccept(returnData);
-                }
-
+            onDialogAccept: async(returnData)=>{
+                await run_callback(parameters.onAccept, returnData);
                 close_this_dialog();
                 return returnData;
             },
-            onDialogReject: async()=>
-            {
-                if (is_function(parameters.onReject))
-                {
-                    await parameters.onReject();
-                }
-
+            onDialogReject: async()=>{
+                await run_callback(parameters.onReject)
                 close_this_dialog();
-                return null;
+                return;
             },
         });
 
         document.body.appendChild(dialogContainer);
         ReactDOM.render(dialogElement, dialogContainer);
     })();
+
+    async function run_callback(fn = async function(){},
+                                args = {})
+    {
+        if (is_function(fn))
+        {
+            try {
+                await fn(args);
+            }
+            catch (error)
+            {
+                if (is_public_ll_error(error)) {
+                    error_popup(error.message);
+                }
+            }
+        }
+
+        return;
+    }
 
     // Removes the dialog from the DOM.
     async function close_this_dialog()

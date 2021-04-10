@@ -1,2 +1,208 @@
-"use strict";import{panic_if_not_type,throw_if_not_true}from"../../assert.js";import{BirdSearchResult}from"./BirdSearchResult.js";import{BirdSearchBar}from"./BirdSearchBar.js";import{Observation}from"../../observation.js";import{Bird}from"../../bird.js";export function BirdSearch(a={}){async function b(b){panic_if_not_type("object",b),await a.callbackAddObservation(b),e()}async function c(b){panic_if_not_type("object",b),e(),await a.callbackRemoveObservation(b)}async function d(b){e(),await a.callbackChangeObservationDate(b)}function e(){g(!1)}BirdSearch.validate_props(a);const[f,g]=React.useState(!1);return React.createElement("div",{className:"BirdSearch"},React.createElement(BirdSearchBar,{initialState:"inactive",callbackOnChange:function(h){function i(a){f&&a.species===f.bird.species||g({bird:a,element:j(a)})}function j(e){const f=a.backend.observations().find(a=>a.bird.species===e.species);return React.createElement(BirdSearchResult,{key:e.species,bird:e,observation:f?f:null,userHasEditRights:a.backend.hasEditRights,callbackAddObservation:b,callbackRemoveObservation:c,callbackChangeObservationDate:d})}return h=h.trim(),h.length?void(b=>b?void i(b):void(a=>{if(a)return void i(a)})(a.backend.known_birds().find(a=>a.species.toLowerCase().includes(h.toLowerCase()))))(a.backend.known_birds().find(a=>a.species.toLowerCase()===h.toLowerCase())):void e()},callbackOnInactivate:e}),React.createElement("div",{className:`BirdSearchResultsDisplay ${f?"active":"inactive"}
-                                                         ${a.backend.hasEditRights?"edit-rights":"no-edit-rights"}`.trim()},f?f.element:React.createElement(React.Fragment,null)))}BirdSearch.defaultProps={maxNumResultElements:1},BirdSearch.validate_props=function(a){return panic_if_not_type("object",a,a.backend),void panic_if_not_type("function",a.callbackAddObservation)},BirdSearch.test=()=>{let a={remove:()=>{}};try{a=document.createElement("div"),document.body.appendChild(a);const b={known_birds:()=>[Bird({species:"Alli",family:"",order:""}),Bird({species:"Naakka",family:"",order:""})],observations:()=>[Observation({bird:Bird({species:"Naakka",family:"",order:""}),date:new Date(1e3)})]};ReactTestUtils.act(()=>{const c=React.createElement(BirdSearch,{backend:b,callbackAddObservation:()=>{},callbackRemoveObservation:()=>{},callbackChangeObservationDate:()=>{}});ReactDOM.unmountComponentAtNode(a),ReactDOM.render(c,a)});const c=a.querySelector(".BirdSearch"),d=a.querySelector(".BirdSearchBar"),e=a.querySelector(".BirdSearchResultsDisplay"),f=d.querySelector("input");throw_if_not_true([()=>null!==c,()=>null!==d,()=>null!==e,()=>null!==f]),ReactTestUtils.Simulate.focus(f),f.value="alli",ReactTestUtils.Simulate.change(f),throw_if_not_true([()=>1===e.childNodes.length,()=>"BirdSearchResult not-previously-observed"===e.childNodes[0].getAttribute("class")]),f.value="naakka",ReactTestUtils.Simulate.change(f),throw_if_not_true([()=>1===e.childNodes.length,()=>"BirdSearchResult"===e.childNodes[0].getAttribute("class")]),f.value="naakka",ReactTestUtils.Simulate.change(f),throw_if_not_true([()=>1===e.childNodes.length]),f.value="",ReactTestUtils.Simulate.change(f),throw_if_not_true([()=>0===e.childNodes.length])}catch(a){if("assertion failure"===a)return!1;throw a}finally{a.remove()}return!0};
+"use strict";
+
+import { panic_if_not_type, throw_if_not_true } from "../../assert.js";
+import { open_modal_dialog } from "../../open-modal-dialog.js";
+import { QueryObservationDate } from "../dialogs/QueryObservationDate.js";
+import { BirdSearchResult } from "./BirdSearchResult.js";
+import { BirdSearchBar } from "./BirdSearchBar.js";
+import { Observation } from "../../observation.js";
+import { Bird } from "../../bird.js";
+export function BirdSearch(props = {}) {
+  BirdSearch.validate_props(props);
+  const knownBirds = ReactRedux.useSelector(state => state.knownBirds);
+  const isLoggedIn = ReactRedux.useSelector(state => state.isLoggedIn);
+  const observations = ReactRedux.useSelector(state => state.observations);
+  const [currentSearchResult, setCurrentSearchResult] = React.useState(false);
+  return React.createElement("div", {
+    className: "BirdSearch"
+  }, React.createElement(BirdSearchBar, {
+    initialState: "inactive",
+    callbackOnChange: refresh_search_results,
+    callbackOnInactivate: reset_search_results
+  }), React.createElement("div", {
+    className: `BirdSearchResultsDisplay ${currentSearchResult ? "active" : "inactive"}
+                                                         ${isLoggedIn ? "logged-in" : "not-logged-in"}`.trim()
+  }, currentSearchResult ? currentSearchResult.element : React.createElement(React.Fragment, null)));
+
+  function refresh_search_results(searchString) {
+    searchString = searchString.trim();
+
+    if (!searchString.length) {
+      reset_search_results();
+      return;
+    }
+
+    (exactMatch => {
+      if (exactMatch) {
+        update_match(exactMatch);
+        return;
+      }
+
+      (partialMatch => {
+        if (partialMatch) {
+          update_match(partialMatch);
+          return;
+        }
+      })(knownBirds.find(bird => bird.species.toLowerCase().includes(searchString.toLowerCase())));
+    })(knownBirds.find(bird => bird.species.toLowerCase() === searchString.toLowerCase()));
+
+    function update_match(bird) {
+      if (!currentSearchResult || bird.species !== currentSearchResult.bird.species) {
+        setCurrentSearchResult({
+          bird,
+          element: make_result_element(bird)
+        });
+      }
+    }
+
+    function make_result_element(bird) {
+      const observation = observations.find(obs => obs.bird.species === bird.species);
+      return React.createElement(BirdSearchResult, {
+        key: bird.species,
+        bird: bird,
+        observation: observation ? observation : null,
+        userHasEditRights: isLoggedIn,
+        callbackAddObservation: add_bird_to_list,
+        callbackRemoveObservation: remove_bird_from_list,
+        callbackChangeObservationDate: change_observation_date
+      });
+    }
+  }
+
+  async function add_bird_to_list(bird = Bird) {
+    panic_if_not_type("object", bird);
+    const observation = Observation({
+      bird,
+      date: new Date()
+    });
+    await props.backend.add_observation(observation);
+    reset_search_results();
+  }
+
+  async function remove_bird_from_list(bird = Bird) {
+    panic_if_not_type("object", bird);
+    const observation = Observation({
+      bird,
+      date: new Date()
+    });
+    await props.backend.delete_observation(observation);
+    reset_search_results();
+  }
+
+  async function change_observation_date(bird = Bird) {
+    panic_if_not_type("object", bird);
+    const observation = observations.find(obs => obs.bird.species === bird.species);
+
+    if (observation === undefined) {
+      panic("Was asked to delete an observation of a species of which no observation exists.");
+      return;
+    }
+
+    await open_modal_dialog(QueryObservationDate, {
+      observation,
+      onAccept: async ({
+        year,
+        month,
+        day
+      }) => {
+        const newDate = new Date();
+        newDate.setFullYear(year);
+        newDate.setMonth(month - 1);
+        newDate.setDate(day);
+        const modifiedObservation = Observation({
+          bird,
+          date: newDate
+        });
+
+        if (!(await props.backend.add_observation(modifiedObservation))) {
+          panic("Failed to update the observation.");
+          return;
+        }
+      }
+    });
+    reset_search_results();
+  }
+
+  function reset_search_results() {
+    setCurrentSearchResult(false);
+  }
+}
+BirdSearch.defaultProps = {
+  maxNumResultElements: 1
+};
+
+BirdSearch.validate_props = function (props) {
+  panic_if_not_type("object", props, props.backend);
+  return;
+};
+
+BirdSearch.test = () => {
+  let container = {
+    remove: () => {}
+  };
+
+  try {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    const backend = {
+      known_birds: () => [Bird({
+        species: "Alli",
+        family: "",
+        order: ""
+      }), Bird({
+        species: "Naakka",
+        family: "",
+        order: ""
+      })],
+      observations: () => [Observation({
+        bird: Bird({
+          species: "Naakka",
+          family: "",
+          order: ""
+        }),
+        date: new Date(1000)
+      })]
+    };
+    ReactTestUtils.act(() => {
+      const unitElement = React.createElement(BirdSearch, {
+        backend,
+        callbackAddObservation: () => {},
+        callbackRemoveObservation: () => {},
+        callbackChangeObservationDate: () => {}
+      });
+      ReactDOM.unmountComponentAtNode(container);
+      ReactDOM.render(unitElement, container);
+    });
+    const searchElement = container.querySelector(".BirdSearch");
+    const searchBar = container.querySelector(".BirdSearchBar");
+    const searchResultsDisplay = container.querySelector(".BirdSearchResultsDisplay");
+    const searchBarInput = searchBar.querySelector("input");
+    throw_if_not_true([() => searchElement !== null, () => searchBar !== null, () => searchResultsDisplay !== null, () => searchBarInput !== null]);
+    ReactTestUtils.Simulate.focus(searchBarInput);
+    {
+      searchBarInput.value = "alli";
+      ReactTestUtils.Simulate.change(searchBarInput);
+      throw_if_not_true([() => searchResultsDisplay.childNodes.length === 1, () => searchResultsDisplay.childNodes[0].getAttribute("class") === "BirdSearchResult not-previously-observed"]);
+    }
+    {
+      searchBarInput.value = "naakka";
+      ReactTestUtils.Simulate.change(searchBarInput);
+      throw_if_not_true([() => searchResultsDisplay.childNodes.length === 1, () => searchResultsDisplay.childNodes[0].getAttribute("class") === "BirdSearchResult"]);
+    }
+    {
+      searchBarInput.value = "naakka";
+      ReactTestUtils.Simulate.change(searchBarInput);
+      throw_if_not_true([() => searchResultsDisplay.childNodes.length === 1]);
+      searchBarInput.value = "";
+      ReactTestUtils.Simulate.change(searchBarInput);
+      throw_if_not_true([() => searchResultsDisplay.childNodes.length === 0]);
+    }
+  } catch (error) {
+    if (error === "assertion failure") return false;
+    throw error;
+  } finally {
+    container.remove();
+  }
+
+  return true;
+};

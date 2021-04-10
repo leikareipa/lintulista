@@ -152,29 +152,44 @@ export function Dialog(props = {})
 
     const dialogRef = React.useRef();
 
-    return <div className={`Dialog ${props.component}`} ref={dialogRef}>
-                <div className="title">
-                    <i className="title-icon fas fa-feather-alt"/> {props.title}
-                </div>
-                <div className="form">
-                    {props.children}
-                </div>
-                <div className="button-bar">
-                    <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`.trim()}>
-                        <AsyncIconButton task={accept}
-                                         icon={`${props.acceptButtonIcon} fa-2x`}
-                                         titleIsAlwaysVisible={true}
-                                         title={props.acceptButtonText}
-                                         titleWhenClicked="Tallennetaan..."
-                                         giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}/>
-                    </div>
-                    <div className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
-                         onClick={reject}>
-                             <i className={`${props.rejectButtonIcon} fa-2x`}/>
-                             <br/>{props.rejectButtonText}
-                    </div>
-                </div>
-           </div>
+    return <div className={`Dialog ${props.component}`}
+                ref={dialogRef}>
+
+        <div className="title">
+            <i className="title-icon fas fa-feather-alt"/> {props.title}
+        </div>
+
+        <div className="form">
+            {props.children}
+        </div>
+
+        <div className="button-bar">
+
+            <div
+                className={`reject ${!rejectButtonEnabled? "disabled" : ""}`.trim()}
+                onClick={reject}>
+
+                    <i className={`${props.rejectButtonIcon} fa-2x`}/>
+                    <br/>{props.rejectButtonText}
+
+            </div>
+
+            <div className={`accept ${!acceptButtonEnabled? "disabled" : ""}`}>
+
+                <AsyncIconButton
+                    task={accept}
+                    icon={`${props.acceptButtonIcon} fa-2x`}
+                    titleIsAlwaysVisible={true}
+                    title={props.acceptButtonText}
+                    titleWhenClicked={props.acceptButtonWaitingText}
+                    giveCallbackTriggerPress={(callback)=>{triggerAcceptButtonPress = callback}}
+                />
+
+            </div>
+
+        </div>
+
+    </div>
 
     function accept()
     {
@@ -211,6 +226,7 @@ Dialog.defaultProps =
     rejectButtonEnabled: true,
     acceptButtonIcon: "fas fa-check",
     acceptButtonText: "Tallenna",
+    acceptButtonWaitingText: "Tallennetaan...",
     rejectButtonIcon: "fas fa-times",
     rejectButtonText: "Peruuta",
     disableTabKey: true,

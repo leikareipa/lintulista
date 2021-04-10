@@ -1,1 +1,85 @@
-"use strict";import{error,panic_if_undefined,warn,panic_if_not_type,panic}from"./assert.js";import{Observation}from"./observation.js";import{Bird}from"./bird.js";const httpRequests=Object.freeze({backendURLs:Object.freeze({observations:"./server/api/observations.php",metadata:"./server/api/metadata.php",lists:"./server/api/lists.php"}),send_request:function(a,b={}){return panic_if_not_type("string",a),panic_if_not_type("object",b),fetch(a,b).then(a=>{if(!a.ok)throw a.statusText;return a.json()}).then(a=>{if(!a)return[!1,null];if(!a.valid)throw a.message?a.message:"unknown";return[!0,a.data]}).catch(b=>(error(`Client-to-server query for "${a}" failed. Cause: ${b}`),[!1,null]))},delete_observation:async function(a,b){panic_if_undefined(b,b.unixTimestamp,b.bird);const[c]=await this.send_request(`${this.backendURLs.observations}?list=${a}`,{method:"DELETE",body:JSON.stringify({species:b.bird.species})});return c},get_view_key:async function(a){panic_if_not_type("string",a);const[b,c]=await this.send_request(`${this.backendURLs.lists}?list=${a}`,{method:"GET"});if(b){const a=(()=>{try{return JSON.parse(c)}catch(a){return panic(`Failed to parse a server response. Error: ${a}`),!1}})();return panic_if_not_type("string",a.viewKey),a.viewKey}panic("Failed to fetch the view key from the server.")},get_known_birds_list:async function(){const[a,b]=await this.send_request(`${this.backendURLs.metadata}?type=knownBirds`,{method:"GET"});if(a){const a=(()=>{try{return JSON.parse(b)}catch(a){return panic(`Failed to parse a server response. Error: ${a}`),!1}})();return panic_if_not_type("array",a),a.map(a=>Bird({order:a.order,family:a.family,species:a.species,thumbnailUrl:(()=>Bird.thumbnailFilename[a.species]?"./img/bird-thumbnails/"+Bird.thumbnailFilename[a.species]:null)()}))}return[]},get_backend_limits:async function(){const[a,b]=await this.send_request(`${this.backendURLs.metadata}?type=backendLimits`,{method:"GET"});if(a)try{return JSON.parse(b)}catch(a){return panic(`Failed to parse a server response. Error: ${a}`),!1}else return{}},get_observations:async function(a,b=[]){function c(a){return!!b.map(a=>a.species.toLowerCase()).includes(a.toLowerCase())}panic_if_not_type("string",a),panic_if_not_type("object",b);const[d,e]=await this.send_request(`${this.backendURLs.observations}?list=${a}`,{method:"GET"});if(d){const a=(()=>{try{return JSON.parse(e)}catch(a){return panic(`Failed to parse a server response. Error: ${a}`),!1}})();return panic_if_not_type("array",a),a.filter(a=>!c(a.species)).forEach(a=>{warn(`Unknown bird in the observation list: ${a.species}. Skipping it.`)}),a.filter(a=>c(a.species)).map(a=>Observation({bird:b.find(c=>c.species===a.species),date:new Date(1e3*a.timestamp)}))}return[]},put_observation:async function(a,b){panic_if_not_type("string",a),panic_if_not_type("object",b,b.bird),panic_if_undefined(b.unixTimestamp);const[c]=await this.send_request(`${this.backendURLs.observations}?list=${a}`,{method:"PUT",body:JSON.stringify({species:b.bird.species,timestamp:b.unixTimestamp})});return c},create_new_list:async function(){const[a,b]=await this.send_request(this.backendURLs.lists,{method:"POST"});if(a)try{const a=JSON.parse(b);return"object"==typeof a.keys&&"string"==typeof a.keys.viewKey&&"string"==typeof a.keys.editKey&&a.keys}catch(a){return panic(`Failed to parse a server response. Error: ${a}`),!1}else return!1}});export async function BackendAccess(a){const b=Object.freeze((await httpRequests.get_backend_limits())),c=(()=>!!(15<a.length))(),d=await(async()=>c?httpRequests.get_view_key(a):a)(),e={knownBirds:Object.freeze([]),observations:Object.freeze([]),refresh:async function(){await this.refresh_known_birds(),await this.refresh_observations()},refresh_known_birds:async function(){this.knownBirds=await httpRequests.get_known_birds_list()},refresh_observations:async function(){this.observations=await httpRequests.get_observations(a,this.knownBirds)}};await e.refresh();return{hasEditRights:c,viewKey:d,known_birds:()=>e.knownBirds,observations:()=>e.observations,backend_limits:()=>b,refresh_observation_cache:async()=>{await e.refresh_observations()},delete_observation:async b=>{panic_if_not_type("string",a),panic_if_not_type("object",b);const c=e.observations.findIndex(a=>a.bird.species===b.bird.species);if(-1===c)return error("Can't delete an unknown observation."),!1;const d=await httpRequests.delete_observation(a,b);return d?(e.observations.splice(c,1),!0):(error("Failed to delete an observation."),!1)},put_observation:async b=>{panic_if_undefined(b,b.bird,b.unixTimestamp);const c=e.observations.findIndex(a=>a.bird.species===b.bird.species),d=await httpRequests.put_observation(a,b);return d?(e.observations.splice(c,-1!==c,b),!0):(error("Failed to POST an observation."),!1)}}}BackendAccess.create_new_list=()=>httpRequests.create_new_list(),BackendAccess.get_known_birds_list=()=>httpRequests.get_known_birds_list();
+"use strict";
+
+import { tr } from "./translator.js";
+import { public_assert, error, panic_if_undefined, panic_if_not_type } from "./assert.js";
+import { Observation } from "./observation.js";
+import { BackendRequest } from "./backend-request.js";
+import { Bird } from "./bird.js";
+export async function BackendAccess(listKey, reduxStore) {
+  const knownBirds = Object.freeze((await BackendRequest.get_known_birds_list()));
+  const observations = (await BackendRequest.get_observations(listKey)).map(obs => Observation({
+    bird: knownBirds.find(b => b.species === obs.species),
+    date: new Date()
+  }));
+  reduxStore.dispatch({
+    type: "set-observations",
+    observations: observations.reduce((list, obs) => {
+      list.push(Observation.clone(obs));
+      return list;
+    }, [])
+  });
+  reduxStore.dispatch({
+    type: "set-known-birds",
+    knownBirds: knownBirds.reduce((list, bird) => {
+      list.push(Bird.clone(bird));
+      return list;
+    }, [])
+  });
+  let loginToken = null;
+  let loginValidUntil = undefined;
+  const publicInterface = {
+    login: async function (username, password) {
+      const loginDetails = await BackendRequest.login(listKey, username, password);
+      public_assert(loginDetails, tr("Login failed"));
+      public_assert(typeof loginDetails.token === "string" && typeof loginDetails.until === "number", tr("Invalid server response"));
+      loginToken = loginDetails.token;
+      loginValidUntil = loginDetails.until;
+      reduxStore.dispatch({
+        type: "set-logged-in",
+        isLoggedIn: true
+      });
+      return;
+    },
+    logout: async function () {
+      public_assert(loginToken !== null, tr("Not logged in."));
+      public_assert((await BackendRequest.logout(listKey, loginToken)), tr("Logout failed"));
+      loginToken = null;
+      loginValidUntil = undefined;
+      reduxStore.dispatch({
+        type: "set-logged-in",
+        isLoggedIn: false
+      });
+      return;
+    },
+    delete_observation: async function (observation = Observation) {
+      panic_if_not_type("string", listKey);
+      panic_if_not_type("object", observation);
+      const obsIdx = observations.findIndex(obs => obs.bird.species === observation.bird.species);
+      public_assert(obsIdx >= 0, tr("Unrecognized observation data"));
+      const wasSuccess = await BackendRequest.delete_observation(observation, listKey, loginToken);
+      public_assert(wasSuccess, tr("Failed to remove the observation"));
+      reduxStore.dispatch({
+        type: "delete-observation",
+        observation: observation
+      });
+      observations.splice(obsIdx, 1);
+      return;
+    },
+    add_observation: async function (observation = Observation) {
+      panic_if_not_type("object", observation, observation.bird);
+      const obsIdx = observations.findIndex(obs => obs.bird.species === observation.bird.species);
+      const isExistingObservation = obsIdx >= 0;
+      const wasSuccess = await BackendRequest.put_observation(observation, listKey, loginToken);
+      public_assert(wasSuccess, tr(isExistingObservation ? "Failed to update the observation" : "Failed to add the observation"));
+      reduxStore.dispatch({
+        type: "add-observation",
+        observation
+      });
+      observations.splice(obsIdx, obsIdx !== -1, observation);
+      return;
+    }
+  };
+  return publicInterface;
+}
+BackendAccess.create_new_list = BackendRequest.create_new_list;
+BackendAccess.get_known_birds_list = BackendRequest.get_known_birds_list;

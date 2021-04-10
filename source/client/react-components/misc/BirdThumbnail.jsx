@@ -76,7 +76,7 @@ export function BirdThumbnail(props = {})
         {
             mark_thumbnail_observed();
         }
-    }, [thumbnailSrc]);
+    });
 
     React.useEffect(()=>
     {
@@ -108,6 +108,7 @@ export function BirdThumbnail(props = {})
 
     return <img className="BirdThumbnail"
                 referrerPolicy="no-referrer"
+                draggable={false}
                 src={thumbnailSrc}
                 ref={thumbnailRef}/>
 

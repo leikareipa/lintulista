@@ -1,1 +1,139 @@
-var _global="object"==typeof window&&window.window===window?window:"object"==typeof self&&self.self===self?self:"object"==typeof global&&global.global===global?global:this;function bom(a,b){var c=String.fromCharCode;return"undefined"==typeof b?b={autoBom:!1}:"object"!=typeof b&&(console.warn("Deprecated: Expected third argument to be a object"),b={autoBom:!b}),b.autoBom&&/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a.type)?new Blob([c(65279),a],{type:a.type}):a}function download(a,b,c){var d=new XMLHttpRequest;d.open("GET",a),d.responseType="blob",d.onload=function(){saveAs(d.response,b,c)},d.onerror=function(){console.error("could not download file")},d.send()}function corsEnabled(a){var b=new XMLHttpRequest;b.open("HEAD",a,!1);try{b.send()}catch(a){}return 200<=b.status&&299>=b.status}function click(a){try{a.dispatchEvent(new MouseEvent("click"))}catch(c){var b=document.createEvent("MouseEvents");b.initMouseEvent("click",!0,!0,window,0,0,0,80,20,!1,!1,!1,!1,0,null),a.dispatchEvent(b)}}var saveAs=_global.saveAs||("object"!=typeof window||window!==_global?function(){}:"download"in HTMLAnchorElement.prototype?function(b,c,d){var e=_global.URL||_global.webkitURL,f=document.createElement("a");c=c||b.name||"download",f.download=c,f.rel="noopener","string"==typeof b?(f.href=b,f.origin===location.origin?click(f):corsEnabled(f.href)?download(b,c,d):click(f,f.target="_blank")):(f.href=e.createObjectURL(b),setTimeout(function(){e.revokeObjectURL(f.href)},4E4),setTimeout(function(){click(f)},0))}:"msSaveOrOpenBlob"in navigator?function(b,c,d){if(c=c||b.name||"download","string"!=typeof b)navigator.msSaveOrOpenBlob(bom(b,d),c);else if(corsEnabled(b))download(b,c,d);else{var e=document.createElement("a");e.href=b,e.target="_blank",setTimeout(function(){click(e)})}}:function(a,b,c,d){if(d=d||open("","_blank"),d&&(d.document.title=d.document.body.innerText="downloading..."),"string"==typeof a)return download(a,b,c);var e="application/octet-stream"===a.type,f=/constructor/i.test(_global.HTMLElement)||_global.safari,g=/CriOS\/[\d]+/.test(navigator.userAgent);if((g||e&&f)&&"undefined"!=typeof FileReader){var h=new FileReader;h.onloadend=function(){var a=h.result;a=g?a:a.replace(/^data:[^;]*;/,"data:attachment/file;"),d?d.location.href=a:location=a,d=null},h.readAsDataURL(a)}else{var i=_global.URL||_global.webkitURL,j=i.createObjectURL(a);d?d.location=j:location.href=j,d=null,setTimeout(function(){i.revokeObjectURL(j)},4E4)}});_global.saveAs=saveAs.saveAs=saveAs,"undefined"!=typeof module&&(module.exports=saveAs);
+var _global = typeof window === 'object' && window.window === window ? window : typeof self === 'object' && self.self === self ? self : typeof global === 'object' && global.global === global ? global : this;
+
+function bom(blob, opts) {
+  if (typeof opts === 'undefined') opts = {
+    autoBom: false
+  };else if (typeof opts !== 'object') {
+    console.warn('Deprecated: Expected third argument to be a object');
+    opts = {
+      autoBom: !opts
+    };
+  }
+
+  if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+    return new Blob([String.fromCharCode(0xFEFF), blob], {
+      type: blob.type
+    });
+  }
+
+  return blob;
+}
+
+function download(url, name, opts) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+
+  xhr.onload = function () {
+    saveAs(xhr.response, name, opts);
+  };
+
+  xhr.onerror = function () {
+    console.error('could not download file');
+  };
+
+  xhr.send();
+}
+
+function corsEnabled(url) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('HEAD', url, false);
+
+  try {
+    xhr.send();
+  } catch (e) {}
+
+  return xhr.status >= 200 && xhr.status <= 299;
+}
+
+function click(node) {
+  try {
+    node.dispatchEvent(new MouseEvent('click'));
+  } catch (e) {
+    var evt = document.createEvent('MouseEvents');
+    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
+    node.dispatchEvent(evt);
+  }
+}
+
+var saveAs = _global.saveAs || (typeof window !== 'object' || window !== _global ? function saveAs() {} : 'download' in HTMLAnchorElement.prototype ? function saveAs(blob, name, opts) {
+  var URL = _global.URL || _global.webkitURL;
+  var a = document.createElement('a');
+  name = name || blob.name || 'download';
+  a.download = name;
+  a.rel = 'noopener';
+
+  if (typeof blob === 'string') {
+    a.href = blob;
+
+    if (a.origin !== location.origin) {
+      corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
+    } else {
+      click(a);
+    }
+  } else {
+    a.href = URL.createObjectURL(blob);
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+    }, 4E4);
+    setTimeout(function () {
+      click(a);
+    }, 0);
+  }
+} : 'msSaveOrOpenBlob' in navigator ? function saveAs(blob, name, opts) {
+  name = name || blob.name || 'download';
+
+  if (typeof blob === 'string') {
+    if (corsEnabled(blob)) {
+      download(blob, name, opts);
+    } else {
+      var a = document.createElement('a');
+      a.href = blob;
+      a.target = '_blank';
+      setTimeout(function () {
+        click(a);
+      });
+    }
+  } else {
+    navigator.msSaveOrOpenBlob(bom(blob, opts), name);
+  }
+} : function saveAs(blob, name, opts, popup) {
+  popup = popup || open('', '_blank');
+
+  if (popup) {
+    popup.document.title = popup.document.body.innerText = 'downloading...';
+  }
+
+  if (typeof blob === 'string') return download(blob, name, opts);
+  var force = blob.type === 'application/octet-stream';
+
+  var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari;
+
+  var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+
+  if ((isChromeIOS || force && isSafari) && typeof FileReader !== 'undefined') {
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      var url = reader.result;
+      url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;');
+      if (popup) popup.location.href = url;else location = url;
+      popup = null;
+    };
+
+    reader.readAsDataURL(blob);
+  } else {
+    var URL = _global.URL || _global.webkitURL;
+    var url = URL.createObjectURL(blob);
+    if (popup) popup.location = url;else location.href = url;
+    popup = null;
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 4E4);
+  }
+});
+_global.saveAs = saveAs.saveAs = saveAs;
+
+if (typeof module !== 'undefined') {
+  module.exports = saveAs;
+}

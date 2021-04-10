@@ -63,7 +63,7 @@ export function ObservationList(props = {})
     // Note that if you change the initial value, you should change the initial value of
     // the sorting menu index in the ObservationListMenuBar element of this component also.
     //
-    const [sortListBy, setSortListBy] = React.useState(props.backend.observations().length? "date" : "sata-lajia");
+    const [sortListBy, setSortListBy] = React.useState(props.backend.observations.length? "date" : "sata-lajia");
 
     const [renderCount,] = React.useState(()=>({total:0, elements:0, isInitialRender:true}));
     renderCount.total++;
@@ -103,7 +103,7 @@ export function ObservationList(props = {})
         {
             const obs = Observation({bird, date:new Date()});
 
-            if (await props.backend.put_observation(obs))
+            if (await props.backend.add_observation(obs))
             {
                 const elementIdx = observationCards.map(c=>c.observation.bird.species).findIndex(species=>(species === obs.bird.species));
 
@@ -209,7 +209,7 @@ export function ObservationList(props = {})
                         date: newDate,
                     });
 
-                    if (!(await props.backend.put_observation(modifiedObservation)))
+                    if (!(await props.backend.add_observation(modifiedObservation)))
                     {
                         return null;
                     }
@@ -252,7 +252,7 @@ export function ObservationList(props = {})
                </div>
 
                {/* Displays general information about the list's state - like the number of observations.*/}
-               <ObservationListFootnotes numObservationsInList={props.backend.observations().length}
+               <ObservationListFootnotes numObservationsInList={props.backend.observations.length}
                                          callbackDownloadList={save_observations_to_csv_file}/>
                                       
            </div>
@@ -277,7 +277,7 @@ export function ObservationList(props = {})
             // Add elements for species included in the challenge.
             const sata = sataLajia.reduce((array, species)=>
             {
-                const existingObservation = props.backend.observations().find(obs=>(obs.bird.species === species));
+                const existingObservation = props.backend.observations.find(obs=>(obs.bird.species === species));
 
                 array.push(existingObservation? observation_card(existingObservation)
                                               : ghost_observation_card(species));
@@ -286,7 +286,7 @@ export function ObservationList(props = {})
             }, []);
 
             // Add elements for observations of species not included in the challenge.
-            const normal = props.backend.observations().filter(obs=>!sataLajia.includes(obs.bird.species))
+            const normal = props.backend.observations.filter(obs=>!sataLajia.includes(obs.bird.species))
                                                        .map(obs=>observation_card(obs));
 
             return [...sata, ...normal];
@@ -294,7 +294,7 @@ export function ObservationList(props = {})
         // Otherwise, we just return elements for the observations the user has made.
         else
         {
-            return props.backend.observations().map(obs=>observation_card(obs));
+            return props.backend.observations.map(obs=>observation_card(obs));
         }
     }
 
@@ -302,7 +302,7 @@ export function ObservationList(props = {})
     {
         panic_if_not_type("string", speciesName);
 
-        const bird = props.backend.known_birds().find(bird=>(bird.species === speciesName));
+        const bird = props.backend.knownBirdSpecies.find(bird=>(bird.species === speciesName));
 
         if (!bird)
         {
@@ -351,9 +351,9 @@ export function ObservationList(props = {})
 
     function save_observations_to_csv_file()
     {
-        let csvString = "Ensihavainto, Laji, Heimo, Lahko\n";
+        let csvString = "Päivämäärä, Laji, Heimo, Lahko\n";
 
-        props.backend.observations().forEach(obs=>
+        props.backend.observations.forEach(obs=>
         {
             const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
 

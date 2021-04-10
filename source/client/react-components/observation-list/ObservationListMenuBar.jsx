@@ -6,10 +6,15 @@
 
 "use strict";
 
+import {is_public_ll_error} from "../../throwable.js";
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {open_modal_dialog} from "../../open-modal-dialog.js";
+import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
 import {Observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
+import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
+import {Button} from "../buttons/Button.js";
 import {Bird} from "../../bird.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can
@@ -38,6 +43,11 @@ import {Bird} from "../../bird.js";
 export function ObservationListMenuBar(props = {})
 {
     ObservationListMenuBar.validate_props(props);
+
+    const knownBirds = ReactRedux.useSelector(state=>state.knownBirds);
+    const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
+    const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
+    const setIs100LajiaMode = ReactRedux.useDispatch();
 
     // Various media queries for in-code handling of responsive styling.
     const responsive =
@@ -79,67 +89,82 @@ export function ObservationListMenuBar(props = {})
 
     return <div className={`ObservationListMenuBar ${props.enabled? "enabled" : "disabled"}
                                                    ${isBarSticky? "sticky" : ""}
-                                                   ${props.backend.hasEditRights? "edit-rights" : "no-edit-rights"}`.trim()}>
+                                                   ${isLoggedIn? "logged-in" : "not-logged-in"}`}>
 
-               {/* A search field that allows the user to search for specific bird species to be added or
-                 * removed as observations.*/}
-               <BirdSearch backend={props.backend}
-                           callbackAddObservation={props.callbackAddObservation}
-                           callbackRemoveObservation={props.callbackRemoveObservation}
-                           callbackChangeObservationDate={props.callbackChangeObservationDate}/>
+        {/* A search field that allows the user to search for specific bird species to be added or
+        * removed as observations.*/}
+        <BirdSearch
+            backend={props.backend}
+        />
+
+        <div className="buttons">
+
+            <CheckBoxButton
+                iconChecked="fas fa-check-square fa-fw fa-lg"
+                iconUnchecked="fas fa-square fa-fw fa-lg"
+                tooltip="100 Lajia -haaste"
+                showTooltip={!isBarSticky}
+                title="Katso tilanteesi 100 Lajia -haasteessa"
+                isChecked={is100LajiaMode}
+                callbackOnButtonClick={(isChecked)=>setIs100LajiaMode({type: "set-100-lajia-mode", isEnabled: isChecked})}
+            />
+
+            <MenuButton
+                icon="fas fa-question fa-fw fa-lg"
+                title="Tietoja"
+                id="list-info"
+                showTooltip={false}
+                customMenu={
+                    <div>
+
+                        <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
+
+                        <a href="./guide/" target="_blank" rel="noopener noreferrer">
+                            Käyttöohje
+                        </a><br/>
+
+                        <a href="mailto:sw@tarpeeksihyvaesoft.com">
+                            Yhteydenotto
+                        </a><br/>
+
+                        <a href="./guide/images.html" target="_blank" rel="noopener noreferrer">
+                            Kuvien tiedot
+                        </a><br/>
+
+                    </div>
+                }
+            />
+            
+            {/* A button that allows the user to log in/out.*/}
+            <Button
+                className={`lock ${isLoggedIn? "unlocked" : "locked"}`}
+                title={isLoggedIn
+                       ? "Kirjaudu ulos"
+                       : "Kirjaudu sisään muokataksesi listaa"}
+                icon={isLoggedIn
+                      ? "fas fa-user-shield fa-fw fa-lg"
+                      : "fas fa-lock fa-fw fa-lg"}
+                callbackOnButtonClick={handle_login_button_click}
+            />
+
+        </div>
                            
-               <div className="buttons">
-                   {/* A button with which the user can change the sorting order of the observation list.*/}
-                   <MenuButton icon="fas fa-list-ul fa-fw"
-                               title="Listan järjestys"
-                               id="list-sorting"
-                               items={
-                               [
-                                   {text:"Laji", callbackOnSelect:()=>props.callbackSetListSorting("species")},
-                                   {text:"Päivä", callbackOnSelect:()=>props.callbackSetListSorting("date")},
-                                   {text:"100 Lajia", callbackOnSelect:()=>props.callbackSetListSorting("sata-lajia")},
-                               ]}
-                               initialItemIdx={props.backend.observations().length? 1/*Päivä*/ : 2/*100 Lajia*/}
-                               showTooltip={!isBarSticky && allowMenuButtonTooltips}/>
+    </div>
 
-                   <MenuButton icon="fas fa-question fa-fw"
-                               title="Tietoja"
-                               id="list-info"
-                               showTooltip={false}
-                               customMenu={
-                                   <div>
-                                       <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
+    async function handle_login_button_click()
+    {
+        // Ask the user to confirm the deletion of the observation; and if they do so,
+        // remove it.
+        await open_modal_dialog(QueryLoginCredentials, {
+            randomBird: knownBirds[Math.floor(Math.random() * knownBirds.length)],
+            onAccept: async function({username, password})
+            {
+                await props.backend.login(username, password);
+            },
+        });
 
-                                       <a href="./guide/" target="_blank" rel="noopener noreferrer">
-                                           Käyttöohje
-                                       </a><br/>
-
-                                       <a href="mailto:sw@tarpeeksihyvaesoft.com">
-                                           Yhteydenotto
-                                       </a><br/>
-
-                                       <a href="./guide/images.html" target="_blank" rel="noopener noreferrer">
-                                           Kuvien tiedot
-                                       </a><br/>
-                                   </div>
-                               }/>
-
-                   {/* A link that displays either a locked or unlocked lock icon, depending on whether the user
-                     * is accessing the list with a view key or an edit key. Clicking the unlocked icon (shown when
-                     * accessing with an edit key) will direct the browser to a version of the list using the view
-                     * key (with which modifications to the list are not possible; i.e. the list is locked).*/}
-                   <a className={`lock ${props.backend.hasEditRights? "unlocked" : "locked"}`.trim()}
-                      title={props.backend.hasEditRights? "Avaa listan julkinen versio" : "Julkista listaa ei voi muokata"}
-                      href={props.backend.hasEditRights? `./${props.backend.viewKey}` : null}
-                      rel="noopener noreferrer"
-                      target="_blank">
-                           {props.backend.hasEditRights
-                            ? <i className="fas fa-unlock fa-fw"/>
-                            : <i className="fas fa-lock fa-fw"/>}
-                   </a>
-               </div>
-
-           </div>
+        return;
+    }
 }
 
 ObservationListMenuBar.defaultProps =
@@ -150,7 +175,6 @@ ObservationListMenuBar.defaultProps =
 ObservationListMenuBar.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.backend);
-    panic_if_not_type("function", props.callbackAddObservation, props.callbackSetListSorting);
 
     return;
 }
@@ -199,7 +223,7 @@ ObservationListMenuBar.test = ()=>
                            ()=>(container.querySelector(".lock") !== null),
                            ()=>(container.querySelector(".lock").tagName.toLowerCase() === "a"),
                            ()=>(container.querySelector(".lock").classList.contains("unlocked")),
-                           ()=>(container.querySelector(".lock").getAttribute("href") === `./katsele/${backend.viewKey}`)]);
+                           ()=>(container.querySelector(".lock").getAttribute("href") === `./katsele/${backend.listKey}`)]);
     }
     catch (error)
     {
@@ -221,7 +245,7 @@ ObservationListMenuBar.test = ()=>
         // A mock of BackendAccess().
         const backend =
         {
-            hasEditRights: false,
+            isLoggedIn: false,
             viewKey: "abcdefg",
             known_birds: ()=>([Bird({species:"Alli", family:"", order:""}), Bird({species:"Naakka", family:"", order:""})]),
             observations: ()=>([Observation({bird:Bird({species:"Naakka", family:"", order:""}), date:new Date(1000)})]),

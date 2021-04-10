@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Lintulista!</title>
-        <base href="/lintulista/">
         <meta name="referrer" content="no-referrer">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -61,20 +60,6 @@
                 }
 
                 const backend = await BackendAccess(listKey);
-
-                // It's possible at present to access lists using a public URL with a
-                // private key; but if the user does so, we want to make it clear that
-                // the key they're using is private rather than public, so that they don't
-                // accidentally share the key along with the public URL. By redirecting
-                // the browser to the corresponding private URL we at least make it
-                // somewhat clear to the user that the key is indeed private.
-                if (backend.hasEditRights &&
-                    !window.location.pathname.startsWith("/lintulista/muokkaa/"))
-                {
-                    window.location.pathname = `/lintulista/muokkaa/${listKey}`;
-
-                    return;
-                }
 
                 render_observation_list(backend);
             })();

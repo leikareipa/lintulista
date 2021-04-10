@@ -31,7 +31,7 @@ export function ObservationListFootnotes(props = {})
     const observationDownloadElement = !props.numObservationsInList? <></>
                                                                    : <span onClick={props.callbackDownloadList}
                                                                            style={{textDecoration:"underline", cursor:"pointer", fontVariant:"normal"}}>
-                                                                         Lataa tiedot CSV:nä
+                                                                         Lataa CSV:nä
                                                                      </span>
 
     return <div className="ObservationListFootnotes">

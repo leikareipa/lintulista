@@ -47,12 +47,12 @@
                     backend = await BackendAccess(keys.editKey);
 
                     // Verify keys.
-                    ((backend.viewKey === keys.viewKey &&
+                    ((backend.listKey === keys.viewKey &&
                       backend.hasEditRights)? success : fail)("Keys are valid.");
 
                     // There should be no observations in a new list.
                     await backend.refresh_observation_cache();
-                    (backend.observations().length? fail : success)("New list is empty.");
+                    (backend.observations.length? fail : success)("New list is empty.");
                 }
 
                 add_header("Observations");
@@ -60,12 +60,12 @@
                     // Post an observation.
                     const bird = Bird({species: "Naakka", family: "", order: ""});
                     const observation = Observation({bird, date:new Date()});
-                    (await backend.put_observation(observation)? success : fail)("Posting an observation client-side.");
+                    (await backend.add_observation(observation)? success : fail)("Posting an observation client-side.");
 
                     // Verify that the observation was added server-side.
                     await backend.refresh_observation_cache();
-                    ((backend.observations().length === 1 &&
-                      backend.observations()[0].bird.species === "Naakka")? success : fail)("Posting an observation server-side.");
+                    ((backend.observations.length === 1 &&
+                      backend.observations[0].bird.species === "Naakka")? success : fail)("Posting an observation server-side.");
 
                     // Change an observation's date.
                     const modifiedObservation = Observation(
@@ -73,16 +73,16 @@
                         ...observation,
                         date: new Date(2000),
                     });
-                    (await backend.put_observation(modifiedObservation)? success : fail)("Changing an observation's date client-side.")
+                    (await backend.add_observation(modifiedObservation)? success : fail)("Changing an observation's date client-side.")
                     await backend.refresh_observation_cache();
-                    (backend.observations()[0].unixTimestamp === 2? success : fail)("Changing an observation's date server-side.");
+                    (backend.observations[0].unixTimestamp === 2? success : fail)("Changing an observation's date server-side.");
 
                     // Delete an observation.
                     (await backend.delete_observation(modifiedObservation)? success : fail)("Deleting an observation client-side.");
                     
                     // Confirm that the observation was deleted server-side.
                     await backend.refresh_observation_cache();
-                    (backend.observations().length? fail : success)("Deleting an observation server-side.");
+                    (backend.observations.length? fail : success)("Deleting an observation server-side.");
                 }
 
                 finish();

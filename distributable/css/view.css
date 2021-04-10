@@ -17,7 +17,6 @@ body
 
     position: relative;
     z-index: 1;
-
     font-family: "Delius", sans-serif;
 }
 
@@ -45,7 +44,6 @@ footer
     background-size: 20px 20px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
                       linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-    border-radius: 0 0 0 100px;
 }
 
 #app-title
@@ -145,12 +143,16 @@ footer
     cursor: auto;
 }
 
-.MenuButton
+.Button,
+.MenuButton,
+.CheckBoxButton
 {
     cursor: pointer;
 }
 
-.MenuButton.disabled
+.Button.disabled,
+.MenuButton.disabled,
+.CheckBoxButton.disabled
 {
     cursor: auto;
 }
@@ -173,7 +175,7 @@ footer
 
     width: 405px;
     position: absolute;
-    top: -105px;
+    top: 60px;
     right: 13%;
     color: rgba(241, 241, 241, 0.45);
     opacity: 1;
@@ -187,13 +189,8 @@ footer
     margin-left: 25px;
     display: flex;
     flex-direction: row;
-    flex-basis: 155px;
+    flex-basis: 152px;
     justify-content: flex-end;
-}
-
-.ObservationList > .ObservationListMenuBar.no-edit-rights > .buttons
-{
-    flex-basis: 105px;
 }
 
 .ObservationList > .ObservationListMenuBar.sticky
@@ -219,39 +216,36 @@ footer
     right: 0;
 }
 
-.ObservationList > .ObservationListMenuBar > .buttons > .lock.locked
-{
-    display: none;
-}
-
-.ObservationList > .ObservationListMenuBar > .buttons > .lock .fas
-{
-    color: #f1f1f1;
-    transform: scale(1.5);
-}
-
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton
+.ObservationList > .ObservationListMenuBar > .buttons > .Button,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton
 {
     position: relative;
 }
 
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .icon,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon
 {
     color: #f1f1f1;
 }
 
 /* Font Awesome icons.*/
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon .fas
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .icon .fas,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon .fas,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon .fas
 {
-    transform: scale(1.5);
+    transform: scale(1.1);
 }
 
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .tooltip,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .tooltip
 {
     white-space: nowrap;
     position: absolute;
-    top: -40px;
-    left: 50%;
+    top: -37px;
+    left: 15px;
     background-color: #e1dfdf;
     color: rgb(51, 51, 51);
     border-radius: 13px 13px 13px 2px;
@@ -390,17 +384,12 @@ footer
 }
 
 .BirdSearchResultsDisplay,
-.BirdSearchResultsDisplay.edit-rights
+.BirdSearchResultsDisplay.logged-in
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
-    right: calc(12% + 131px); /* Level with the search input field.*/
+    right: calc(12% + 128px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
-}
-
-.BirdSearchResultsDisplay.no-edit-rights
-{
-    right: calc(12% + 81px); /* Level with the search input field.*/
 }
 
 .BirdSearchResultsDisplay.active
@@ -433,7 +422,7 @@ footer
 
 .BirdSearchResult > .AsyncIconButton
 {
-    color: #f1f1f1;
+    color: white;
     position: absolute;
     bottom: -25px;
     right: 0px;
@@ -442,7 +431,7 @@ footer
     line-height: 65px;
     background-color: rgb(184, 30, 30);
     border-radius: 50%;
-    border: 4px solid #ffffff;
+    border: 4px solid white;
     font-size: 125%;
 }
 
@@ -497,11 +486,12 @@ footer
     color: rgba(0, 0, 0, 0.9);
     font-weight: bold;
     font-size: 100%;
+    margin-bottom: 5px;
 }
 
 .BirdSearchResult > .card > .date-observed
 {
-    font-size: 100%;
+    font-size: 95%;
     font-weight: normal;
     color: rgba(0, 0, 0, 0.6);
 }
@@ -543,7 +533,7 @@ footer
     color: #e1dfdf;
     font-family: "Delius", sans-serif;
     position: absolute;
-    top: -79px;
+    top: 99px;
     left: 13%;
     text-align: left;
 }
@@ -577,11 +567,6 @@ footer
     flex-direction: column;
 }
 
-.ObservationCardGhost
-{
-    display: none;
-}
-
 .ObservationCard > .BirdThumbnail,
 .ObservationCardGhost > .BirdThumbnail
 {
@@ -600,7 +585,6 @@ footer
     background-color: #dbdbdb;
     border: 1px dashed rgb(143, 143, 143);
     padding: 15px;
-    margin-left: 7px;
     box-shadow: none;
 }
 
@@ -647,11 +631,12 @@ footer
 {
     font-size: 80%;
     color: rgba(0, 0, 0, 0.7);
+    margin-top: 1px;
 }
 
 .Dialog
 {
-    font-family: serif;
+    font-family: sans-serif;
     min-width: 450px;
     padding-top: 0px;
     padding-bottom: 1px;
@@ -661,6 +646,7 @@ footer
     color: black;
     z-index: 200;
     box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
+    border: 6px solid #3591e7;
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -700,15 +686,18 @@ footer
 
 .Dialog > .button-bar
 {
-    width: 200px;
     position: absolute;
-    bottom: -75px;
+    bottom: -78px;
     right: 0;
     display: flex;
+    width: 100%;
+    filter: drop-shadow(0px 0px 14px black);
 }
 
 .Dialog > .button-bar > *
 {
+    font-weight: bold;
+
     user-select: none;
     -moz-user-select: none;
 
@@ -856,18 +845,27 @@ footer
     padding-bottom: 2px;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields
+.Dialog.QueryLoginCredentials > .form > .fields
 {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
+    text-align: left;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields
+.Dialog.QueryLoginCredentials
+{
+    min-width: 450px;
+    max-width: 450px;
+}
+
+.Dialog.QueryLoginCredentials input
+{
+    margin: 10px 0;
+}
+
+.Dialog.QueryObservationDeletion > .form > .fields,
+.Dialog.QueryLoginCredentials > .form > .fields
 {
     display: flex;
     flex-direction: column;
-    align-items: left;
 }
 
 .Dialog.QueryObservationDeletion > .form > .fields > .list-id
@@ -880,6 +878,13 @@ footer
     color: black;
     text-align: left;
     margin-bottom: 12px;
+}
+
+.Dialog.QueryLoginCredentials > .form > .fields > .instruction
+{
+    font-size: 90%;
+    color: gray;
+    margin-top: 8px;
 }
 
 .Dialog.QueryObservationDeletion > .form > .fields > .instruction

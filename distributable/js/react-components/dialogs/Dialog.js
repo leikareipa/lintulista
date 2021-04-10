@@ -1,1 +1,143 @@
-"use strict";import{panic_if_not_type,panic,is_defined,is_function}from"../../assert.js";import{AsyncIconButton}from"../buttons/AsyncIconButton.js";export function Dialog(a={}){function b(){d(!1),f(!1),a.onDialogReject()}Dialog.validateProps(a);const[c,d]=React.useState(a.acceptButtonEnabled),[e,f]=React.useState(a.rejectButtonEnabled),[g,h]=React.useState(!1),[i,j]=React.useState(!1);React.useEffect(()=>{g&&(h(!1),c&&k()),i&&e&&(j(!1),e&&b())},[g,i,c,e]),React.useEffect(()=>{function b(b){return a.disableTabKey&&"Tab"===b.key?void b.preventDefault():a.enterAccepts&&"Enter"===b.key?void h(!0):a.escRejects&&"Escape"===b.key?void j(!0):void 0}return window.addEventListener("keydown",b),()=>window.removeEventListener("keydown",b)},[]),is_function(a.callbackSetButtonEnabled)&&a.callbackSetButtonEnabled((a,b)=>{switch(a){case"accept":d(b);break;case"reject":f(b);break;default:panic("Unknown button.");}}),is_function(a.giveCallbackTriggerDialogAccept)&&a.giveCallbackTriggerDialogAccept(()=>h(!0)),is_function(a.giveCallbackTriggerDialogReject)&&a.giveCallbackTriggerDialogReject(()=>j(!0));let k=()=>{};const l=React.useRef();return React.createElement("div",{className:`Dialog ${a.component}`,ref:l},React.createElement("div",{className:"title"},React.createElement("i",{className:"title-icon fas fa-feather-alt"})," ",a.title),React.createElement("div",{className:"form"},a.children),React.createElement("div",{className:"button-bar"},React.createElement("div",{className:`accept ${c?"":"disabled"}`.trim()},React.createElement(AsyncIconButton,{task:function(){f(!1),a.onDialogAccept()},icon:`${a.acceptButtonIcon} fa-2x`,titleIsAlwaysVisible:!0,title:a.acceptButtonText,titleWhenClicked:"Tallennetaan...",giveCallbackTriggerPress:a=>{k=a}})),React.createElement("div",{className:`reject ${e?"":"disabled"}`.trim(),onClick:b},React.createElement("i",{className:`${a.rejectButtonIcon} fa-2x`}),React.createElement("br",null),a.rejectButtonText)))}Dialog.validateProps=function(a){return panic_if_not_type("object",a),panic_if_not_type("string",a.component,a.title),panic_if_not_type("function",a.onDialogAccept,a.onDialogReject),void(is_defined(a.callbackSetButtonEnabled)&&!is_function(a.callbackSetButtonEnabled)&&warn("Expected callbackSetButtonEnabled to be a function."))},Dialog.defaultProps={acceptButtonEnabled:!0,rejectButtonEnabled:!0,acceptButtonIcon:"fas fa-check",acceptButtonText:"Tallenna",rejectButtonIcon:"fas fa-times",rejectButtonText:"Peruuta",disableTabKey:!0,enterAccepts:!1,escRejects:!0};
+"use strict";
+
+import { panic_if_not_type, panic, is_defined, is_function } from "../../assert.js";
+import { AsyncIconButton } from "../buttons/AsyncIconButton.js";
+export function Dialog(props = {}) {
+  Dialog.validateProps(props);
+  const [acceptButtonEnabled, setAcceptButtonEnabled] = React.useState(props.acceptButtonEnabled);
+  const [rejectButtonEnabled, setRejectButtonEnabled] = React.useState(props.rejectButtonEnabled);
+  const [acceptViaCode, setAcceptViaCode] = React.useState(false);
+  const [rejectViaCode, setRejectViaCode] = React.useState(false);
+  React.useEffect(() => {
+    if (acceptViaCode) {
+      setAcceptViaCode(false);
+
+      if (acceptButtonEnabled) {
+        triggerAcceptButtonPress();
+      }
+    }
+
+    if (rejectViaCode && rejectButtonEnabled) {
+      setRejectViaCode(false);
+
+      if (rejectButtonEnabled) {
+        reject();
+      }
+    }
+  }, [acceptViaCode, rejectViaCode, acceptButtonEnabled, rejectButtonEnabled]);
+  React.useEffect(() => {
+    window.addEventListener("keydown", handle_key);
+    return () => window.removeEventListener("keydown", handle_key);
+
+    function handle_key(keyEvent) {
+      if (props.disableTabKey && keyEvent.key === "Tab") {
+        keyEvent.preventDefault();
+        return;
+      }
+
+      if (props.enterAccepts && keyEvent.key === "Enter") {
+        setAcceptViaCode(true);
+        return;
+      }
+
+      if (props.escRejects && keyEvent.key === "Escape") {
+        setRejectViaCode(true);
+        return;
+      }
+    }
+  }, []);
+
+  if (is_function(props.callbackSetButtonEnabled)) {
+    props.callbackSetButtonEnabled((button, state) => {
+      switch (button) {
+        case "accept":
+          setAcceptButtonEnabled(state);
+          break;
+
+        case "reject":
+          setRejectButtonEnabled(state);
+          break;
+
+        default:
+          panic("Unknown button.");
+          break;
+      }
+    });
+  }
+
+  if (is_function(props.giveCallbackTriggerDialogAccept)) {
+    props.giveCallbackTriggerDialogAccept(() => setAcceptViaCode(true));
+  }
+
+  if (is_function(props.giveCallbackTriggerDialogReject)) {
+    props.giveCallbackTriggerDialogReject(() => setRejectViaCode(true));
+  }
+
+  let triggerAcceptButtonPress = () => {};
+
+  const dialogRef = React.useRef();
+  return React.createElement("div", {
+    className: `Dialog ${props.component}`,
+    ref: dialogRef
+  }, React.createElement("div", {
+    className: "title"
+  }, React.createElement("i", {
+    className: "title-icon fas fa-feather-alt"
+  }), " ", props.title), React.createElement("div", {
+    className: "form"
+  }, props.children), React.createElement("div", {
+    className: "button-bar"
+  }, React.createElement("div", {
+    className: `reject ${!rejectButtonEnabled ? "disabled" : ""}`.trim(),
+    onClick: reject
+  }, React.createElement("i", {
+    className: `${props.rejectButtonIcon} fa-2x`
+  }), React.createElement("br", null), props.rejectButtonText), React.createElement("div", {
+    className: `accept ${!acceptButtonEnabled ? "disabled" : ""}`
+  }, React.createElement(AsyncIconButton, {
+    task: accept,
+    icon: `${props.acceptButtonIcon} fa-2x`,
+    titleIsAlwaysVisible: true,
+    title: props.acceptButtonText,
+    titleWhenClicked: props.acceptButtonWaitingText,
+    giveCallbackTriggerPress: callback => {
+      triggerAcceptButtonPress = callback;
+    }
+  }))));
+
+  function accept() {
+    setRejectButtonEnabled(false);
+    props.onDialogAccept();
+  }
+
+  function reject() {
+    setAcceptButtonEnabled(false);
+    setRejectButtonEnabled(false);
+    props.onDialogReject();
+  }
+}
+
+Dialog.validateProps = function (props) {
+  panic_if_not_type("object", props);
+  panic_if_not_type("string", props.component, props.title);
+  panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
+
+  if (is_defined(props.callbackSetButtonEnabled) && !is_function(props.callbackSetButtonEnabled)) {
+    warn("Expected callbackSetButtonEnabled to be a function.");
+  }
+
+  return;
+};
+
+Dialog.defaultProps = {
+  acceptButtonEnabled: true,
+  rejectButtonEnabled: true,
+  acceptButtonIcon: "fas fa-check",
+  acceptButtonText: "Tallenna",
+  acceptButtonWaitingText: "Tallennetaan...",
+  rejectButtonIcon: "fas fa-times",
+  rejectButtonText: "Peruuta",
+  disableTabKey: true,
+  enterAccepts: false,
+  escRejects: true
+};

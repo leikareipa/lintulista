@@ -41,22 +41,31 @@ export function QueryObservationDeletion(props = {})
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
-               <BirdThumbnail bird={props.observation.bird}
-                              useLazyLoading={false}/>
-               <div className="fields">
-                   <div className="bird-name">
-                       {props.observation.bird.species}:
-                   </div>
-                   <input className="list-id"
-                          type="text"
-                          onChange={update_on_input}
-                          spellCheck="false"
-                          autoFocus/>
-                    <div className="instruction">
-                        Kirjoita "{props.observation.bird.species}" jatkaaksesi
-                    </div>
-               </div>
-           </Dialog>
+
+        <BirdThumbnail bird={props.observation.bird}
+                        useLazyLoading={false}/>
+
+        <div className="fields">
+
+            <div className="bird-name">
+                {props.observation.bird.species}:
+            </div>
+
+            <input
+                className="list-id"
+                type="text"
+                onChange={update_on_input}
+                spellCheck="false"
+                autoFocus
+            />
+
+            <div className="instruction">
+                Kirjoita "{props.observation.bird.species}" jatkaaksesi
+            </div>
+            
+        </div>
+        
+    </Dialog>
 
     function update_on_input(inputEvent)
     {

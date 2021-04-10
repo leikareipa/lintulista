@@ -1,1 +1,5 @@
-"use strict";export function delay(a){return new Promise(b=>setTimeout(b,a))}
+"use strict";
+
+export function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

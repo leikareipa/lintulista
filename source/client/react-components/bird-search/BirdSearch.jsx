@@ -1,6 +1,8 @@
 "use strict";
 
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
+import {open_modal_dialog} from "../../open-modal-dialog.js";
+import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {Observation} from "../../observation.js";
@@ -26,6 +28,10 @@ export function BirdSearch(props = {})
 {
     BirdSearch.validate_props(props);
 
+    const knownBirds = ReactRedux.useSelector(state => state.knownBirds);
+    const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
+    const observations = ReactRedux.useSelector(state=>state.observations);
+
     const [currentSearchResult, setCurrentSearchResult] = React.useState(false);
 
     return <div className="BirdSearch">
@@ -33,7 +39,7 @@ export function BirdSearch(props = {})
                               callbackOnChange={refresh_search_results}
                               callbackOnInactivate={reset_search_results}/>
                <div className={`BirdSearchResultsDisplay ${currentSearchResult? "active" : "inactive"}
-                                                         ${props.backend.hasEditRights? "edit-rights" : "no-edit-rights"}`.trim()}>
+                                                         ${isLoggedIn? "logged-in" : "not-logged-in"}`.trim()}>
                    {currentSearchResult? currentSearchResult.element : <></>}
                </div>
            </div>
@@ -66,8 +72,8 @@ export function BirdSearch(props = {})
                     update_match(partialMatch);
                     return;
                 }
-            })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase().includes(searchString.toLowerCase()))));
-        })(props.backend.known_birds().find(bird=>(bird.species.toLowerCase() === searchString.toLowerCase())));
+            })(knownBirds.find(bird=>(bird.species.toLowerCase().includes(searchString.toLowerCase()))));
+        })(knownBirds.find(bird=>(bird.species.toLowerCase() === searchString.toLowerCase())));
 
         function update_match(bird)
         {
@@ -80,12 +86,12 @@ export function BirdSearch(props = {})
 
         function make_result_element(bird)
         {
-            const observation = props.backend.observations().find(obs=>obs.bird.species === bird.species);
+            const observation = observations.find(obs=>obs.bird.species === bird.species);
 
             return <BirdSearchResult key={bird.species}
                                      bird={bird}
                                      observation={observation? observation : null}
-                                     userHasEditRights={props.backend.hasEditRights}
+                                     userHasEditRights={isLoggedIn}
                                      callbackAddObservation={add_bird_to_list}
                                      callbackRemoveObservation={remove_bird_from_list}
                                      callbackChangeObservationDate={change_observation_date}/>;
@@ -94,32 +100,62 @@ export function BirdSearch(props = {})
 
     // Called when the user selects to add the search result's bird to their list of
     // observations. The 'bird' parameter is expected to be a Bird() object.
-    async function add_bird_to_list(bird)
+    async function add_bird_to_list(bird = Bird)
     {
         panic_if_not_type("object", bird);
 
-        await props.callbackAddObservation(bird);
-
+        const observation = Observation({bird, date:new Date()});
+        await props.backend.add_observation(observation)
         reset_search_results();
     }
 
     // Called when the user selects to remove the search result's bird from their list of
-    // observations. The 'bird' parameter is expected to be a Bird() object.
-    async function remove_bird_from_list(bird)
+    // observations.
+    async function remove_bird_from_list(bird = Bird)
     {
         panic_if_not_type("object", bird);
 
+        const observation = Observation({bird, date:new Date()});
+        await props.backend.delete_observation(observation);
         reset_search_results();
-
-        await props.callbackRemoveObservation(bird);
     }
 
     // Called when the user selects to change the date of an observation.
-    async function change_observation_date(bird)
+    async function change_observation_date(bird = Bird)
     {
-        reset_search_results();
+        panic_if_not_type("object", bird);
 
-        await props.callbackChangeObservationDate(bird);
+        const observation = observations.find(obs=>(obs.bird.species === bird.species));
+
+        if (observation === undefined) {
+            panic("Was asked to delete an observation of a species of which no observation exists.");
+            return;
+        }
+
+        // Ask the user to confirm the deletion of the observation; and if they do so,
+        // remove it.
+        await open_modal_dialog(QueryObservationDate, {
+            observation,
+            onAccept: async({year, month, day})=>
+            {
+                const newDate = new Date();
+                newDate.setFullYear(year);
+                newDate.setMonth(month-1);
+                newDate.setDate(day);
+
+                const modifiedObservation = Observation({
+                    bird,
+                    date: newDate,
+                });
+
+                if (!(await props.backend.add_observation(modifiedObservation))) {
+                    panic("Failed to update the observation.");
+                    return;
+                }
+            },
+        });
+
+        reset_search_results();
     }
 
     function reset_search_results()
@@ -137,7 +173,6 @@ BirdSearch.defaultProps =
 BirdSearch.validate_props = function(props)
 {
     panic_if_not_type("object", props, props.backend);
-    panic_if_not_type("function", props.callbackAddObservation);
 
     return;
 }
