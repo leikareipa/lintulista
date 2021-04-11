@@ -8,6 +8,7 @@
 
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {delay} from "../../delay.js";
+import {tr} from "../../translator.js";
 
 // An element that when clicked, will call (or "fire") the callback function provided
 // via props.callback. If clicked and held, will keep firing at an interval until the
@@ -53,25 +54,24 @@ export function Scroller(props = {})
                 onMouseDown={()=>setMouseDown(true)}
                 onMouseUp={()=>setMouseDown(false)}
                 onMouseLeave={()=>setMouseDown(false)}>
+
                     <i className={props.icon}/>
+                    
            </div>
 
     function start_firing_loop()
     {
-        if (!firingLoop)
-        {
+        if (!firingLoop) {
             setFiringLoop(setInterval(fire, firingLoopIntervalMs));
         }
-        else
-        {
+        else {
             warn("The scroller started firing twice.");
         }
     }
 
     function stop_firing_loop()
     {
-        if (firingLoop)
-        {
+        if (firingLoop) {
             clearInterval(firingLoop);
             setFiringLoop(null);
         }

@@ -10,6 +10,7 @@ import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Observation} from "../../observation.js";
 import {Bird} from "../../bird.js";
+import {tr} from "../../translator.js";
 
 // Displays information about an observation - like a thumbnail of the species, the species
 // name, and the date of the observation.
@@ -29,20 +30,30 @@ export function ObservationCard(props = {})
 
     return <div className={`ObservationCard${props.isGhost? "Ghost" : ""}`}>
 
-               {props.isGhost? <div className="BirdThumbnail"/>
-                             : <BirdThumbnail bird={props.observation.bird}/>}
+        {
+            props.isGhost
+            ? <div className="BirdThumbnail"/>
+            : <BirdThumbnail bird={props.observation.bird}/>
+        }
 
-               {/* Displays facts about the observation; like what was observed and when.*/}
-               <div className="observation-info">
-                   <div className="bird-name">
-                       {props.observation.bird.species}
-                   </div>
-                   <div className="date">
-                       {props.isGhost? "100 Lajia -haaste" : props.observation.dateString}
-                   </div>
-               </div>
+        {/* Displays facts about the observation; like what was observed and when.*/}
+        <div className="observation-info">
+
+            <div className="bird-name">
+                {props.observation.bird.species}
+            </div>
+
+            <div className="date">
+                {
+                    props.isGhost
+                    ? tr("100 Species Challenge")
+                    : props.observation.dateString
+                }
+            </div>
             
-           </div>
+        </div>
+    
+    </div>
 }
 
 ObservationCard.defaultProps =

@@ -35,8 +35,32 @@ export const translations = {
     "Log in to edit the list":
         {fiFI: "Kirjaudu sisään muokataksesi listaa"},
 
+    "Log in":
+        {fiFI: "Kirjaudu sisään"},
+
+    "Logging in":
+        {fiFI: "Kirjaudutaan sisään"},
+
     "Log out":
         {fiFI: "Kirjaudu ulos"},
+
+    "Username":
+        {fiFI: "Käyttäjänimi"},
+
+    "Password":
+        {fiFI: "Salasana"},
+
+    "Save":
+        {fiFI: "Tallenna"},
+
+    "Saving...":
+        {fiFI: "Tallennetaan..."},
+
+    "Delete":
+        {fiFI: "Poista"},
+
+    "Cancel":
+        {fiFI: "Peruuta"},
 
     "Contact us":
         {fiFI: "Yhteydenotto"},
@@ -44,15 +68,60 @@ export const translations = {
     "User's guide":
         {fiFI: "Käyttöohje"},
 
+    "About Lintulista":
+        {fiFI: "Tietoa Lintulistasta"},
+
     "Information":
         {fiFI: "Tietoa"},
 
     "Image info":
         {fiFI: "Kuvien tiedot"},
 
-    "100 Species challenge":
+    "100 Species Challenge":
         {fiFI: "100 Lajia -haaste"},
 
-    "View your standing in the 100 Species challenge":
+    "See your standing in the 100 Species Challenge":
         {fiFI: "Katso tilanteesi 100 Lajia -haasteessa"},
+
+    "Your login will remain active until you log out or reload the page. Otherwise, you'll be logged out automatically after about six hours.":
+        {fiFI: "Kirjautuminen on voimassa, kunnes kirjaudut ulos tai lataat sivun uudelleen; kuitenkin korkeintaan kuutisen tuntia."},
+
+    "Change observation date":
+        {fiFI: "Muokkaa havaintopäivämäärää"},
+
+    "Delete an observation":
+        {fiFI: "Poista havainto"},
+
+    "Type \"%1\" to continue":
+        {fiFI: "Kirjoita \"%1\" jatkaaksesi"},
+
+    "Species search":
+        {fiFI: "Hae lajia"},
+
+    "Add %1 to the list":
+        {fiFI: "Lisää %1 listaan"},
+
+    "Add %1 to the list":
+        {fiFI: "Lisää %1 listaan"},
+
+    "Remove %1 from the list":
+        {fiFI: "Poista %1 listasta"},
+
+    "Adding to the list...":
+        {fiFI: "Lisätään listaan..."},
+
+    "Removing from the list...":
+        {fiFI: "Poistetaan listaan..."},
+
+    "No observation":
+        {fiFI: "Ei havaintoa"},
+
+    "The list has %1 species":
+        {fiFI: "Lajihavaintoja on nyt %1"},
+
+    "The list is currently empty":
+        {fiFI: "Listassa ei vielä ole lajihavaintoja"},
+
+    "Download as CSV":
+        {fiFI: "Lataa CSV:nä"},
 };

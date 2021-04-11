@@ -5,6 +5,7 @@ import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Observation} from "../../observation.js";
 import {Bird} from "../../bird.js";
+import { tr } from "../../translator.js";
 
 // An element displaying information about an individual bird search result.
 //
@@ -47,15 +48,15 @@ export function BirdSearchResult(props = {})
         if (!props.observation)
         {
             return <AsyncIconButton icon="fas fa-plus"
-                                    title={`Lisää ${props.bird.species} listaan`}
-                                    titleWhenClicked="Lisätään listaan..."
+                                    title={tr("Add %1 to the list", props.bird.species)}
+                                    titleWhenClicked={tr("Adding to the list...")}
                                     task={()=>props.callbackAddObservation(props.bird)}/>
         }
         else
         {
             return <AsyncIconButton icon="fas fa-eraser"
-                                    title={`Poista ${props.bird.species} listasta`}
-                                    titleWhenClicked="Poistetaan listasta..."
+                                    title={tr("Remove %1 from the list", props.bird.species)}
+                                    titleWhenClicked={tr("Removing from the list...")}
                                     task={()=>props.callbackRemoveObservation(props.bird)}/>
         }
     })();
@@ -70,19 +71,23 @@ export function BirdSearchResult(props = {})
             {
                 return <span className="edit-date"
                              onClick={()=>props.callbackChangeObservationDate(props.bird)}>
-                                 {props.observation.dateString}
-                       </span>
+                           
+                    {props.observation.dateString}
+                
+                </span>
             }
             else
             {
                 return <>
-                           {props.observation.dateString}
-                       </>
+                    {props.observation.dateString}
+                </>
             }
         }
         else
         {
-            return <>Ei havaintoa</>
+            return <>
+                {tr("No observation")}
+            </>
         }
     })();
 

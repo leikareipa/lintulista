@@ -10,6 +10,7 @@ import {panic_if_not_type, panic_if_undefined} from "../../assert.js";
 import {ScrollerLabel} from "../scroller-label/ScrollerLabel.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
+import {tr} from "../../translator.js";
 
 // Displays a modal dialog with which the user can input a date for an observation.
 //
@@ -27,6 +28,8 @@ export function QueryObservationDate(props = {})
 {
     QueryObservationDate.validateProps(props);
 
+    const language = "fiFI";
+
     // Using local variables with the assumption that the dialog won't get re-rendered
     // prior to the user closing it. These values will be returned when the dialog is
     // closed.
@@ -35,7 +38,7 @@ export function QueryObservationDate(props = {})
     let year = props.observation.date.getFullYear();
 
     return <Dialog component="QueryObservationDate"
-                   title="Muokkaa havaintopäivämäärää"
+                   title={tr("Change observation date")}
                    enterAccepts={true}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
@@ -58,7 +61,7 @@ export function QueryObservationDate(props = {})
                         type="integer"
                         min={1}
                         max={31}
-                        suffix="."
+                        suffix={(language == "fiFI")? "." : ""}
                         value={day}
                         onChange={(value)=>{day = value}}
                     />
@@ -69,7 +72,7 @@ export function QueryObservationDate(props = {})
                         type="month-name"
                         min={1}
                         max={12}
-                        suffix="ta"
+                        suffix={(language == "fiFI")? "ta" : ""}
                         value={month}
                         onChange={(value)=>{month = value}}
                     />

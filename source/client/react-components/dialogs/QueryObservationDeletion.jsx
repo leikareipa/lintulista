@@ -9,6 +9,7 @@
 import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
+import {tr} from "../../translator.js";
 
 // Displays a modal dialog that asks the user to confirm that they want to delete a particular
 // observation. To proceed with the deletion, the user is required to type out the species
@@ -33,9 +34,9 @@ export function QueryObservationDeletion(props = {})
     let setButtonEnabled = (button, state)=>{};
 
     return <Dialog component="QueryObservationDeletion"
-                   title="Poistetaanko havainto?"
-                   rejectButtonText="Peruuta"
-                   acceptButtonText="Poista"
+                   title={tr("Delete an observation")}
+                   rejectButtonText={tr("Cancel")}
+                   acceptButtonText={tr("Delete")}
                    acceptButtonEnabled={false}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}
                    enterAccepts={true}
@@ -60,7 +61,7 @@ export function QueryObservationDeletion(props = {})
             />
 
             <div className="instruction">
-                Kirjoita "{props.observation.bird.species}" jatkaaksesi
+                {tr("Type \"%1\" to continue", props.observation.bird.species)}
             </div>
             
         </div>
@@ -69,14 +70,8 @@ export function QueryObservationDeletion(props = {})
 
     function update_on_input(inputEvent)
     {
-        if (inputEvent.target.value.toLowerCase() === props.observation.bird.species.toLowerCase())
-        {
-            setButtonEnabled("accept", true);
-        }
-        else
-        {
-            setButtonEnabled("accept", false);
-        }
+        const doesNameMatch = inputEvent.target.value.toLowerCase() === props.observation.bird.species.toLowerCase();
+        setButtonEnabled("accept", doesNameMatch);
     }
 
     function accept()

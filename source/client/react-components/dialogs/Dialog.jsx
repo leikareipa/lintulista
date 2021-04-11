@@ -8,6 +8,7 @@
 
 import {panic_if_not_type, panic, is_defined, is_function} from "../../assert.js";
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
+import {tr} from "../../translator.js";
 
 // A base for dialog elements. Displays a title bar with an icon text, and embeds the provided
 // child elements into a <div class="form"> container following the title.
@@ -225,10 +226,10 @@ Dialog.defaultProps =
     acceptButtonEnabled: true,
     rejectButtonEnabled: true,
     acceptButtonIcon: "fas fa-check",
-    acceptButtonText: "Tallenna",
-    acceptButtonWaitingText: "Tallennetaan...",
+    acceptButtonText: tr("Save"),
+    acceptButtonWaitingText: tr("Saving..."),
     rejectButtonIcon: "fas fa-times",
-    rejectButtonText: "Peruuta",
+    rejectButtonText: tr("Cancel"),
     disableTabKey: true,
     enterAccepts: false,
     escRejects: true,

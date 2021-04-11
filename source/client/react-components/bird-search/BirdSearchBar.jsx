@@ -1,6 +1,7 @@
 "use strict";
 
 import {panic_if_not_type, panic, throw_if_not_true} from "../../assert.js";
+import { tr } from "../../translator.js";
 
 // A search bar that allows the user to enter a string to be compared against the names of
 // a set of birds.
@@ -102,17 +103,15 @@ export function BirdSearchBar(props = {})
                <input className={`search-field ${state}`.trim()}
                       ref={searchRef}
                       type="search"
-                      onBlur={()=>
-                      {
-                          if (!currentText.length)
-                          {
+                      onBlur={()=> {
+                          if (!currentText.length) {
                               got_focus(false);
                           }
                       }}
                       onFocus={()=>got_focus(true)}
                       onChange={handle_input_event}
                       spellCheck="false"
-                      placeholder="Hae lajia"
+                      placeholder={tr("Species search")}
                       autoComplete="off"/>
 
                <i className="icon fas fa-search"/>

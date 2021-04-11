@@ -6,8 +6,8 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
-import {BirdThumbnail} from "../misc/BirdThumbnail.js";
+import {panic_if_not_type} from "../../assert.js";
+import {tr} from "../../translator.js";
 import {Dialog} from "./Dialog.js"
 
 export function QueryLoginCredentials(props = {})
@@ -26,10 +26,10 @@ export function QueryLoginCredentials(props = {})
     let setButtonEnabled = (button, state)=>{};
 
     return <Dialog component="QueryLoginCredentials"
-                   title="Kirjaudu sisään"
-                   rejectButtonText="Peruuta"
-                   acceptButtonText="Kirjaudu"
-                   acceptButtonWaitingText="Kirjaudutaan..."
+                   title={tr("Log in")}
+                   rejectButtonText={tr("Cancel")}
+                   acceptButtonText={tr("Log in")}
+                   acceptButtonWaitingText={tr("Logging in")}
                    acceptButtonEnabled={true}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}
                    enterAccepts={true}
@@ -41,7 +41,7 @@ export function QueryLoginCredentials(props = {})
         <form className="fields">
 
             <div className="username">
-                Käyttäjänimi
+                {tr("Username")}
             </div>
 
             <input
@@ -55,7 +55,7 @@ export function QueryLoginCredentials(props = {})
             />
 
             <div className="password">
-                Salasana
+                {tr("Password")}
             </div>
 
             <input
@@ -68,8 +68,9 @@ export function QueryLoginCredentials(props = {})
             />
 
             <div className="instruction">
-                Kirjautuminen on voimassa, kunnes kirjaudut ulos tai lataat
-                sivun uudelleen; kuitenkin korkeintaan kuutisen tuntia.
+                {tr("Your login will remain active until you log out or reload " +
+                    "the page. Otherwise, you'll be logged out automatically after " +
+                    "about six hours.")}
             </div>
 
         </form>

@@ -6,7 +6,12 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type, error, warn, panic, throw_if_not_true} from "../../assert.js";
+import {panic_if_undefined,
+        panic_if_not_type,
+        error,
+        warn,
+        panic,
+        throw_if_not_true} from "../../assert.js";
 import {Scroller} from "./Scroller.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
@@ -35,6 +40,8 @@ export function ScrollerLabel(props = {})
     
     const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
 
+    const language = "fiFI";
+
     let value = underlyingValue;
 
     React.useEffect(()=>
@@ -44,16 +51,23 @@ export function ScrollerLabel(props = {})
     }, [underlyingValue]);
 
     return <div className="ScrollerLabel">
-               <Scroller icon="fas fa-caret-up fa-2x"
-                         additionalClassName="up"
-                         callback={()=>scroll_value(1)}/>
-               <div className="value">
-                   {`${displayable_value()}${props.suffix || ""}`}
-               </div>
-               <Scroller icon="fas fa-caret-down fa-2x"
-                         additionalClassName="down"
-                         callback={()=>scroll_value(-1)}/>
-           </div>
+
+        <Scroller
+            icon="fas fa-caret-up fa-2x"
+            additionalClassName="up"
+            callback={()=>scroll_value(1)}
+        />
+
+        <div className="value">
+            {`${displayable_value()}${props.suffix || ""}`}
+        </div>
+
+        <Scroller
+            icon="fas fa-caret-down fa-2x"
+            additionalClassName="down"
+            callback={()=>scroll_value(-1)}
+        />
+    </div>
 
     function scroll_value(direction = 1)
     {
@@ -72,22 +86,27 @@ export function ScrollerLabel(props = {})
         switch (props.type)
         {
             case "integer": return underlyingValue;
-            case "month-name": return month_name(underlyingValue-1, props.language);
+            case "month-name": return month_name(underlyingValue-1, language);
             default: error("Unknown value type."); return "?";
         }
     }
 
     // Returns as a string the name of the month with the given index (0-11), such that
     // e.g. 11 corresponds to December and 0 to January.
-    function month_name(idx = 0)
+    function month_name(idx = 0, language = "fiFI")
     {
-        const monthNamesFI =
-        [
-            "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
-            "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu",
-        ];
+        const monthNames = {
+            fiFI: [
+                "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
+                "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"
+            ],
+            enEN: [
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+            ],
+        }
 
-        return monthNamesFI[idx % 12];
+        return (monthNames[language] || monthNames["fiFI"])[idx % 12];
     }
 }
 

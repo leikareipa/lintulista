@@ -6,7 +6,6 @@
 
 "use strict";
 
-import {is_public_ll_error} from "../../throwable.js";
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
@@ -70,9 +69,9 @@ export function ObservationListMenuBar(props = {})
             <CheckBoxButton
                 iconChecked="fas fa-check-square fa-fw fa-lg"
                 iconUnchecked="fas fa-square fa-fw fa-lg"
-                tooltip={tr("100 Species challenge")}
+                tooltip={tr("100 Species Challenge")}
                 showTooltip={!isBarSticky}
-                title={tr("View your standing in the 100 Species challenge")}
+                title={tr("See your standing in the 100 Species Challenge")}
                 isChecked={is100LajiaMode}
                 callbackOnButtonClick={(isChecked)=>setIs100LajiaMode({type: "set-100-lajia-mode", isEnabled: isChecked})}
             />
@@ -85,7 +84,9 @@ export function ObservationListMenuBar(props = {})
                 customMenu={
                     <div>
 
-                        <div style={{textAlign:"center"}}>Tietoja Lintulistasta</div>
+                        <div style={{textAlign:"center"}}>
+                            {tr("About Lintulista")}
+                        </div>
 
                         <a href="./guide/" target="_blank" rel="noopener noreferrer">
                             {tr("User's guide")}

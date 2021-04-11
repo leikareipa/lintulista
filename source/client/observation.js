@@ -6,8 +6,11 @@
 
 "use strict";
 
-import {warn, panic_if_undefined, expect_true} from "./assert.js";
+import {panic_if_undefined, expect_true} from "./assert.js";
 import {Bird} from "./bird.js";
+
+/// Temporary.
+const language = "fiFI";
 
 // Represents an observation of a given bird at a given time.
 export function Observation(args = {})
@@ -23,17 +26,26 @@ export function Observation(args = {})
     const timeString = String(args.date.getHours()).padStart(2, "0") + ":" +
                        String(args.date.getMinutes()).padStart(2, "0");
 
-    const dateString = args.date.getDate() + ". " +
-                       (new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(args.date) + "ta") + " " +
-                       args.date.getFullYear();
+    const monthString = {
+        fiFI: new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(args.date),
+        enEN: new Intl.DateTimeFormat("en-EN", {month: "long"}).format(args.date),
+    };
+
+    const dateString = {
+        fiFI: `${args.date.getDate()}. ${monthString["fiFI"]}ta ${args.date.getFullYear()}`,
+        enEN: `${args.date.getDate()} ${monthString["enEN"]} ${args.date.getFullYear()}`,
+    };
 
     const publicInterface = Object.freeze({
         isGhost,
         bird: args.bird,
         date: args.date,
         unixTimestamp: Math.round(args.date.getTime() / 1000),
-        dateString,
         timeString,
+
+        get dateString() {
+            return (dateString[language] || dateString["fiFI"]);
+        }
     });
     
     return publicInterface;

@@ -7,6 +7,7 @@
 "use strict";
 
 import {panic_if_not_type} from "../../assert.js";
+import {tr} from "../../translator.js";
 
 // Displays footnotes at the bottom of the list (or of the screen); providing information like
 // the total number of observations in the current list.
@@ -20,24 +21,23 @@ export function ObservationListFootnotes(props = {})
 {
     ObservationListFootnotes.validate_props(props);
 
-    const observationCountElement = !props.numObservationsInList? <>Listassa ei vielä ole lajihavaintoja.</>
-                                                                : <>
-                                                                      Listassa on&nbsp;
-                                                                      <span style={{fontWeight:"bold"}}>
-                                                                          {props.numObservationsInList}
-                                                                      </span> laji{props.numObservationsInList !== 1? "a" : ""}.
-                                                                  </>
+    const obsCount = props.numObservationsInList
+        ? <>{tr("The list has %1 species", props.numObservationsInList)}.</>
+        : <>{tr("The list is currently empty")}</>
 
-    const observationDownloadElement = !props.numObservationsInList? <></>
-                                                                   : <span onClick={props.callbackDownloadList}
-                                                                           style={{textDecoration:"underline", cursor:"pointer", fontVariant:"normal"}}>
-                                                                         Lataa CSV:nä
-                                                                     </span>
+    const obsDownload = props.numObservationsInList
+        ? <span onClick={props.callbackDownloadList}
+                style={{textDecoration:"underline", cursor:"pointer", fontVariant:"normal"}}>
+
+              {tr("Download as CSV")}
+
+          </span>
+        : <></>                                                          
 
     return <div className="ObservationListFootnotes">
                <div className="observation-count">
-                   {observationCountElement}&nbsp;
-                   {observationDownloadElement}
+                   {obsCount}&nbsp;
+                   {obsDownload}
                </div>
            </div>
 }
