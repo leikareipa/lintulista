@@ -7,8 +7,7 @@
 
 "use strict";
 
-import {panic_if_undefined,
-        ll_assert_native_type,
+import {ll_assert, ll_assert_native_type,
         ll_assert_type,
         panic} from "./assert.js";
 import {LL_Observation} from "./observation.js";
@@ -88,7 +87,8 @@ export const BackendRequest = {
 
     delete_observation: async function(observation, listKey, token)
     {
-        panic_if_undefined(observation, listKey, token);
+        ll_assert_type(LL_Observation, observation);
+        ll_assert_native_type("string", listKey, token);
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {

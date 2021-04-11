@@ -7,7 +7,7 @@
 
 "use strict";
 
-import {panic_if_undefined, ll_assert_native_type} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {merge_100_lajia_with} from "../../100-lajia-observations.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
@@ -81,7 +81,7 @@ export function ObservationListLight(props = {})
 
 ObservationListLight.validate_props = function(props)
 {
-    panic_if_undefined(props.backend);
+    ll_assert_native_type("object", props.backend);
 
     return;
 }

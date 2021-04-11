@@ -43,17 +43,6 @@ export function panic(errorMessage = "")
     throw Error(`Lintulista is in a panic: ${errorMessage}`);
 }
 
-export function panic_if_undefined(...properties)
-{
-    properties.forEach(property=>
-    {
-        if (!is_defined(property))
-        {
-            panic("A required property is undefined.");
-        }
-    });
-}
-
 export function ll_assert_type(type, ...objects)
 {
     ll_assert(LL_BaseType.is_known_type(type), "Unrecognized type.");

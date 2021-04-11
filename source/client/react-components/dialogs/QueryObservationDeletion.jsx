@@ -6,10 +6,12 @@
 
 "use strict";
 
-import {panic_if_undefined, ll_assert_native_type} from "../../assert.js";
+import {ll_assert_native_type,
+        ll_assert_type} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
 import {tr} from "../../translator.js";
+import {LL_Observation} from "../../observation.js";
 
 // Displays a modal dialog that asks the user to confirm that they want to delete a particular
 // observation. To proceed with the deletion, the user is required to type out the species
@@ -88,8 +90,9 @@ export function QueryObservationDeletion(props = {})
 
 QueryObservationDeletion.validateProps = function(props)
 {
-    panic_if_undefined(props, props.observation);
+    ll_assert_native_type("object", props);
     ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_type(LL_Observation, props.observation);
 
     return;
 }

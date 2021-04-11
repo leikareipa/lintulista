@@ -6,11 +6,13 @@
 
 "use strict";
 
-import {ll_assert_native_type, panic_if_undefined} from "../../assert.js";
+import {ll_assert_native_type,
+        ll_assert_type} from "../../assert.js";
 import {ScrollerLabel} from "../scroller-label/ScrollerLabel.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
 import {tr} from "../../translator.js";
+import {LL_Observation} from "../../observation.js";
 
 // Displays a modal dialog with which the user can input a date for an observation.
 //
@@ -108,8 +110,9 @@ export function QueryObservationDate(props = {})
 
 QueryObservationDate.validateProps = function(props)
 {
-    panic_if_undefined(props, props.observation);
+    ll_assert_native_type("object", props);
     ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_type(LL_Observation, props.observation);
 
     return;
 }

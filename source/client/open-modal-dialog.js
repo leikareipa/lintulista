@@ -7,7 +7,6 @@
 "use strict";
 
 import {ll_error_popup} from "./message-popup.js";
-import {panic_if_undefined} from "./assert.js";
 import {darken_viewport} from "./darken_viewport.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
@@ -41,8 +40,6 @@ import {darken_viewport} from "./darken_viewport.js";
 //
 export function open_modal_dialog(dialog, parameters = {})
 {
-    panic_if_undefined(dialog);
-
     const dialogContainer = document.createElement("div");
 
     // Will be used to darken the viewport.
