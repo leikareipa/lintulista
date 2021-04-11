@@ -12,11 +12,11 @@
 import {tr} from "./translator.js";
 import {ll_public_assert,
         ll_assert,
+        ll_assert_type,
         ll_assert_native_type} from "./assert.js";
 import {BackendRequest} from "./backend-request.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
-import { LL_BaseType } from "./base-type.js";
 
 // Provides mediated access to the given list's data in Lintulista's backend.
 export async function BackendAccess(listKey, reduxStore)
@@ -84,7 +84,7 @@ export async function BackendAccess(listKey, reduxStore)
         delete_observation: async function(observation = LL_Observation)
         {
             ll_assert_native_type("string", listKey);
-            ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+            ll_assert_type(LL_Observation, observation);
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             ll_public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
@@ -107,7 +107,7 @@ export async function BackendAccess(listKey, reduxStore)
         // Returns true if successful; false otherwise.
         add_observation: async function(observation = LL_Observation)
         {
-            ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+            ll_assert_type(LL_Observation, observation);
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             const isExistingObservation = (obsIdx >= 0);

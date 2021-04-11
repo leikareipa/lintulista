@@ -8,8 +8,8 @@
 "use strict";
 
 import {ll_assert_native_type,
-        expect_true,
-        ll_assert} from "./assert.js";
+        ll_assert_type,
+        expect_true} from "./assert.js";
 import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
 import {LL_BaseType} from "./base-type.js";
 
@@ -42,7 +42,7 @@ LL_Bird.nullThumbnailUrl = "./img/null-bird-thumbnail.png";
 
 LL_Bird.clone = function(bird = LL_Bird)
 {
-    ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+    ll_assert_type(LL_Bird, bird);
     return LL_Bird(bird.species);
 }
 

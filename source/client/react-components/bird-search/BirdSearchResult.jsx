@@ -127,8 +127,8 @@ BirdSearchResult.validate_props = function(props)
     ll_assert_native_type("object", props);
     ll_assert_native_type("boolean", props.userHasEditRights);
     ll_assert_native_type("function", props.cbAddObservation,
-                                  props.cbRemoveObservation,
-                                  props.cbChangeObservationDate);
+                                      props.cbRemoveObservation,
+                                      props.cbChangeObservationDate);
 
     return;
 }

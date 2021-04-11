@@ -19,7 +19,11 @@ import {LL_PrivateError} from "../../private-error.js";
 // mark (or "fas fa-question fa-lg" for a larger question mark, etc.).
 //
 // The function to be called when the user clicks on the button should be provided via
-// props.task. This function is expected to throw on error.
+// props.task. This function is expected to throw on error. The function will be passed a
+// single parameter, {resetState}, which is a function the parent of props.task can call
+// to have the button reset its state to the given value (a string, e.g. "enabled" or
+// "disabled"); for instance when the parent considers the button's tasks to have been
+// completed.
 //
 //     Note: If props.task is undefined or set to a falsy value, the button's state will
 //     automatically be set to "disabled", and clicking on it will have no effect.
@@ -84,13 +88,12 @@ export function AsyncIconButton(props = {})
 
         try {
             set_button_state("waiting");
-            await props.task();
+            await props.task({
+                resetState: (state = "enabled")=>set_button_state(state),
+            });
         }
         catch (error) {
             ll_error_popup(error);
-        }
-        finally {
-            set_button_state("enabled");
         }
     }
 
@@ -98,29 +101,25 @@ export function AsyncIconButton(props = {})
     {
         ll_assert_native_type("string", newState);
 
-        if (!props.task && (newState === "enabled"))
-        {
+        if (!props.task && (newState === "enabled")) {
             newState = "disabled";
         }
 
         switch (newState)
         {
-            case "enabled":
-            {
+            case "enabled": {
                 setCurrentState("enabled");
                 setCurrentIcon(props.icon);
                 setCurrentTitle(props.title);
                 break;
             }
-            case "waiting":
-            {
+            case "waiting": {
                 setCurrentState("waiting");
                 setCurrentIcon(`fas fa-spinner fa-spin ${iconSize}`.trim());
                 setCurrentTitle(props.titleWhenClicked);
                 break;
             }
-            case "disabled":
-            {
+            case "disabled": {
                 setCurrentState("disabled");
                 setCurrentIcon(props.icon);
                 setCurrentTitle(props.title);

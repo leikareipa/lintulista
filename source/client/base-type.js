@@ -11,6 +11,8 @@ import {ll_assert} from "./assert.js";
 
 const typeKey = "__$ll_type";
 
+const knownTypes = [];
+
 // The base type acts as an object identifier, allowing us to assert that a given
 // object has been created by a particular factory function. It's kind of like a
 // very light class inheritance interface.
@@ -23,11 +25,20 @@ const typeKey = "__$ll_type";
 export const LL_BaseType = function(type)
 {
     ll_assert((typeof type === "function"),
-                      "Invalid arguments.");
+              "Invalid argument.");
+
+    knownTypes.push(type);
 
     return {
         [typeKey]: type,
     }
+}
+
+// Returns true if the given object inherits from the base type; false otherwise.
+LL_BaseType.is_known_type = function(type)
+{
+    return (knownTypes.includes(type) &&
+            (typeof type.is_parent_of === "function"));
 }
 
 // Returns the underlying type of the given object, or null if the object

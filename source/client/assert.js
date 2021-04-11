@@ -9,6 +9,7 @@
 "use strict";
 
 import {darken_viewport} from "./darken_viewport.js"
+import {LL_BaseType} from "./base-type.js"
 import {LL_PrivateError} from "./private-error.js"
 import {LL_PublicError} from "./public-error.js"
 
@@ -53,8 +54,24 @@ export function panic_if_undefined(...properties)
     });
 }
 
-export function ll_assert_native_type(typeName, ...variables)
+export function ll_assert_type(type, ...objects)
 {
+    ll_assert(LL_BaseType.is_known_type(type), "Unrecognized type.");
+
+    for (const object of objects)
+    {
+        if (!type.is_parent_of(object)) {
+            throw LL_PrivateError(`Unexpected object type. Expected ${type.name}.`);
+        }
+    }
+
+    return;
+}
+
+export function ll_assert_native_type(typeName = "", ...variables)
+{
+    ll_assert((typeof typeName === "string"), "Invalid argument.");
+
     for (const variable of variables)
     {
         let isOfType = false;

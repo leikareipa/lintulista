@@ -7,9 +7,9 @@
 
 "use strict";
 
-import {ll_assert,
-        panic_if_undefined,
+import {panic_if_undefined,
         ll_assert_native_type,
+        ll_assert_type,
         panic} from "./assert.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
@@ -149,7 +149,7 @@ export const BackendRequest = {
                                     token = "")
     {
         ll_assert_native_type("string", listKey, token);
-        ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+        ll_assert_type(LL_Observation, observation);
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {

@@ -2,7 +2,7 @@
 
 import {ll_assert_native_type,
         throw_if_not_true,
-        ll_assert} from "../../assert.js"
+        ll_assert_type} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
@@ -80,7 +80,7 @@ export function BirdSearch(props = {})
 
         function update_match(bird = LL_Bird)
         {
-            ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+            ll_assert_type(LL_Bird, bird);
 
             if (!currentSearchResult ||
                 (bird.species !== currentSearchResult.bird.species))
@@ -91,7 +91,7 @@ export function BirdSearch(props = {})
 
         function make_result_element(bird = LL_Bird)
         {
-            ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+            ll_assert_type(LL_Bird, bird);
 
             const observation = observations.find(obs=>obs.species === bird.species);
 
@@ -111,7 +111,7 @@ export function BirdSearch(props = {})
     // observations. The 'bird' parameter is expected to be an LL_Bird() object.
     async function add_bird_to_list(bird = LL_Bird)
     {
-        ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+        ll_assert_type(LL_Bird, bird);
 
         const date = new Date();
 
@@ -131,12 +131,11 @@ export function BirdSearch(props = {})
     // observations.
     async function remove_bird_from_list(bird = LL_Bird)
     {
-        ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+        ll_assert_type(LL_Bird, bird);
 
         const observation = LL_Observation({species: bird.species});
 
-        await open_modal_dialog(QueryObservationDeletion,
-        {
+        await open_modal_dialog(QueryObservationDeletion, {
             observation,
             onAccept: async()=>{
                 await props.backend.delete_observation(observation);
@@ -149,7 +148,7 @@ export function BirdSearch(props = {})
     // Called when the user selects to change the date of an observation.
     async function change_observation_date(bird = LL_Bird)
     {
-        ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+        ll_assert_type(LL_Bird, bird);
 
         const observation = observations.find(obs=>(obs.species === bird.species));
 
