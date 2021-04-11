@@ -6,7 +6,11 @@
 
 "use strict";
 
-import {error, panic_if_not_type, is_function, throw_if_not_true} from "../../assert.js";
+import {error,
+        panic_if_not_type,
+        is_function,
+        throw_if_not_true} from "../../assert.js";
+import {ll_error_popup} from "../../message-popup.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -16,13 +20,10 @@ import {error, panic_if_not_type, is_function, throw_if_not_true} from "../../as
 // mark (or "fas fa-question fa-lg" for a larger question mark, etc.).
 //
 // The function to be called when the user clicks on the button should be provided via
-// props.task. This function will be passed a single parameter, {resetButtonState}, which
-// is a function the parent of props.task can call to have the button reset its state to
-// the given value (a string, e.g. "enabled" or "disabled"); for instance when the parent
-// considers the button's tasks to have been completed.
+// props.task.
 //
 //     Note: If props.task is undefined or set to a falsy value, the button's state will
-//     automatically be set to "disabled" and clicking on it will have no effect.
+//     automatically be set to "disabled", and clicking on it will have no effect.
 //
 // You can provide a function via props.giveCallbackTriggerPress that accepts a function
 // as a parameter, to receive a function with which the button's press can be trigger in-
@@ -85,13 +86,15 @@ export function AsyncIconButton(props = {})
 
         set_button_state("waiting");
 
-        await props.task(
-        {
-            resetButtonState: (state = "enabled")=>
-            {
-                set_button_state(state);
-            }
-        });
+        try {
+            await props.task();
+        }
+        catch (error) {
+            ll_error_popup(error);
+        }
+        finally {
+            set_button_state("enabled");
+        }
     }
 
     function set_button_state(newState)
