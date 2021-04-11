@@ -10,25 +10,37 @@
 import {translations} from "./translations.js";
 import {private_error} from "./throwable.js";
 
+const dstLanguage = "fiFI";
+
 // Returns a translation of the given string, or the original string if no
 // translation was available.
 export function tr(originalString = "",
-                   dstLanguage = "fiFI")
+                   ...values)
 {
     if (typeof originalString !== "string") {
         throw private_error("Invalid arguments.");
     }
 
-    if (dstLanguage === "enEN") {
-        return originalString;
-    }
+    let translatedString = (()=>{
+        if (dstLanguage === "enEN") {
+            return originalString;
+        }
 
-    const translation = (translations[originalString] || []);
-    const translatedString = (translation[dstLanguage] || null);
+        const translationEntry = (translations[originalString] || []);
+        const translatedString = (translationEntry[dstLanguage] || null);
 
-    if (translatedString === null) {
-        console.warn("Untranslated string:", originalString);
-    }
+        if (translatedString === null) {
+            console.warn("Untranslated string:", originalString);
+        }
 
-    return (translatedString || originalString);
+        return translatedString;
+    })();
+
+    // Replace %1, %2, ..., in the string with their corresponding
+    // values.
+    values.forEach((value, idx)=>{
+        translatedString = translatedString.replace(new RegExp(`%${idx+1}`, "g"), value);
+    })
+
+    return translatedString;
 }
