@@ -7,7 +7,7 @@
 
 "use strict";
 
-import {ll_private_assert} from "./assert.js";
+import {ll_assert} from "./assert.js";
 
 const typeKey = "__$ll_type";
 
@@ -22,7 +22,7 @@ const typeKey = "__$ll_type";
 // factories for examples of how this function should behave).
 export const LL_BaseType = function(type)
 {
-    ll_private_assert((typeof type === "function"),
+    ll_assert((typeof type === "function"),
                       "Invalid arguments.");
 
     return {

@@ -11,7 +11,7 @@
 
 import {tr} from "./translator.js";
 import {ll_public_assert,
-        ll_private_assert,
+        ll_assert,
         panic_if_not_type} from "./assert.js";
 import {BackendRequest} from "./backend-request.js";
 import {LL_Observation} from "./observation.js";
@@ -65,7 +65,7 @@ export async function BackendAccess(listKey, reduxStore)
 
         logout: async function()
         {
-            ll_private_assert((loginToken !== null),
+            ll_assert((loginToken !== null),
                               "Trying to log out without having been logged in.");
 
             ll_public_assert(await BackendRequest.logout(listKey, loginToken),
@@ -84,7 +84,7 @@ export async function BackendAccess(listKey, reduxStore)
         delete_observation: async function(observation = LL_Observation)
         {
             panic_if_not_type("string", listKey);
-            ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+            ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             ll_public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
@@ -107,7 +107,7 @@ export async function BackendAccess(listKey, reduxStore)
         // Returns true if successful; false otherwise.
         add_observation: async function(observation = LL_Observation)
         {
-            ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+            ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             const isExistingObservation = (obsIdx >= 0);

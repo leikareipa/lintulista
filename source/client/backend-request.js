@@ -7,7 +7,7 @@
 
 "use strict";
 
-import {ll_private_assert,
+import {ll_assert,
         panic_if_undefined,
         panic_if_not_type,
         panic} from "./assert.js";
@@ -147,7 +147,7 @@ export const BackendRequest = {
                                     token = "")
     {
         panic_if_not_type("string", listKey, token);
-        ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
+        ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {

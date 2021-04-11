@@ -9,7 +9,7 @@
 
 import {panic_if_not_type,
         expect_true,
-        ll_private_assert} from "./assert.js";
+        ll_assert} from "./assert.js";
 import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
 import {LL_BaseType} from "./base-type.js";
 
@@ -42,7 +42,7 @@ LL_Bird.nullThumbnailUrl = "./img/null-bird-thumbnail.png";
 
 LL_Bird.clone = function(bird = LL_Bird)
 {
-    ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+    ll_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
     return LL_Bird(bird.species);
 }
 

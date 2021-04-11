@@ -12,7 +12,7 @@ import {darken_viewport} from "./darken_viewport.js"
 import {LL_PrivateError} from "./private-error.js"
 import {LL_PublicError} from "./public-error.js"
 
-export function ll_private_assert(condition, failMessage = "")
+export function ll_assert(condition, failMessage = "")
 {
     if (!condition) {
         throw LL_PrivateError(failMessage);
