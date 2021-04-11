@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
 import {LL_Bird} from "../../bird.js";
 
 // For lazy image loading. The placeholder image we'll display when the real image is yet
@@ -127,8 +127,8 @@ BirdThumbnail.defaultProps =
 
 BirdThumbnail.validate_props = function(props)
 {
-    panic_if_not_type("object", props);
-    panic_if_not_type("string", props.species);
+    ll_assert_native_type("object", props);
+    ll_assert_native_type("string", props.species);
 
     return;
 }

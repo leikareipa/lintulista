@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
+import {panic_if_undefined, ll_assert_native_type} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
 import {tr} from "../../translator.js";
@@ -89,7 +89,7 @@ export function QueryObservationDeletion(props = {})
 QueryObservationDeletion.validateProps = function(props)
 {
     panic_if_undefined(props, props.observation);
-    panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }

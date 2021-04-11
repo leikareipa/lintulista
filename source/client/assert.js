@@ -53,24 +53,23 @@ export function panic_if_undefined(...properties)
     });
 }
 
-export function panic_if_not_type(typeName, ...properties)
+export function ll_assert_native_type(typeName, ...variables)
 {
-    properties.forEach(property=>
+    for (const variable of variables)
     {
-        const isOfType = (()=>
-        {
-            switch (typeName)
-            {
-                case "array": return Array.isArray(property);
-                default: return (typeof property === typeName);
-            }
-        })();
+        let isOfType = false;
 
-        if (!isOfType)
-        {
-            panic(`A property is of the wrong type; expected "${typeName}".`);
+        switch (typeName) {
+            case "array": (isOfType = Array.isArray(variable)); break;
+            default: (isOfType = (typeof variable === typeName)); break;
         }
-    });
+
+        if (!isOfType) {
+            throw LL_PrivateError(`Unexpected variable type "${typeof variable}". Expected "${typeName}".`);
+        }
+    }
+
+    return;
 }
 
 export function is_defined(property)
@@ -100,7 +99,7 @@ export function is_defined(property)
 //
 export function expect_true(expect = [])
 {
-    panic_if_not_type("array", expect);
+    ll_assert_native_type("array", expect);
 
     const expectFailed = expect.map((test, idx)=>({run:test, idx})).filter(test=>(test.run() !== true));
 
@@ -118,7 +117,7 @@ export function expect_true(expect = [])
 // expect_true() for more info.
 export function throw_if_not_true(expect = [])
 {
-    panic_if_not_type("array", expect);
+    ll_assert_native_type("array", expect);
 
     if (!expect_true(expect))
     {

@@ -7,7 +7,7 @@
 "use strict";
 
 import {panic_if_undefined,
-        panic_if_not_type,
+        ll_assert_native_type,
         throw_if_not_true} from "../../assert.js";
 import {LL_PrivateError} from "../../private-error.js";
 import {Scroller} from "./Scroller.js";
@@ -111,8 +111,8 @@ export function ScrollerLabel(props = {})
 ScrollerLabel.validate_props = function(props)
 {
     panic_if_undefined(props.type, props.min, props.max);
-    panic_if_not_type("number", props.min, props.max, props.value);
-    panic_if_not_type("function", props.onChange);
+    ll_assert_native_type("number", props.min, props.max, props.value);
+    ll_assert_native_type("function", props.onChange);
 
     return;
 }

@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 
 export function Button(props = {})
 {
@@ -53,7 +53,7 @@ Button.defaultProps =
 
 Button.validate_props = function(props)
 {
-    panic_if_not_type("object", props);
+    ll_assert_native_type("object", props);
 
     return;
 }

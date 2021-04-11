@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type,
+import {ll_assert_native_type,
         panic} from "../../assert.js";
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 import {tr} from "../../translator.js";
@@ -205,9 +205,9 @@ export function Dialog(props = {})
 
 Dialog.validateProps = function(props)
 {
-    panic_if_not_type("object", props);
-    panic_if_not_type("string", props.component, props.title);
-    panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_native_type("object", props);
+    ll_assert_native_type("string", props.component, props.title);
+    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }

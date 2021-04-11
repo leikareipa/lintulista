@@ -8,7 +8,7 @@
 "use strict";
 
 import {translations} from "./translations.js";
-import {panic_if_not_type} from "./assert.js";
+import {ll_assert_native_type} from "./assert.js";
 
 const dstLanguage = "fiFI";
 
@@ -17,7 +17,7 @@ const dstLanguage = "fiFI";
 export function tr(originalString = "",
                    ...values)
 {
-    panic_if_not_type("string", originalString);
+    ll_assert_native_type("string", originalString);
 
     let translatedString = (()=>{
         if (dstLanguage === "enEN") {

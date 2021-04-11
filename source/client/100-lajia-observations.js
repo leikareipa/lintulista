@@ -9,7 +9,7 @@
 
 import {LL_Bird} from "./bird.js";
 import {LL_Observation} from "./observation.js";
-import {panic_if_not_type} from "./assert.js";
+import {ll_assert_native_type} from "./assert.js";
 
 // A selection of 100 species from BirdLife's "100 Lajia" challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 const sataLajia = [
@@ -29,7 +29,7 @@ const sataLajia = [
 
 export function merge_100_lajia_with(observations = [LL_Observation])
 {
-    panic_if_not_type("array", observations);
+    ll_assert_native_type("array", observations);
 
     return sataLajia.reduce((mergedArr, sataObs)=>{
         const existingObservation = observations.find(e=>e.species === sataObs.species);

@@ -1,6 +1,6 @@
 "use strict";
 
-import {panic_if_not_type,
+import {ll_assert_native_type,
         throw_if_not_true,
         ll_assert} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
@@ -195,7 +195,7 @@ BirdSearch.defaultProps =
 
 BirdSearch.validate_props = function(props)
 {
-    panic_if_not_type("object", props, props.backend);
+    ll_assert_native_type("object", props, props.backend);
 
     return;
 }

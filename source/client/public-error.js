@@ -7,12 +7,12 @@
 
 "use strict";
 
-import {panic_if_not_type} from "./assert.js";
+import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
 
 export const LL_PublicError = function(message = "Unknown error")
 {
-    panic_if_not_type("string", message);
+    ll_assert_native_type("string", message);
 
     const publicInterface = {
         isPrivate: false,

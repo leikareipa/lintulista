@@ -7,7 +7,7 @@
 
 "use strict";
 
-import {panic_if_not_type,
+import {ll_assert_native_type,
         expect_true,
         ll_assert} from "./assert.js";
 import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
@@ -15,7 +15,7 @@ import {LL_BaseType} from "./base-type.js";
 
 export const LL_Bird = function(species = "")
 {
-    panic_if_not_type("string", species);
+    ll_assert_native_type("string", species);
 
     /// TODO: Verify that this is a known bird species.
 

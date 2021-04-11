@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
 import {delay} from "../../delay.js";
 import {tr} from "../../translator.js";
 
@@ -90,7 +90,7 @@ Scroller.defaultProps =
 
 Scroller.validateProps = function(props)
 {
-    panic_if_not_type("function", props.callback);
+    ll_assert_native_type("function", props.callback);
 
     return;
 }

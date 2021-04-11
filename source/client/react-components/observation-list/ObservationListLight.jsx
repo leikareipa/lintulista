@@ -7,7 +7,7 @@
 
 "use strict";
 
-import {panic_if_undefined, panic_if_not_type} from "../../assert.js";
+import {panic_if_undefined, ll_assert_native_type} from "../../assert.js";
 import {merge_100_lajia_with} from "../../100-lajia-observations.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
@@ -17,7 +17,7 @@ import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 function cards_from_observations(observations = [Observation])
 {
-    panic_if_not_type("array", observations);
+    ll_assert_native_type("array", observations);
 
     return observations.map(obs=>
         <ObservationCard

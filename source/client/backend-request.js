@@ -9,7 +9,7 @@
 
 import {ll_assert,
         panic_if_undefined,
-        panic_if_not_type,
+        ll_assert_native_type,
         panic} from "./assert.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
@@ -36,10 +36,11 @@ export const BackendRequest = {
     // and the 'data' variable returns the response data, if any. If the fetch failed,
     // 'data' will be null, and an error message may be printed into the console.
     //
-    make_request: function(url, params = {})
+    make_request: function(url = "",
+                           params = {})
     {
-        panic_if_not_type("string", url);
-        panic_if_not_type("object", params);
+        ll_assert_native_type("string", url);
+        ll_assert_native_type("object", params);
 
         return fetch(url, params)
                .then(response=>{
@@ -116,7 +117,7 @@ export const BackendRequest = {
             response = await response.json();
         }
 
-        panic_if_not_type("array", response.birds);
+        ll_assert_native_type("array", response.birds);
 
         return response.birds.map(b=>LL_Bird(b.species));
     },
@@ -125,7 +126,7 @@ export const BackendRequest = {
     // given list; or, on failure, an empty array.
     get_observations: async function(listKey)
     {
-        panic_if_not_type("string", listKey);
+        ll_assert_native_type("string", listKey);
 
         const [wasSuccessful, responseData] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {
@@ -136,7 +137,7 @@ export const BackendRequest = {
             return [];
         }
 
-        panic_if_not_type("array", responseData.observations);
+        ll_assert_native_type("array", responseData.observations);
 
         return responseData.observations.map(obs=>LL_Observation(obs));
     },
@@ -147,7 +148,7 @@ export const BackendRequest = {
                                     listKey = "",
                                     token = "")
     {
-        panic_if_not_type("string", listKey, token);
+        ll_assert_native_type("string", listKey, token);
         ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,

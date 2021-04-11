@@ -1,6 +1,6 @@
 "use strict";
 
-import {panic_if_not_type, panic, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type, panic, throw_if_not_true} from "../../assert.js";
 import { tr } from "../../translator.js";
 
 // A search bar that allows the user to enter a string to be compared against the names of
@@ -148,9 +148,9 @@ BirdSearchBar.defaultProps =
 
 BirdSearchBar.validateProps = function(props)
 {
-    panic_if_not_type("object", props);
-    panic_if_not_type("string", props.initialState);
-    panic_if_not_type("function", props.callbackOnChange, props.callbackOnActivate, props.callbackOnInactivate);
+    ll_assert_native_type("object", props);
+    ll_assert_native_type("string", props.initialState);
+    ll_assert_native_type("function", props.callbackOnChange, props.callbackOnActivate, props.callbackOnInactivate);
 
     if (!["active", "inactive"].includes(props.initialState))
     {

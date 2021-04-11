@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, panic_if_undefined} from "../../assert.js";
+import {ll_assert_native_type, panic_if_undefined} from "../../assert.js";
 import {ScrollerLabel} from "../scroller-label/ScrollerLabel.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {Dialog} from "./Dialog.js"
@@ -109,7 +109,7 @@ export function QueryObservationDate(props = {})
 QueryObservationDate.validateProps = function(props)
 {
     panic_if_undefined(props, props.observation);
-    panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }

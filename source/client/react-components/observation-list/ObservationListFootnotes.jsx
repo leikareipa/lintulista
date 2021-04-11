@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {tr} from "../../translator.js";
 
 // Displays footnotes at the bottom of the list (or of the screen); providing information like
@@ -44,9 +44,9 @@ export function ObservationListFootnotes(props = {})
 
 ObservationListFootnotes.validate_props = function(props)
 {
-    panic_if_not_type("object", props);
-    panic_if_not_type("number", props.numObservationsInList);
-    panic_if_not_type("function", props.callbackDownloadList);
+    ll_assert_native_type("object", props);
+    ll_assert_native_type("number", props.numObservationsInList);
+    ll_assert_native_type("function", props.callbackDownloadList);
     
     return;
 }

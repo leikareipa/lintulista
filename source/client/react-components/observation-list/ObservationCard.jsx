@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {LL_Observation} from "../../observation.js";
 import {LL_Bird} from "../../bird.js";
@@ -65,8 +65,8 @@ ObservationCard.defaultProps =
 
 ObservationCard.validate_props = function(props)
 {
-    panic_if_not_type("object", props, props.observation);
-    panic_if_not_type("boolean", props.isGhost);
+    ll_assert_native_type("object", props, props.observation);
+    ll_assert_native_type("boolean", props.isGhost);
 
     return;
 }

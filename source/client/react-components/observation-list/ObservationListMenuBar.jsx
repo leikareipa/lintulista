@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
 import {LL_Observation} from "../../observation.js";
@@ -142,7 +142,7 @@ ObservationListMenuBar.defaultProps =
 
 ObservationListMenuBar.validate_props = function(props)
 {
-    panic_if_not_type("object", props, props.backend);
+    ll_assert_native_type("object", props, props.backend);
 
     return;
 }

@@ -8,7 +8,7 @@
 
 import {panic_if_undefined,
         panic,
-        panic_if_not_type,
+        ll_assert_native_type,
         ll_assert_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
@@ -303,7 +303,7 @@ export function ObservationList(props = {})
 
     function ghost_observation_card(speciesName)
     {
-        panic_if_not_type("string", speciesName);
+        ll_assert_native_type("string", speciesName);
 
         const bird = props.backend.knownBirdSpecies.find(bird=>(bird.species === speciesName));
 

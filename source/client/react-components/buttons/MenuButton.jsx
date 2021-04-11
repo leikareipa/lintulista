@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type,
+import {ll_assert_native_type,
         throw_if_not_true,
         ll_assert} from "../../assert.js";
 
@@ -226,8 +226,8 @@ MenuButton.defaultProps =
 
 MenuButton.validate_props = function(props)
 {
-    panic_if_not_type("object", props, props.items);
-    panic_if_not_type("string", props.title, props.id);
+    ll_assert_native_type("object", props, props.items);
+    ll_assert_native_type("string", props.title, props.id);
 
     return;
 }

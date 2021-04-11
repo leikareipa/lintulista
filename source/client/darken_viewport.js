@@ -10,7 +10,7 @@
 "use strict";
 
 import {ll_assert,
-        panic_if_not_type} from "./assert.js";
+        ll_assert_native_type} from "./assert.js";
 
 // Appends an element over the viewport's entire body, with the given opacity, z-index and
 // click callback as given.
@@ -24,7 +24,7 @@ import {ll_assert,
 //
 export function darken_viewport(args = {/*z, onClick, opacity*/})
 {
-    panic_if_not_type("object", args);
+    ll_assert_native_type("object", args);
 
     args = {...darken_viewport.defaultArgs, ...args};
 

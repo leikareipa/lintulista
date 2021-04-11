@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {is_defined, panic_if_not_type} from "../../assert.js";
+import {is_defined, ll_assert_native_type} from "../../assert.js";
 import {BackendAccess} from "../../backend-access.js";
 
 // Displays a multi-step button for creating a new list; the button's contents change
@@ -112,7 +112,7 @@ export function CreateNewListButton(props = {})
 
 CreateNewListButton.validate_props = function(props)
 {
-    panic_if_not_type("object", props);
+    ll_assert_native_type("object", props);
 
     return;
 }

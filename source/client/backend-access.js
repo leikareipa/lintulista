@@ -12,7 +12,7 @@
 import {tr} from "./translator.js";
 import {ll_public_assert,
         ll_assert,
-        panic_if_not_type} from "./assert.js";
+        ll_assert_native_type} from "./assert.js";
 import {BackendRequest} from "./backend-request.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
@@ -83,7 +83,7 @@ export async function BackendAccess(listKey, reduxStore)
         // otherwise.
         delete_observation: async function(observation = LL_Observation)
         {
-            panic_if_not_type("string", listKey);
+            ll_assert_native_type("string", listKey);
             ll_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));

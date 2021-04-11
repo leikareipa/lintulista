@@ -7,7 +7,7 @@
 "use strict";
 
 import {expect_true,
-        panic_if_not_type} from "./assert.js";
+        ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
 
 /// Temporary.
@@ -15,7 +15,7 @@ const language = "fiFI";
 
 export const LL_Observation = function({species, day, month, year})
 {
-    panic_if_not_type("string", species);
+    ll_assert_native_type("string", species);
 
     return Object.freeze({
         isGhost: (!day || !month || !year),

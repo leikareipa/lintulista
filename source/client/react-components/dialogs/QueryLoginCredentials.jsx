@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {tr} from "../../translator.js";
 import {Dialog} from "./Dialog.js"
 
@@ -98,8 +98,8 @@ export function QueryLoginCredentials(props = {})
 
 QueryLoginCredentials.validateProps = function(props)
 {
-    panic_if_not_type("object", props, props.randomBird);
-    panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_native_type("object", props, props.randomBird);
+    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }

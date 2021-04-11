@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {panic_if_not_type,
+import {ll_assert_native_type,
         throw_if_not_true} from "../../assert.js";
 import {ll_error_popup} from "../../message-popup.js";
 import {LL_PrivateError} from "../../private-error.js";
@@ -96,7 +96,7 @@ export function AsyncIconButton(props = {})
 
     function set_button_state(newState)
     {
-        panic_if_not_type("string", newState);
+        ll_assert_native_type("string", newState);
 
         if (!props.task && (newState === "enabled"))
         {
@@ -142,7 +142,7 @@ AsyncIconButton.defaultProps =
 
 AsyncIconButton.validate_props = function(props)
 {
-    panic_if_not_type("object", props);
+    ll_assert_native_type("object", props);
 
     return;
 }
