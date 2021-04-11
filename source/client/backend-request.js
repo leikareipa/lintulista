@@ -11,9 +11,10 @@ import {ll_assert,
         panic_if_undefined,
         panic_if_not_type,
         panic} from "./assert.js";
-import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
+import {LL_PrivateError} from "./private-error.js";
+import {ll_error_popup} from "./message-popup.js";
 
 const backendURLs = {
     lists: "http://localhost:8080",
@@ -43,7 +44,7 @@ export const BackendRequest = {
         return fetch(url, params)
                .then(response=>{
                    if (!response.ok) {
-                       throw response.statusText;
+                       throw LL_PrivateError(response.statusText);
                    }
                     return response.json();
                })
@@ -51,13 +52,13 @@ export const BackendRequest = {
                    if (!ticket ||
                        !ticket.valid)
                    {
-                       throw (ticket.message? ticket.message : "Unknown error.");
+                       throw LL_PrivateError(ticket.message? ticket.message : "Unknown error.");
                    }
 
                    return [true, ticket.data];
                })
-               .catch((errorMessage)=>{
-                   console.error("Lintulista server error:", errorMessage);
+               .catch(error=>{
+                   ll_error_popup(error);
                    return [false, null];
                });
     },

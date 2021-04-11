@@ -38,19 +38,15 @@
 
         <!-- Run the app.-->
         <script type="module">
-            import {error} from "./js/assert.js";
+            import {ll_assert} from "./js/assert.js";
             import {start_app} from "./js/render/render-app.js";
 
             const container = document.getElementById("observations-list-container");
             const listKey = (new URLSearchParams(window.location.search).get("list") || null);
+
+            ll_assert(listKey, "A list key must be provided.");
             
-            if (listKey) {
-                start_app(listKey, container);
-            }
-            else {
-                error("A list key must be provided.");
-                container.remove();
-            }
+            start_app(listKey, container);
         </script>
     </body>
 </html>

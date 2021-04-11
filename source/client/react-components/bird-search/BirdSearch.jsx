@@ -100,9 +100,9 @@ export function BirdSearch(props = {})
                        bird={bird}
                        observation={observation? observation : null}
                        userHasEditRights={isLoggedIn}
-                       asyncCallback_AddObservation={add_bird_to_list}
-                       asyncCallback_RemoveObservation={remove_bird_from_list}
-                       asyncCallback_ChangeObservationDate={change_observation_date}
+                       cbAddObservation={add_bird_to_list}
+                       cbRemoveObservation={remove_bird_from_list}
+                       cbChangeObservationDate={change_observation_date}
                    />;
         }
     }

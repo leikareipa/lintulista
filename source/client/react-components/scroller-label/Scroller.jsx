@@ -65,7 +65,7 @@ export function Scroller(props = {})
             setFiringLoop(setInterval(fire, firingLoopIntervalMs));
         }
         else {
-            warn("The scroller started firing twice.");
+            console.warn("A scroller started firing twice.");
         }
     }
 

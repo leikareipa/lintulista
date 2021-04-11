@@ -6,7 +6,8 @@
 
 "use strict";
 
-import {panic_if_not_type, panic, is_defined, is_function} from "../../assert.js";
+import {panic_if_not_type,
+        panic} from "../../assert.js";
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 import {tr} from "../../translator.js";
 
@@ -124,10 +125,8 @@ export function Dialog(props = {})
     // Provide the caller a function with which to set the state of the accept/reject
     // buttons, since React doesn't seem to be updating their state properly via prop
     // changes on Dialog initialization.
-    if (is_function(props.callbackSetButtonEnabled))
-    {
-        props.callbackSetButtonEnabled((button, state)=>
-        {
+    if (typeof props.callbackSetButtonEnabled === "function") {
+        props.callbackSetButtonEnabled((button, state)=>{
             switch (button)
             {
                 case "accept": setAcceptButtonEnabled(state); break;
@@ -137,13 +136,11 @@ export function Dialog(props = {})
         });
     }
 
-    if (is_function(props.giveCallbackTriggerDialogAccept))
-    {
+    if (typeof props.giveCallbackTriggerDialogAccept === "function") {
         props.giveCallbackTriggerDialogAccept(()=>setAcceptViaCode(true));
     }
 
-    if (is_function(props.giveCallbackTriggerDialogReject))
-    {
+    if (typeof props.giveCallbackTriggerDialogReject === "function") {
         props.giveCallbackTriggerDialogReject(()=>setRejectViaCode(true));
     }
 
@@ -211,12 +208,6 @@ Dialog.validateProps = function(props)
     panic_if_not_type("object", props);
     panic_if_not_type("string", props.component, props.title);
     panic_if_not_type("function", props.onDialogAccept, props.onDialogReject);
-
-    if (is_defined(props.callbackSetButtonEnabled) &&
-        !is_function(props.callbackSetButtonEnabled))
-    {
-        warn("Expected callbackSetButtonEnabled to be a function.");
-    }
 
     return;
 }

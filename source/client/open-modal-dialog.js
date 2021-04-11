@@ -7,7 +7,7 @@
 "use strict";
 
 import {ll_error_popup} from "./message-popup.js";
-import {panic_if_undefined, is_function} from "./assert.js";
+import {panic_if_undefined} from "./assert.js";
 import {darken_viewport} from "./darken_viewport.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
@@ -48,6 +48,10 @@ export function open_modal_dialog(dialog, parameters = {})
     // Will be used to darken the viewport.
     let shades = null;
 
+    parameters.onAccept == (parameters.onAccept || (async()=>{}));
+    parameters.onReject == (parameters.onReject || (async()=>{}));
+    parameters.onClose == (parameters.onClose || (async()=>{}));
+
     return (async()=>
     {
         if (!dialogContainer)
@@ -58,8 +62,7 @@ export function open_modal_dialog(dialog, parameters = {})
 
         shades = await darken_viewport({z:110, opacity:0.5})
 
-        const dialogElement = React.createElement(dialog,
-        {
+        const dialogElement = React.createElement(dialog, {
             ...parameters,
             onDialogAccept: async(returnData)=>{
                 await run_callback(parameters.onAccept, returnData);
@@ -80,14 +83,11 @@ export function open_modal_dialog(dialog, parameters = {})
     async function run_callback(fn = async function(){},
                                 args = {})
     {
-        if (is_function(fn))
-        {
-            try {
-                await fn(args);
-            }
-            catch (error) {
-                ll_error_popup(error);
-            }
+        try {
+            await fn(args);
+        }
+        catch (error) {
+            ll_error_popup(error);
         }
 
         return;
@@ -96,18 +96,12 @@ export function open_modal_dialog(dialog, parameters = {})
     // Removes the dialog from the DOM.
     async function close_this_dialog()
     {
-        if (dialogContainer.childElementCount)
-        {
+        if (dialogContainer.childElementCount) {
             ReactDOM.unmountComponentAtNode(dialogContainer);
         }
 
         dialogContainer.remove();
-
-        if (is_function(parameters.onClose))
-        {
-            parameters.onClose();
-        }
-
+        await run_callback(parameters.onClose);
         await shades.remove();
     }
 }

@@ -8,10 +8,8 @@
 
 import {panic_if_undefined,
         panic_if_not_type,
-        error,
-        warn,
-        panic,
         throw_if_not_true} from "../../assert.js";
+import {LL_PrivateError} from "../../private-error.js";
 import {Scroller} from "./Scroller.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
@@ -87,7 +85,7 @@ export function ScrollerLabel(props = {})
         {
             case "integer": return underlyingValue;
             case "month-name": return month_name(underlyingValue-1, language);
-            default: error("Unknown value type."); return "?";
+            default: throw LL_PrivateError("Unknown value type.");
         }
     }
 
@@ -114,15 +112,7 @@ ScrollerLabel.validate_props = function(props)
 {
     panic_if_undefined(props.type, props.min, props.max);
     panic_if_not_type("number", props.min, props.max, props.value);
-
-    if (!props.onChange)
-    {
-        warn("No onChange callback function passed to this scroller label.");
-    }
-    else if (typeof props.onChange !== "function")
-    {
-        panic("Expected the onChange property to be a function.");
-    }
+    panic_if_not_type("function", props.onChange);
 
     return;
 }

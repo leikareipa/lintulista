@@ -6,7 +6,9 @@
 
 "use strict";
 
-import {panic_if_not_type, warn, throw_if_not_true} from "../../assert.js";
+import {panic_if_not_type,
+        throw_if_not_true,
+        ll_assert} from "../../assert.js";
 
 // Renders a button associated with a drop-down menu that activates when the button is
 // clicked. The drop-down menu holds a set of items that the user can click on; when an
@@ -188,11 +190,7 @@ export function MenuButton(props = {})
 
     function handle_item_click(itemIdx, callback)
     {
-        if (!props.items.length)
-        {
-            warn("Received a click on an item even though there are no items.");
-            return;
-        }
+        ll_assert(props.item.length, "Received a click on an item even though there are no items.");
 
         setCurrentItemText(props.items[itemIdx].text);
         setDropdownVisible(false);

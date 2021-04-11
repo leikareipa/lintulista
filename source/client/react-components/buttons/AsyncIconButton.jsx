@@ -6,11 +6,10 @@
 
 "use strict";
 
-import {error,
-        panic_if_not_type,
-        is_function,
+import {panic_if_not_type,
         throw_if_not_true} from "../../assert.js";
 import {ll_error_popup} from "../../message-popup.js";
+import {LL_PrivateError} from "../../private-error.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -20,7 +19,7 @@ import {ll_error_popup} from "../../message-popup.js";
 // mark (or "fas fa-question fa-lg" for a larger question mark, etc.).
 //
 // The function to be called when the user clicks on the button should be provided via
-// props.task.
+// props.task. This function is expected to throw on error.
 //
 //     Note: If props.task is undefined or set to a falsy value, the button's state will
 //     automatically be set to "disabled", and clicking on it will have no effect.
@@ -63,8 +62,7 @@ export function AsyncIconButton(props = {})
     //   "waiting" = waiting for the asynchronous task(s) initiated by the button's click to finish
     const [currentState, setCurrentState] = React.useState((props.task && props.enabled)? "enabled" : "disabled");
 
-    if (is_function(props.giveCallbackTriggerPress))
-    {
+    if (typeof props.giveCallbackTriggerPress === "function") {
         props.giveCallbackTriggerPress(handle_click);
     }
 
@@ -84,9 +82,8 @@ export function AsyncIconButton(props = {})
             return;
         }
 
-        set_button_state("waiting");
-
         try {
+            set_button_state("waiting");
             await props.task();
         }
         catch (error) {
@@ -129,7 +126,7 @@ export function AsyncIconButton(props = {})
                 setCurrentTitle(props.title);
                 break;
             }
-            default: error("Unknown button state.");
+            default: throw LL_PrivateError("Unknown button state.");
         }
     }
 }

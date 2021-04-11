@@ -9,7 +9,8 @@
 
 "use strict";
 
-import {error, panic_if_not_type} from "./assert.js";
+import {ll_assert,
+        panic_if_not_type} from "./assert.js";
 
 // Appends an element over the viewport's entire body, with the given opacity, z-index and
 // click callback as given.
@@ -28,12 +29,6 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
     args = {...darken_viewport.defaultArgs, ...args};
 
     const shadeId = random_id();
-
-    if (!shadeId)
-    {
-        error("Failed to generate a valid DOM id for a shade element.");
-    }
-
     const transitionDuration = 0.2;
 
     // Insert the shade into the DOM. Note that by default, it's not yet displayed.
@@ -117,8 +112,7 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
         
         do
         {
-            if (++loops > 100)
-            {
+            if (++loops > 100) {
                 return null;
             }
 
@@ -133,20 +127,20 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
             // Prevent an id beginning with a number. That would only happen if you used the raw
             // seed as an id rather than appending it to a known string, but let's ensure this
             // anyway.
-            if (seed[0].match(/[0-9]/))
-            {
+            if (seed[0].match(/[0-9]/)) {
                 seed[0] = "b";
             }
 
             id = `shades-generated-kpAOerCd4-${seed.join("")}`;
         } while(document.getElementById(id));
 
+        ll_assert(id, "Failed to generate a random shade id.");
+
         return id;
     }
 }
 
-darken_viewport.defaultArgs =
-{
+darken_viewport.defaultArgs = {
     z: 100,
     opacity: 0.4,
     onClick: ()=>{},

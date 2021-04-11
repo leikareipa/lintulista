@@ -73,30 +73,9 @@ export function panic_if_not_type(typeName, ...properties)
     });
 }
 
-export function is_function(property)
-{
-    return (typeof property === "function");
-}
-
 export function is_defined(property)
 {
     return (typeof property !== "undefined");
-}
-
-export function error(errorMessage = "")
-{
-    console.error(`Lintulista: ${errorMessage}`);
-    alert(`Lintulista: ${errorMessage}`);
-}
-
-export function warn(errorMessage = "")
-{
-    console.warn(`Lintulista: ${errorMessage}`);
-}
-
-export function debug(debugMessage = "")
-{
-    console.debug(`Lintulista: ${debugMessage}`);
 }
 
 // Takes in an array of functions, and returns true if the return values of all the
