@@ -1,7 +1,9 @@
 "use strict";
 
-import {ll_assert_native_type, panic, throw_if_not_true} from "../../assert.js";
-import { tr } from "../../translator.js";
+import {ll_assert,
+        ll_assert_native_type,
+        throw_if_not_true} from "../../assert.js";
+import {tr} from "../../translator.js";
 
 // A search bar that allows the user to enter a string to be compared against the names of
 // a set of birds.
@@ -77,24 +79,16 @@ export function BirdSearchBar(props = {})
     
     React.useEffect(()=>
     {
-        if (!["active", "inactive"].includes(state))
-        {
-            panic(`Invalid state value "${state}".`);
-        }
-        
-        switch (state)
-        {
-            case "inactive":
-            {
+        switch (state) {
+            case "inactive": {
                 props.callbackOnInactivate();
                 break;
             }
-            case "active":
-            {
+            case "active": {
                 props.callbackOnActivate();
                 break;
             }
-            default: panic(`Unknown state "${state}".`); break;
+            default: console.error(`Unknown state "${state}".`); break;
         }
     }, [state]);
 
@@ -152,10 +146,8 @@ BirdSearchBar.validateProps = function(props)
     ll_assert_native_type("string", props.initialState);
     ll_assert_native_type("function", props.callbackOnChange, props.callbackOnActivate, props.callbackOnInactivate);
 
-    if (!["active", "inactive"].includes(props.initialState))
-    {
-        panic(`Invalid state value "${props.initialState}".`);
-    }
+    ll_assert(["active", "inactive"].includes(props.initialState),
+              "Unrecognized state value.");
 
     return;
 }

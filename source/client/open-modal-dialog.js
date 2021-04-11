@@ -8,6 +8,7 @@
 
 import {ll_error_popup} from "./message-popup.js";
 import {darken_viewport} from "./darken_viewport.js";
+import {ll_assert} from "./assert.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
 // the container when the user accepts or rejects the dialog.
@@ -51,11 +52,7 @@ export function open_modal_dialog(dialog, parameters = {})
 
     return (async()=>
     {
-        if (!dialogContainer)
-        {
-            panic("Can't find the container to render the observation list into.");
-            return;
-        }
+        ll_assert(dialogContainer, "Can't find a container to put the model dialog into.");
 
         shades = await darken_viewport({z:110, opacity:0.5})
 

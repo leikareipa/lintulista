@@ -7,9 +7,8 @@
 
 "use strict";
 
-import {ll_assert, ll_assert_native_type,
-        ll_assert_type,
-        panic} from "./assert.js";
+import {ll_assert_native_type,
+        ll_assert_type} from "./assert.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
 import {LL_PrivateError} from "./private-error.js";
@@ -107,19 +106,22 @@ export const BackendRequest = {
     // or, on failure, as an empty array.
     get_known_birds_list: async function()
     {
-        let response = await fetch(backendURLs.knownBirdSpecies);
+        try {
+            let response = await fetch(backendURLs.knownBirdSpecies);
 
-        if (!response.ok) {
-            panic(`The server responded with an error: ${response.statusText}`);
-            return false;
-        }
-        else {
+            if (!response.ok) {
+                throw LL_PrivateError(response.statusText);
+            }
+
             response = await response.json();
+            ll_assert_native_type("array", response.birds);
+            
+            return response.birds.map(b=>LL_Bird(b.species));
         }
-
-        ll_assert_native_type("array", response.birds);
-
-        return response.birds.map(b=>LL_Bird(b.species));
+        catch (error) {
+            ll_error_popup(error);
+            return [];
+        }
     },
 
     // Returns as an array of LL_Observation() objects the observations associated with the

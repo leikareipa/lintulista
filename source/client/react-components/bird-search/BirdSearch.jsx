@@ -2,7 +2,8 @@
 
 import {ll_assert_native_type,
         throw_if_not_true,
-        ll_assert_type} from "../../assert.js"
+        ll_assert_type,
+        ll_assert} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
@@ -10,6 +11,7 @@ import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {LL_Observation} from "../../observation.js";
 import {LL_Bird} from "../../bird.js";
+import { LL_PublicError } from "../../public-error.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
@@ -108,7 +110,7 @@ export function BirdSearch(props = {})
     }
 
     // Called when the user selects to add the search result's bird to their list of
-    // observations. The 'bird' parameter is expected to be an LL_Bird() object.
+    // observations.
     async function add_bird_to_list(bird = LL_Bird)
     {
         ll_assert_type(LL_Bird, bird);
@@ -152,10 +154,8 @@ export function BirdSearch(props = {})
 
         const observation = observations.find(obs=>(obs.species === bird.species));
 
-        if (observation === undefined) {
-            panic("Was asked to delete an observation of a species of which no observation exists.");
-            return;
-        }
+        ll_public_assert(LL_Observation.is_parent_of(observation),
+                         tr("Unrecognized observation data"));
 
         // Ask the user to confirm the deletion of the observation; and if they do so,
         // remove it.
@@ -170,10 +170,7 @@ export function BirdSearch(props = {})
                     year
                 });
 
-                if (!(await props.backend.add_observation(modifiedObservation))) {
-                    panic("Failed to update the observation.");
-                    return;
-                }
+                await props.backend.add_observation(modifiedObservation);
             },
         });
 

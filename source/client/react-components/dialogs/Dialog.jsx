@@ -6,8 +6,7 @@
 
 "use strict";
 
-import {ll_assert_native_type,
-        panic} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js"
 import {tr} from "../../translator.js";
 
@@ -131,7 +130,7 @@ export function Dialog(props = {})
             {
                 case "accept": setAcceptButtonEnabled(state); break;
                 case "reject": setRejectButtonEnabled(state); break;
-                default: panic("Unknown button."); break;
+                default: console.error(`Unknown button "${button}"`);
             }
         });
     }

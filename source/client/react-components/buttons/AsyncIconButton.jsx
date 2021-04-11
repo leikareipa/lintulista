@@ -73,9 +73,11 @@ export function AsyncIconButton(props = {})
     return <span className={`AsyncIconButton ${currentState}`}
                  onClick={handle_click}
                  title={props.titleIsAlwaysVisible? "" : currentTitle}>
-                     <i className={currentIcon}/>
-                     {props.titleIsAlwaysVisible? <><br/>{currentTitle}</> : <></>}
-           </span>
+                     
+        <i className={currentIcon}/>
+        {props.titleIsAlwaysVisible? <><br/>{currentTitle}</> : <></>}
+        
+    </span>
 
     // Called when the button is clicked.
     async function handle_click()
@@ -94,6 +96,7 @@ export function AsyncIconButton(props = {})
         }
         catch (error) {
             ll_error_popup(error);
+            set_button_state("enabled");
         }
     }
 

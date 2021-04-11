@@ -65,8 +65,7 @@ export function BirdSearchResult(props = {})
     {
         if (props.observation)
         {
-            if (props.userHasEditRights)
-            {
+            if (props.userHasEditRights) {
                 return <span className="edit-date"
                              onClick={()=>props.cbChangeObservationDate(props.bird)}>
                            
@@ -74,8 +73,7 @@ export function BirdSearchResult(props = {})
                 
                 </span>
             }
-            else
-            {
+            else {
                 return <>
                     {LL_Observation.date_string(props.observation)}
                 </>

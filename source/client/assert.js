@@ -31,18 +31,6 @@ export function ll_public_assert(condition, failMessage = "")
     return;
 }
 
-export function panic(errorMessage = "")
-{
-    // Draw a black screen over the entire page, blocking user interaction.
-    darken_viewport({
-        opacity: 1,
-        z: 1000, // Should be above everything else on the page.
-    });
-
-    alert(`Lintulista is in a panic: ${errorMessage}`);
-    throw Error(`Lintulista is in a panic: ${errorMessage}`);
-}
-
 export function ll_assert_type(type, ...objects)
 {
     ll_assert(LL_BaseType.is_known_type(type), "Unrecognized type.");
