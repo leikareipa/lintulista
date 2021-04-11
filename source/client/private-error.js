@@ -15,7 +15,6 @@ export const LL_PrivateError = function(message = "Unknown error")
     panic_if_not_type("string", message);
 
     const publicInterface = {
-        id: errorId,
         isPrivate: true,
         message,
 

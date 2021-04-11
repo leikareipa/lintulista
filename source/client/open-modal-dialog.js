@@ -6,10 +6,9 @@
 
 "use strict";
 
-import {error_popup} from "./message-popup.js";
+import {ll_error_popup} from "./message-popup.js";
 import {panic_if_undefined, is_function} from "./assert.js";
 import {darken_viewport} from "./darken_viewport.js";
-import {LL_PublicError} from "./public-error.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
 // the container when the user accepts or rejects the dialog.
@@ -86,14 +85,8 @@ export function open_modal_dialog(dialog, parameters = {})
             try {
                 await fn(args);
             }
-            catch (error)
-            {
-                if (LL_PublicError.is_parent_of(error)) {
-                    error_popup(error.message);
-                }
-                else {
-                    throw error;
-                }
+            catch (error) {
+                ll_error_popup(error);
             }
         }
 
