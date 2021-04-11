@@ -130,7 +130,7 @@ footer
 
 .AsyncIconButton.enabled:active
 {
-    transform: translateY(2px);
+    border-bottom-width: 3px;
 }
 
 .AsyncIconButton.waiting
@@ -624,6 +624,9 @@ footer
     color: rgba(0, 0, 0, 1);
     font-weight: bold;
     font-size: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
 }
 
 .ObservationCard > .observation-info > .date,
