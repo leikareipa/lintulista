@@ -7,7 +7,7 @@
 "use strict";
 
 import {ll_error_popup} from "./message-popup.js";
-import {darken_viewport} from "./darken_viewport.js";
+import {darken_viewport} from "./darken-viewport.js";
 import {ll_assert} from "./assert.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes

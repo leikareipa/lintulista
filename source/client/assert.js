@@ -8,7 +8,7 @@
 
 "use strict";
 
-import {darken_viewport} from "./darken_viewport.js"
+import {darken_viewport} from "./darken-viewport.js"
 import {LL_BaseType} from "./base-type.js"
 import {LL_PrivateError} from "./private-error.js"
 import {LL_PublicError} from "./public-error.js"
