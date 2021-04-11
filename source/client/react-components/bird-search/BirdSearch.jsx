@@ -3,6 +3,7 @@
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
+import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {Observation} from "../../observation.js";
@@ -116,7 +117,15 @@ export function BirdSearch(props = {})
         panic_if_not_type("object", bird);
 
         const observation = Observation({bird, date:new Date()});
-        await props.backend.delete_observation(observation);
+
+        await open_modal_dialog(QueryObservationDeletion,
+        {
+            observation,
+            onAccept: async()=>{
+                await props.backend.delete_observation(observation);
+            },
+        });
+
         reset_search_results();
     }
 
