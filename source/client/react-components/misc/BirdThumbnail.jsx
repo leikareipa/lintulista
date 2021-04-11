@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {LL_Bird} from "../../bird.js";
 
 // For lazy image loading. The placeholder image we'll display when the real image is yet
@@ -131,54 +131,4 @@ BirdThumbnail.validate_props = function(props)
     ll_assert_native_type("string", props.species);
 
     return;
-}
-
-// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
-BirdThumbnail.test = ()=>
-{
-    // The container we'll render instances of the component into for testing.
-    let container = {remove:()=>{}};
-
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        const bird = Bird({species:"Test1", family:"", order:"", thumbnailUrl:"nonexistent-test-image.png"})
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(BirdThumbnail,
-            {
-                bird,
-                useLazyLoading: false,
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        throw_if_not_true([()=>(container.childNodes.length === 1)]);
-
-        const thumbnailElement = container.childNodes[0];
-
-        throw_if_not_true([()=>(thumbnailElement.tagName.toLowerCase() === "img"),
-                           ()=>(thumbnailElement.getAttribute("src") === "nonexistent-test-image.png"),
-                           ()=>(thumbnailElement.getAttribute("referrerpolicy") === "no-referrer")]);
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    /// TODO: Test lazy loading of the thumbnail image.
-
-    return true;
 }

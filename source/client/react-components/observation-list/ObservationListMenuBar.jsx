@@ -6,16 +6,14 @@
 
 "use strict";
 
-import {ll_assert_native_type, throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
-import {LL_Observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
 import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
 import {Button} from "../buttons/Button.js";
-import {LL_Bird} from "../../bird.js";
-import { tr } from "../../translator.js";
+import {tr} from "../../translator.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can
 // control certain aspects of the observation list; like to select the order in which to
@@ -145,115 +143,4 @@ ObservationListMenuBar.validate_props = function(props)
     ll_assert_native_type("object", props, props.backend);
 
     return;
-}
-
-// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
-ObservationListMenuBar.test = ()=>
-{
-    // The container we'll render instances of the component into for testing.
-    let container = {remove:()=>{}};
-
-    // Test a menu bar with edit rights.
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        // A mock of BackendAccess().
-        const backend =
-        {
-            hasEditRights: true,
-            viewKey: "abcdefg",
-            known_birds: ()=>([Bird({species:"Alli", family:"", order:""}), Bird({species:"Naakka", family:"", order:""})]),
-            observations: ()=>([Observation({bird:Bird({species:"Naakka", family:"", order:""}), date:new Date(1000)})]),
-        };
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(ObservationListMenuBar,
-            {
-                backend,
-                enabled: true,
-                callbackAddObservation: ()=>{},
-                callbackRemoveObservation: ()=>{},
-                callbackChangeObservationDate: ()=>{},
-                callbackSetListSorting: ()=>{},
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        throw_if_not_true([()=>(container.querySelector(".ObservationListMenuBar") !== null),
-                           ()=>(container.querySelector(".BirdSearch") !== null),
-                           ()=>(container.querySelector(".buttons") !== null),
-                           ()=>(container.querySelector(".lock") !== null),
-                           ()=>(container.querySelector(".lock").tagName.toLowerCase() === "a"),
-                           ()=>(container.querySelector(".lock").classList.contains("unlocked")),
-                           ()=>(container.querySelector(".lock").getAttribute("href") === `./katsele/${backend.listKey}`)]);
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    // Test a menu bar without edit rights.
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        // A mock of BackendAccess().
-        const backend =
-        {
-            isLoggedIn: false,
-            viewKey: "abcdefg",
-            known_birds: ()=>([Bird({species:"Alli", family:"", order:""}), Bird({species:"Naakka", family:"", order:""})]),
-            observations: ()=>([Observation({bird:Bird({species:"Naakka", family:"", order:""}), date:new Date(1000)})]),
-        };
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(ObservationListMenuBar,
-            {
-                backend,
-                enabled: true,
-                callbackAddObservation: ()=>{},
-                callbackRemoveObservation: ()=>{},
-                callbackChangeObservationDate: ()=>{},
-                callbackSetListSorting: ()=>{},
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        throw_if_not_true([()=>(container.querySelector(".ObservationListMenuBar") !== null),
-                           ()=>(container.querySelector(".BirdSearch") !== null),
-                           ()=>(container.querySelector(".buttons") !== null),
-                           ()=>(container.querySelector(".lock") !== null),
-                           ()=>(container.querySelector(".lock").tagName.toLowerCase() === "a"),
-                           ()=>(container.querySelector(".lock").classList.contains("locked")),
-                           ()=>(!container.querySelector(".lock").getAttribute("href"))]);
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    return true;
 }

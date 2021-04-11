@@ -6,8 +6,7 @@
 
 "use strict";
 
-import {ll_assert_native_type,
-        throw_if_not_true} from "../../assert.js";
+import {ll_assert_native_type} from "../../assert.js";
 import {ll_error_popup} from "../../message-popup.js";
 import {LL_PrivateError} from "../../private-error.js";
 
@@ -76,7 +75,7 @@ export function AsyncIconButton(props = {})
                      
         <i className={currentIcon}/>
         {props.titleIsAlwaysVisible? <><br/>{currentTitle}</> : <></>}
-        
+
     </span>
 
     // Called when the button is clicked.
@@ -147,115 +146,4 @@ AsyncIconButton.validate_props = function(props)
     ll_assert_native_type("object", props);
 
     return;
-}
-
-// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
-AsyncIconButton.test = ()=>
-{
-    // The container we'll render instances of the component into for testing.
-    let container = {remove:()=>{}};
-
-    // Normal button.
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(AsyncIconButton,
-            {
-                icon: "fas fa-times",
-                title: "Test1",
-                titleIsAlwaysVisible: true,
-                titleWhenClicked: "Test1-Clicked",
-                task: ()=>{},
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        throw_if_not_true([()=>(container.textContent === "Test1")]);
-
-        // Test the button.
-        {
-            throw_if_not_true([()=>(container.childNodes.length === 1)]);
-
-            const buttonElement = container.childNodes[0];
-
-            throw_if_not_true([()=>(buttonElement.tagName.toLowerCase() === "span"),
-                               ()=>(buttonElement.classList.contains("enabled")),
-                               ()=>(!buttonElement.classList.contains("waiting")),
-                               ()=>(!buttonElement.classList.contains("disabled"))]);
-
-            // Activate the button.
-            {
-                ReactTestUtils.Simulate.click(buttonElement);
-
-                throw_if_not_true([()=>(container.textContent === "Test1-Clicked"),
-                                   ()=>(buttonElement.classList.contains("waiting")),
-                                   ()=>(!buttonElement.classList.contains("enabled")),
-                                   ()=>(!buttonElement.classList.contains("disabled"))]);
-            }
-        }
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    // Button without a task (should start out and remain disabled, even if requested to be enabled).
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(AsyncIconButton,
-            {
-                icon: "fas fa-times",
-                enabled: true,
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        throw_if_not_true([()=>(container.childNodes.length === 1)]);
-
-        const buttonElement = container.childNodes[0];
-
-        throw_if_not_true([()=>(buttonElement.classList.contains("disabled"))]);
-
-        // Activate the button (nothing should happen, since it's disabled).
-        {
-            ReactTestUtils.Simulate.click(buttonElement);
-
-            throw_if_not_true([()=>(buttonElement.classList.contains("disabled")),
-                               ()=>(!buttonElement.classList.contains("waiting")),
-                               ()=>(!buttonElement.classList.contains("enabled"))]);
-        }
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    return true;
 }

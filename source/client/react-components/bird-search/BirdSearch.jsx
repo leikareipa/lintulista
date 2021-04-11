@@ -1,9 +1,7 @@
 "use strict";
 
 import {ll_assert_native_type,
-        throw_if_not_true,
-        ll_assert_type,
-        ll_assert} from "../../assert.js"
+        ll_assert_type} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
@@ -11,7 +9,6 @@ import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {LL_Observation} from "../../observation.js";
 import {LL_Bird} from "../../bird.js";
-import { LL_PublicError } from "../../public-error.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
@@ -194,110 +191,4 @@ BirdSearch.validate_props = function(props)
     ll_assert_native_type("object", props, props.backend);
 
     return;
-}
-
-// Runs basic tests on this component. Returns true if all tests passed; false otherwise.
-BirdSearch.test = ()=>
-{
-    // The container we'll render instances of the component into for testing.
-    let container = {remove:()=>{}};
-
-    try
-    {
-        container = document.createElement("div");
-        document.body.appendChild(container);
-
-        // A mock of BackendAccess().
-        const backend =
-        {
-            known_birds: ()=>([Bird({species:"Alli", family:"", order:""}), Bird({species:"Naakka", family:"", order:""})]),
-            observations: ()=>([Observation({bird:Bird({species:"Naakka", family:"", order:""}), date:new Date(1000)})]),
-        };
-
-        // Render the component.
-        ReactTestUtils.act(()=>
-        {
-            const unitElement = React.createElement(BirdSearch,
-            {
-                backend,
-                callbackAddObservation: ()=>{},
-                callbackRemoveObservation: ()=>{},
-                callbackChangeObservationDate: ()=>{},
-            });
-
-            ReactDOM.unmountComponentAtNode(container);
-            ReactDOM.render(unitElement, container);
-        });
-
-        // We expect the following tree:
-        //
-        // <container>
-        //     <BirdSearch>
-        //         <BirdSearchBar>
-        //             <input>
-        //             ...
-        //         <BirdSearchResultsDisplay>
-        //             (no children yet before a search is made)
-        //
-        const searchElement = container.querySelector(".BirdSearch");
-        const searchBar = container.querySelector(".BirdSearchBar");
-        const searchResultsDisplay = container.querySelector(".BirdSearchResultsDisplay");
-        const searchBarInput = searchBar.querySelector("input");
-
-        throw_if_not_true([()=>(searchElement !== null),
-                           ()=>(searchBar !== null),
-                           ()=>(searchResultsDisplay !== null),
-                           ()=>(searchBarInput !== null)]);
-
-        ReactTestUtils.Simulate.focus(searchBarInput);
-
-        // Test searching for a bird of which there is no prior observation.
-        {
-            searchBarInput.value = "alli"
-            ReactTestUtils.Simulate.change(searchBarInput);
-
-            // We should have one search result, of a bird not observed before.
-            throw_if_not_true([()=>(searchResultsDisplay.childNodes.length === 1),
-                               ()=>(searchResultsDisplay.childNodes[0].getAttribute("class") === "BirdSearchResult not-previously-observed")]);
-        }
-
-        // Test searching for a bird of which there is a prior observation.
-        {
-            searchBarInput.value = "naakka"
-            ReactTestUtils.Simulate.change(searchBarInput);
-            
-            // We should have one search result, of a bird observed before.
-            throw_if_not_true([()=>(searchResultsDisplay.childNodes.length === 1),
-                               ()=>(searchResultsDisplay.childNodes[0].getAttribute("class") === "BirdSearchResult")]);
-        }
-
-        // Clearing the search input field should hide search results.
-        {
-            searchBarInput.value = "naakka"
-            ReactTestUtils.Simulate.change(searchBarInput);
-            
-            // We should have one search result.
-            throw_if_not_true([()=>(searchResultsDisplay.childNodes.length === 1)]);
-
-            searchBarInput.value = ""
-            ReactTestUtils.Simulate.change(searchBarInput);
-            
-            // We should no longer have a search result.
-            throw_if_not_true([()=>(searchResultsDisplay.childNodes.length === 0)]);
-        }
-
-        /// TODO: Test for search results hiding when input field loses focus.
-    }
-    catch (error)
-    {
-        if (error === "assertion failure") return false;
-
-        throw error;
-    }
-    finally
-    {
-        container.remove();
-    }
-
-    return true;
 }

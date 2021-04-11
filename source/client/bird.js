@@ -45,15 +45,3 @@ LL_Bird.clone = function(bird = LL_Bird)
     ll_assert_type(LL_Bird, bird);
     return LL_Bird(bird.species);
 }
-
-// Runs basic tests on this unit. Returns true if all tests passed; false otherwise.
-LL_Bird.test = ()=>
-{
-    const bird = Bird({species:"Test1", family:"Test2", order:"Test3", thumbnailUrl:"Test4"});
-
-    return expect_true([()=>(Object.isFrozen(bird)),
-                        ()=>(bird.species === "Test1"),
-                        ()=>(bird.family === "Test2"),
-                        ()=>(bird.order === "Test3"),
-                        ()=>(bird.thumbnailUrl === "Test4")]);
-}
