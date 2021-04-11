@@ -18,14 +18,6 @@ import {LL_Bird} from "../../bird.js";
 // object with which the component can query the backend for the list of known birds, the
 // user's current observations, etc.
 //
-// The callback provided via props.callbackAddObservation will be called when the user clicks
-// to add to the list a search result whose bird is not already on the list. The callback
-// will be passed one parameter: an LL_Bird() object representing the type of bird in question.
-//
-// The callback provided via props.callbackRemoveObservation will be called when the user
-// clicks to remove from the list a search result whose bird is on the list. The callback
-// will be passed one parameter: an LL_Bird() object representing the type of bird in question.
-//
 export function BirdSearch(props = {})
 {
     BirdSearch.validate_props(props);
@@ -37,14 +29,26 @@ export function BirdSearch(props = {})
     const [currentSearchResult, setCurrentSearchResult] = React.useState(false);
 
     return <div className="BirdSearch">
-               <BirdSearchBar initialState="inactive"
-                              callbackOnChange={refresh_search_results}
-                              callbackOnInactivate={reset_search_results}/>
-               <div className={`BirdSearchResultsDisplay ${currentSearchResult? "active" : "inactive"}
-                                                         ${isLoggedIn? "logged-in" : "not-logged-in"}`.trim()}>
-                   {currentSearchResult? currentSearchResult.element : <></>}
-               </div>
-           </div>
+
+        <BirdSearchBar
+            initialState="inactive"
+            cbOnChange={refresh_search_results}
+            cbOnInactivate={reset_search_results}
+        />
+                        
+        <div className={`BirdSearchResultsDisplay
+                        ${currentSearchResult? "active" : "inactive"}
+                        ${isLoggedIn? "logged-in" : "not-logged-in"}`}>
+
+            {
+                currentSearchResult
+                ? currentSearchResult.element
+                : <></>
+            }
+
+        </div>
+
+    </div>
 
     // Show search results for the given search string.
     function refresh_search_results(searchString = "")

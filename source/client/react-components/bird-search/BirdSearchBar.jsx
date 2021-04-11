@@ -13,11 +13,11 @@ import {tr} from "../../translator.js";
 // "inactive" to reflect the element's state. The bar's initial state can be provided as
 // a string via props.initialState.
 //
-// An optional callback provided via props.callbackOnActivated will be called when the search
-// bar becomes active. Likewise, an optional callback given via props.callbackOnInactivated
+// An optional callback provided via props.cbOnActivate will be called when the search
+// bar becomes active. Likewise, an optional callback given via props.cbOnInactivate
 // will be called when the search bar becomes inactive.
 //
-// An optional callback provided via props.callbackOnChange will be called when the search
+// An optional callback provided via props.cbOnChange will be called when the search
 // bar receives user input. It will be provided one parameter: the search bar's current
 // value.
 //
@@ -80,11 +80,11 @@ export function BirdSearchBar(props = {})
     {
         switch (state) {
             case "inactive": {
-                props.callbackOnInactivate();
+                props.cbOnInactivate();
                 break;
             }
             case "active": {
-                props.callbackOnActivate();
+                props.cbOnActivate();
                 break;
             }
             default: console.error(`Unknown state "${state}".`); break;
@@ -115,35 +115,34 @@ export function BirdSearchBar(props = {})
     {
         setState(gotIt? "active" : "inactive");
 
-        if (gotIt && currentText)
-        {
-            props.callbackOnChange(currentText);
+        if (gotIt && currentText) {
+            props.cbOnChange(currentText);
         }
     }
 
     function handle_input_event(inputEvent)
     {
         const inputString = inputEvent.target.value.trim();
-
         setCurrentText(inputString);
-
-        props.callbackOnChange(inputString);
+        props.cbOnChange(inputString);
     }
 }
 
 BirdSearchBar.defaultProps =
 {
     initialState: "inactive",
-    callbackOnChange: ()=>{},
-    callbackOnActivate: ()=>{},
-    callbackOnInactivate: ()=>{},
+    cbOnChange: ()=>{},
+    cbOnActivate: ()=>{},
+    cbOnInactivate: ()=>{},
 }
 
 BirdSearchBar.validateProps = function(props)
 {
     ll_assert_native_type("object", props);
     ll_assert_native_type("string", props.initialState);
-    ll_assert_native_type("function", props.callbackOnChange, props.callbackOnActivate, props.callbackOnInactivate);
+    ll_assert_native_type("function", props.cbOnChange,
+                                      props.cbOnActivate,
+                                      props.cbOnInactivate);
 
     ll_assert(["active", "inactive"].includes(props.initialState),
               "Unrecognized state value.");
