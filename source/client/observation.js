@@ -6,56 +6,67 @@
 
 "use strict";
 
-import {panic_if_undefined, expect_true} from "./assert.js";
+import {expect_true} from "./assert.js";
 import {Bird} from "./bird.js";
 
 /// Temporary.
 const language = "fiFI";
 
 // Represents an observation of a given bird at a given time.
-export function Observation(args = {})
+export function Observation({bird = Bird,
+                             day = 0,
+                             month = 0,
+                             year = 0})
 {
-    panic_if_undefined(args.bird);
-
-    const isGhost = !(args.date instanceof Date);
-
-    if (isGhost) {
-        args.date = new Date(0);
-    }
-
-    const timeString = String(args.date.getHours()).padStart(2, "0") + ":" +
-                       String(args.date.getMinutes()).padStart(2, "0");
-
-    const monthString = {
-        fiFI: new Intl.DateTimeFormat("fi-FI", {month: "long"}).format(args.date),
-        enEN: new Intl.DateTimeFormat("en-EN", {month: "long"}).format(args.date),
-    };
-
-    const dateString = {
-        fiFI: `${args.date.getDate()}. ${monthString["fiFI"]}ta ${args.date.getFullYear()}`,
-        enEN: `${args.date.getDate()} ${monthString["enEN"]} ${args.date.getFullYear()}`,
-    };
+    const isGhost = ((day <= 0) || (month <= 0) || (year <= 0));
 
     const publicInterface = Object.freeze({
         isGhost,
-        bird: args.bird,
-        date: args.date,
-        unixTimestamp: Math.round(args.date.getTime() / 1000),
-        timeString,
-
-        get dateString() {
-            return (dateString[language] || dateString["fiFI"]);
-        }
+        bird,
+        day,
+        month,
+        year,
     });
     
     return publicInterface;
+}
+
+Observation.date_string = function(observation = Observation)
+{
+    const monthNames = {
+        fiFI: [
+            "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
+            "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"
+        ],
+        enEN: [
+            "January", "February", "March", "April", "May", "June", "July",
+            "August", "September", "October", "November", "December"
+        ],
+    }
+
+    const monthStrings = {
+        fiFI: monthNames["fiFI"],
+        enEN: monthNames["enEN"],
+    };
+
+    const monthString = (monthStrings[language] || monthStrings["fiFI"])[observation.month-1];
+
+    const dateString = {
+        fiFI: `${observation.day}. ${monthString}ta ${observation.year}`,
+        enEN: `${observation.day} ${monthString} ${observation.year}`,
+    };
+
+    return (dateString[language] || dateString["fiFI"]);
 }
 
 Observation.clone = function(observation = Observation)
 {
     return Observation({
         bird: Bird(observation.bird),
-        date: observation.date,
+        day: observation.day,
+        month: observation.month,
+        year: observation.year,
+        isGhost: observation.isGhost,
     });
 }
 

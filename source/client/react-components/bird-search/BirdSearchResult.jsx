@@ -72,14 +72,14 @@ export function BirdSearchResult(props = {})
                 return <span className="edit-date"
                              onClick={()=>props.callbackChangeObservationDate(props.bird)}>
                            
-                    {props.observation.dateString}
+                    {Observation.date_string(props.observation)}
                 
                 </span>
             }
             else
             {
                 return <>
-                    {props.observation.dateString}
+                    {Observation.date_string(props.observation)}
                 </>
             }
         }

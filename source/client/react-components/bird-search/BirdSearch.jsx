@@ -105,8 +105,17 @@ export function BirdSearch(props = {})
     {
         panic_if_not_type("object", bird);
 
-        const observation = Observation({bird, date:new Date()});
+        const date = new Date();
+
+        const observation = Observation({
+            bird,
+            day: date.getDate(),
+            month: (date.getMonth + 1),
+            year: date.getFullYear(),
+        });
+
         await props.backend.add_observation(observation)
+
         reset_search_results();
     }
 
@@ -116,7 +125,7 @@ export function BirdSearch(props = {})
     {
         panic_if_not_type("object", bird);
 
-        const observation = Observation({bird, date:new Date()});
+        const observation = Observation({bird});
 
         await open_modal_dialog(QueryObservationDeletion,
         {
@@ -147,14 +156,11 @@ export function BirdSearch(props = {})
             observation,
             onAccept: async({year, month, day})=>
             {
-                const newDate = new Date();
-                newDate.setFullYear(year);
-                newDate.setMonth(month-1);
-                newDate.setDate(day);
-
                 const modifiedObservation = Observation({
                     bird,
-                    date: newDate,
+                    day,
+                    month,
+                    year
                 });
 
                 if (!(await props.backend.add_observation(modifiedObservation))) {

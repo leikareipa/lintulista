@@ -33,9 +33,9 @@ export function QueryObservationDate(props = {})
     // Using local variables with the assumption that the dialog won't get re-rendered
     // prior to the user closing it. These values will be returned when the dialog is
     // closed.
-    let day = props.observation.date.getDate();
-    let month = (props.observation.date.getMonth() + 1);
-    let year = props.observation.date.getFullYear();
+    let day = props.observation.day;
+    let month = props.observation.month;
+    let year = props.observation.year;
 
     return <Dialog component="QueryObservationDate"
                    title={tr("Change observation date")}

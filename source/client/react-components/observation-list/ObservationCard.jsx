@@ -28,6 +28,8 @@ export function ObservationCard(props = {})
 {
     ObservationCard.validate_props(props);
 
+    const language = "fiFI";
+
     return <div className={`ObservationCard${props.isGhost? "Ghost" : ""}`}>
 
         {
@@ -47,7 +49,7 @@ export function ObservationCard(props = {})
                 {
                     props.isGhost
                     ? tr("100 Species Challenge")
-                    : props.observation.dateString
+                    : Observation.date_string(props.observation)
                 }
             </div>
             

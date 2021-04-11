@@ -11,8 +11,6 @@
 
 import {tr} from "./translator.js";
 import {public_assert,
-        error,
-        panic_if_undefined,
         panic_if_not_type} from "./assert.js";
 import {Observation} from "./observation.js";
 import {BackendRequest} from "./backend-request.js";
@@ -24,8 +22,8 @@ export async function BackendAccess(listKey, reduxStore)
     const knownBirds = Object.freeze(await BackendRequest.get_known_birds_list());
 
     const observations = (await BackendRequest.get_observations(listKey)).map(obs=>Observation({
+        ...obs,
         bird: knownBirds.find(b=>(b.species === obs.species)),
-        date: new Date(), /// TODO.
     }));
 
     reduxStore.dispatch({

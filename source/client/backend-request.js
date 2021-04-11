@@ -139,8 +139,7 @@ export const BackendRequest = {
             method: "GET",
         });
         
-        if (!wasSuccessful)
-        {
+        if (!wasSuccessful) {
             return [];
         }
 
