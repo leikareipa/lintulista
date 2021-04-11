@@ -1,6 +1,6 @@
 "use strict";
 
-import {ObservationListLight} from "../react-components/observation-list/ObservationListLight.js";
+import {ObservationList} from "../react-components/observation-list/ObservationList.js";
 import {BackendAccess} from "../backend-access.js";
 
 const initialStoreState = {
@@ -21,7 +21,7 @@ export async function start_app(listKey, container)
         <ReactRedux.Provider
             store={store}>
 
-            <ObservationListLight
+            <ObservationList
                 backend={backend}
             />
 
