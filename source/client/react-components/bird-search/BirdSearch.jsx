@@ -95,13 +95,15 @@ export function BirdSearch(props = {})
 
             const observation = observations.find(obs=>obs.species === bird.species);
 
-            return <BirdSearchResult key={bird.species}
-                                     bird={bird}
-                                     observation={observation? observation : null}
-                                     userHasEditRights={isLoggedIn}
-                                     callbackAddObservation={add_bird_to_list}
-                                     callbackRemoveObservation={remove_bird_from_list}
-                                     callbackChangeObservationDate={change_observation_date}/>;
+            return <BirdSearchResult
+                       key={bird.species}
+                       bird={bird}
+                       observation={observation? observation : null}
+                       userHasEditRights={isLoggedIn}
+                       asyncCallback_AddObservation={add_bird_to_list}
+                       asyncCallback_RemoveObservation={remove_bird_from_list}
+                       asyncCallback_ChangeObservationDate={change_observation_date}
+                   />;
         }
     }
 

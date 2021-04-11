@@ -4,8 +4,7 @@ import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {LL_Observation} from "../../observation.js";
-import {LL_Bird} from "../../bird.js";
-import { tr } from "../../translator.js";
+import {tr} from "../../translator.js";
 
 // An element displaying information about an individual bird search result.
 //
@@ -20,16 +19,16 @@ import { tr } from "../../translator.js";
 //     modified to include options to alter the observation - like it's date and so on.
 //
 // A callback for when the user asks to add the bird to their list of observations is to
-// be provided via props.callbackAddObservation. The function will be called with one
+// be provided via props.asyncCallback_AddObservation. The function will be called with one
 // parameter: props.bird.
 //
 // A callback for when the user asks to remove the bird from their list of observations
-// is to be provided via props.callbackRemoveObservation. The function will be called with
-// one parameter: props.bird.
+// is to be provided via props.asyncCallback_RemoveObservation. The function will be called
+// with one parameter: props.bird.
 //
 // A callback for when the user asks to change the date of the observation of which this
-// is a search result of is to be provided via props.callbackChangeObservationDate. The
-// function will be called with one parameter: props.bird.
+// is a search result of is to be provided via props.asyncCallback_ChangeObservationDate.
+// The function will be called with one parameter: props.bird.
 //
 export function BirdSearchResult(props = {})
 {
@@ -38,26 +37,25 @@ export function BirdSearchResult(props = {})
     // A button element the user can press to add or remove the search result to/from the
     // list, depending on whether they already have an observation of this bird on their
     // list.
-    const addAndRemoveButton = (()=>
-    {
-        if (!props.userHasEditRights)
-        {
+    const addAndRemoveButton = (()=>{
+        if (!props.userHasEditRights) {
             return <></>
         }
-
-        if (!props.observation)
-        {
-            return <AsyncIconButton icon="fas fa-plus"
-                                    title={tr("Add %1 to the list", props.bird.species)}
-                                    titleWhenClicked={tr("Adding...")}
-                                    task={()=>props.callbackAddObservation(props.bird)}/>
+        else if (!props.observation) {
+            return <AsyncIconButton
+                       icon="fas fa-plus"
+                       title={tr("Add %1 to the list", props.bird.species)}
+                       titleWhenClicked={tr("Adding...")}
+                       task={()=>props.asyncCallback_AddObservation(props.bird)}
+                   />
         }
-        else
-        {
-            return <AsyncIconButton icon="fas fa-eraser"
-                                    title={tr("Remove %1 from the list", props.bird.species)}
-                                    titleWhenClicked={tr("Removing...")}
-                                    task={()=>props.callbackRemoveObservation(props.bird)}/>
+        else {
+            return <AsyncIconButton
+                       icon="fas fa-eraser"
+                       title={tr("Remove %1 from the list", props.bird.species)}
+                       titleWhenClicked={tr("Removing...")}
+                       task={()=>props.asyncCallback_RemoveObservation(props.bird)}
+                   />
         }
     })();
 
@@ -70,7 +68,7 @@ export function BirdSearchResult(props = {})
             if (props.userHasEditRights)
             {
                 return <span className="edit-date"
-                             onClick={()=>props.callbackChangeObservationDate(props.bird)}>
+                             onClick={()=>props.asyncCallback_ChangeObservationDate(props.bird)}>
                            
                     {LL_Observation.date_string(props.observation)}
                 
@@ -128,7 +126,9 @@ BirdSearchResult.validate_props = function(props)
 {
     panic_if_not_type("object", props);
     panic_if_not_type("boolean", props.userHasEditRights);
-    panic_if_not_type("function", props.callbackAddObservation, props.callbackRemoveObservation, props.callbackChangeObservationDate);
+    panic_if_not_type("function", props.asyncCallback_AddObservation,
+                                  props.asyncCallback_RemoveObservation,
+                                  props.asyncCallback_ChangeObservationDate);
 
     return;
 }
