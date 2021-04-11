@@ -1,50 +1,53 @@
 /*
- * 2019 Tarpeeksi Hyvae Soft
- * Lintulista
+ * 2019, 2021 Tarpeeksi Hyvae Soft
+ * 
+ * Software: Lintulista
  * 
  */
 
 "use strict";
 
-import {panic_if_not_type, expect_true} from "./assert.js";
+import {panic_if_not_type,
+        expect_true,
+        ll_private_assert} from "./assert.js";
+import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
+import {LL_BaseType} from "./base-type.js";
 
-// Represents a bird of a given kind, identified by its species name, family, and order.
-export function Bird(args = {})
+export const LL_Bird = function(species = "")
 {
-    panic_if_not_type("object", args);
-    panic_if_not_type("string", args.species);
+    panic_if_not_type("string", species);
 
-    // The generic image to be displayed for this bird's thumbnail if no specific image
-    // URL was provided.
-    const nullThumbnailUrl = "./img/null-bird-thumbnail.png";
+    /// TODO: Verify that this is a known bird species.
 
-    const publicInterface = Object.freeze(
-    {
-        species: args.species,
-        order: (args.order || "Tuntematon"),
-        family: (args.family || "Tuntematon"),
-        thumbnailUrl: (args.thumbnailUrl || nullThumbnailUrl),
-        nullThumbnailUrl
+    const publicInterface = Object.freeze({
+        species,
+        thumbnailUrl: birdThumbnailFilename.hasOwnProperty(species)
+                      ? `./img/bird-thumbnails/${birdThumbnailFilename[species]}`
+                      : LL_Bird.nullThumbnailUrl,
+
+        ...LL_BaseType(LL_Bird)
     });
     
     return publicInterface;
 }
 
-Bird.clone = function(bird = Bird)
+LL_Bird.is_parent_of = function(candidate)
 {
-    panic_if_not_type("object", bird);
-    panic_if_not_type("string", bird.species, bird.family, bird.order);
+    return ((LL_BaseType.type_of(candidate) === LL_Bird) &&
+            candidate.hasOwnProperty("species") &&
+            candidate.hasOwnProperty("thumbnailUrl"));
+}
 
-    return Bird({
-        species: bird.species,
-        family: bird.family,
-        order: bird.order,
-        thumbnailUrl: bird.thumbnailUrl,
-    });
+LL_Bird.nullThumbnailUrl = "./img/null-bird-thumbnail.png";
+
+LL_Bird.clone = function(bird = LL_Bird)
+{
+    ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+    return LL_Bird(bird.species);
 }
 
 // Runs basic tests on this unit. Returns true if all tests passed; false otherwise.
-Bird.test = ()=>
+LL_Bird.test = ()=>
 {
     const bird = Bird({species:"Test1", family:"Test2", order:"Test3", thumbnailUrl:"Test4"});
 

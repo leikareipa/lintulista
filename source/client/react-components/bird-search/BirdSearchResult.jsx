@@ -3,18 +3,18 @@
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
 import {AsyncIconButton} from "../buttons/AsyncIconButton.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {Observation} from "../../observation.js";
-import {Bird} from "../../bird.js";
+import {LL_Observation} from "../../observation.js";
+import {LL_Bird} from "../../bird.js";
 import { tr } from "../../translator.js";
 
 // An element displaying information about an individual bird search result.
 //
-// The bird of which this is a search result of is to be provided via props.bird as a
-// Bird() object.
+// The bird of which this is a search result of is to be provided via props.bird as an
+// LL_Bird() object.
 //
 // If the user's list of observations already includes this bird, that observation is
-// to be provided via props.observation as an Observation() object; otherwise, this prop
-// can be set to null.
+// to be provided via props.observation as an LL_Observation() object; otherwise, this
+// prop can be set to null.
 //
 //     If the user has previously observed this bird, the search result display will be
 //     modified to include options to alter the observation - like it's date and so on.
@@ -49,14 +49,14 @@ export function BirdSearchResult(props = {})
         {
             return <AsyncIconButton icon="fas fa-plus"
                                     title={tr("Add %1 to the list", props.bird.species)}
-                                    titleWhenClicked={tr("Adding to the list...")}
+                                    titleWhenClicked={tr("Adding...")}
                                     task={()=>props.callbackAddObservation(props.bird)}/>
         }
         else
         {
             return <AsyncIconButton icon="fas fa-eraser"
                                     title={tr("Remove %1 from the list", props.bird.species)}
-                                    titleWhenClicked={tr("Removing from the list...")}
+                                    titleWhenClicked={tr("Removing...")}
                                     task={()=>props.callbackRemoveObservation(props.bird)}/>
         }
     })();
@@ -72,14 +72,14 @@ export function BirdSearchResult(props = {})
                 return <span className="edit-date"
                              onClick={()=>props.callbackChangeObservationDate(props.bird)}>
                            
-                    {Observation.date_string(props.observation)}
+                    {LL_Observation.date_string(props.observation)}
                 
                 </span>
             }
             else
             {
                 return <>
-                    {Observation.date_string(props.observation)}
+                    {LL_Observation.date_string(props.observation)}
                 </>
             }
         }
@@ -93,24 +93,29 @@ export function BirdSearchResult(props = {})
 
     return <div className={`BirdSearchResult ${!props.observation? "not-previously-observed" : ""}`.trim()}>
 
-                <BirdThumbnail bird={props.bird}
-                               useLazyLoading={false}/>
+        <BirdThumbnail
+            species={props.bird.species}
+            useLazyLoading={false}/>
 
-                {/* Displays basic information about the search result; like whether the
-                  * user has already observed this species.*/}
-                <div className="card">
-                    <div className="bird-name">
-                        {props.bird.species}
-                    </div>
-                    <div className="date-observed">
-                        {dateElement}
-                    </div>
-                </div>
+        {/* Displays basic information about the search result; like whether the
+            * user has already observed this species.*/}
+        <div className="card">
 
-                {/* A button the user can press to add or remove this observation to/from
-                  * their list.*/}
-                {addAndRemoveButton}
-           </div>
+            <div className="bird-name">
+                {props.bird.species}
+            </div>
+
+            <div className="date-observed">
+                {dateElement}
+            </div>
+
+        </div>
+
+        {/* A button the user can press to add or remove this observation to/from
+            * their list.*/}
+        {addAndRemoveButton}
+
+    </div>
 }
 
 BirdSearchResult.defaultProps =

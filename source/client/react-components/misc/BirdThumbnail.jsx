@@ -7,7 +7,7 @@
 "use strict";
 
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
-import {Bird} from "../../bird.js";
+import {LL_Bird} from "../../bird.js";
 
 // For lazy image loading. The placeholder image we'll display when the real image is yet
 // to be lazily loaded in.
@@ -22,8 +22,8 @@ const observedImages = new Set([placeholderThumbnailUrl]);
 // image is used until the thumbnail element comes at least partly into the viewport, at which
 // point the actual image is substituted.
 //
-// The bird whose thumbnail image is to be displayed should be provided via props.bird as a
-// Bird() object.
+// The bird species whose thumbnail image is to be displayed should be provided via
+// props.species.
 //
 // Lazy loading of the thumbnail image can be enabled/disabled via props.useLazyLoading.
 //
@@ -31,7 +31,9 @@ export function BirdThumbnail(props = {})
 {
     BirdThumbnail.validate_props(props);
 
-    observedImages.add(props.bird.nullThumbnailUrl);
+    const bird = LL_Bird(props.species);
+
+    observedImages.add(LL_Bird.nullThumbnailUrl);
 
     const thumbnailRef = React.createRef();
 
@@ -41,13 +43,13 @@ export function BirdThumbnail(props = {})
     const [thumbnailSrc, setThumbnailSrc] = React.useState(()=>
     {
         if (props.useLazyLoading &&
-            !observedImages.has(props.bird.thumbnailUrl))
+            !observedImages.has(bird.thumbnailUrl))
         {
             return placeholderThumbnailUrl;
         }
         else
         {
-            return props.bird.thumbnailUrl;
+            return bird.thumbnailUrl;
         }
     });
 
@@ -63,7 +65,7 @@ export function BirdThumbnail(props = {})
             {
                 if (element.isIntersecting)
                 {
-                    setThumbnailSrc(props.bird.thumbnailUrl);
+                    setThumbnailSrc(bird.thumbnailUrl);
                     intersectionObserver.disconnect();
                 }
             });
@@ -72,7 +74,7 @@ export function BirdThumbnail(props = {})
 
     React.useEffect(()=>
     {
-        if (thumbnailSrc === props.bird.thumbnailUrl)
+        if (thumbnailSrc === bird.thumbnailUrl)
         {
             mark_thumbnail_observed();
         }
@@ -96,7 +98,7 @@ export function BirdThumbnail(props = {})
             if (isInView)
             {
                 mark_thumbnail_observed();
-                thumbnailRef.current.setAttribute("src", props.bird.thumbnailUrl);
+                thumbnailRef.current.setAttribute("src", bird.thumbnailUrl);
             }
             else if (intersectionObserver)
             {
@@ -114,7 +116,7 @@ export function BirdThumbnail(props = {})
 
     function mark_thumbnail_observed()
     {
-        observedImages.add(props.bird.thumbnailUrl);
+        observedImages.add(bird.thumbnailUrl);
     }
 }
 
@@ -125,7 +127,8 @@ BirdThumbnail.defaultProps =
 
 BirdThumbnail.validate_props = function(props)
 {
-    panic_if_not_type("object", props, props.bird);
+    panic_if_not_type("object", props);
+    panic_if_not_type("string", props.species);
 
     return;
 }

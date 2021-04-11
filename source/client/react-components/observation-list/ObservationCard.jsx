@@ -8,15 +8,15 @@
 
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
-import {Observation} from "../../observation.js";
-import {Bird} from "../../bird.js";
+import {LL_Observation} from "../../observation.js";
+import {LL_Bird} from "../../bird.js";
 import {tr} from "../../translator.js";
 
 // Displays information about an observation - like a thumbnail of the species, the species
 // name, and the date of the observation.
 //
 // The observation that this card represents is to be provided via props.observation as an
-// Observation() object.
+// LL_Observation() object.
 //
 // If props.isGhost is set to true, the card will be displated as a "ghost". A ghost card is
 // intended to serve as a placeholder for an actual observation - i.e. it's an observation
@@ -35,21 +35,21 @@ export function ObservationCard(props = {})
         {
             props.isGhost
             ? <div className="BirdThumbnail"/>
-            : <BirdThumbnail bird={props.observation.bird}/>
+            : <BirdThumbnail species={props.observation.species}/>
         }
 
         {/* Displays facts about the observation; like what was observed and when.*/}
         <div className="observation-info">
 
             <div className="bird-name">
-                {props.observation.bird.species}
+                {props.observation.species}
             </div>
 
             <div className="date">
                 {
                     props.isGhost
                     ? tr("100 Species Challenge")
-                    : Observation.date_string(props.observation)
+                    : LL_Observation.date_string(props.observation)
                 }
             </div>
             

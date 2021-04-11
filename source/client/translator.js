@@ -8,7 +8,7 @@
 "use strict";
 
 import {translations} from "./translations.js";
-import {private_error} from "./throwable.js";
+import {panic_if_not_type} from "./assert.js";
 
 const dstLanguage = "fiFI";
 
@@ -17,9 +17,7 @@ const dstLanguage = "fiFI";
 export function tr(originalString = "",
                    ...values)
 {
-    if (typeof originalString !== "string") {
-        throw private_error("Invalid arguments.");
-    }
+    panic_if_not_type("string", originalString);
 
     let translatedString = (()=>{
         if (dstLanguage === "enEN") {

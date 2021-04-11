@@ -29,7 +29,7 @@ export function QueryLoginCredentials(props = {})
                    title={tr("Log in")}
                    rejectButtonText={tr("Cancel")}
                    acceptButtonText={tr("Log in")}
-                   acceptButtonWaitingText={tr("Logging in")}
+                   acceptButtonWaitingText={tr("Logging in...")}
                    acceptButtonEnabled={true}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}
                    enterAccepts={true}

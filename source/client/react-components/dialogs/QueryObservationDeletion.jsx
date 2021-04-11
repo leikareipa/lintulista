@@ -43,13 +43,14 @@ export function QueryObservationDeletion(props = {})
                    onDialogAccept={accept}
                    onDialogReject={reject}>
 
-        <BirdThumbnail bird={props.observation.bird}
-                        useLazyLoading={false}/>
+        <BirdThumbnail
+            species={props.observation.species}
+            useLazyLoading={false}/>
 
         <div className="fields">
 
             <div className="bird-name">
-                {props.observation.bird.species}:
+                {props.observation.species}:
             </div>
 
             <input
@@ -61,7 +62,7 @@ export function QueryObservationDeletion(props = {})
             />
 
             <div className="instruction">
-                {tr("Type \"%1\" to continue", props.observation.bird.species)}
+                {tr("Type \"%1\" to continue", props.observation.species)}
             </div>
             
         </div>
@@ -70,7 +71,7 @@ export function QueryObservationDeletion(props = {})
 
     function update_on_input(inputEvent)
     {
-        const doesNameMatch = inputEvent.target.value.toLowerCase() === props.observation.bird.species.toLowerCase();
+        const doesNameMatch = inputEvent.target.value.toLowerCase() === props.observation.species.toLowerCase();
         setButtonEnabled("accept", doesNameMatch);
     }
 

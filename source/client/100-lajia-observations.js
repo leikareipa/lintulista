@@ -7,12 +7,12 @@
 
 "use strict";
 
-import {Bird} from "./bird.js";
-import {Observation} from "./observation.js";
+import {LL_Bird} from "./bird.js";
+import {LL_Observation} from "./observation.js";
 import {panic_if_not_type} from "./assert.js";
 
 // A selection of 100 species from BirdLife's "100 Lajia" challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
-const sataLajia = ([
+const sataLajia = [
     "Alli", "Fasaani", "Haahka", "Haapana", "Haarapääsky", "Harakka", "Härkälintu", "Harmaahaikara", "Harmaapäätikka",
     "Harmaasieppo", "Helmipöllö", "Hiirihaukka", "Hiiripöllö", "Hömötiainen", "Huuhkaja", "Isokoskelo", "Järripeippo",
     "Käenpiika", "Käki", "Käpytikka", "Kaulushaikara", "Kehrääjä", "Keltasirkku", "Keltavästäräkki", "Kesykyyhky",
@@ -25,18 +25,14 @@ const sataLajia = ([
     "Silkkiuikku", "Sinirinta", "Sinisorsa", "Sinisuohaukka", "Sinitiainen", "Sirittäjä", "Suokukko", "Talitiainen",
     "Tavi", "Teeri", "Telkkä", "Tikli", "Tilhi", "Törmäpääsky", "Töyhtötiainen", "Tukkakoskelo", "Tundrahanhi",
     "Tuulihaukka", "Urpiainen", "Valkoposkihanhi", "Varis", "Varpunen", "Varpushaukka", "Varpuspöllö", "Västäräkki"
-]);
+].map(species=>LL_Observation({species}));
 
-const sataLajiaObservations = sataLajia.map(species=>Observation({
-    bird: Bird({species}),
-}));
-
-export function merge_100_lajia_with(observations = [Observation])
+export function merge_100_lajia_with(observations = [LL_Observation])
 {
     panic_if_not_type("array", observations);
 
-    return sataLajiaObservations.reduce((mergedArr, sataObs)=>{
-        const existingObservation = observations.find(e=>e.bird.species === sataObs.bird.species);
+    return sataLajia.reduce((mergedArr, sataObs)=>{
+        const existingObservation = observations.find(e=>e.species === sataObs.species);
         mergedArr.push(existingObservation? existingObservation : sataObs);
         return mergedArr;
     }, []);

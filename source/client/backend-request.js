@@ -7,12 +7,13 @@
 
 "use strict";
 
-import {error,
+import {ll_private_assert,
         panic_if_undefined,
         panic_if_not_type,
         panic} from "./assert.js";
 import {birdThumbnailFilename} from "./bird-thumbnail-filename.js";
-import {Bird} from "./bird.js";
+import {LL_Observation} from "./observation.js";
+import {LL_Bird} from "./bird.js";
 
 const backendURLs = {
     lists: "http://localhost:8080",
@@ -85,14 +86,14 @@ export const BackendRequest = {
 
     delete_observation: async function(observation, listKey, token)
     {
-        panic_if_undefined(observation, observation.unixTimestamp, observation.bird);
+        panic_if_undefined(observation, listKey, token);
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {
             method: "DELETE",
             body: JSON.stringify({
                 token,
-                species: observation.bird.species,
+                species: observation.species,
             }),
         });
 
@@ -100,35 +101,26 @@ export const BackendRequest = {
     },
 
     // Returns a list of the birds recognized by Lintulista. Birds not on this list can't
-    // be added as observations. The list will be returned as an array of Bird() objects;
+    // be added as observations. The list will be returned as an array of LL_Bird() objects;
     // or, on failure, as an empty array.
     get_known_birds_list: async function()
     {
         let response = await fetch(backendURLs.knownBirdSpecies);
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
             panic(`The server responded with an error: ${response.statusText}`);
             return false;
         }
-        else
-        {
+        else {
             response = await response.json();
         }
 
         panic_if_not_type("array", response.birds);
 
-        return response.birds.map(b=>Bird({
-            order: b.order,
-            family: b.family,
-            species: b.species,
-            thumbnailUrl: birdThumbnailFilename[b.species]
-                          ? ("./img/bird-thumbnails/" + birdThumbnailFilename[b.species])
-                          : null,
-        }));
+        return response.birds.map(b=>LL_Bird(b.species));
     },
 
-    // Returns as an array of Observation() objects the observations associated with the
+    // Returns as an array of LL_Observation() objects the observations associated with the
     // given list; or, on failure, an empty array.
     get_observations: async function(listKey)
     {
@@ -145,28 +137,27 @@ export const BackendRequest = {
 
         panic_if_not_type("array", responseData.observations);
 
-        return responseData.observations;
+        return responseData.observations.map(obs=>LL_Observation(obs));
     },
 
     // Submits the given bird as an observation to be appended to the given list. Returns
     // true if succeeded; false otherwise.
-    put_observation: async function(observation, listKey, token)
+    put_observation: async function(observation = LL_Observation,
+                                    listKey = "",
+                                    token = "")
     {
-        panic_if_not_type("string", listKey);
-        panic_if_not_type("object", observation, observation.bird);
-        panic_if_undefined(observation.unixTimestamp);
-
-        const date = new Date(observation.unixTimestamp * 1000);
+        panic_if_not_type("string", listKey, token);
+        ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
         const [wasSuccessful,] = await this.make_request(`${backendURLs.lists}?list=${listKey}`,
         {
             method: "PUT",
             body: JSON.stringify({
                 token,
-                species: observation.bird.species,
-                day: date.getDate(),
-                month: (date.getMonth() + 1),
-                year: date.getFullYear(),
+                species: observation.species,
+                day: observation.day,
+                month: observation.month,
+                year: observation.year,
             }),
         });
 

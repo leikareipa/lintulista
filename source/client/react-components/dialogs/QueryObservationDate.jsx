@@ -44,14 +44,14 @@ export function QueryObservationDate(props = {})
                    onDialogReject={reject}>
 
         <BirdThumbnail
-            bird={props.observation.bird}
+            species={props.observation.species}
             useLazyLoading={false}
         />
 
         <div className="fields">
 
             <div className="bird-name">
-                {props.observation.bird.species}
+                {props.observation.species}
             </div>
 
             <div className="date-bar">

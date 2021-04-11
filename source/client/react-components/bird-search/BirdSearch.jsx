@@ -1,13 +1,15 @@
 "use strict";
 
-import {panic_if_not_type, throw_if_not_true} from "../../assert.js"
+import {panic_if_not_type,
+        throw_if_not_true,
+        ll_private_assert} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
-import {Observation} from "../../observation.js";
-import {Bird} from "../../bird.js";
+import {LL_Observation} from "../../observation.js";
+import {LL_Bird} from "../../bird.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
@@ -19,11 +21,11 @@ import {Bird} from "../../bird.js";
 //
 // The callback provided via props.callbackAddObservation will be called when the user clicks
 // to add to the list a search result whose bird is not already on the list. The callback
-// will be passed one parameter: a Bird() object representing the type of bird in question.
+// will be passed one parameter: an LL_Bird() object representing the type of bird in question.
 //
 // The callback provided via props.callbackRemoveObservation will be called when the user
 // clicks to remove from the list a search result whose bird is on the list. The callback
-// will be passed one parameter: a Bird() object representing the type of bird in question.
+// will be passed one parameter: an LL_Bird() object representing the type of bird in question.
 //
 export function BirdSearch(props = {})
 {
@@ -46,7 +48,7 @@ export function BirdSearch(props = {})
            </div>
 
     // Show search results for the given search string.
-    function refresh_search_results(searchString)
+    function refresh_search_results(searchString = "")
     {
         searchString = searchString.trim();
 
@@ -76,8 +78,10 @@ export function BirdSearch(props = {})
             })(knownBirds.find(bird=>(bird.species.toLowerCase().includes(searchString.toLowerCase()))));
         })(knownBirds.find(bird=>(bird.species.toLowerCase() === searchString.toLowerCase())));
 
-        function update_match(bird)
+        function update_match(bird = LL_Bird)
         {
+            ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+
             if (!currentSearchResult ||
                 (bird.species !== currentSearchResult.bird.species))
             {
@@ -85,9 +89,11 @@ export function BirdSearch(props = {})
             }
         }
 
-        function make_result_element(bird)
+        function make_result_element(bird = LL_Bird)
         {
-            const observation = observations.find(obs=>obs.bird.species === bird.species);
+            ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
+
+            const observation = observations.find(obs=>obs.species === bird.species);
 
             return <BirdSearchResult key={bird.species}
                                      bird={bird}
@@ -100,17 +106,17 @@ export function BirdSearch(props = {})
     }
 
     // Called when the user selects to add the search result's bird to their list of
-    // observations. The 'bird' parameter is expected to be a Bird() object.
-    async function add_bird_to_list(bird = Bird)
+    // observations. The 'bird' parameter is expected to be an LL_Bird() object.
+    async function add_bird_to_list(bird = LL_Bird)
     {
-        panic_if_not_type("object", bird);
+        ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
 
         const date = new Date();
 
-        const observation = Observation({
-            bird,
+        const observation = LL_Observation({
+            species: bird.species,
             day: date.getDate(),
-            month: (date.getMonth + 1),
+            month: (date.getMonth() + 1),
             year: date.getFullYear(),
         });
 
@@ -121,11 +127,11 @@ export function BirdSearch(props = {})
 
     // Called when the user selects to remove the search result's bird from their list of
     // observations.
-    async function remove_bird_from_list(bird = Bird)
+    async function remove_bird_from_list(bird = LL_Bird)
     {
-        panic_if_not_type("object", bird);
+        ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
 
-        const observation = Observation({bird});
+        const observation = LL_Observation({species: bird.species});
 
         await open_modal_dialog(QueryObservationDeletion,
         {
@@ -139,11 +145,11 @@ export function BirdSearch(props = {})
     }
 
     // Called when the user selects to change the date of an observation.
-    async function change_observation_date(bird = Bird)
+    async function change_observation_date(bird = LL_Bird)
     {
-        panic_if_not_type("object", bird);
+        ll_private_assert(LL_Bird.is_parent_of(bird), "Invalid arguments.");
 
-        const observation = observations.find(obs=>(obs.bird.species === bird.species));
+        const observation = observations.find(obs=>(obs.species === bird.species));
 
         if (observation === undefined) {
             panic("Was asked to delete an observation of a species of which no observation exists.");
@@ -156,8 +162,8 @@ export function BirdSearch(props = {})
             observation,
             onAccept: async({year, month, day})=>
             {
-                const modifiedObservation = Observation({
-                    bird,
+                const modifiedObservation = LL_Observation({
+                    species: bird.species,
                     day,
                     month,
                     year

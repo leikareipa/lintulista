@@ -6,15 +6,18 @@
 
 "use strict";
 
-import {panic_if_undefined, panic, panic_if_not_type} from "../../assert.js";
+import {panic_if_undefined,
+        panic,
+        panic_if_not_type,
+        ll_assert_type} from "../../assert.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {ObservationCard} from "./ObservationCard.js";
-import {Observation} from "../../observation.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
+import { LL_Bird } from "../../bird.js";
 
 // A list of the birds singled out in BirdLife's 100 Lajia challenge (www.birdlife.fi/lintuharrastus/100lintulajia/).
 // In the future, this array might be located in some other file, but for now it's made its home here.
@@ -176,9 +179,9 @@ export function ObservationList(props = {})
             });
         },
 
-        set_observation_date: async function(bird)
+        set_observation_date: async function(bird = LL_Bird)
         {
-            panic_if_not_type("object", bird);
+            ll_assert_type(bird, LL_Bird);
 
             const existingObservation = observationCards.map(o=>o.observation).find(obs=>(obs.bird.species === bird.species));
 
@@ -322,7 +325,7 @@ export function ObservationList(props = {})
 
     function observation_card(obs)
     {
-        panic_if_not_type("object", obs);
+        ll_assert_type(obs, LL_Observation);
 
         return {
             observation: obs,

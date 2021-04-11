@@ -10,26 +10,24 @@
 "use strict";
 
 import {tr} from "./translator.js";
-import {public_assert,
+import {ll_public_assert,
+        ll_private_assert,
         panic_if_not_type} from "./assert.js";
-import {Observation} from "./observation.js";
 import {BackendRequest} from "./backend-request.js";
-import {Bird} from "./bird.js";
+import {LL_Observation} from "./observation.js";
+import {LL_Bird} from "./bird.js";
+import { LL_BaseType } from "./base-type.js";
 
 // Provides mediated access to the given list's data in Lintulista's backend.
 export async function BackendAccess(listKey, reduxStore)
 {
     const knownBirds = Object.freeze(await BackendRequest.get_known_birds_list());
-
-    const observations = (await BackendRequest.get_observations(listKey)).map(obs=>Observation({
-        ...obs,
-        bird: knownBirds.find(b=>(b.species === obs.species)),
-    }));
+    const observations = await BackendRequest.get_observations(listKey);
 
     reduxStore.dispatch({
         type: "set-observations",
         observations: observations.reduce((list, obs)=>{
-            list.push(Observation.clone(obs));
+            list.push(LL_Observation.clone(obs));
             return list;
         }, [])
     });
@@ -37,7 +35,7 @@ export async function BackendAccess(listKey, reduxStore)
     reduxStore.dispatch({
         type: "set-known-birds",
         knownBirds: knownBirds.reduce((list, bird)=>{
-            list.push(Bird.clone(bird));
+            list.push(LL_Bird.clone(bird));
             return list;
         }, [])
     });
@@ -52,11 +50,11 @@ export async function BackendAccess(listKey, reduxStore)
         {
             const loginDetails = await BackendRequest.login(listKey, username, password);
             
-            public_assert(loginDetails, tr("Login failed"));
+            ll_public_assert(loginDetails, tr("Login failed"));
 
-            public_assert(((typeof loginDetails.token === "string") &&
-                           (typeof loginDetails.until === "number")),
-                          tr("Invalid server response"));
+            ll_public_assert(((typeof loginDetails.token === "string") &&
+                              (typeof loginDetails.until === "number")),
+                             tr("Invalid server response"));
 
             loginToken = loginDetails.token;
             loginValidUntil = loginDetails.until;
@@ -67,10 +65,11 @@ export async function BackendAccess(listKey, reduxStore)
 
         logout: async function()
         {
-            public_assert((loginToken !== null), tr("Not logged in."));
+            ll_private_assert((loginToken !== null),
+                              "Trying to log out without having been logged in.");
 
-            public_assert(await BackendRequest.logout(listKey, loginToken),
-                          tr("Logout failed"));
+            ll_public_assert(await BackendRequest.logout(listKey, loginToken),
+                             tr("Logout failed"));
 
             loginToken = null;
             loginValidUntil = undefined;
@@ -82,16 +81,16 @@ export async function BackendAccess(listKey, reduxStore)
         // Removes the given observation from the server-side list of observations. Updates
         // the local cache of observations, accordingly. Returns true if successful; false
         // otherwise.
-        delete_observation: async function(observation = Observation)
+        delete_observation: async function(observation = LL_Observation)
         {
             panic_if_not_type("string", listKey);
-            panic_if_not_type("object", observation);
+            ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
-            const obsIdx = observations.findIndex(obs=>(obs.bird.species === observation.bird.species));
-            public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
+            const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
+            ll_public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
 
             const wasSuccess = await BackendRequest.delete_observation(observation, listKey, loginToken);
-            public_assert(wasSuccess, tr("Failed to remove the observation"));
+            ll_public_assert(wasSuccess, tr("Failed to remove the observation"));
 
             reduxStore.dispatch({
                 type: "delete-observation",
@@ -106,19 +105,18 @@ export async function BackendAccess(listKey, reduxStore)
         // Appends the given observation to the server-side list of observations. If an
         // observation of this species already exists, it'll be updated with this new info.
         // Returns true if successful; false otherwise.
-        add_observation: async function(observation = Observation)
+        add_observation: async function(observation = LL_Observation)
         {
-            panic_if_not_type("object", observation,
-                                        observation.bird);
+            ll_private_assert(LL_Observation.is_parent_of(observation), "Invalid arguments.");
 
-            const obsIdx = observations.findIndex(obs=>(obs.bird.species === observation.bird.species));
+            const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             const isExistingObservation = (obsIdx >= 0);
             const wasSuccess = await BackendRequest.put_observation(observation, listKey, loginToken);
 
-            public_assert(wasSuccess,
-                          tr(isExistingObservation
-                             ? "Failed to update the observation"
-                             : "Failed to add the observation"));
+            ll_public_assert(wasSuccess,
+                             tr(isExistingObservation
+                                ? "Failed to update the observation"
+                                : "Failed to add the observation"));
             
             reduxStore.dispatch({
                 type: "add-observation",

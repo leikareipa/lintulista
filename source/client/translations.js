@@ -38,8 +38,8 @@ export const translations = {
     "Log in":
         {fiFI: "Kirjaudu sisään"},
 
-    "Logging in":
-        {fiFI: "Kirjaudutaan sisään"},
+    "Logging in...":
+        {fiFI: "Kirjaudutaan..."},
 
     "Log out":
         {fiFI: "Kirjaudu ulos"},
@@ -107,17 +107,17 @@ export const translations = {
     "Remove %1 from the list":
         {fiFI: "Poista %1 listasta"},
 
-    "Adding to the list...":
-        {fiFI: "Lisätään listaan..."},
+    "Adding...":
+        {fiFI: "Lisätään..."},
 
-    "Removing from the list...":
-        {fiFI: "Poistetaan listaan..."},
+    "Removing...":
+        {fiFI: "Poistetaan..."},
 
     "No observation":
         {fiFI: "Ei havaintoa"},
 
     "The list has %1 species":
-        {fiFI: "Lajihavaintoja on nyt %1"},
+        {fiFI: "Havaintoja on nyt %1"},
 
     "The list is currently empty":
         {fiFI: "Listassa ei vielä ole lajihavaintoja"},

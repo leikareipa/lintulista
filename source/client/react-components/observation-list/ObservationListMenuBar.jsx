@@ -9,12 +9,12 @@
 import {panic_if_not_type, throw_if_not_true} from "../../assert.js";
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
-import {Observation} from "../../observation.js";
+import {LL_Observation} from "../../observation.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
 import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
 import {Button} from "../buttons/Button.js";
-import {Bird} from "../../bird.js";
+import {LL_Bird} from "../../bird.js";
 import { tr } from "../../translator.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can

@@ -6,33 +6,50 @@
 
 "use strict";
 
-import {expect_true} from "./assert.js";
-import {Bird} from "./bird.js";
+import {expect_true,
+        panic_if_not_type} from "./assert.js";
+import {LL_BaseType} from "./base-type.js";
 
 /// Temporary.
 const language = "fiFI";
 
-// Represents an observation of a given bird at a given time.
-export function Observation({bird = Bird,
-                             day = 0,
-                             month = 0,
-                             year = 0})
+export const LL_Observation = function({species, day, month, year})
 {
-    const isGhost = ((day <= 0) || (month <= 0) || (year <= 0));
+    panic_if_not_type("string", species);
 
-    const publicInterface = Object.freeze({
-        isGhost,
-        bird,
+    return Object.freeze({
+        isGhost: (!day || !month || !year),
+        species,
         day,
         month,
         year,
+
+        ...LL_BaseType(LL_Observation)
     });
-    
-    return publicInterface;
+};
+
+LL_Observation.is_parent_of = function(candidate)
+{
+    return ((LL_BaseType.type_of(candidate) === LL_Observation) &&
+            candidate.hasOwnProperty("isGhost") &&
+            candidate.hasOwnProperty("day") &&
+            candidate.hasOwnProperty("month") &&
+            candidate.hasOwnProperty("year"));
 }
 
-Observation.date_string = function(observation = Observation)
+// Returns a language-formatted date string representing the date of the given observation.
+LL_Observation.date_string = function(observation = LL_Observation)
 {
+    /// TODO: Validate arguments.
+
+    if (observation.isGhost ||
+        (observation.day === undefined) ||
+        (observation.month === undefined) ||
+        (observation.year === undefined))
+    {
+        return "";
+    }
+
     const monthNames = {
         fiFI: [
             "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
@@ -57,26 +74,22 @@ Observation.date_string = function(observation = Observation)
     };
 
     return (dateString[language] || dateString["fiFI"]);
-}
+};
 
-Observation.clone = function(observation = Observation)
+LL_Observation.clone = function(observation = LL_Observation)
 {
-    return Observation({
-        bird: Bird(observation.bird),
-        day: observation.day,
-        month: observation.month,
-        year: observation.year,
-        isGhost: observation.isGhost,
-    });
+    /// TODO: Validate arguments.
+    
+    return LL_Observation(observation);
 }
 
 // Runs basic tests on this unit. Returns true if all tests passed; false otherwise.
-Observation.test = ()=>
+LL_Observation.test = ()=>
 {
     const dateInMilliseconds = 1567214553700
     const date = new Date(dateInMilliseconds);
     const bird = Bird({species:"Test1", family:"Test2", order:"Test3", thumbnailUrl:"Test4"});
-    const observation = Observation({bird, date});
+    const observation = LL_Observation({bird, date});
 
     const expectedUnixTimestamp = Math.round(date.getTime() / 1000);
     const expectedTimeString = String(date.getHours()).padStart(2, "0") + ":" +

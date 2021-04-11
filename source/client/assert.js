@@ -9,12 +9,22 @@
 "use strict";
 
 import {darken_viewport} from "./darken_viewport.js"
-import {public_error} from "./throwable.js"
+import {LL_PrivateError} from "./private-error.js"
+import {LL_PublicError} from "./public-error.js"
 
-export function public_assert(condition, failMessage = "")
+export function ll_private_assert(condition, failMessage = "")
 {
     if (!condition) {
-        throw public_error(failMessage);
+        throw LL_PrivateError(failMessage);
+    }
+
+    return;
+}
+
+export function ll_public_assert(condition, failMessage = "")
+{
+    if (!condition) {
+        throw LL_PublicError(failMessage);
     }
 
     return;

@@ -12,7 +12,7 @@ import {merge_100_lajia_with} from "../../100-lajia-observations.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationCard} from "./ObservationCard.js";
-import {Observation} from "../../observation.js";
+import {LL_Observation} from "../../observation.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 function cards_from_observations(observations = [Observation])
@@ -23,7 +23,7 @@ function cards_from_observations(observations = [Observation])
         <ObservationCard
             observation={obs}
             isGhost={obs.isGhost}
-            key={obs.bird.species}
+            key={obs.species}
         />
     );
 }
@@ -69,13 +69,10 @@ export function ObservationListLight(props = {})
 
     function save_observations_to_csv_file()
     {
-        let csvString = "Päivämäärä, Laji, Heimo, Lahko\n";
+        let csvString = "Päivämäärä, Laji\n";
 
-        observations.forEach(obs=>
-        {
-            const dateString = new Intl.DateTimeFormat("fi-FI").format(obs.date);
-
-            csvString += `${dateString||""}, ${obs.bird.species||""}, ${obs.bird.family||""}, ${obs.bird.order||""},\n`;
+        observations.forEach(obs=>{
+            csvString += `${LL_Observation.date_string(obs)}, ${obs.species||""},\n`;
         });
 
         saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");

@@ -75,8 +75,8 @@ function reducer(state = initialStoreState, action)
         }
         case "delete-observation":
         {
-            const bird = action.observation.bird;
-            const newObservationsList = state.observations.filter(o=>o.bird.species !== bird.species);
+            const observation = action.observation;
+            const newObservationsList = state.observations.filter(o=>o.species !== observation.species);
 
             return {
                 ...state,
