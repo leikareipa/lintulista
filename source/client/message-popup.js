@@ -18,12 +18,15 @@ export function ll_error_popup(error = {})
     if (LL_PublicError.is_parent_of(error)) {
         /// TODO: Pop up an error message.
         console.log(tr("Encountered an error"), error.message);
+
+        /// Temporary.
+        window.alert(`${tr("Encountered an error")}: ${error.message}`);
     }
     else if (LL_PrivateError.is_parent_of(error)) {
         console.error("Lintulista:", error.message);
     }
     // Not a Lintulista error.
     else {
-        throw error;
+        console.error(error);
     }
 }
