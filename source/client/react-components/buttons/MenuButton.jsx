@@ -189,7 +189,7 @@ export function MenuButton(props = {})
 
     function handle_item_click(itemIdx, callback)
     {
-        ll_assert(props.item.length, "Received a click on an item even though there are no items.");
+        ll_assert(props.items.length, "Received a click on an item even though there are no items.");
 
         setCurrentItemText(props.items[itemIdx].text);
         setDropdownVisible(false);
@@ -213,7 +213,7 @@ export function MenuButton(props = {})
 MenuButton.defaultProps =
 {
     id: "undefined-menu-button",
-    title: "?",
+    title: "",
     icon: "fas fa-question",
     items: [],
     enabled: true,
