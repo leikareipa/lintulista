@@ -48,10 +48,18 @@ export const BackendRequest = {
                     return response.json();
                })
                .then(ticket=>{
-                   if (!ticket ||
-                       !ticket.valid)
+                   if ((typeof ticket !== "object") ||
+                       (ticket.valid !== true))
                    {
-                       throw LL_PrivateError(ticket.message? ticket.message : "Unknown error.");
+                       if (typeof ticket.data !== "object") {
+                           throw LL_PrivateError("Malformed server response.");
+                       }
+
+                       const errorMessage = ticket.data.hasOwnProperty("message")
+                                            ? ticket.data.message
+                                            : "Unknown error";
+
+                       throw LL_PrivateError(errorMessage);
                    }
 
                    return [true, ticket.data];
