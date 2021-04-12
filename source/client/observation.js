@@ -58,11 +58,16 @@ LL_Observation.date_string = function(observation = LL_Observation)
             "January", "February", "March", "April", "May", "June", "July",
             "August", "September", "October", "November", "December"
         ],
+        lat: [
+            "Ianuarius", "Februarius", "Martius", "Aprilis", "Maius", "Iunius",
+            "Iulius", "Augustus", "September", "October", "November", "December"
+        ],
     }
 
     const monthStrings = {
         fiFI: monthNames["fiFI"],
         enEN: monthNames["enEN"],
+        lat: monthNames["lat"],
     };
 
     const monthString = (monthStrings[language] || monthStrings["fiFI"])[observation.month-1];
@@ -70,6 +75,7 @@ LL_Observation.date_string = function(observation = LL_Observation)
     const dateString = {
         fiFI: `${observation.day}. ${monthString}ta ${observation.year}`,
         enEN: `${observation.day} ${monthString} ${observation.year}`,
+        lat: `${observation.day} ${monthString} ${observation.year}`,
     };
 
     return (dateString[language] || dateString["fiFI"]);

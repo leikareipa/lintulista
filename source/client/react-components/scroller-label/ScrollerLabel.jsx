@@ -100,6 +100,10 @@ export function ScrollerLabel(props = {})
                 "January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December"
             ],
+            lat: [
+                "Ianuarius", "Februarius", "Martius", "Aprilis", "Maius", "Iunius",
+                "Iulius", "Augustus", "September", "October", "November", "December"
+            ],
         }
 
         return (monthNames[language] || monthNames["fiFI"])[idx % 12];
