@@ -271,8 +271,8 @@ footer
     box-shadow: 0 20px 15px 20px rgba(15, 7, 0, 0.2);
 
     position: absolute;
-    top: 53px;
-    right: 25px;
+    top: 52px;
+    right: 18px;
     z-index: 1000;
 }
 
@@ -316,9 +316,10 @@ footer
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .item:hover
 {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: white;
     transform: scale(1.08);
     border-radius: 13px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.4);
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title:hover
