@@ -1,7 +1,8 @@
 "use strict";
 
 import {ll_assert_native_type,
-        ll_assert_type} from "../../assert.js"
+        ll_assert_type,
+        ll_public_assert} from "../../assert.js"
 import {open_modal_dialog} from "../../open-modal-dialog.js";
 import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
 import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
@@ -9,6 +10,7 @@ import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {LL_Observation} from "../../observation.js";
 import {LL_Bird} from "../../bird.js";
+import {tr} from "../../translator.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
