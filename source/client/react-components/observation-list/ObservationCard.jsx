@@ -27,8 +27,6 @@ export function ObservationCard(props = {})
 {
     ObservationCard.validate_props(props);
 
-    const language = "fiFI";
-
     return <div className={`ObservationCard${props.isGhost? "Ghost" : ""}`}>
 
         {

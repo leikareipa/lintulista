@@ -15,7 +15,7 @@ export async function start_app(listKey, container)
 {
     const backend = await BackendAccess(listKey, store);
 
-    store.subscribe(()=>console.log(store.getState()));
+    //store.subscribe(()=>console.log(store.getState()));
 
     ReactDOM.render(
         <ReactRedux.Provider

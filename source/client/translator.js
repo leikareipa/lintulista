@@ -9,8 +9,7 @@
 
 import {translations} from "./translations.js";
 import {ll_assert_native_type} from "./assert.js";
-
-const dstLanguage = "fiFI";
+import {store} from "./redux-store.js";
 
 // Returns a translation of the given string, or the original string if no
 // translation was available.
@@ -18,6 +17,8 @@ export function tr(originalString = "",
                    ...values)
 {
     ll_assert_native_type("string", originalString);
+    
+    const dstLanguage = (store.getState().language || "fiFI");
 
     let translatedString = (()=>{
         if (dstLanguage === "enEN") {

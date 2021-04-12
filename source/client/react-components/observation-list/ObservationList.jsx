@@ -39,17 +39,17 @@ export function ObservationList(props = {})
 {
     ObservationList.validate_props(props);
 
+    const language = ReactRedux.useSelector(state=>state.language);
     const observations = ReactRedux.useSelector(state=>state.observations);
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
 
-    const [isMenuBarEnabled, setIsMenuBarEnabled] = React.useState(true);
-
-    return <div className="ObservationList">
+    return <div className="ObservationList"
+                data-language={language}>
 
         {/* A collection of controls with which the user can alter aspects of the list; for instance,
           * the sorting order of its cards.*/}
         <ObservationListMenuBar
-            enabled={isMenuBarEnabled}
+            enabled={true}
             backend={props.backend}
             callbackSetListSorting={()=>{}}
         />

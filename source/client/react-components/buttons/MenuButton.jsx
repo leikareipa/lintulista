@@ -28,8 +28,8 @@ import {ll_assert_native_type,
 // A callback for when the user clicks on the button can be provided via props.callbackOnButtonClick.
 // It will be passed no parameters.
 //
-// The menu's title is to be provided via props.title. If an empty string is given, the
-// dropdown will be rendered without a title element.
+// The menu's title is to be provided via props.menuTitle. If an empty string is given,
+// the dropdown will be rendered without a title element.
 //
 // The menu's items can be provided via props.items as an array of objects of the
 // following form:
@@ -163,14 +163,19 @@ export function MenuButton(props = {})
             else
             {
                 return <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
-                           <div className="items">
-                               {props.title.length? <div className="title">
-                                                        {props.title}
-                                                    </div>
-                                                  : <></>}
-                               {itemElements}
-                           </div>
-                       </div>
+
+                    <div className="items">
+                        {
+                            props.menuTitle.length
+                            ? <div className="title">
+                                    {props.title}
+                                </div>
+                            : <></>
+                        }
+                        {itemElements}
+                    </div>
+
+                </div>
             }
         }
     })();
@@ -214,6 +219,7 @@ MenuButton.defaultProps =
 {
     id: "undefined-menu-button",
     title: "",
+    menuTitle: "",
     icon: "fas fa-question",
     items: [],
     enabled: true,
@@ -226,7 +232,7 @@ MenuButton.defaultProps =
 MenuButton.validate_props = function(props)
 {
     ll_assert_native_type("object", props, props.items);
-    ll_assert_native_type("string", props.title, props.id);
+    ll_assert_native_type("string", props.menuTitle, props.id);
 
     return;
 }

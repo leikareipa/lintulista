@@ -30,7 +30,7 @@ export function QueryObservationDate(props = {})
 {
     QueryObservationDate.validateProps(props);
 
-    const language = "fiFI";
+    const language = ReactRedux.useSelector(state=>state.language);
 
     // Using local variables with the assumption that the dialog won't get re-rendered
     // prior to the user closing it. These values will be returned when the dialog is

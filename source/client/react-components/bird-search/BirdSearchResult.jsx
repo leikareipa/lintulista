@@ -82,7 +82,7 @@ export function BirdSearchResult(props = {})
         else
         {
             return <>
-                {tr("No observation")}
+                {tr("Not on the list yet")}
             </>
         }
     })();

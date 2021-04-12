@@ -104,7 +104,7 @@ export function BirdSearchBar(props = {})
                       onFocus={()=>got_focus(true)}
                       onChange={handle_input_event}
                       spellCheck="false"
-                      placeholder={tr("Species search")}
+                      placeholder={tr("Search for species")}
                       autoComplete="off"/>
 
                <i className="icon fas fa-search"/>

@@ -12,6 +12,7 @@ const initialState = {
     is100LajiaMode: false,
     observations: [],
     knownBirds: [],
+    language: "fiFI",
 };
 
 export const store = Redux.createStore(reducer);
@@ -20,6 +21,13 @@ function reducer(state = initialState, action)
 {
     switch (action.type)
     {
+        case "set-language":
+        {
+            return {
+                ...state,
+                language: action.language,
+            };
+        }
         case "set-100-lajia-mode":
         {
             return {

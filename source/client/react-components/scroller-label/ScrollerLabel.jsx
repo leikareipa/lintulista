@@ -33,10 +33,10 @@ import {Scroller} from "./Scroller.js";
 export function ScrollerLabel(props = {})
 {
     ScrollerLabel.validate_props(props);
+
+    const language = ReactRedux.useSelector(state=>state.language);
     
     const [underlyingValue, setUnderlyingValue] = React.useState(props.value);
-
-    const language = "fiFI";
 
     let value = underlyingValue;
 

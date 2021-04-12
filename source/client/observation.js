@@ -6,12 +6,9 @@
 
 "use strict";
 
-import {expect_true,
-        ll_assert_native_type} from "./assert.js";
+import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
-
-/// Temporary.
-const language = "fiFI";
+import {store} from "./redux-store.js";
 
 export const LL_Observation = function({species, day, month, year})
 {
@@ -49,6 +46,8 @@ LL_Observation.date_string = function(observation = LL_Observation)
     {
         return "";
     }
+
+    const language = (store.getState().language || "fiFI");
 
     const monthNames = {
         fiFI: [

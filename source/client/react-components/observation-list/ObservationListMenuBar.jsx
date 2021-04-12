@@ -30,6 +30,7 @@ export function ObservationListMenuBar(props = {})
     const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
     const setIs100LajiaMode = ReactRedux.useDispatch();
+    const setLanguage = ReactRedux.useDispatch();
 
     // A sticky bar will be displayed somewhere on the page (e.g. top corner) regardless
     // of the window's scroll position.
@@ -77,6 +78,7 @@ export function ObservationListMenuBar(props = {})
             <MenuButton
                 icon="fas fa-question fa-fw fa-lg"
                 title={tr("Information")}
+                menuTitle={tr("Information")}
                 id="list-info"
                 showTooltip={false}
                 customMenu={
@@ -111,6 +113,17 @@ export function ObservationListMenuBar(props = {})
                       ? "fas fa-user-shield fa-fw fa-lg"
                       : "fas fa-lock fa-fw fa-lg"}
                 callbackOnButtonClick={handle_login_button_click}
+            />
+
+            <MenuButton
+                icon="fas fa-language fa-fw"
+                id="list-sorting"
+                title={tr("Language")}
+                items={[
+                    {text:"English", callbackOnSelect:()=>setLanguage({type: "set-language", language: "enEN"})},
+                    {text:"Suomi", callbackOnSelect:()=>setLanguage({type: "set-language", language: "fiFI"})},
+                ]}
+                showTooltip={false}
             />
 
         </div>

@@ -95,7 +95,7 @@ export const translations = {
     "Type \"%1\" to continue":
         {fiFI: "Kirjoita \"%1\" jatkaaksesi"},
 
-    "Species search":
+    "Search for species":
         {fiFI: "Hae lajia"},
 
     "Add %1 to the list":
@@ -113,8 +113,8 @@ export const translations = {
     "Removing...":
         {fiFI: "Poistetaan..."},
 
-    "No observation":
-        {fiFI: "Ei havaintoa"},
+    "Not on the list yet":
+        {fiFI: "Ei vielä ole listalla"},
 
     "The list has %1 species":
         {fiFI: "Havaintoja on nyt %1"},
@@ -124,4 +124,7 @@ export const translations = {
 
     "Download as CSV":
         {fiFI: "Lataa CSV:nä"},
+
+    "Language":
+        {fiFI: "Kieli"},
 };
