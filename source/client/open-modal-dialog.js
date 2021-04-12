@@ -9,6 +9,7 @@
 import {ll_error_popup} from "./message-popup.js";
 import {darken_viewport} from "./darken-viewport.js";
 import {ll_assert} from "./assert.js";
+import {store} from "./redux-store.js";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog and deletes
 // the container when the user accepts or rejects the dialog.
@@ -71,7 +72,14 @@ export function open_modal_dialog(dialog, parameters = {})
         });
 
         document.body.appendChild(dialogContainer);
-        ReactDOM.render(dialogElement, dialogContainer);
+        ReactDOM.render(
+            <ReactRedux.Provider
+                store={store}>
+    
+                {dialogElement}
+    
+            </ReactRedux.Provider>,
+            dialogContainer);
     })();
 
     async function run_callback(fn = async function(){},
