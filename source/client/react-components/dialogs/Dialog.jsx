@@ -205,21 +205,25 @@ export function Dialog(props = {})
 Dialog.validateProps = function(props)
 {
     ll_assert_native_type("object", props);
-    ll_assert_native_type("string", props.component, props.title);
+    ll_assert_native_type("string", props.component,
+                                    props.title,
+                                    props.acceptButtonText,
+                                    props.rejectButtonText);
     ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;
 }
 
+// NOTE: We don't define defaults for the accept and reject buttons' text, since
+// their translation needs to update dynamically. They must be explicitly given
+// as props.
 Dialog.defaultProps =
 {
     acceptButtonEnabled: true,
     rejectButtonEnabled: true,
     acceptButtonIcon: "fas fa-check",
-    acceptButtonText: tr("Save"),
     acceptButtonWaitingText: tr("Saving..."),
     rejectButtonIcon: "fas fa-times",
-    rejectButtonText: tr("Cancel"),
     disableTabKey: true,
     enterAccepts: false,
     escRejects: true,

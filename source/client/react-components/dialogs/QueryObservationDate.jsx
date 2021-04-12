@@ -42,6 +42,8 @@ export function QueryObservationDate(props = {})
     return <Dialog component="QueryObservationDate"
                    title={tr("Change observation date")}
                    enterAccepts={true}
+                   rejectButtonText={tr("Cancel")}
+                   acceptButtonText={tr("Save")}
                    onDialogAccept={accept}
                    onDialogReject={reject}>
 
