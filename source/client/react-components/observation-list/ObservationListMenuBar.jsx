@@ -110,7 +110,7 @@ export function ObservationListMenuBar(props = {})
                        ? tr("Log out")
                        : tr("Log in to edit the list")}
                 icon={isLoggedIn
-                      ? "fas fa-user-shield fa-fw fa-lg"
+                      ? "fas fa-user fa-fw fa-lg"
                       : "fas fa-lock fa-fw fa-lg"}
                 callbackOnButtonClick={handle_login_button_click}
             />
