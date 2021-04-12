@@ -121,6 +121,7 @@ export function ObservationListMenuBar(props = {})
                 title={tr("Language")}
                 items={[
                     {text:"English", callbackOnSelect:()=>setLanguage({type: "set-language", language: "enEN"})},
+                    {text:"Latine", callbackOnSelect:()=>setLanguage({type: "set-language", language: "lat"})},
                     {text:"Suomi", callbackOnSelect:()=>setLanguage({type: "set-language", language: "fiFI"})},
                 ]}
                 showTooltip={false}
