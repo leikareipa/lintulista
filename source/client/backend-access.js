@@ -22,15 +22,6 @@ import {LL_Bird} from "./bird.js";
 export async function BackendAccess(listKey, reduxStore)
 {
     const knownBirds = Object.freeze(await BackendRequest.get_known_birds_list());
-    const observations = await BackendRequest.get_observations(listKey);
-
-    reduxStore.dispatch({
-        type: "set-observations",
-        observations: observations.reduce((list, obs)=>{
-            list.push(LL_Observation.clone(obs));
-            return list;
-        }, [])
-    });
 
     reduxStore.dispatch({
         type: "set-known-birds",
@@ -39,6 +30,9 @@ export async function BackendAccess(listKey, reduxStore)
             return list;
         }, [])
     });
+
+    const observations = await BackendRequest.get_observations(listKey);
+    update_observation_store(observations);
 
     let loginToken = null;
     let loginValidUntil = undefined;
@@ -92,12 +86,8 @@ export async function BackendAccess(listKey, reduxStore)
             const wasSuccess = await BackendRequest.delete_observation(observation, listKey, loginToken);
             ll_public_assert(wasSuccess, tr("Failed to remove the observation"));
 
-            reduxStore.dispatch({
-                type: "delete-observation",
-                observation: observation,
-            });
-
             observations.splice(obsIdx, 1);
+            update_observation_store(observations);
 
             return;
         },
@@ -117,19 +107,28 @@ export async function BackendAccess(listKey, reduxStore)
                              tr(isExistingObservation
                                 ? "Failed to update the observation"
                                 : "Failed to add the observation"));
-            
-            reduxStore.dispatch({
-                type: "add-observation",
-                observation,
-            });
 
             observations.splice(obsIdx, (obsIdx !== -1), observation);
+            update_observation_store(observations);
 
             return;
         },
     };
 
     return publicInterface;
+
+    function update_observation_store(observations = [LL_Observation])
+    {
+        reduxStore.dispatch({
+            type: "set-observations",
+            observations: observations.reduce((list, obs)=>{
+                list.push(LL_Observation.clone(obs));
+                return list;
+            }, [])
+        });
+
+        return;
+    }
 }
 
 // Convenience aliases.

@@ -7,6 +7,9 @@
 
 "use strict";
 
+import {ll_assert_type} from "./assert.js";
+import {LL_Observation} from "./observation.js";
+
 const initialState = {
     isLoggedIn: false,
     is100LajiaMode: false,
@@ -46,7 +49,7 @@ function reducer(state = initialState, action)
         {
             return {
                 ...state,
-                observations: action.observations,
+                observations: observations_sorted_by_date(action.observations),
             };
         }
         case "set-known-birds":
@@ -56,28 +59,22 @@ function reducer(state = initialState, action)
                 knownBirds: action.knownBirds,
             };
         }
-        case "add-observation":
-        {
-            const newObservationsList = [
-                ...state.observations,
-                action.observation,
-            ];
-
-            return {
-                ...state,
-                observations: newObservationsList,
-            };
-        }
-        case "delete-observation":
-        {
-            const observation = action.observation;
-            const newObservationsList = state.observations.filter(o=>o.species !== observation.species);
-
-            return {
-                ...state,
-                observations: newObservationsList,
-            };
-        }
         default: return state;
     }
+}
+
+function observations_sorted_by_date(observations = [LL_Observation])
+{
+    const obsCopy = observations.map(o=>{
+        ll_assert_type(LL_Observation, o);
+        return LL_Observation(o);
+    });
+
+    obsCopy.sort((a, b)=>{
+        const timestampA = new Date(a.year, (a.month-1), a.day).getTime();
+        const timestampB = new Date(b.year, (b.month-1), b.day).getTime();
+        return (timestampB - timestampA);
+    })
+
+    return obsCopy;
 }
