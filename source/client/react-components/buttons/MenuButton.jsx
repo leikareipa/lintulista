@@ -148,20 +148,17 @@ export function MenuButton(props = {})
 
     const dropDownMenu = (()=>
     {
-        if (props.customMenu)
-        {
+        if (props.customMenu) {
             return <div className={`dropdown custom-menu ${dropdownVisible? "active" : "inactive"}`}>
                         {props.customMenu}
                    </div>
         }
         else
         {
-            if (!props.items.length)
-            {
+            if (!props.items.length) {
                 return <></>;
             }
-            else
-            {
+            else {
                 return <div className={`dropdown ${dropdownVisible? "active" : "inactive"}`}>
 
                     <div className="items">
@@ -182,15 +179,18 @@ export function MenuButton(props = {})
 
     return <div className={`MenuButton ${props.enabled? "enabled" : "disabled"} ${props.id}`}
                 data-menu-button-id={props.id}>
-                    <div className="tooltip" style={{display:(props.showTooltip? "initial" : "none")}}>
-                        {currentItemText}
-                    </div>
-                    <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
-                         title={props.title}>
-                             <i className={props.icon}/>
-                    </div>
-                    {dropDownMenu}
-           </div>
+            
+        <div className="tooltip" style={{display:(props.showTooltip? "initial" : "none")}}>
+            {currentItemText}
+        </div>
+
+        <div className={`icon ${dropdownVisible? "active" : "inactive"}`.trim()}
+                title={props.title}>
+                    <i className={props.icon}/>
+        </div>
+
+        {dropDownMenu}
+    </div>
 
     function handle_item_click(itemIdx, callback)
     {
