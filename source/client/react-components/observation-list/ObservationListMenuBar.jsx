@@ -15,6 +15,7 @@ import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
 import {Button} from "../buttons/Button.js";
 import {tr} from "../../translator.js";
 import {ll_error_popup} from "../../message-popup.js";
+import {ll_hash_navigate} from "../../hash-router.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can
 // control certain aspects of the observation list; like to select the order in which to
@@ -30,7 +31,6 @@ export function ObservationListMenuBar(props = {})
     const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
     const setIs100LajiaMode = ReactRedux.useDispatch();
-    const setLanguage = ReactRedux.useDispatch();
 
     // A sticky bar will be displayed somewhere on the page (e.g. top corner) regardless
     // of the window's scroll position.
@@ -105,9 +105,9 @@ export function ObservationListMenuBar(props = {})
                 title={tr("Language")}
                 menuTitle={tr("Language")}
                 items={[
-                    {text:"English", callbackOnSelect:()=>setLanguage({type: "set-language", language: "enEN"})},
-                    {text:"Latine", callbackOnSelect:()=>setLanguage({type: "set-language", language: "lat"})},
-                    {text:"Suomi", callbackOnSelect:()=>setLanguage({type: "set-language", language: "fiFI"})},
+                    {text:"English", callbackOnSelect:()=>ll_hash_navigate("language", "enEN")},
+                    {text:"Latine", callbackOnSelect:()=>ll_hash_navigate("language", "lat")},
+                    {text:"Suomi", callbackOnSelect:()=>ll_hash_navigate("language", "fiFI")},
                 ]}
                 showTooltip={false}
             />
