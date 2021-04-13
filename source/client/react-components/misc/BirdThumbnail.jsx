@@ -84,24 +84,21 @@ export function BirdThumbnail(props = {})
     {
         if (props.useLazyLoading)
         {
-            const isInView = (()=>
-            {
+            const isInView = (()=>{
                 const viewHeight = window.innerHeight;
                 const containerRect = thumbnailRef.current.getBoundingClientRect();
 
                 return Boolean((containerRect.top > -containerRect.height) &&
-                            (containerRect.top < viewHeight));
+                               (containerRect.top < viewHeight));
             })();
 
             // If the thumbnail element is already in the viewport, we don't need to engage
             // lazy loading.
-            if (isInView)
-            {
+            if (isInView) {
                 mark_thumbnail_observed();
                 thumbnailRef.current.setAttribute("src", bird.thumbnailUrl);
             }
-            else if (intersectionObserver)
-            {
+            else if (intersectionObserver) {
                 intersectionObserver.observe(thumbnailRef.current);
                 return ()=>{intersectionObserver.disconnect()}
             }

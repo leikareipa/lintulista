@@ -16,9 +16,10 @@
         <script src="https://unpkg.com/react-redux@7.2.3/dist/react-redux.js"></script>
     </head>
     <body>
+
         <div id="content">
 
-            <div id="header">
+            <div id="header" class="header-wave">
 
                 <div id="app-title">
                     <span id="app-name">lintulista <i class="fas fa-feather-alt fa-sm" style="transform: translateY(-17px) translateX(-20px);"></i></span>
@@ -26,27 +27,49 @@
                 
             </div>
 
+            <div id="loading-placeholder" style="color: black;">
+                Ladataan...
+            </div>
+
             <div id="observations-list-container"></div>
 
-            <footer>
+            <footer id="footer">
                 <a href="https://www.github.com/leikareipa/lintulista">Lintulista</a>
-                &copy; <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2021
+                by <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> 2021
                 &ndash; Photos by <a href="./guide/images.html">a variety of authors</a>
             </footer>
             
         </div>
 
-        <!-- Run the app.-->
         <script type="module">
+            import {LL_PublicError} from "./js/public-error.js";
+            import {ll_error_popup} from "./js/message-popup.js";
             import {ll_assert} from "./js/assert.js";
+            import {tr} from "./js/translator.js";
             import {start_app} from "./js/render/render-app.js";
 
             const container = document.getElementById("observations-list-container");
-            const listKey = (new URLSearchParams(window.location.search).get("list") || null);
+            const header = document.getElementById("header");
+            const footer = document.getElementById("footer");
+            const loadingPlaceholder = document.getElementById("loading-placeholder");
+            const listKey = (new URLSearchParams(window.location.search).get("v") || null);
 
-            ll_assert(listKey, "A list key must be provided.");
-            
-            start_app(listKey, container);
+            (async()=>
+            {
+                if (listKey === null) {
+                    container.remove();
+                    header.remove();
+                    footer.remove();
+                    ll_error_popup(LL_PublicError(tr("No list id was provided")))
+                }
+                else {
+                    await start_app(listKey, container);
+                }
+
+                loadingPlaceholder.remove();
+                header.style.opacity = "1";
+                footer.style.opacity = "1";
+            })();
         </script>
     </body>
 </html>

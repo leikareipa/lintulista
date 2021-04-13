@@ -98,7 +98,7 @@ export function QueryLoginCredentials(props = {})
 
 QueryLoginCredentials.validateProps = function(props)
 {
-    ll_assert_native_type("object", props, props.randomBird);
+    ll_assert_native_type("object", props);
     ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
 
     return;

@@ -168,7 +168,7 @@ export function MenuButton(props = {})
                         {
                             props.menuTitle.length
                             ? <div className="title">
-                                    {props.title}
+                                    {props.menuTitle}
                                 </div>
                             : <></>
                         }
