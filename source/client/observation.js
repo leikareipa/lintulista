@@ -10,6 +10,7 @@ import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
 import {store} from "./redux-store.js";
 import {tr} from "./translator.js";
+import {value2roman} from "./value-to-roman.js";
 
 export const LL_Observation = function({species, day, month, year})
 {
@@ -59,6 +60,7 @@ LL_Observation.date_string = function(observation = LL_Observation)
     
     switch (language) {
         case "fiFI": return `${observation.day}. ${monthString}ta ${observation.year}`;
+        case "lat": return `${value2roman(observation.day)} ${monthString} ${value2roman(observation.year)}`;
         default: return `${observation.day} ${monthString} ${observation.year}`;
     };
 };
