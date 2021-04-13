@@ -109,6 +109,11 @@ footer
     color: #77716c;
 }
 
+.no-display
+{
+    display: none;
+}
+
 .app-menu
 {
     position: absolute;
@@ -212,8 +217,8 @@ footer
 .ObservationList > .ObservationListMenuBar.sticky
 {
     position: fixed;
-    top: 2px;
-    right: 16px;
+    top: 6px;
+    right: 50px;
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
 }
 
@@ -419,13 +424,13 @@ footer
     pointer-events: none;
 }
 
-.BirdSearchResultsDisplay,
-.BirdSearchResultsDisplay.logged-in
+.BirdSearchResultsDisplay
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
     right: calc(12% + 128px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
+    width: 390px;
 }
 
 .BirdSearchResultsDisplay.active
@@ -438,9 +443,10 @@ footer
 
 .BirdSearchResult
 {
+    box-sizing: border-box;
     font-family: "Nunito", serif;
     font-size: 98%;
-    width: 380px; /* Width of the parent container minus padding.*/
+    width: 100%;
     color: black;
     background-color: #ffffff;
     padding: 6px;

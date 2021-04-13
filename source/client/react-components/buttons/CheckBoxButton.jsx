@@ -18,9 +18,7 @@ export function CheckBoxButton(props = {})
                                            ${isChecked? "checked" : "not-checked"}`}
                 onClick={handle_click}>
 
-        <div
-            className="tooltip"
-            style={{display:(props.showTooltip? "initial" : "none")}}>
+        <div className={`tooltip ${props.showTooltip? "" : "no-display"}`}>
 
             {props.tooltip}
 

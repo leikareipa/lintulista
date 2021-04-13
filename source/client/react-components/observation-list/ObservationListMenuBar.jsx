@@ -57,7 +57,7 @@ export function ObservationListMenuBar(props = {})
         }
     });
 
-    return <div className={`ObservationListMenuBar ${isBarSticky? "sticky" : ""}`}>
+    return <div className={`ObservationListMenuBar ${isBarSticky? "sticky" : "non-sticky"}`}>
 
         <BirdSearch
             backend={props.backend}
@@ -101,7 +101,7 @@ export function ObservationListMenuBar(props = {})
 
             <MenuButton
                 icon="fas fa-language fa-fw"
-                id="list-sorting"
+                id="list-language"
                 title={tr("Language")}
                 menuTitle={tr("Language")}
                 items={[
