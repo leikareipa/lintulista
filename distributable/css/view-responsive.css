@@ -1,6 +1,6 @@
 @media only screen and (max-width: 1600px)
 {
-    #app-title
+    #lintulista #app-title
     {
         left: 10%;
     }
@@ -18,7 +18,7 @@
 
 @media only screen and (max-width: 1100px)
 {
-    #app-title
+    #lintulista #app-title
     {
         left: 7%;
     }
@@ -36,12 +36,12 @@
 
 @media only screen and (max-width: 900px)
 {
-    #content > #header
+    #lintulista > header
     {
-        padding-bottom: 220px;
+        padding-bottom: 128px;
     }
 
-    #app-title
+    #lintulista #app-title
     {
         left: 3%;
         top: -4px;
@@ -60,6 +60,11 @@
         top: 118px;
     }
 
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 160px;
+    }
+
     .ObservationList > .ObservationListMenuBar.sticky
     {
         right: 0;
@@ -73,7 +78,7 @@
         top: 49px;
     }
 
-    #content > #header
+    #lintulista > header
     {
         border-radius: 0;
     }
@@ -106,6 +111,7 @@
     .ObservationList > .ObservationListMenuBar .buttons
     {
         flex-basis: 130px;
+        margin-left: 20px;
     }
 
     .BirdSearchResultsDisplay
@@ -149,7 +155,7 @@
         left: 5%;
     }
 
-    #app-title
+    #lintulista #app-title
     {
         left: 5%;
     }
@@ -164,9 +170,9 @@
         display: none;
     }
 
-    #content > #header
+    #lintulista > header
     {
-        padding-bottom: 155px;
+        padding-bottom: 55px;
     }
 
     .ObservationList > .ObservationListMenuBar.sticky

@@ -12,7 +12,7 @@ import {LL_Observation} from "./observation.js";
 
 const initialState = {
     isLoggedIn: false,
-    is100LajiaMode: true,
+    is100LajiaMode: false,
     observations: [],
     knownBirds: [],
     language: "fiFI",
