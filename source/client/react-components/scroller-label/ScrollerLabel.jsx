@@ -9,6 +9,7 @@
 import {ll_assert_native_type} from "../../assert.js";
 import {LL_PrivateError} from "../../private-error.js";
 import {Scroller} from "./Scroller.js";
+import {tr} from "../../translator.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
 // instance, you might have a label containing "1", and the arrows can be used to scroll
@@ -46,7 +47,8 @@ export function ScrollerLabel(props = {})
         return ()=>props.onChange(underlyingValue);
     }, [underlyingValue]);
 
-    return <div className="ScrollerLabel">
+    return <div className="ScrollerLabel"
+                data-language={language}>
 
         <Scroller
             icon="fas fa-caret-up fa-2x"
@@ -82,31 +84,21 @@ export function ScrollerLabel(props = {})
         switch (props.type)
         {
             case "integer": return underlyingValue;
-            case "month-name": return month_name(underlyingValue-1, language);
+            case "month-name": return month_name(underlyingValue-1);
             default: throw LL_PrivateError("Unknown value type.");
         }
     }
 
     // Returns as a string the name of the month with the given index (0-11), such that
     // e.g. 11 corresponds to December and 0 to January.
-    function month_name(idx = 0, language = "fiFI")
+    function month_name(idx = 0)
     {
-        const monthNames = {
-            fiFI: [
-                "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
-                "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"
-            ],
-            enEN: [
-                "January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December"
-            ],
-            lat: [
-                "Ianuarius", "Februarius", "Martius", "Aprilis", "Maius", "Iunius",
-                "Iulius", "Augustus", "September", "October", "November", "December"
-            ],
-        }
+        const monthNames = [
+            tr("January"), tr("February"), tr("March"), tr("April"), tr("May"), tr("June"), tr("July"),
+            tr("August"), tr("September"), tr("October"), tr("November"), tr("December")
+        ];
 
-        return (monthNames[language] || monthNames["fiFI"])[idx % 12];
+        return monthNames[idx % 12];
     }
 }
 

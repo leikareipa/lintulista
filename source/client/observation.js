@@ -9,6 +9,7 @@
 import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
 import {store} from "./redux-store.js";
+import {tr} from "./translator.js";
 
 export const LL_Observation = function({species, day, month, year})
 {
@@ -49,36 +50,17 @@ LL_Observation.date_string = function(observation = LL_Observation)
 
     const language = (store.getState().language || "fiFI");
 
-    const monthNames = {
-        fiFI: [
-            "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu",
-            "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"
-        ],
-        enEN: [
-            "January", "February", "March", "April", "May", "June", "July",
-            "August", "September", "October", "November", "December"
-        ],
-        lat: [
-            "Ianuarius", "Februarius", "Martius", "Aprilis", "Maius", "Iunius",
-            "Iulius", "Augustus", "September", "October", "November", "December"
-        ],
-    }
+    const monthNames = [
+        tr("January"), tr("February"), tr("March"), tr("April"), tr("May"), tr("June"), tr("July"),
+        tr("August"), tr("September"), tr("October"), tr("November"), tr("December")
+    ];
 
-    const monthStrings = {
-        fiFI: monthNames["fiFI"],
-        enEN: monthNames["enEN"],
-        lat: monthNames["lat"],
+    const monthString = monthNames[observation.month-1];
+    
+    switch (language) {
+        case "fiFI": return `${observation.day}. ${monthString}ta ${observation.year}`;
+        default: return `${observation.day} ${monthString} ${observation.year}`;
     };
-
-    const monthString = (monthStrings[language] || monthStrings["fiFI"])[observation.month-1];
-
-    const dateString = {
-        fiFI: `${observation.day}. ${monthString}ta ${observation.year}`,
-        enEN: `${observation.day} ${monthString} ${observation.year}`,
-        lat: `${observation.day} ${monthString} ${observation.year}`,
-    };
-
-    return (dateString[language] || dateString["fiFI"]);
 };
 
 LL_Observation.clone = function(observation = LL_Observation)
