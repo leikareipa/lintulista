@@ -95,7 +95,7 @@ function hash_with_parameter(parameter = "", value = "")
 
 function route_list(url)
 {
-    const container = document.querySelector("#lintulista > #app-container");
+    const container = document.querySelector("#lintulista #app-container");
     ll_assert(container, "Invalid DOM tree.");
 
     const keyRegexp = /#([a-z]{9})/;

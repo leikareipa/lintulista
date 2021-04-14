@@ -27,10 +27,11 @@ export function tr(originalString = "",
         }
 
         const translationEntry = (translations[originalString] || []);
-        const translatedString = (translationEntry[dstLanguage] || null);
+        let translatedString = (translationEntry[dstLanguage] || null);
 
         if (translatedString === null) {
             console.warn("Untranslated string:", originalString);
+            translatedString = originalString;
         }
 
         return translatedString;

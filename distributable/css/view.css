@@ -22,15 +22,40 @@ body
     font-family: "Delius", sans-serif;
 }
 
-footer
+#lintulista header
 {
+    box-sizing: border-box;
+    text-align: left;
+    background-color: #77716c;
+    background-size: 20px 20px;
+    min-height: 50vh;
+    height: 50vh;
+    transition: min-height 0.5s ease-out;
+}
+
+#lintulista.app-running header
+{
+    box-sizing: content-box;
+    height: 0;
+    min-height: 180px;
+}
+
+#lintulista footer
+{
+    display: none;
     font-family: sans-serif;
-    color: rgb(128, 128, 128);
+    color: gray;
     padding-top: 0;
     padding-bottom: 35px;
     font-size: 90%;
 }
-  
+
+#lintulista.app-running footer,
+#lintulista.app-running #app-title
+{
+    display: inline;
+}
+
 #lintulista
 {
     display: flex;
@@ -42,20 +67,41 @@ footer
     width: 100%;
 }
 
-#lintulista > header
+#lintulista .loading-tag
 {
-    text-align: left;
-    background-color: #77716c;
-    padding-bottom: 82px;
-    background-size: 20px 20px;
+    animation: swing 5s ease-in-out infinite,
+               reveal-fadein 1.4s linear;
+    font-family: sans-serif;
+    padding: 20px 30px;
+    background-color: #989898;
+    color: white;
+    font-size: 120%;
+    border-radius: 6px;
+    border-bottom: 2px solid gray;
+}
+
+#lintulista #app-container
+{
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-40px);
+}
+
+#lintulista.app-running #app-container
+{
+    flex-grow: 1;
+    transform: none;
+    display: initial;
 }
 
 #lintulista #app-title
 {
-    display: inline;
+    display: none;
     text-transform: lowercase;
     position: relative;
-    top: 13px;
+    top: 34px;
     left: 13%;
     z-index: 0;
     font-family: "Beth Ellen";
@@ -63,39 +109,14 @@ footer
     font-size: 275%;
 }
 
+#lintulista.app-running #app-title
+{
+    top: 13px;
+}
+
 #observations-list-container
 {
     flex: 1;
-}
-
-#observation-list
-{
-    position: relative;
-    z-index: 1;
-    min-height: 710px;
-    background-color: transparent;
-
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
-#observation-list:empty::before
-{
-    font-variant: normal;
-    text-rendering: auto;
-    position: relative;
-    top: 0;
-    -webkit-font-smoothing: antialiased;
-    font-family: "Font Awesome 5 Free";
-    content: "\f520";
-    display: inline-block;
-    vertical-align: middle;
-    height: 140px;
-    line-height: 140px;
-    font-weight: 900;
-    animation: fa-spin 2.7s infinite linear;
-    font-size: 70px;
-    color: #77716c;
 }
 
 .no-display
@@ -329,7 +350,7 @@ footer
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.15s;
+    animation-duration: 0.25s;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title
@@ -571,11 +592,13 @@ footer
 
 .ObservationList > .observation-cards
 {
+    position: relative;
+    top: -45px;
+    animation: reveal-up 0.8s ease-in-out;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    transform: translateY(-45px);
 }
 
 .ObservationList > .observation-cards.sata-lajia > .ObservationCardGhost
@@ -953,11 +976,11 @@ footer
 }
 
 /* Wavy bottom border. Courtesy of https://stackoverflow.com/a/33763912.*/
-.header-wave
+#lintulista > header.wave
 {
     position: relative;
 }
-.header-wave::before
+#lintulista > header.wave::before
 {
     content: "";
     position: absolute;
@@ -969,7 +992,7 @@ footer
     background-size: 20px 40px;
     background-image: radial-gradient(circle at 10px -15px, transparent 20px, #dbdbdb 21px);
 }
-.header-wave::after
+#lintulista > header.wave::after
 {
     content: "";
     position: absolute;
@@ -980,4 +1003,43 @@ footer
     height: 15px;
     background-size: 40px 40px;
     background-image: radial-gradient(circle at 10px 25px, #dbdbdb 20px, transparent 21px);
+}
+
+.wave.glide::before,
+.wave.glide::after
+{
+    animation: slide-right 3s linear infinite;
+}
+
+.wave.paused::before,
+.wave.paused::after
+{
+    animation-play-state: paused !important;
+}
+
+@keyframes slide-right
+{
+    0%   {left: -40px;}
+    100% {left: 0px;}
+}
+
+@keyframes swing
+{
+    0%   {transform: rotate(-2deg);}
+    50%  {transform: rotate(2deg);}
+    100% {transform: rotate(-2deg);}
+}
+
+@keyframes reveal-up
+{
+    0%   {opacity: 0; transform: translateY(10px) rotateY(5deg);}
+    60%  {opacity: 0; transform: translateY(10px) rotateY(5deg);}
+    100% {opacity: 1; transform: translateY(0px) rotateY(0deg);}
+}
+
+@keyframes reveal-fadein
+{
+    0%   {opacity: 0;}
+    85%  {opacity: 0;}
+    100% {opacity: 1;}
 }

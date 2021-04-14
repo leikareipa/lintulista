@@ -36,12 +36,12 @@
 
 @media only screen and (max-width: 900px)
 {
-    #lintulista > header
+    #lintulista.app-running > header
     {
-        padding-bottom: 128px;
+        min-height: 230px;
     }
 
-    #lintulista #app-title
+    #lintulista.app-running  #app-title
     {
         left: 3%;
         top: -4px;
@@ -155,7 +155,7 @@
         left: 5%;
     }
 
-    #lintulista #app-title
+    #lintulista.app-running  #app-title
     {
         left: 5%;
     }
@@ -170,9 +170,9 @@
         display: none;
     }
 
-    #lintulista > header
+    #lintulista.app-running  > header
     {
-        padding-bottom: 55px;
+        min-height: 160px;
     }
 
     .ObservationList > .ObservationListMenuBar.sticky
