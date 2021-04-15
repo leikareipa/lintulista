@@ -12,10 +12,6 @@ export const translations = {
         {fiFI: "Ladataan Lintulistaa. Pieni hetki...",
         lat: "Parat Lintulista. Placet exspectare..."},
 
-    "Unrecognized observation data":
-        {fiFI: "Tuntematon havaintotieto",
-         lat: "Non cognita notitia observationis"},
-
     "Encountered an error":
         {fiFI: "Sattui virhe",
          lat: "Errorem offendit nec"},
@@ -23,22 +19,6 @@ export const translations = {
     "No list id was provided":
         {fiFI: "Listan tunniste puuttuu",
          lat: "Nullum album fuit id provisum"},
-
-    "Failed to update the observation":
-        {fiFI: "Havainnon tietoja ei voitu päivittää",
-         lat: "Deficio ad update in observationis"},
-
-    "Failed to add the observation":
-        {fiFI: "Havaintoa ei voitu lisätä",
-         lat: "Deficio addere ad observationis"},
-
-    "Failed to remove the observation":
-        {fiFI: "Havaintoa ei voitu poistaa",
-         lat: "Deficio ad removendum est observationis"},
-
-    "Invalid server response":
-        {fiFI: "Palvelinyhteysvirhe",
-         lat: "Servo responsione invalida"},
 
     "Login failed":
         {fiFI: "Sisäänkirjautuminen epäonnistui",

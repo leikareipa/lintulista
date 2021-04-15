@@ -9,9 +9,7 @@
 
 "use strict";
 
-import {tr} from "./translator.js";
-import {ll_public_assert,
-        ll_assert,
+import {ll_assert,
         ll_assert_type,
         ll_assert_native_type} from "./assert.js";
 import {ll_backend_request} from "./backend-request.js";
@@ -44,12 +42,10 @@ export async function LL_Backend(listKey, reduxStore)
         {
             const loginDetails = await ll_backend_request.login(listKey, username, password);
             
-            ll_public_assert(loginDetails, tr("Login failed"));
-
-            ll_public_assert(((typeof loginDetails.token === "string") &&
-                              (typeof loginDetails.until === "number")),
-                             tr("Invalid server response"));
-
+            ll_assert_native_type("object", loginDetails);
+            ll_assert_native_type("string", loginDetails.token);
+            ll_assert_native_type("number", loginDetails.until);
+            
             loginToken = loginDetails.token;
             loginValidUntil = loginDetails.until;
             reduxStore.dispatch({type: "set-logged-in", isLoggedIn: true});
@@ -60,10 +56,10 @@ export async function LL_Backend(listKey, reduxStore)
         logout: async function()
         {
             ll_assert((loginToken !== null),
-                              "Trying to log out without having been logged in.");
+                      "Trying to log out without having been logged in.");
 
-            ll_public_assert(await ll_backend_request.logout(listKey, loginToken),
-                             tr("Logout failed"));
+            const wasSuccessful = await ll_backend_request.logout(listKey, loginToken);
+            ll_assert(wasSuccessful, "Logout failed.");
 
             loginToken = null;
             loginValidUntil = undefined;
@@ -81,10 +77,10 @@ export async function LL_Backend(listKey, reduxStore)
             ll_assert_type(LL_Observation, observation);
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
-            ll_public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
+            ll_assert((obsIdx >= 0), "Unrecognized observation data.");
 
             const wasSuccess = await ll_backend_request.delete_observation(observation, listKey, loginToken);
-            ll_public_assert(wasSuccess, tr("Failed to remove the observation"));
+            ll_assert(wasSuccess, "Failed to remove the observation.");
 
             observations.splice(obsIdx, 1);
             update_observation_store(observations);
@@ -103,10 +99,10 @@ export async function LL_Backend(listKey, reduxStore)
             const isExistingObservation = (obsIdx >= 0);
             const wasSuccess = await ll_backend_request.put_observation(observation, listKey, loginToken);
 
-            ll_public_assert(wasSuccess,
-                             tr(isExistingObservation
-                                ? "Failed to update the observation"
-                                : "Failed to add the observation"));
+            ll_assert(wasSuccess,
+                      isExistingObservation
+                      ? "Failed to update the observation"
+                      : "Failed to add the observation");
 
             observations.splice(obsIdx, (obsIdx !== -1), observation);
             update_observation_store(observations);

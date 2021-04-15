@@ -10,21 +10,11 @@
 
 import {LL_BaseType} from "./base-type.js"
 import {LL_PrivateError} from "./private-error.js"
-import {LL_PublicError} from "./public-error.js"
 
 export function ll_assert(condition, failMessage = "")
 {
     if (!condition) {
         throw LL_PrivateError(failMessage);
-    }
-
-    return;
-}
-
-export function ll_public_assert(condition, failMessage = "")
-{
-    if (!condition) {
-        throw LL_PublicError(failMessage);
     }
 
     return;
