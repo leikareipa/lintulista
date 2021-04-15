@@ -696,14 +696,12 @@ body
     font-family: sans-serif;
     min-width: 450px;
     padding-top: 0px;
-    padding-bottom: 1px;
     background-color: #f9f9f9;
     border-radius: 3px;
     display: inline-block;
     color: black;
     z-index: 200;
     box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
-    border: 6px solid #3591e7;
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -723,16 +721,18 @@ body
 
 .Dialog > .title
 {
-    text-align: left;
-    padding: 18px;
-    color: white;
-    border-radius: 0;
-    background-color:#3591e7;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-
     user-select: none;
     -moz-user-select: none;
+    text-align: left;
+    padding: 20px 18px;
+    color: white;
+    border-radius: 0;
+    background-color: #3591e7;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-top: 2px solid #63a9fb;
+    box-shadow: inset 0 0 19px 4px #3591e7;
+    background: linear-gradient(#3591e7 96%, #174671);
 }
 
 .Dialog > .title > .title-icon
@@ -744,7 +744,8 @@ body
 .Dialog > .button-bar
 {
     position: absolute;
-    bottom: -78px;
+    bottom: -80px;
+    line-height: 24px;
     right: 0;
     display: flex;
     width: 100%;
@@ -804,6 +805,10 @@ body
     padding-right: 20px;
     padding-bottom: 20px;
     display: flex;
+    background-color: #f9f9f9;
+    border: 5px solid #3591e7;
+    border-top: none;
+    align-items: center;
 }
 
 .Dialog > .form > .fields
@@ -899,7 +904,6 @@ body
 .Dialog.ConfirmObservationDeletion
 {
     min-width: 450px;
-    padding-bottom: 2px;
 }
 
 .Dialog.QueryLoginCredentials > .form > .fields

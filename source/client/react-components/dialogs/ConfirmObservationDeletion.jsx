@@ -37,6 +37,7 @@ export function ConfirmObservationDeletion(props = {})
 
     return <Dialog component="ConfirmObservationDeletion"
                    title={tr("Delete an observation")}
+                   acceptButtonIcon="fas fa-eraser"
                    rejectButtonText={tr("Cancel")}
                    acceptButtonText={tr("Delete")}
                    acceptButtonEnabled={false}

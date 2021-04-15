@@ -29,6 +29,7 @@ export function QueryLoginCredentials(props = {})
                    title={tr("Log in")}
                    rejectButtonText={tr("Cancel")}
                    acceptButtonText={tr("Log in")}
+                   acceptButtonIcon="fas fa-shield-alt"
                    acceptButtonWaitingText={tr("Logging in...")}
                    acceptButtonEnabled={true}
                    callbackSetButtonEnabled={(callback)=>{setButtonEnabled = callback}}

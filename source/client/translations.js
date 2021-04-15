@@ -33,7 +33,7 @@ export const translations = {
          lat: "Intro album ut recensere"},
 
     "Log in":
-        {fiFI: "Kirjaudu sisään",
+        {fiFI: "Kirjaudu",
          lat: "Intro"},
 
     "Logging in...":
