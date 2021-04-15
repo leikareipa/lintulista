@@ -3,9 +3,9 @@
 import {ll_assert_native_type,
         ll_assert_type,
         ll_public_assert} from "../../assert.js"
-import {open_modal_dialog} from "../../open-modal-dialog.js";
-import {QueryObservationDate} from "../dialogs/QueryObservationDate.js";
-import {QueryObservationDeletion} from "../dialogs/QueryObservationDeletion.js";
+import {exec_modal_dialog} from "../../exec-modal-dialog.js";
+import {QueryNewObservationDate} from "../dialogs/QueryNewObservationDate.js";
+import {ConfirmObservationDeletion} from "../dialogs/ConfirmObservationDeletion.js";
 import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
 import {LL_Observation} from "../../observation.js";
@@ -139,13 +139,11 @@ export function BirdSearch(props = {})
         ll_assert_type(LL_Bird, bird);
 
         const observation = LL_Observation({species: bird.species});
+        const userGivesConsent = await exec_modal_dialog(ConfirmObservationDeletion, {observation});
 
-        await open_modal_dialog(QueryObservationDeletion, {
-            observation,
-            onAccept: async()=>{
-                await props.backend.delete_observation(observation);
-            },
-        });
+        if (userGivesConsent) {
+            await props.backend.delete_observation(observation);
+        }
 
         reset_search_results();
     }
@@ -160,22 +158,18 @@ export function BirdSearch(props = {})
         ll_public_assert(LL_Observation.is_parent_of(observation),
                          tr("Unrecognized observation data"));
 
-        // Ask the user to confirm the deletion of the observation; and if they do so,
-        // remove it.
-        await open_modal_dialog(QueryObservationDate, {
-            observation,
-            onAccept: async({year, month, day})=>
-            {
-                const modifiedObservation = LL_Observation({
-                    species: bird.species,
-                    day,
-                    month,
-                    year
-                });
+        const newDate = await exec_modal_dialog(QueryNewObservationDate, {observation});
 
-                await props.backend.add_observation(modifiedObservation);
-            },
-        });
+        if (newDate) {
+            const modifiedObservation = LL_Observation({
+                species: bird.species,
+                day: newDate.day,
+                month: newDate.month,
+                year: newDate.year,
+            });
+
+            await props.backend.add_observation(modifiedObservation);
+        }
 
         reset_search_results();
     }

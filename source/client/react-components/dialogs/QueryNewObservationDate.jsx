@@ -16,7 +16,7 @@ import {LL_Observation} from "../../observation.js";
 
 // Displays a modal dialog with which the user can input a date for an observation.
 //
-// The observation for which the date is prompted is to be provided via props.observation.
+// The observation for which the date is prompted is to be provided via props.args.observation.
 //
 // If the user accepts the dialog, the callback provided via props.onDialogAccept will be
 // called with the object {day, month, year} as a parameter, giving the user-provided date for
@@ -26,36 +26,36 @@ import {LL_Observation} from "../../observation.js";
 // If the user rejects the dialog, the callback provided via props.onDialogReject will be
 // called. It will receive no parameters.
 //
-export function QueryObservationDate(props = {})
+export function QueryNewObservationDate(props = {})
 {
-    QueryObservationDate.validateProps(props);
+    QueryNewObservationDate.validateProps(props);
 
     const language = ReactRedux.useSelector(state=>state.language);
 
     // Using local variables with the assumption that the dialog won't get re-rendered
     // prior to the user closing it. These values will be returned when the dialog is
     // closed.
-    let day = props.observation.day;
-    let month = props.observation.month;
-    let year = props.observation.year;
+    let day = props.args.observation.day;
+    let month = props.args.observation.month;
+    let year = props.args.observation.year;
 
-    return <Dialog component="QueryObservationDate"
+    return <Dialog component="QueryNewObservationDate"
                    title={tr("Change date of observation")}
                    enterAccepts={true}
                    rejectButtonText={tr("Cancel")}
                    acceptButtonText={tr("Save")}
                    onDialogAccept={accept}
-                   onDialogReject={reject}>
+                   onDialogReject={props.onReject}>
 
         <BirdThumbnail
-            species={props.observation.species}
+            species={props.args.observation.species}
             useLazyLoading={false}
         />
 
         <div className="fields">
 
             <div className="bird-name">
-                {props.observation.species}
+                {props.args.observation.species}
             </div>
 
             <div className="date-bar">
@@ -101,20 +101,23 @@ export function QueryObservationDate(props = {})
 
     function accept()
     {
-        props.onDialogAccept({day, month, year});
-    }
-
-    function reject()
-    {
-        props.onDialogReject();
+        props.return.day = day;
+        props.return.month = month;
+        props.return.year = year;
+        props.onAccept();
     }
 }
 
-QueryObservationDate.validateProps = function(props)
+QueryNewObservationDate.validateProps = function(props)
 {
-    ll_assert_native_type("object", props);
-    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
-    ll_assert_type(LL_Observation, props.observation);
+    ll_assert_native_type("object", props,
+                                    props.args,
+                                    props.return);
+
+    ll_assert_native_type("function", props.onAccept,
+                                      props.onReject);
+
+    ll_assert_type(LL_Observation, props.args.observation);
 
     return;
 }

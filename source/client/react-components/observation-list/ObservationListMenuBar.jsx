@@ -7,7 +7,7 @@
 "use strict";
 
 import {ll_assert_native_type} from "../../assert.js";
-import {open_modal_dialog} from "../../open-modal-dialog.js";
+import {exec_modal_dialog} from "../../exec-modal-dialog.js";
 import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
@@ -94,7 +94,7 @@ export function ObservationListMenuBar(props = {})
                        ? tr("Log out")
                        : tr("Log in to edit the list")}
                 icon={isLoggedIn
-                      ? "fas fa-user fa-fw fa-lg"
+                      ? "fas fa-user-shield fa-fw fa-lg"
                       : "fas fa-lock fa-fw fa-lg"}
                 callbackOnButtonClick={handle_login_button_click}
             />
@@ -130,11 +130,11 @@ export function ObservationListMenuBar(props = {})
         }
         else
         {
-            await open_modal_dialog(QueryLoginCredentials, {
-                onAccept: async function({username, password}) {
-                    await props.backend.login(username, password);
-                },
-            });
+            const loginCredentials = await exec_modal_dialog(QueryLoginCredentials);
+
+            if (loginCredentials) {
+                await props.backend.login(loginCredentials.username, loginCredentials.password);
+            }
         }
 
         return;

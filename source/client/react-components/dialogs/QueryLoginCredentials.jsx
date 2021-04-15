@@ -35,7 +35,7 @@ export function QueryLoginCredentials(props = {})
                    enterAccepts={true}
                    disableTabKey={false}
                    onDialogAccept={accept}
-                   onDialogReject={props.onDialogReject}
+                   onDialogReject={reject}
                    onKeyDown={control_tab_presses}>
 
         <form className="fields">
@@ -90,16 +90,23 @@ export function QueryLoginCredentials(props = {})
 
     function accept()
     {
-        props.onDialogAccept({username, password});
+        props.return.username = username;
+        props.return.password = password;
+        props.onAccept();
+    }
 
-        return;
+    function reject()
+    {
+        props.onReject();
     }
 }
 
 QueryLoginCredentials.validateProps = function(props)
 {
-    ll_assert_native_type("object", props);
-    ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
+    ll_assert_native_type("object", props,
+                                    props.return);
+    ll_assert_native_type("function", props.onAccept,
+                                      props.onReject);
 
     return;
 }
