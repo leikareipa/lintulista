@@ -17,7 +17,7 @@ const numerals = Object.freeze([
 // Returns a string representing the given value (range [1,9999]) in Roman numerals.
 export function value2roman(value = 1)
 {
-    if ((value < 0) ||
+    if ((value < 1) ||
         (value > 9999))
     {
         console.error(`The value ${value} is out of range for conversion to roman numerals.`);
