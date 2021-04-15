@@ -9,11 +9,12 @@
 
 import {ll_assert,
         ll_assert_native_type} from "./assert.js";
-import {start_app} from "./render/render-app.js";
 import {store} from "./redux-store.js";
+import {lla_start_lintulista} from "./action-start-lintulista.js";
+import {lla_route_hash_url} from "./action-route-hash-url.js";
 
 const routes = [
-    { // View a list.
+    { // View a list (e.g. "#aaaaaaaaa" or #aaaaaaaaa/lang/lat").
         url: new RegExp("^#[a-z]{9}/?"),
         go: route_list,
     },
@@ -24,17 +25,13 @@ const routes = [
 ];
 
 // Routes the page to the given URL (of the form "#...", e.g "#/guide/" or
-// "#aaaaaaaaa/enEN/100").
-export function ll_hash_route(lintulistaUrl = "")
+// "#aaaaaaaaa/lang/enEN").
+export async function ll_hash_route(lintulistaUrl = "")
 {
-    ll_assert_native_type("string", lintulistaUrl);
-
-    const route = routes.filter(r=>lintulistaUrl.match(r.url))[0];
-
-    ll_assert_native_type("object", route);
-    ll_assert_native_type("function", route.go);
-
-    route.go(lintulistaUrl);
+    await lla_route_hash_url.async({
+        lintulistaUrl,
+        routes
+    });
 
     return;
 }
@@ -47,8 +44,8 @@ export function ll_hash_navigate(parameter, newValue)
     switch (parameter)
     {
         case "language": {
+            add_part_to_window_hash("lang", newValue);
             store.dispatch({type:"set-language", language:newValue});
-            add_part_to_window_hash("lang", newValue)
             break;
         }
     }
@@ -93,41 +90,30 @@ function hash_with_parameter(parameter = "", value = "")
     return hash;
 }
 
-function route_list(url)
+async function route_list(url = "")
 {
-    const container = document.querySelector("#lintulista #app-container");
-    ll_assert(container, "Invalid DOM tree.");
-
-    const keyRegexp = /#([a-z]{9})/;
+    const keyRegexp = /^#([a-z]{9})/;
     ll_assert(url.match(keyRegexp), "Invalid list URL.");
 
-    const startupOptions = {
-        // If no parameters are appended here from the URL, defaults will be used.
-    };
+    const listKey = url.match(keyRegexp)[1];
 
-    // See if the URL specifies any startup options.
+    // Enact any startup options given in the URL.
     {
-        // Language
         for (const language of ["fiFI", "enEN", "lat"])
         {
             if (url.match(new RegExp(`\/lang\/${language}\/?`))) {
-                startupOptions.language = language;
+                store.dispatch({type:"set-language", language});
             }
         }
-
-        // 100 Lajia mode.
-        if (url.match(/\/100\/?/)) startupOptions.is100LajiaMode = true;
     }
-
-    const listKey = url.match(keyRegexp)[1];
-    start_app(listKey, container, startupOptions);
+    
+    await lla_start_lintulista.async({listKey});
 
     return;
 }
 
-function route_404(url)
+async function route_404(url = "")
 {
-    /// TODO.
     console.log("oops");
 
     return;

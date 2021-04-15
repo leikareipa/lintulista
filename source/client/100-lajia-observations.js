@@ -7,7 +7,6 @@
 
 "use strict";
 
-import {LL_Bird} from "./bird.js";
 import {LL_Observation} from "./observation.js";
 import {ll_assert_native_type} from "./assert.js";
 

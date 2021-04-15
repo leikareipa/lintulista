@@ -30,7 +30,7 @@ body
     background-size: 20px 20px;
     min-height: 50vh;
     height: 50vh;
-    transition: min-height 0.5s ease-out;
+    transition: min-height 0.4s ease-in-out;
 }
 
 #lintulista.app-running header
@@ -67,12 +67,12 @@ body
     width: 100%;
 }
 
-#lintulista .loading-tag
+#lintulista .startup-loading-spinner
 {
     animation: swing 5s ease-in-out infinite,
-               reveal-fadein 1.4s linear;
+               reveal-fadein 1.2s linear;
     font-family: sans-serif;
-    padding: 20px 30px;
+    padding: 15px 30px;
     background-color: #989898;
     color: white;
     font-size: 120%;
@@ -350,7 +350,7 @@ body
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.25s;
+    animation-duration: 0.2s;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title
@@ -716,7 +716,7 @@ body
     left: 50%;
 }
 
-.Dialog.QueryObservationDate
+.Dialog.QueryNewObservationDate
 {
     min-width: 400px;
 }
@@ -836,7 +836,7 @@ body
     border: 1px solid #3591e7;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar
 {
     display: flex;
     width: 100%;
@@ -844,23 +844,23 @@ body
     flex-direction: row;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar *
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar *
 {
     flex: 1;
     min-width: 0;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar > .month
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month
 {
     flex: 2;
 }
 
-.Dialog.QueryObservationDate > .form > .fields .ScrollerLabel
+.Dialog.QueryNewObservationDate > .form > .fields .ScrollerLabel
 {
     text-align: center;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .bird-name
+.Dialog.QueryNewObservationDate > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;
@@ -896,7 +896,7 @@ body
     text-align: left;
 }
 
-.Dialog.QueryObservationDeletion
+.Dialog.ConfirmObservationDeletion
 {
     min-width: 450px;
     padding-bottom: 2px;
@@ -918,19 +918,19 @@ body
     margin: 10px 0;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields,
+.Dialog.ConfirmObservationDeletion > .form > .fields,
 .Dialog.QueryLoginCredentials > .form > .fields
 {
     display: flex;
     flex-direction: column;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .list-id
+.Dialog.ConfirmObservationDeletion > .form > .fields > .list-id
 {
     flex: 1;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .bird-name
+.Dialog.ConfirmObservationDeletion > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;
@@ -944,7 +944,7 @@ body
     margin-top: 6px;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .instruction
+.Dialog.ConfirmObservationDeletion > .form > .fields > .instruction
 {
     margin-left: auto;
     margin-right: 4px;
@@ -1032,14 +1032,14 @@ body
 
 @keyframes reveal-up
 {
-    0%   {opacity: 0; transform: translateY(10px) rotateY(5deg);}
-    60%  {opacity: 0; transform: translateY(10px) rotateY(5deg);}
+    0%   {opacity: 0; transform: translateY(0px) rotateY(15deg);}
+    60%  {opacity: 0; transform: translateY(0px) rotateY(15deg);}
     100% {opacity: 1; transform: translateY(0px) rotateY(0deg);}
 }
 
 @keyframes reveal-fadein
 {
     0%   {opacity: 0;}
-    85%  {opacity: 0;}
+    80%  {opacity: 0;}
     100% {opacity: 1;}
 }

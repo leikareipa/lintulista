@@ -1,16 +1,10 @@
 "use strict";
 
 import {ll_assert_native_type,
-        ll_assert_type,
-        ll_public_assert} from "../../assert.js"
-import {exec_modal_dialog} from "../../exec-modal-dialog.js";
-import {QueryNewObservationDate} from "../dialogs/QueryNewObservationDate.js";
-import {ConfirmObservationDeletion} from "../dialogs/ConfirmObservationDeletion.js";
+        ll_assert_type} from "../../assert.js"
 import {BirdSearchResult} from "./BirdSearchResult.js";
 import {BirdSearchBar} from "./BirdSearchBar.js";
-import {LL_Observation} from "../../observation.js";
 import {LL_Bird} from "../../bird.js";
-import {tr} from "../../translator.js";
 
 // Renders a search bar with which the user can search for specific entries in Lintulista's
 // list of known birds; and displays a dynamic list of search results matching the user's
@@ -24,7 +18,7 @@ export function BirdSearch(props = {})
 {
     BirdSearch.validate_props(props);
 
-    const knownBirds = ReactRedux.useSelector(state => state.knownBirds);
+    const knownBirds = ReactRedux.useSelector(state=>state.knownBirds);
     const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
     const observations = ReactRedux.useSelector(state=>state.observations);
 
@@ -103,75 +97,12 @@ export function BirdSearch(props = {})
             return <BirdSearchResult
                        key={bird.species}
                        bird={bird}
+                       backend={props.backend}
                        observation={observation? observation : null}
                        userHasEditRights={isLoggedIn}
-                       cbAddObservation={add_bird_to_list}
-                       cbRemoveObservation={remove_bird_from_list}
-                       cbChangeObservationDate={change_observation_date}
+                       cbCloseSelf={reset_search_results}
                    />;
         }
-    }
-
-    // Called when the user selects to add the search result's bird to their list of
-    // observations.
-    async function add_bird_to_list(bird = LL_Bird)
-    {
-        ll_assert_type(LL_Bird, bird);
-
-        const date = new Date();
-
-        const observation = LL_Observation({
-            species: bird.species,
-            day: date.getDate(),
-            month: (date.getMonth() + 1),
-            year: date.getFullYear(),
-        });
-
-        await props.backend.add_observation(observation)
-
-        reset_search_results();
-    }
-
-    // Called when the user selects to remove the search result's bird from their list of
-    // observations.
-    async function remove_bird_from_list(bird = LL_Bird)
-    {
-        ll_assert_type(LL_Bird, bird);
-
-        const observation = LL_Observation({species: bird.species});
-        const userGivesConsent = await exec_modal_dialog(ConfirmObservationDeletion, {observation});
-
-        if (userGivesConsent) {
-            await props.backend.delete_observation(observation);
-        }
-
-        reset_search_results();
-    }
-
-    // Called when the user selects to change the date of an observation.
-    async function change_observation_date(bird = LL_Bird)
-    {
-        ll_assert_type(LL_Bird, bird);
-
-        const observation = observations.find(obs=>(obs.species === bird.species));
-
-        ll_public_assert(LL_Observation.is_parent_of(observation),
-                         tr("Unrecognized observation data"));
-
-        const newDate = await exec_modal_dialog(QueryNewObservationDate, {observation});
-
-        if (newDate) {
-            const modifiedObservation = LL_Observation({
-                species: bird.species,
-                day: newDate.day,
-                month: newDate.month,
-                year: newDate.year,
-            });
-
-            await props.backend.add_observation(modifiedObservation);
-        }
-
-        reset_search_results();
     }
 
     function reset_search_results()

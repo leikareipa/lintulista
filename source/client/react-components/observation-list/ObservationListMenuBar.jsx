@@ -7,14 +7,13 @@
 "use strict";
 
 import {ll_assert_native_type} from "../../assert.js";
-import {exec_modal_dialog} from "../../exec-modal-dialog.js";
-import {QueryLoginCredentials} from "../dialogs/QueryLoginCredentials.js";
+import {lla_log_in} from "../../action-log-in.js";
+import {lla_log_out} from "../../action-log-out.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
 import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
 import {Button} from "../buttons/Button.js";
 import {tr} from "../../translator.js";
-import {ll_error_popup} from "../../message-popup.js";
 import {ll_hash_navigate} from "../../hash-router.js";
 
 // Renders a set of 'action elements' i.e. buttons and the like with which the user can
@@ -118,23 +117,11 @@ export function ObservationListMenuBar(props = {})
 
     async function handle_login_button_click()
     {
-        if (isLoggedIn)
-        {
-            /// TODO: Animate the button while we wait for logout.
-            try {
-                await props.backend.logout();
-            }
-            catch (error) {
-                ll_error_popup(error);
-            }
+        if (isLoggedIn) {
+            await lla_log_out.async({backend:props.backend});
         }
-        else
-        {
-            const loginCredentials = await exec_modal_dialog(QueryLoginCredentials);
-
-            if (loginCredentials) {
-                await props.backend.login(loginCredentials.username, loginCredentials.password);
-            }
+        else {
+            await lla_log_in.async({backend:props.backend});
         }
 
         return;

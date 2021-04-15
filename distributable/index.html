@@ -48,11 +48,17 @@
         </div>
 
         <script type="module">
+            import {ll_hash_route} from "./js/hash-router.js";
+            import {ll_error_popup} from "./js/message-popup.js";
+
             window.onhashchange = ()=>{
                 window.location.reload();
             };
 
-            import {ll_hash_route} from "./js/hash-router.js";
+            window.onunhandledrejection = (error)=>{
+                ll_error_popup(error);
+            };
+            
             ll_hash_route(window.location.hash);
         </script>
     </body>
