@@ -21,7 +21,7 @@ const backendURLs = {
     knownBirdSpecies: "./server/metadata/known-birds.json",
 };
 
-export const BackendRequest = {
+export const ll_backend_request = {
     // All of Lintulista's URLs for client-to-backend HTTP requests.
     
 

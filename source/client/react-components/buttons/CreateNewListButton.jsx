@@ -7,7 +7,7 @@
 "use strict";
 
 import {is_defined, ll_assert_native_type} from "../../assert.js";
-import {BackendAccess} from "../../backend-access.js";
+import {LL_Backend} from "../../backend.js";
 
 // Displays a multi-step button for creating a new list; the button's contents change
 // depending on how many steps have been taken.
@@ -48,7 +48,7 @@ export function CreateNewListButton(props = {})
             {
                 (async()=>
                 {
-                    const keys = await BackendAccess.create_new_list();
+                    const keys = await LL_Backend.create_new_list();
                     
                     if (keys)
                     {

@@ -27,6 +27,10 @@ export const LL_Action = function(props = {})
                                       props.finally);
 
     const publicInterface = Object.freeze({
+        async_nocatch: async function(args = {})
+        {
+            return this.async(args, true);
+        },
         async: async function(args = {}, noCatch = false)
         {
             try {

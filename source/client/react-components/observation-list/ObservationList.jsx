@@ -7,12 +7,14 @@
 
 "use strict";
 
-import {ll_assert_native_type} from "../../assert.js";
+import {ll_assert_native_type,
+        ll_assert_type} from "../../assert.js";
 import {merge_100_lajia_with} from "../../100-lajia-observations.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {LL_Observation} from "../../observation.js";
+import {LL_Backend} from "../../backend.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 function cards_from_observations(observations = [Observation])
@@ -33,7 +35,7 @@ function cards_from_observations(observations = [Observation])
 // and to add/delete/modify observations.
 //
 // Access to the user's list of observations on Lintulista's backend is to be provided
-// via backend as a BackendAccess() object.
+// via backend as a LL_Backend() object.
 //
 export function ObservationList(props = {})
 {
@@ -81,7 +83,7 @@ export function ObservationList(props = {})
 
 ObservationList.validate_props = function(props)
 {
-    ll_assert_native_type("object", props.backend);
+    ll_assert_type(LL_Backend, props.backend);
 
     return;
 }

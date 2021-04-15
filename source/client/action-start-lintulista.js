@@ -8,7 +8,7 @@
 "use strict";
 
 import {ObservationList} from "./react-components/observation-list/ObservationList.js";
-import {BackendAccess} from "./backend-access.js";
+import {LL_Backend} from "./backend.js";
 import {ll_assert_native_type} from "./assert.js";
 import {LL_Action} from "./action.js";
 import {tr} from "./translator.js";
@@ -33,7 +33,7 @@ export const lla_start_lintulista = LL_Action({
             container);
         }
 
-        const backend = await BackendAccess(listKey, store);
+        const backend = await LL_Backend(listKey, store);
 
         ReactDOM.render(<ReactRedux.Provider
                             store={store}>

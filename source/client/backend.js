@@ -14,14 +14,15 @@ import {ll_public_assert,
         ll_assert,
         ll_assert_type,
         ll_assert_native_type} from "./assert.js";
-import {BackendRequest} from "./backend-request.js";
+import {ll_backend_request} from "./backend-request.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
+import {LL_BaseType} from "./base-type.js";
 
 // Provides mediated access to the given list's data in Lintulista's backend.
-export async function BackendAccess(listKey, reduxStore)
+export async function LL_Backend(listKey, reduxStore)
 {
-    const knownBirds = Object.freeze(await BackendRequest.get_known_birds_list());
+    const knownBirds = Object.freeze(await ll_backend_request.get_known_birds_list());
 
     reduxStore.dispatch({
         type: "set-known-birds",
@@ -31,18 +32,17 @@ export async function BackendAccess(listKey, reduxStore)
         }, [])
     });
 
-    const observations = await BackendRequest.get_observations(listKey);
+    const observations = await ll_backend_request.get_observations(listKey);
     update_observation_store(observations);
 
     let loginToken = null;
     let loginValidUntil = undefined;
 
     // Public interface functions will throw on error.
-    const publicInterface =
-    {
+    const publicInterface = Object.freeze({
         login: async function(username, password)
         {
-            const loginDetails = await BackendRequest.login(listKey, username, password);
+            const loginDetails = await ll_backend_request.login(listKey, username, password);
             
             ll_public_assert(loginDetails, tr("Login failed"));
 
@@ -62,7 +62,7 @@ export async function BackendAccess(listKey, reduxStore)
             ll_assert((loginToken !== null),
                               "Trying to log out without having been logged in.");
 
-            ll_public_assert(await BackendRequest.logout(listKey, loginToken),
+            ll_public_assert(await ll_backend_request.logout(listKey, loginToken),
                              tr("Logout failed"));
 
             loginToken = null;
@@ -83,7 +83,7 @@ export async function BackendAccess(listKey, reduxStore)
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             ll_public_assert((obsIdx >= 0), tr("Unrecognized observation data"));
 
-            const wasSuccess = await BackendRequest.delete_observation(observation, listKey, loginToken);
+            const wasSuccess = await ll_backend_request.delete_observation(observation, listKey, loginToken);
             ll_public_assert(wasSuccess, tr("Failed to remove the observation"));
 
             observations.splice(obsIdx, 1);
@@ -101,7 +101,7 @@ export async function BackendAccess(listKey, reduxStore)
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             const isExistingObservation = (obsIdx >= 0);
-            const wasSuccess = await BackendRequest.put_observation(observation, listKey, loginToken);
+            const wasSuccess = await ll_backend_request.put_observation(observation, listKey, loginToken);
 
             ll_public_assert(wasSuccess,
                              tr(isExistingObservation
@@ -113,7 +113,9 @@ export async function BackendAccess(listKey, reduxStore)
 
             return;
         },
-    };
+
+        ...LL_BaseType(LL_Backend)
+    });
 
     return publicInterface;
 
@@ -131,6 +133,15 @@ export async function BackendAccess(listKey, reduxStore)
     }
 }
 
+LL_Backend.is_parent_of = function(candidate)
+{
+    return ((LL_BaseType.type_of(candidate) === LL_Backend) &&
+            candidate.hasOwnProperty("login") &&
+            candidate.hasOwnProperty("logout") &&
+            candidate.hasOwnProperty("delete_observation") &&
+            candidate.hasOwnProperty("add_observation"));
+}
+
 // Convenience aliases.
-BackendAccess.create_new_list = BackendRequest.create_new_list;
-BackendAccess.get_known_birds_list = BackendRequest.get_known_birds_list;
+LL_Backend.create_new_list = ll_backend_request.create_new_list;
+LL_Backend.get_known_birds_list = ll_backend_request.get_known_birds_list;

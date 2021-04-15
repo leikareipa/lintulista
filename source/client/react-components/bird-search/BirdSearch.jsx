@@ -10,7 +10,7 @@ import {LL_Bird} from "../../bird.js";
 // list of known birds; and displays a dynamic list of search results matching the user's
 // query.
 //
-// Backend access should be provided via props.backend, which should be a BackendAccess()
+// Backend access should be provided via props.backend, which should be a LL_Backend()
 // object with which the component can query the backend for the list of known birds, the
 // user's current observations, etc.
 //
