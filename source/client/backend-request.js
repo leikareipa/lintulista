@@ -11,7 +11,7 @@ import {ll_assert_native_type,
         ll_assert_type} from "./assert.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
-import {LL_PrivateError} from "./private-error.js";
+import {LL_Throwable} from "./throwable.js";
 import {ll_error_popup} from "./message-popup.js";
 
 const backendURLs = {
@@ -43,7 +43,7 @@ export const ll_backend_request = {
         return fetch(url, params)
                .then(response=>{
                    if (!response.ok) {
-                       throw LL_PrivateError(response.statusText);
+                       throw LL_Throwable(response.statusText);
                    }
                     return response.json();
                })
@@ -52,14 +52,14 @@ export const ll_backend_request = {
                        (ticket.valid !== true))
                    {
                        if (typeof ticket.data !== "object") {
-                           throw LL_PrivateError("Malformed server response.");
+                           throw LL_Throwable("Malformed server response.");
                        }
 
                        const errorMessage = ticket.data.hasOwnProperty("message")
                                             ? ticket.data.message
                                             : "Unknown error";
 
-                       throw LL_PrivateError(errorMessage);
+                       throw LL_Throwable(errorMessage);
                    }
 
                    return [true, ticket.data];
@@ -118,7 +118,7 @@ export const ll_backend_request = {
             let response = await fetch(backendURLs.knownBirdSpecies);
 
             if (!response.ok) {
-                throw LL_PrivateError(response.statusText);
+                throw LL_Throwable(response.statusText);
             }
 
             response = await response.json();

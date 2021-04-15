@@ -9,12 +9,12 @@
 "use strict";
 
 import {LL_BaseType} from "./base-type.js"
-import {LL_PrivateError} from "./private-error.js"
+import {LL_Throwable} from "./throwable.js"
 
 export function ll_assert(condition, failMessage = "")
 {
     if (!condition) {
-        throw LL_PrivateError(failMessage);
+        throw LL_Throwable(failMessage);
     }
 
     return;
@@ -27,7 +27,7 @@ export function ll_assert_type(type, ...objects)
     for (const object of objects)
     {
         if (!type.is_parent_of(object)) {
-            throw LL_PrivateError(`Unexpected object type. Expected ${type.name}.`);
+            throw LL_Throwable(`Unexpected object type. Expected ${type.name}.`);
         }
     }
 
@@ -53,7 +53,7 @@ export function ll_assert_native_type(typeName, ...variables)
         }
 
         if (!isOfType) {
-            throw LL_PrivateError(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
+            throw LL_Throwable(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
         }
     }
 

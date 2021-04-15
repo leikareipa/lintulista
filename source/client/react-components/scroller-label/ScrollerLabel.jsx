@@ -7,7 +7,7 @@
 "use strict";
 
 import {ll_assert_native_type} from "../../assert.js";
-import {LL_PrivateError} from "../../private-error.js";
+import {LL_Throwable} from "../../throwable.js";
 import {Scroller} from "./Scroller.js";
 import {tr} from "../../translator.js";
 
@@ -85,7 +85,7 @@ export function ScrollerLabel(props = {})
         {
             case "integer": return underlyingValue;
             case "month-name": return month_name(underlyingValue-1);
-            default: throw LL_PrivateError("Unknown value type.");
+            default: throw LL_Throwable("Unknown value type.");
         }
     }
 

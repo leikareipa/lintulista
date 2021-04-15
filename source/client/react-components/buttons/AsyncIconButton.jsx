@@ -8,7 +8,7 @@
 
 import {ll_assert_native_type} from "../../assert.js";
 import {ll_error_popup} from "../../message-popup.js";
-import {LL_PrivateError} from "../../private-error.js";
+import {LL_Throwable} from "../../throwable.js";
 
 // A button labeled with a single Font Awesome icon. When pressed, will display a spinner
 // and call a provided callback function.
@@ -127,7 +127,7 @@ export function AsyncIconButton(props = {})
                 setCurrentTitle(props.title);
                 break;
             }
-            default: throw LL_PrivateError("Unknown button state.");
+            default: throw LL_Throwable("Unknown button state.");
         }
     }
 }

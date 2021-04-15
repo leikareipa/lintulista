@@ -10,24 +10,24 @@
 import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
 
-export const LL_PublicError = function(message = "Unspecified error")
+export const LL_Throwable = function(message = "Unspecified error")
 {
     ll_assert_native_type("string", message);
 
     const publicInterface = {
-        isPrivate: false,
+        isPrivate: true,
         message,
 
-        ...LL_BaseType(LL_PublicError)
+        ...LL_BaseType(LL_Throwable)
     };
 
     return publicInterface;
 }
 
-LL_PublicError.is_parent_of = function(candidate)
+LL_Throwable.is_parent_of = function(candidate)
 {
-    return ((LL_BaseType.type_of(candidate) === LL_PublicError) &&
+    return ((LL_BaseType.type_of(candidate) === LL_Throwable) &&
             candidate.hasOwnProperty("isPrivate") &&
             candidate.hasOwnProperty("message") &&
-            (candidate.isPrivate === false));
+            (candidate.isPrivate === true));
 }

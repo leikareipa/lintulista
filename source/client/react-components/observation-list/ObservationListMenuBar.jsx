@@ -95,7 +95,7 @@ export function ObservationListMenuBar(props = {})
                 icon={isLoggedIn
                       ? "fas fa-user-shield fa-fw fa-lg"
                       : "fas fa-lock fa-fw fa-lg"}
-                callbackOnButtonClick={handle_login_button_click}
+                callbackOnButtonClick={handle_login_button_activation}
             />
 
             <MenuButton
@@ -115,7 +115,7 @@ export function ObservationListMenuBar(props = {})
                            
     </div>
 
-    async function handle_login_button_click()
+    async function handle_login_button_activation()
     {
         if (isLoggedIn) {
             await lla_log_out.async({backend:props.backend});
