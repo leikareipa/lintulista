@@ -9,7 +9,7 @@
 
 import {ll_assert_native_type,
         ll_assert_type} from "../../assert.js";
-import {merge_100_lajia_with} from "../../100-lajia-observations.js";
+import {merge_100_lajia_with} from "../../100-lajia.js";
 import {ObservationListFootnotes} from "./ObservationListFootnotes.js";
 import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationCard} from "./ObservationCard.js";
