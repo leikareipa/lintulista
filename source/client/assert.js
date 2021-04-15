@@ -8,7 +8,6 @@
 
 "use strict";
 
-import {darken_viewport} from "./darken-viewport.js"
 import {LL_BaseType} from "./base-type.js"
 import {LL_PrivateError} from "./private-error.js"
 import {LL_PublicError} from "./public-error.js"
@@ -45,21 +44,26 @@ export function ll_assert_type(type, ...objects)
     return;
 }
 
-export function ll_assert_native_type(typeName = "", ...variables)
+export function ll_assert_native_type(typeName, ...variables)
 {
-    ll_assert((typeof typeName === "string"), "Invalid argument.");
-
     for (const variable of variables)
     {
         let isOfType = false;
 
-        switch (typeName) {
-            case "array": (isOfType = Array.isArray(variable)); break;
-            default: (isOfType = (typeof variable === typeName)); break;
+        if (typeof typeName === "string")
+        {
+            switch (typeName) {
+                case "array": (isOfType = Array.isArray(variable)); break;
+                default: (isOfType = (typeof variable === typeName)); break;
+            }
+        }
+        else if (typeof typeName === "function")
+        {
+            isOfType = (variable instanceof typeName);
         }
 
         if (!isOfType) {
-            throw LL_PrivateError(`Unexpected variable type "${typeof variable}". Expected "${typeName}".`);
+            throw LL_PrivateError(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
         }
     }
 
