@@ -11,6 +11,7 @@ import {ll_assert_native_type} from "./assert.js";
 import {LL_Action} from "./action.js";
 
 export const lla_route_hash_url = LL_Action({
+    failMessage: "Unrecognized URL",
     act: async({lintulistaUrl, routes})=>
     {
         ll_assert_native_type("string", lintulistaUrl);

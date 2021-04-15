@@ -53,7 +53,7 @@ export function ll_assert_native_type(typeName, ...variables)
         }
 
         if (!isOfType) {
-            throw LL_Throwable(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
+            throw LL_Throwable(`Unexpected variable type "${typeof variable}". Expected "${typeName}".`);
         }
     }
 

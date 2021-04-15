@@ -12,7 +12,8 @@ import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
 import {LL_Action} from "./action.js";
 import {LL_Backend} from "./backend.js";
-import {lla_exec_dialog} from "./action-exec-dialog.js";
+import {lla_open_dialog} from "./action-open-dialog.js";
+import {lla_close_dialog} from "./action-close-dialog.js";
 import {ll_assert_type} from "./assert.js";
 
 export const lla_delete_observation = LL_Action({
@@ -24,7 +25,7 @@ export const lla_delete_observation = LL_Action({
 
         const observation = LL_Observation({species: bird.species});
 
-        const userGivesConsent = await lla_exec_dialog.async_nocatch({
+        const userGivesConsent = await lla_open_dialog.async_nocatch({
             dialog: ConfirmObservationDeletion,
             args: {observation}
         });
@@ -35,4 +36,12 @@ export const lla_delete_observation = LL_Action({
 
         return;
     },
+    // We close the dialog only after the action has finished, with the dialog's
+    // async spinner indicating to the user in the meantime that the action is ongoing.
+    finally: async function()
+    {
+        await lla_close_dialog.async({
+            dialog: ConfirmObservationDeletion,
+        });
+    }
 });

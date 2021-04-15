@@ -18,19 +18,21 @@ export const LL_Action = function(props = {})
     // Fill in optional properties.
     props = {
         ...props,
-        on_error: (props.hasOwnProperty("on_error")? props.on_error : async()=>{}),
-        finally: (props.hasOwnProperty("finally")? props.finally : async()=>{}),
+        on_error: (typeof props.on_error === "function")? props.on_error : async()=>{},
+        finally: (typeof props.finally === "function")? props.finally : async()=>{},
     };
     
     ll_assert_native_type("function", props.act,
                                       props.on_error,
                                       props.finally);
+    ll_assert_native_type("string", props.failMessage);
 
     const publicInterface = Object.freeze({
         async_nocatch: async function(args = {})
         {
             return this.async(args, true);
         },
+
         async: async function(args = {}, noCatch = false)
         {
             try {
@@ -39,12 +41,12 @@ export const LL_Action = function(props = {})
             catch (error)
             {
                 if (noCatch) {
-                    console.warn("Silent catch in action", error);
+                    console.warn("Silently caught in Action:", error);
                     throw error;
                 }
                 else {
                     await props.on_error(args);
-                    console.warn("Catch in action", error);
+                    console.warn("Caught in Action:", error);
                     ll_error_popup__(props.failMessage);
                 }
 

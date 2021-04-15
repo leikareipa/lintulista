@@ -8,7 +8,8 @@
 "use strict";
 
 import {QueryNewObservationDate} from "./react-components/dialogs/QueryNewObservationDate.js";
-import {lla_exec_dialog} from "./action-exec-dialog.js";
+import {lla_open_dialog} from "./action-open-dialog.js";
+import {lla_close_dialog} from "./action-close-dialog.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Action} from "./action.js";
 import {LL_Backend} from "./backend.js";
@@ -21,7 +22,7 @@ export const lla_change_observation_date = LL_Action({
         ll_assert_type(LL_Observation, observation);
         ll_assert_type(LL_Backend, backend);
 
-        const newDate = await lla_exec_dialog.async_nocatch({
+        const newDate = await lla_open_dialog.async_nocatch({
             dialog: QueryNewObservationDate,
             args: {observation}
         });
@@ -39,4 +40,12 @@ export const lla_change_observation_date = LL_Action({
 
         return;
     },
+    // We close the dialog only after the action has finished, with the dialog's
+    // async spinner indicating to the user in the meantime that the action is ongoing.
+    finally: async function()
+    {
+        await lla_close_dialog.async({
+            dialog: QueryNewObservationDate,
+        });
+    }
 });

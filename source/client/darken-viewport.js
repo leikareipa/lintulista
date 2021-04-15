@@ -63,8 +63,7 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
         {
             return new Promise(resolve=>
             {
-                if (!shadeId)
-                {
+                if (!shadeId) {
                     resolve();
                     return;
                 }
@@ -73,10 +72,8 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
 
                 // Use a timeout instead of a transition event listener to prevent a missing
                 // transition from holding up the app.
-                setTimeout(()=>
-                {
+                setTimeout(()=>{
                     shadeElement.remove();
-
                     resolve();
                 }, (transitionDuration * 1000));
             });
