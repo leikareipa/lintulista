@@ -15,7 +15,7 @@ import {tr} from "./translator.js";
 import {store} from "./redux-store.js";
 
 export const lla_start_lintulista = LL_Action({
-    failMessage: "Failed to start Lintulista",
+    failMessage: "Lintulista couldn't be started",
     act: async({listKey})=>
     {
         const container = document.querySelector("#lintulista #app-container");
@@ -46,6 +46,8 @@ export const lla_start_lintulista = LL_Action({
                         container);
 
         document.querySelector("#lintulista").classList.add("app-running");
+
+        return true;
     },
     on_error: async({container})=>
     {

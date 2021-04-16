@@ -10,7 +10,7 @@
 import {LL_Action} from "./action.js";
 import {ll_assert_native_type} from "./assert.js";
 
-const dialogContainerClass = "ll-modal-dialog";
+const dialogContainerClass = "ll-dialog-container";
 
 // Closes the React dialog component identified by 'dialog'. Does nothing if
 // a dialog of that kind isn't open.

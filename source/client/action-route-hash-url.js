@@ -23,6 +23,8 @@ export const lla_route_hash_url = LL_Action({
         ll_assert_native_type("function", route.go);
 
         await route.go(lintulistaUrl);
+
+        return true;
     },
     on_error: async({lintulistaUrl, routes})=>
     {

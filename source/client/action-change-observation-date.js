@@ -13,10 +13,11 @@ import {lla_close_dialog} from "./action-close-dialog.js";
 import {LL_Observation} from "./observation.js";
 import {LL_Action} from "./action.js";
 import {LL_Backend} from "./backend.js";
-import {ll_assert_type} from "./assert.js";
+import {ll_assert, ll_assert_type} from "./assert.js";
 
 export const lla_change_observation_date = LL_Action({
     failMessage: "Failed to change the observation date",
+    successMessage: "The observation date was saved",
     act: async function({observation, backend})
     {
         ll_assert_type(LL_Observation, observation);
@@ -27,7 +28,12 @@ export const lla_change_observation_date = LL_Action({
             args: {observation}
         });
 
-        if (newDate) {
+        ll_assert(((newDate === null) ||
+                   (typeof newDate === "object")),
+                  "Invalid return data.");
+
+        if (newDate)
+        {
             const modifiedObservation = LL_Observation({
                 species: observation.species,
                 day: newDate.day,
@@ -36,6 +42,8 @@ export const lla_change_observation_date = LL_Action({
             });
 
             await backend.add_observation(modifiedObservation);
+
+            return true;
         }
 
         return;

@@ -12,7 +12,7 @@ import {ll_assert_native_type} from "./assert.js";
 import {darken_viewport} from "./darken-viewport.js";
 import {store} from "./redux-store.js";
 
-const dialogContainerClass = "ll-modal-dialog";
+const dialogContainerClass = "ll-dialog-container";
 
 // Renders a modal dialog component into a new <div> container. Closes the dialog
 // and deletes the container when the user accepts or rejects the dialog.
@@ -22,7 +22,7 @@ const dialogContainerClass = "ll-modal-dialog";
 // The 'args' property allows arguments to be passed to the dialog. These will
 // be available as 'props.args' in the dialog component.
 //
-// The action will return the dialog's 'props.return' object; or undefined if
+// The action will return the dialog's 'props.return' object; or null if
 // the dialog is canceled.
 //
 export const lla_open_dialog = LL_Action({
@@ -47,7 +47,7 @@ export const lla_open_dialog = LL_Action({
                 args,
                 return: dataReturned,
                 onAccept: ()=>resolve(dataReturned),
-                onReject: ()=>resolve(undefined),
+                onReject: ()=>resolve(null),
             });
 
             document.body.appendChild(dialogContainer);

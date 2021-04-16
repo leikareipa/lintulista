@@ -15,6 +15,7 @@ import {ll_assert_type} from "./assert.js";
 
 export const lla_add_observation = LL_Action({
     failMessage: "Failed to add the observation",
+    successMessage: "The observation was added",
     act: async function({bird, backend})
     {
         ll_assert_type(LL_Bird, bird);
@@ -31,6 +32,6 @@ export const lla_add_observation = LL_Action({
 
         await backend.add_observation(observation);
 
-        return;
+        return true;
     },
 });
