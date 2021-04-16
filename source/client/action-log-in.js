@@ -16,14 +16,14 @@ import {ll_assert_type} from "./assert.js";
 
 export const lla_log_in = LL_Action({
     failMessage: "Login failed",
-    successMessage: "Logged in",
+    successMessage: "You've logged in",
     act: async function({backend})
     {
         ll_assert_type(LL_Backend, backend);
 
-        const credentials = await lla_open_dialog.async({
+        const credentials = await lla_open_dialog.async_nocatch({
             dialog: QueryLoginCredentials
-        }, true);
+        });
 
         if (credentials) {
             await backend.login(credentials.username, credentials.password);

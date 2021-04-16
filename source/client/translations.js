@@ -20,8 +20,40 @@ export const translations = {
         {fiFI: "Listan tunniste puuttuu",
          lat: "Nullum album fuit id provisum"},
 
+    "Added the observation":
+        {fiFI: "Laji lisättiin",
+         lat: "Addidit observationis"},
+
+    "Failed to add the observation":
+         {fiFI: "Lajin lisääminen epäonnistui",
+          lat: "Deficio addere ad observationis"},
+
+    "The date was set":
+          {fiFI: "Päivämäärä tallennettu",
+           lat: "In tempore positum"},
+
+    "Failed to set the date":
+           {fiFI: "Päivämäärää ei voitu tallentaa",
+            lat: "Deficio ad diem"},
+
+    "Deleted the observation":
+         {fiFI: "Laji poistettiin",
+          lat: "Remota autem observationis"},
+
+    "Failed to delete the observation":
+          {fiFI: "Lajin poisto epäonnistui",
+           lat: "Deficio ad delere observationis"},
+
+    "You've logged in":
+         {fiFI: "Kirjauduit sisään",
+          lat: "Tu signati in"},
+
+    "You've logged out":
+          {fiFI: "Kirjauduit ulos",
+           lat: "Tu signati ex"},
+
     "Login failed":
-        {fiFI: "Sisäänkirjautuminen epäonnistui",
+        {fiFI: "Kirjautuminen epäonnistui",
          lat: "Intro defuit"},
 
     "Logout failed":

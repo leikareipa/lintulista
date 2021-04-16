@@ -16,8 +16,8 @@ import {LL_Backend} from "./backend.js";
 import {ll_assert, ll_assert_type} from "./assert.js";
 
 export const lla_change_observation_date = LL_Action({
-    failMessage: "Failed to change the observation date",
-    successMessage: "The observation date was saved",
+    failMessage: "Failed to set the date",
+    successMessage: "The date was set",
     act: async function({observation, backend})
     {
         ll_assert_type(LL_Observation, observation);

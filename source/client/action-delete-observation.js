@@ -18,7 +18,7 @@ import {ll_assert_type} from "./assert.js";
 
 export const lla_delete_observation = LL_Action({
     failMessage: "Failed to delete the observation",
-    successMessage: "The observation was removed",
+    successMessage: "Deleted the observation",
     act: async function({bird, backend})
     {
         ll_assert_type(LL_Bird, bird);

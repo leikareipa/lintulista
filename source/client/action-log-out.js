@@ -13,7 +13,7 @@ import {ll_assert_type} from "./assert.js";
 
 export const lla_log_out = LL_Action({
     failMessage: "Logout failed",
-    successMessage: "Logged out",
+    successMessage: "You've logged out",
     act: async function({backend})
     {
         ll_assert_type(LL_Backend, backend);
