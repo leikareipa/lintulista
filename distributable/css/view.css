@@ -1,3 +1,9 @@
+:root
+{
+    --zindex-dialog: 200;
+    --zindex-popups: 50; /* Below shades.*/
+}
+
 * a
 {
     color: inherit;
@@ -700,7 +706,7 @@ body
     border-radius: 3px;
     display: inline-block;
     color: black;
-    z-index: 200;
+    z-index: var(--zindex-dialog);
     box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
@@ -854,7 +860,7 @@ body
 
 .Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month .value
 {
-    min-width: 80px;
+    min-width: 95px;
 }
 
 .Dialog.QueryNewObservationDate > .form > .fields > .date-bar
@@ -1061,4 +1067,63 @@ body
     0%   {opacity: 0;}
     80%  {opacity: 0;}
     100% {opacity: 1;}
+}
+
+#popup-notifications-container
+{
+    cursor: initial;
+    z-index: var(--zindex-popups);
+    width: 290px;
+    height: auto;
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column-reverse;
+    font-family: sans-serif;
+}
+
+#popup-notifications-container .popup-notification
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    text-align: left;
+    word-wrap: break-word;
+    color: white;
+    background-color: #77716c;
+    border: 1px solid #404040;
+    border-bottom: 3px solid #404040;
+    border-right: 3px solid #404040;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: width 0.2s ease-in-out,
+                padding 0.2s ease-in-out;
+}
+
+#popup-notifications-container .popup-notification+.popup-notification
+{
+    margin-bottom: 10px;
+}
+
+#popup-notifications-container > .popup-notification:not(:last-child)
+{
+    padding: 10px;
+}
+
+#popup-notifications-container .popup-notification.error
+{
+    background-color: #b92020;
+    border-color: #7b0303;
+}
+
+#popup-notifications-container .icon-element
+{
+    margin-right: 20px;
+    font-size: 150%;
 }

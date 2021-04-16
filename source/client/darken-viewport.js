@@ -138,7 +138,7 @@ export function darken_viewport(args = {/*z, onClick, opacity*/})
 }
 
 darken_viewport.defaultArgs = {
-    z: 100,
+    z: 100, // Must be high enough to cover all else on the page.
     opacity: 0.4,
     onClick: ()=>{},
 }

@@ -71,6 +71,14 @@
     animation-duration: 0.15s;
 }
 
+.animation-popup-slide-in
+{
+    animation-name: animation-popup-slide-in-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.2s;
+}
+
 @keyframes animation-slide-down-frames
 {
     0% { opacity: 0; margin-top: -3px;  }
@@ -120,5 +128,11 @@
     0% { opacity: 0; transform: translateY(-80px); }
     60% { opacity: 1; transform: translateY(0px); }
     70% { opacity: 1; transform: translateY(-6px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}
+
+@keyframes animation-popup-slide-in-frames
+{
+    0% { opacity: 0; transform: translateY(10px); }
     100% { opacity: 1; transform: translateY(0px); }
 }
