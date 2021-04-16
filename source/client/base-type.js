@@ -7,7 +7,8 @@
 
 "use strict";
 
-import {ll_assert} from "./assert.js";
+import {ll_assert,
+        ll_assert_native_type} from "./assert.js";
 
 const typeKey = "__$ll_type";
 
@@ -24,14 +25,26 @@ const knownTypes = [];
 // factories for examples of how this function should behave).
 export const LL_BaseType = function(type)
 {
-    ll_assert((typeof type === "function"),
-              "Invalid argument.");
+    ll_assert_native_type("function", type);
 
     knownTypes.push(type);
 
     return {
         [typeKey]: type,
     }
+}
+
+// Mark the given object as being of the given type.
+LL_BaseType.assign = function(type, object)
+{
+    ll_assert_native_type("function", type);
+    ll_assert_native_type("object", object);
+    ll_assert(!object.hasOwnProperty(typeKey), "Type key collision.");
+
+    object[typeKey] = type;
+    knownTypes.push(type);
+
+    return;
 }
 
 // Returns true if the given object inherits from the base type; false otherwise.

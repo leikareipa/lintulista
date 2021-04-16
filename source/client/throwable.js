@@ -14,20 +14,13 @@ export const LL_Throwable = function(message = "Unspecified error")
 {
     ll_assert_native_type("string", message);
 
-    const publicInterface = {
-        isPrivate: true,
-        message,
-
-        ...LL_BaseType(LL_Throwable)
-    };
+    const publicInterface = new Error(message);
+    LL_BaseType.assign(LL_Throwable, publicInterface);
 
     return publicInterface;
 }
 
 LL_Throwable.is_parent_of = function(candidate)
 {
-    return ((LL_BaseType.type_of(candidate) === LL_Throwable) &&
-            candidate.hasOwnProperty("isPrivate") &&
-            candidate.hasOwnProperty("message") &&
-            (candidate.isPrivate === true));
+    return (LL_BaseType.type_of(candidate) === LL_Throwable);
 }
