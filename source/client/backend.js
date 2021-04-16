@@ -40,6 +40,8 @@ export async function LL_Backend(listKey, reduxStore)
     const publicInterface = Object.freeze({
         login: async function(username, password)
         {
+            ll_assert_native_type("string", username, password);
+
             const loginDetails = await ll_backend_request.login(listKey, username, password);
             
             ll_assert_native_type("object", loginDetails);
