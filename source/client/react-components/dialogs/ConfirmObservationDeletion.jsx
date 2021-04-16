@@ -53,7 +53,7 @@ export function ConfirmObservationDeletion(props = {})
         <div className="fields">
 
             <div className="bird-name">
-                {props.args.observation.species}:
+                {props.args.observation.species}
             </div>
 
             <input

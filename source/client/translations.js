@@ -100,9 +100,9 @@ export const translations = {
         {fiFI: "Kirjautuminen on voimassa, kunnes kirjaudut ulos tai lataat sivun uudelleen; kuitenkin korkeintaan kuutisen tuntia.",
          lat: "Vestri login pagina reload nec remanebit ex activae usque ad log. Ceterum de ipso post sex horas initium eris."},
 
-    "Change date of observation":
-        {fiFI: "Muokkaa havaintopäivämäärää",
-         lat: "Mutare observationis diem"},
+    "Date of observation":
+        {fiFI: "Havaintopäivämäärä",
+         lat: "Observationis diem"},
 
     "Delete an observation":
         {fiFI: "Poista havainto",

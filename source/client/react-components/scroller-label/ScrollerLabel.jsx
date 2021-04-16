@@ -10,6 +10,7 @@ import {ll_assert_native_type} from "../../assert.js";
 import {LL_Throwable} from "../../throwable.js";
 import {Scroller} from "./Scroller.js";
 import {tr} from "../../translator.js";
+import {value2roman} from "../../value-to-roman.js";
 
 // Displays a textual label along with arrows to change (scroll) the label's value. For
 // instance, you might have a label containing "1", and the arrows can be used to scroll
@@ -83,7 +84,7 @@ export function ScrollerLabel(props = {})
     {
         switch (props.type)
         {
-            case "integer": return underlyingValue;
+            case "integer": return ((language === "lat")? value2roman(underlyingValue) : underlyingValue);
             case "month-name": return month_name(underlyingValue-1);
             default: throw LL_Throwable("Unknown value type.");
         }

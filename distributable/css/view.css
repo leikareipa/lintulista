@@ -722,17 +722,12 @@ body
 .Dialog > .title
 {
     user-select: none;
-    -moz-user-select: none;
     text-align: left;
     padding: 20px 18px;
     color: white;
     border-radius: 0;
     background-color: #3591e7;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-top: 2px solid #63a9fb;
-    box-shadow: inset 0 0 19px 4px #3591e7;
-    background: linear-gradient(#3591e7 96%, #174671);
+    border-top: 1px solid #63a9fb;
 }
 
 .Dialog > .title > .title-icon
@@ -806,7 +801,6 @@ body
     padding-bottom: 20px;
     display: flex;
     background-color: #f9f9f9;
-    border: 5px solid #3591e7;
     border-top: none;
     align-items: center;
 }
@@ -822,6 +816,8 @@ body
     height: 100px;
     margin-right: 25px;
     border-radius: 50%;
+    border: 10px solid white;
+    box-shadow: -5px 0px 7px -2px rgb(0 0 0 / 30%);
 }
 
 .Dialog > .form > .fields input
@@ -841,6 +837,26 @@ body
     border: 1px solid #3591e7;
 }
 
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar .value
+{
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 6px;
+    border-radius: 6px;
+    margin: 0 5px 0 5px;
+    min-width: 35px;
+}
+
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .year .value
+{
+    min-width: 50px;
+}
+
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month .value
+{
+    min-width: 80px;
+}
+
 .Dialog.QueryNewObservationDate > .form > .fields > .date-bar
 {
     display: flex;
@@ -851,13 +867,12 @@ body
 
 .Dialog.QueryNewObservationDate > .form > .fields > .date-bar *
 {
-    flex: 1;
     min-width: 0;
 }
 
 .Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month
 {
-    flex: 2;
+    flex: 1;
 }
 
 .Dialog.QueryNewObservationDate > .form > .fields .ScrollerLabel

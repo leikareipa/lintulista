@@ -40,7 +40,7 @@ export function QueryNewObservationDate(props = {})
     let year = props.args.observation.year;
 
     return <Dialog component="QueryNewObservationDate"
-                   title={tr("Change date of observation")}
+                   title={tr("Date of observation")}
                    enterAccepts={true}
                    acceptButtonIcon="fas fa-clock"
                    rejectButtonText={tr("Cancel")}
