@@ -627,6 +627,29 @@ body
     flex-direction: column;
 }
 
+.ObservationCard .BirdThumbnail,
+.ObservationCard .observation-info
+{
+    transform: none;
+    transition: background-color 1.5s ease,
+                border-color 1.5s ease,
+                transform 1s ease,
+                box-shadow 1s ease;
+}
+
+.ObservationCard.highlighted .BirdThumbnail
+{
+    transform: scale(1.03);
+    box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.6);
+}
+
+.ObservationCard.highlighted .BirdThumbnail,
+.ObservationCard.highlighted .observation-info
+{
+    border-color: palegoldenrod;
+    background-color: palegoldenrod;
+}
+
 .ObservationCard > .BirdThumbnail,
 .ObservationCardGhost > .BirdThumbnail
 {
@@ -1098,8 +1121,6 @@ body
     color: white;
     background-color: #77716c;
     border: 1px solid #404040;
-    border-bottom: 3px solid #404040;
-    border-right: 3px solid #404040;
     cursor: pointer;
     border-radius: 6px;
     transition: width 0.2s ease-in-out,

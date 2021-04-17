@@ -6,7 +6,7 @@
 
 "use strict";
 
-import {ll_assert_native_type} from "../../assert.js";
+import {ll_assert_native_type, ll_assert_type} from "../../assert.js";
 import {BirdThumbnail} from "../misc/BirdThumbnail.js";
 import {LL_Observation} from "../../observation.js";
 import {tr} from "../../translator.js";
@@ -27,7 +27,25 @@ export function ObservationCard(props = {})
 {
     ObservationCard.validate_props(props);
 
-    return <div className={`ObservationCard${props.isGhost? "Ghost" : ""}`}>
+    const storeDispatch = ReactRedux.useDispatch();
+    const highlightedSpecies = ReactRedux.useSelector(state=>state.highlightedSpecies);
+    const isHighlighted = (!props.isGhost && (props.observation.species === highlightedSpecies));
+
+    React.useEffect(()=>{
+        if (isHighlighted)
+  {
+            const removeHilightTimeout = setTimeout(()=>{
+                storeDispatch({
+                    type: "remove-species-highlight",
+                });
+            }, 4000);
+
+            return ()=>clearTimeout(removeHilightTimeout);
+        }
+    });
+    
+    return <div className={`ObservationCard${props.isGhost? "Ghost" : ""}
+                                            ${isHighlighted? "highlighted" : ""}`}>
 
         {
             props.isGhost
@@ -62,8 +80,9 @@ ObservationCard.defaultProps =
 
 ObservationCard.validate_props = function(props)
 {
-    ll_assert_native_type("object", props, props.observation);
+    ll_assert_native_type("object", props);
     ll_assert_native_type("boolean", props.isGhost);
+    ll_assert_type(LL_Observation, props.observation);
 
     return;
 }

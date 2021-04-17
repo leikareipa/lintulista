@@ -30,6 +30,7 @@ export function BirdSearchResult(props = {})
 {
     BirdSearchResult.validate_props(props);
 
+    const storeDispatch = ReactRedux.useDispatch();
     const observations = ReactRedux.useSelector(state=>state.observations);
 
     // A button element the user can press to add or remove the search result to/from the
@@ -115,10 +116,18 @@ export function BirdSearchResult(props = {})
     // observations.
     async function add_bird_to_list()
     {
-        await lla_add_observation.async({
+        const success = await lla_add_observation.async({
             bird: props.bird,
             backend: props.backend
         });
+
+        if (success)
+        {
+            storeDispatch({
+                type: "set-highlighted-species",
+                species: props.bird.species
+            });
+        }
 
         props.cbCloseSelf();
     }
@@ -142,10 +151,18 @@ export function BirdSearchResult(props = {})
         
         const observation = observations.find(obs=>(obs.species === props.bird.species));
 
-        await lla_change_observation_date.async({
+        const success = await lla_change_observation_date.async({
             observation,
             backend: props.backend
         });
+
+        if (success)
+        {
+            storeDispatch({
+                type: "set-highlighted-species",
+                species: observation.species
+            });
+        }
     }
 }
 

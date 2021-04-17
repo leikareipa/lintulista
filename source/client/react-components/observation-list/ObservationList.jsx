@@ -17,19 +17,6 @@ import {LL_Observation} from "../../observation.js";
 import {LL_Backend} from "../../backend.js";
 import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
-function cards_from_observations(observations = [Observation])
-{
-    ll_assert_native_type("array", observations);
-
-    return observations.map(obs=>
-        <ObservationCard
-            observation={obs}
-            isGhost={obs.isGhost}
-            key={obs.species}
-        />
-    );
-}
-
 // Lintulista's main component; displays the user's list of observations as a series of
 // ObservationCards. Also provides means to search the list for particular observations
 // and to add/delete/modify observations.
@@ -44,7 +31,7 @@ export function ObservationList(props = {})
     const language = ReactRedux.useSelector(state=>state.language);
     const observations = ReactRedux.useSelector(state=>state.observations);
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
-
+    
     return <div className="ObservationList"
                 data-language={language}>
 
@@ -77,6 +64,20 @@ export function ObservationList(props = {})
         });
 
         saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
+    }
+
+    function cards_from_observations(observations = [Observation])
+    {
+        ll_assert_native_type("array", observations);
+
+        return observations.map(obs=>{
+            ll_assert_type(LL_Observation, obs);
+            return <ObservationCard
+                observation={obs}
+                isGhost={obs.isGhost}
+                key={obs.species}
+            />
+        });
     }
 }
 
