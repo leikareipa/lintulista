@@ -37,19 +37,9 @@ export function ll_error_popup(error = {})
         console.error(`Lintulista: ${errorMessage}`);
     }
     else {
-        console.log(`External error: ${errorMessage}`);
+        console.error(`External error: ${errorMessage}`);
     }
 }
-
-/*
- * Most recent known filename: js/ui/notification.js
- *
- * 2019 Tarpeeksi Hyvae Soft /
- * RallySportED-js
- *
- */
-
-"use strict";
 
 // Opens a self-closing popup notification in the DOM.
 function popup(string = "", args = {})
@@ -59,8 +49,8 @@ function popup(string = "", args = {})
 
     args =
     {
-        type: "warning", // | "info" | "error" | "fatal"
-        timeoutMs: 5000,
+        type: "action", // "error"
+        timeoutMs: 4500,
         ...args
     };
 
@@ -85,12 +75,9 @@ function popup(string = "", args = {})
     
     iconElement.classList.add(...(`icon-element ${faIcon}`.split(" ")));
     textContainer.classList.add("text-container");
-    popupElement.classList.add("popup-notification",
-                               "animation-popup-slide-in",
-                               args.type);
+    popupElement.classList.add("popup-notification", args.type);
 
-    textContainer.innerHTML = `${args.type == "fatal"? "Fatal:" : ""}
-                               ${string}`;
+    textContainer.innerHTML = string;
 
     popupElement.appendChild(iconElement);
     popupElement.appendChild(textContainer);
@@ -98,7 +85,15 @@ function popup(string = "", args = {})
 
     const container = document.getElementById("popup-notifications-container");
     ll_assert_native_type(Element, container);
+
     container.appendChild(popupElement);
+    update_vertical_positions();
+
+    // Slide the popup in from the bottom of the screen.
+    popupElement.animate([
+        {bottom: "-75px"},
+        {bottom: "0"}
+    ], {duration: 300, easing: "ease-out"});
 
     const removalTimer = (args.timeoutMs <= 0)
                          ? false
@@ -113,8 +108,29 @@ function popup(string = "", args = {})
     function close_popup()
     {
         clearTimeout(removalTimer);
-        popupElement.remove();
+
+        const fadeout = popupElement.animate([
+            {opacity: "0"}
+        ], {duration: 300, easing: "ease-in-out"});
+
+        fadeout.onfinish = ()=>{
+            popupElement.remove();
+            update_vertical_positions();
+        }
 
         return;
+    }
+
+    // Arrange the currently open popups vertically bottom to top from newest to oldest.
+    function update_vertical_positions()
+    {
+        ll_assert_native_type(Element, container);
+
+        const popups = container.childNodes;
+
+        for (let i = 1; i < popups.length; i++)
+        {
+            popups[i].style.bottom = `${(75 * (popups.length - i - 1))}px`;
+        }
     }
 }

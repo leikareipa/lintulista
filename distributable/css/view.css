@@ -639,7 +639,7 @@ body
 
 .ObservationCard.highlighted .BirdThumbnail
 {
-    transform: scale(1.03);
+    transform: scale(1.04);
     box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.6);
 }
 
@@ -1098,22 +1098,24 @@ body
     z-index: var(--zindex-popups);
     width: 290px;
     height: auto;
-    position: absolute;
-    bottom: 30px;
+    position: fixed;
+    bottom: 20px;
     right: 20px;
     display: flex;
     align-items: flex-end;
-    flex-direction: column-reverse;
+    flex-direction: column;
     font-family: sans-serif;
 }
 
 #popup-notifications-container .popup-notification
 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     box-sizing: border-box;
-    width: 100%;
     height: auto;
     padding: 20px;
     text-align: left;
@@ -1123,18 +1125,18 @@ body
     border: 1px solid #404040;
     cursor: pointer;
     border-radius: 6px;
-    transition: width 0.2s ease-in-out,
-                padding 0.2s ease-in-out;
-}
-
-#popup-notifications-container .popup-notification+.popup-notification
-{
-    margin-bottom: 10px;
+    transition: bottom 0.3s ease-out;
 }
 
 #popup-notifications-container > .popup-notification:not(:last-child)
 {
-    padding: 10px;
+    opacity: 0.75;
+    border: none;
+}
+
+#popup-notifications-container > .popup-notification:hover
+{
+    opacity: 1;
 }
 
 #popup-notifications-container .popup-notification.error
