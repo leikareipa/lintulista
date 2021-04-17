@@ -53,7 +53,6 @@ export function ObservationList(props = {})
         <ObservationListMenuBar
             enabled={true}
             backend={props.backend}
-            callbackSetListSorting={()=>{}}
         />
 
         <div className={"observation-cards"}>

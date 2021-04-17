@@ -7,12 +7,10 @@
 "use strict";
 
 import {ll_assert_native_type} from "../../assert.js";
-import {lla_log_in} from "../../action-log-in.js";
-import {lla_log_out} from "../../action-log-out.js";
 import {BirdSearch} from "../bird-search/BirdSearch.js";
 import {MenuButton} from "../buttons/MenuButton.js";
 import {CheckBoxButton} from "../buttons/CheckBoxButton.js";
-import {Button} from "../buttons/Button.js";
+import {ObservationList_MenuBar_LoginButton} from "../buttons/ObservationList_MenuBar_LoginButton.js";
 import {tr} from "../../translator.js";
 import {ll_hash_navigate} from "../../hash-router.js";
 
@@ -27,7 +25,6 @@ export function ObservationListMenuBar(props = {})
 {
     ObservationListMenuBar.validate_props(props);
 
-    const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
     const is100LajiaMode = ReactRedux.useSelector(state=>state.is100LajiaMode);
     const setIs100LajiaMode = ReactRedux.useDispatch();
 
@@ -87,15 +84,8 @@ export function ObservationListMenuBar(props = {})
                 showTooltip={false}
             />
 
-            <Button
-                className={`lock ${isLoggedIn? "unlocked" : "locked"}`}
-                title={isLoggedIn
-                       ? tr("Log out")
-                       : tr("Log in to edit the list")}
-                icon={isLoggedIn
-                      ? "fas fa-shield-alt fa-fw fa-lg"
-                      : "fas fa-lock fa-fw fa-lg"}
-                callbackOnButtonClick={handle_login_button_activation}
+            <ObservationList_MenuBar_LoginButton
+                backend={props.backend}
             />
 
             <MenuButton
@@ -114,23 +104,6 @@ export function ObservationListMenuBar(props = {})
         </div>
                            
     </div>
-
-    async function handle_login_button_activation()
-    {
-        if (isLoggedIn) {
-            await lla_log_out.async({backend:props.backend});
-        }
-        else {
-            await lla_log_in.async({backend:props.backend});
-        }
-
-        return;
-    }
-}
-
-ObservationListMenuBar.defaultProps =
-{
-    enabled: true,
 }
 
 ObservationListMenuBar.validate_props = function(props)
