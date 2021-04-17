@@ -34,14 +34,16 @@ export const LL_BaseType = function(type)
     }
 }
 
-// Mark the given object as being of the given type.
-LL_BaseType.assign = function(type, object)
+// Mark the given interface object as being of the given type (e.g. LL_Bird). This
+// should only be called inside function factories on their interface object, rather
+// than on objects generally.
+LL_BaseType.assign = function(type, dstObject = {})
 {
     ll_assert_native_type("function", type);
-    ll_assert_native_type("object", object);
-    ll_assert(!object.hasOwnProperty(typeKey), "Type key collision.");
+    ll_assert_native_type("object", dstObject);
+    ll_assert(!dstObject.hasOwnProperty(typeKey), "Type key collision.");
 
-    object[typeKey] = type;
+    dstObject[typeKey] = type;
     knownTypes.push(type);
 
     return;
