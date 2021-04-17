@@ -21,7 +21,7 @@ export const translations = {
          lat: "Nullum album fuit id provisum"},
 
     "Added the observation":
-        {fiFI: "Laji lisättiin",
+        {fiFI: "Laji lisättiin listaan",
          lat: "Addidit observationis"},
 
     "Failed to add the observation":
@@ -29,7 +29,7 @@ export const translations = {
           lat: "Deficio addere ad observationis"},
 
     "The date was set":
-          {fiFI: "Päivämäärä tallennettu",
+          {fiFI: "Päivämäärä tallennettiin",
            lat: "In tempore positum"},
 
     "Failed to set the date":
@@ -37,7 +37,7 @@ export const translations = {
             lat: "Deficio ad diem"},
 
     "Deleted the observation":
-         {fiFI: "Laji poistettiin",
+         {fiFI: "Laji poistettiin listalta",
           lat: "Remota autem observationis"},
 
     "Failed to delete the observation":
