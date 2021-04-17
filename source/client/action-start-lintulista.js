@@ -9,13 +9,16 @@
 
 import {ObservationList} from "./react-components/observation-list/ObservationList.js";
 import {LL_Backend} from "./backend.js";
-import {ll_assert_native_type} from "./assert.js";
 import {LL_Action} from "./action.js";
+import {LL_Throwable} from "./throwable.js";
+import {ll_assert_native_type} from "./assert.js";
+import {ll_crash_app} from "./crash-app.js";
+import {ll_hash_route} from "./hash-router.js";
 import {tr} from "./translator.js";
 import {store} from "./redux-store.js";
 
 export const lla_start_lintulista = LL_Action({
-    failMessage: "Lintulista couldn't be started",
+    failMessage: "Lintulista failed to start",
     act: async({listKey})=>
     {
         const container = document.querySelector("#lintulista #app-container");
@@ -49,13 +52,24 @@ export const lla_start_lintulista = LL_Action({
 
         return true;
     },
-    on_error: async({container})=>
+    on_error: async(error)=>
     {
-        // Remove the loading spinner.
-        container.innerHTML = "";
+        if (LL_Throwable.is_parent_of(error) &&
+            (error.message === "404 Not Found"))
+        {
+            ll_hash_route("/404");
+        }
+        else
+        {
+            ll_crash_app(error);
+        }
     },
     finally: async()=>
     {
-        document.querySelector("#lintulista > header").classList.add("paused");
+        const headerElement = document.querySelector("#lintulista > header");
+        
+        if (headerElement instanceof Element) {
+            headerElement.classList.add("paused");
+        };
     }
 });

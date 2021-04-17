@@ -12,6 +12,10 @@ export const translations = {
         {fiFI: "Ladataan Lintulistaa. Pieni hetki...",
         lat: "Parat Lintulista. Placet exspectare..."},
 
+    "Lintulista failed to start":
+        {fiFI: "Lintulistaa ei voitu käynnistää",
+         lat: "Lintulista defecit incipere"},
+
     "Encountered an error":
         {fiFI: "Sattui virhe",
          lat: "Errorem offendit nec"},

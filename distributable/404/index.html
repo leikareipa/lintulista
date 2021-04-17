@@ -10,7 +10,7 @@
             html
             {
                 height: 50vh;
-                background-color: transparent;
+                background-color: #dbdbdb;
             }
             body
             {
@@ -37,20 +37,28 @@
                 display: flex;
                 align-items: center;
                 color: whitesmoke;
+                transform: rotateX(90deg);
             }
         </style>
     </head>
     <body>
         <div class="badnews">
-            <i class="fas fa-user-times"></i>
-            404
+            <i class="fas fa-plug"></i>
+            Not Found (404)
         </div>
 
         <script>
-            document.querySelector(".badnews").animate([
-                {filter: "blur(15px)", transform: "rotateX(90deg)"},
-                {filter: "none", transform: "none"}
-            ], {duration: 400, easing: "ease-in-out"});
+            const slidedown = document.documentElement.animate([
+                {height: "100vh"},
+            ], {duration: 500, easing: "ease-in-out", fill: "forwards"});
+
+            slidedown.onfinish = ()=>
+            {
+                document.querySelector(".badnews").animate([
+                    {filter: "blur(15px)", transform: "rotateX(90deg)"},
+                    {filter: "none", transform: "none"}
+                ], {duration: 300, easing: "ease-in-out", fill: "forwards"});
+            }
         </script>
     </body>
 </html>

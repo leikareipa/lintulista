@@ -60,8 +60,7 @@ export async function LL_Backend(listKey, reduxStore)
             ll_assert((loginToken !== null),
                       "Trying to log out without having been logged in.");
 
-            const wasSuccessful = await ll_backend_request.logout(listKey, loginToken);
-            ll_assert(wasSuccessful, "Logout failed.");
+            await ll_backend_request.logout(listKey, loginToken);
 
             loginToken = null;
             loginValidUntil = undefined;
@@ -81,8 +80,7 @@ export async function LL_Backend(listKey, reduxStore)
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
             ll_assert((obsIdx >= 0), "Unrecognized observation data.");
 
-            const wasSuccess = await ll_backend_request.delete_observation(observation, listKey, loginToken);
-            ll_assert(wasSuccess, "Failed to remove the observation.");
+            await ll_backend_request.delete_observation(observation, listKey, loginToken);
 
             observations.splice(obsIdx, 1);
             update_observation_store(observations);
@@ -98,13 +96,8 @@ export async function LL_Backend(listKey, reduxStore)
             ll_assert_type(LL_Observation, observation);
 
             const obsIdx = observations.findIndex(obs=>(obs.species === observation.species));
-            const isExistingObservation = (obsIdx >= 0);
-            const wasSuccess = await ll_backend_request.put_observation(observation, listKey, loginToken);
 
-            ll_assert(wasSuccess,
-                      isExistingObservation
-                      ? "Failed to update the observation"
-                      : "Failed to add the observation");
+            await ll_backend_request.put_observation(observation, listKey, loginToken);
 
             observations.splice(obsIdx, (obsIdx !== -1), observation);
             update_observation_store(observations);

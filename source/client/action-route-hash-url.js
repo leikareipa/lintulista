@@ -26,7 +26,7 @@ export const lla_route_hash_url = LL_Action({
 
         return true;
     },
-    on_error: async({lintulistaUrl, routes})=>
+    on_error: async(error, {lintulistaUrl, routes})=>
     {
         const route_404 = routes[routes.length - 1];
 

@@ -94,7 +94,7 @@ export const LL_Action = function(props = {})
                     throw error;
                 }
                 else {
-                    await props.on_error(args);
+                    await props.on_error(error, args);
                     console.warn("Caught in Action:", error);
                     ll_error_popup__(props.failMessage);
                 }
