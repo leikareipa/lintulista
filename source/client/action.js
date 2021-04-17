@@ -7,8 +7,9 @@
 
 "use strict";
 
-import {ll_assert_native_type} from "./assert.js";
 import {LL_BaseType} from "./base-type.js";
+import {ll_assert_native_type} from "./assert.js";
+import {ll_crash_app} from "./crash-app.js";
 import {ll_error_popup__,
         ll_message_popup} from "./message-popup.js";
 
@@ -100,8 +101,15 @@ export const LL_Action = function(props = {})
 
                 return null;
             }
-            finally {
-                await props.finally(args);
+            finally
+            {
+                try {
+                    await props.finally(args);
+                }
+                catch (error) {
+                    console.warn("Fatal error in Action's finally:", error);
+                    ll_crash_app(error);
+                }
             }
         },
 
