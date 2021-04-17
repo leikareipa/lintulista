@@ -1139,6 +1139,11 @@ body
     opacity: 1;
 }
 
+#popup-notifications-container > .popup-notification.transitioning-in
+{
+    opacity: 0;
+}
+
 #popup-notifications-container .popup-notification.error
 {
     background-color: #b92020;
@@ -1147,6 +1152,6 @@ body
 
 #popup-notifications-container .icon-element
 {
-    margin-right: 20px;
+    margin-right: 15px;
     font-size: 150%;
 }

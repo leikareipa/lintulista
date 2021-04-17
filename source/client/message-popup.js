@@ -50,7 +50,7 @@ function popup(string = "", args = {})
     args =
     {
         type: "action", // "error"
-        timeoutMs: 4500,
+        timeoutMs: 5000,
         ...args
     };
 
@@ -63,11 +63,14 @@ function popup(string = "", args = {})
 
         switch (args.type)
         {
-            case "action": return `${meta} fas fa-check`;
+            case "action": return `${meta} fas fa-feather-alt`;
             case "error": return `${meta} fas fa-exclamation-triangle`;
             default: return `${meta} fas fa-comment`;
         }
     })();
+
+    // Spacing (in pixels) between two adjacent popup elements.
+    const popupVerticalSpacing = 10;
 
     const popupElement = document.createElement("div");
     const iconElement = document.createElement("i");
@@ -88,25 +91,26 @@ function popup(string = "", args = {})
 
     container.appendChild(popupElement);
     update_vertical_positions();
-
-    // Slide the popup in from the bottom of the screen.
-    popupElement.animate([
-        {bottom: "-75px"},
-        {bottom: "0"}
-    ], {duration: 300, easing: "ease-out"});
+    append_transition_in();
 
     const removalTimer = (args.timeoutMs <= 0)
                          ? false
                          : setTimeout(close_popup, args.timeoutMs);
 
     const publicInterface = Object.freeze({
-        close: close_popup,
+        close: ()=>close_popup(true),
     });
 
     return publicInterface;
 
-    function close_popup()
+    function close_popup(initiatedByUser = false)
     {
+        if (initiatedByUser &&
+            popupElement.classList.contains("transitioning-in"))
+        {
+            return;
+        }
+
         clearTimeout(removalTimer);
 
         const fadeout = popupElement.animate([
@@ -121,16 +125,45 @@ function popup(string = "", args = {})
         return;
     }
 
-    // Arrange the currently open popups vertically bottom to top from newest to oldest.
+    // Adds a transitioning animation to the popup. Assumes that the popup element
+    // has just been added to the DOM and has an opacity of 0.
+    function append_transition_in()
+    {
+        popupElement.classList.add("transitioning-in");
+
+        const bottomMostPopup = Array.from(container.children)
+                                     .filter(p=>p.classList.contains("popup-notification"))
+                                     .pop();
+
+        const startOffset = -((bottomMostPopup || popupElement).clientHeight + popupVerticalSpacing);
+        
+        const slidein = popupElement.animate([
+            {opacity: "0", bottom: `${startOffset}px`},
+            {opacity: "1", bottom: "0"}
+        ], {duration: 300, easing: "ease-out"});
+
+        slidein.onfinish = ()=>popupElement.classList.remove("transitioning-in");
+    }
+
+    // Arrange the currently open popups vertically bottom to top from newest to
+    // oldest. (The first popup node is expected to be the oldest.)
     function update_vertical_positions()
     {
         ll_assert_native_type(Element, container);
 
-        const popups = container.childNodes;
+        const popups = Array.from(container.children).filter(p=>p.classList.contains("popup-notification"));
+        ll_assert_native_type("array", popups);
 
-        for (let i = 1; i < popups.length; i++)
-        {
-            popups[i].style.bottom = `${(75 * (popups.length - i - 1))}px`;
+        if (!popups.length) {
+            return;
+        }
+
+        let totalHeight = popups.reduce((totalHeight, popup)=>{
+            return (totalHeight + popup.offsetHeight + popupVerticalSpacing);
+        }, 0);
+
+        for (const popup of popups) {
+            popup.style.bottom = `${totalHeight -= (popup.offsetHeight + popupVerticalSpacing)}px`;
         }
     }
 }
