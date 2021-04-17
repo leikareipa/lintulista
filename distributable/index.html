@@ -50,18 +50,40 @@
             
         </div>
 
-        <script>
+        <div id="blue-screen">
+
+            <h1>
+                <i class="fas fa-fw fa-otter"
+                   style="font-size: 400%;
+                          position: absolute;
+                          transform: translateY(calc(-100% - 10px));
+                          display: block;
+                          margin-bottom: 25px;">
+                </i>
+
+                Lintulista has crashed.
+                Maybe reloading would fix it?
+            </h1>
+
+            <div class="error-description">
+                Undefined error
+            </div>
+
+        </div>
+
+        <script type="module">
+            import {ll_crash_app} from "./js/crash-app.js";
+
             window.onerror = function(message, source, lineno, colno, error)
             {
-                /// TODO.
-                console.error("Uncaught error", error)
-                document.getElementById("lintulista").remove();
+                console.error("Uncaught error", error);
+                ll_crash_app(error);
             }
 
             window.onunhandledrejection = function(error)
             {
-                /// TODO.
-                document.getElementById("lintulista").remove();
+                console.error("Uncaught async error", error)
+                ll_crash_app(error);
             };
 
             window.onhashchange = function()

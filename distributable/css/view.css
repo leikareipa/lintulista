@@ -75,15 +75,14 @@ body
 
 #lintulista .startup-loading-spinner
 {
-    animation: swing 5s ease-in-out infinite,
-               reveal-fadein 1.2s linear;
+    animation: reveal-flip 1.2s linear;
     font-family: sans-serif;
     padding: 15px 30px;
-    background-color: #989898;
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     font-size: 120%;
     border-radius: 6px;
-    border-bottom: 2px solid gray;
+    border-bottom: 1px solid black;
 }
 
 #lintulista #app-container
@@ -1085,11 +1084,11 @@ body
     100% {opacity: 1; transform: translateY(0px) rotateY(0deg);}
 }
 
-@keyframes reveal-fadein
+@keyframes reveal-flip
 {
-    0%   {opacity: 0;}
-    80%  {opacity: 0;}
-    100% {opacity: 1;}
+    0%   {transform: rotateX(90deg);}
+    80%  {transform: rotateX(90deg);}
+    100% {transform: rotateX(0deg);}
 }
 
 #popup-notifications-container
@@ -1154,4 +1153,36 @@ body
 {
     margin-right: 15px;
     font-size: 150%;
+}
+
+#blue-screen
+{
+    font-family: sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999; /* Above everything else.*/
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    color: rgb(210, 210, 210);
+    box-sizing: border-box;
+    padding: 25px;
+}
+
+#blue-screen h1
+{
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#blue-screen .error-description
+{
+    font-size: 100%;
+    font-style: italic;
+    margin-top: 5px;
 }
