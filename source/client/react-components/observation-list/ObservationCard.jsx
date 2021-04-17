@@ -38,7 +38,7 @@ export function ObservationCard(props = {})
                 storeDispatch({
                     type: "remove-species-highlight",
                 });
-            }, 4000);
+            }, 3000);
 
             return ()=>clearTimeout(removeHilightTimeout);
         }
