@@ -15,7 +15,7 @@ import {lla_route_hash_url} from "./action-route-hash-url.js";
 
 const routes = [
     { // View a list (e.g. "#aaaaaaaaa" or #aaaaaaaaa/lang/lat").
-        url: new RegExp("^#[a-z]{9}/?"),
+        url: new RegExp("^#[a-z]{9}($|/)"),
         go: route_list,
     },
     { // Default route for when no others match.
@@ -114,7 +114,7 @@ async function route_list(url = "")
 
 async function route_404(url = "")
 {
-    console.log("oops");
+    window.location.replace("./404");
 
     return;
 }

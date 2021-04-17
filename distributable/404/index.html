@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>404 - Lintulista</title>
+        <meta name="referrer" content="no-referrer">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <style>
+            html
+            {
+                height: 50vh;
+                background-color: transparent;
+            }
+            body
+            {
+                font-family: sans-serif;
+                padding: 0;
+                margin: 0;
+                background-color: #77716c;
+                color: whitesmoke;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            body .fas,
+            body .far
+            {
+                margin: 10px;
+                font-size: 150%;
+            }
+
+            .badnews
+            {
+                display: flex;
+                align-items: center;
+                color: whitesmoke;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="badnews">
+            <i class="fas fa-user-times"></i>
+            404
+        </div>
+
+        <script>
+            document.querySelector(".badnews").animate([
+                {filter: "blur(15px)", transform: "rotateX(90deg)"},
+                {filter: "none", transform: "none"}
+            ], {duration: 400, easing: "ease-in-out"});
+        </script>
+    </body>
+</html>
