@@ -12,12 +12,23 @@ import {ll_assert_native_type,
 import {lla_log_in} from "../../action-log-in.js";
 import {lla_log_out} from "../../action-log-out.js";
 import {LL_Backend} from "../../backend.js";
+import {AsyncIconButton} from "../../react-components/buttons/AsyncIconButton.js";
 
 export function ObservationList_MenuBar_LoginButton(props = {})
 {
     ObservationList_MenuBar_LoginButton.validate_props(props);
 
     const isLoggedIn = ReactRedux.useSelector(state=>state.isLoggedIn);
+
+
+    if (isLoggedIn) {
+        return <AsyncIconButton
+            icon="fas fa-shield-alt fa-fw fa-lg"
+            title={tr("Log out")}
+            titleWhenClicked={tr("Logging out...")}
+            task={on_click}
+        />
+    }
 
     return <div className={`Button ObservationList_MenuBar_LoginButton`}
                 onClick={on_click}

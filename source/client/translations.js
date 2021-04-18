@@ -80,6 +80,10 @@ export const translations = {
         {fiFI: "Kirjaudu ulos",
          lat: "Relinquo"},
 
+    "Logging out...":
+         {fiFI: "Kirjaudutaan ulos...",
+          lat: "Et colligationem..."},
+
     "Username":
         {fiFI: "Käyttäjänimi",
          lat: "Nomen usoris"},

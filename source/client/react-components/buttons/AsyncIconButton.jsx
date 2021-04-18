@@ -117,7 +117,7 @@ export function AsyncIconButton(props = {})
             }
             case "waiting": {
                 setCurrentState("waiting");
-                setCurrentIcon(`fas fa-spinner fa-spin ${iconSize}`.trim());
+                setCurrentIcon(`fas fa-fw fa-spinner fa-spin ${iconSize}`.trim());
                 setCurrentTitle(props.titleWhenClicked);
                 break;
             }
