@@ -128,7 +128,7 @@ async function route_404(url = "")
         border: none;
     `;
 
-    iframe.src = "./404/";
+    iframe.src = "404.html";
 
     /// Bit of a kludge to reuse the bluescreen container for the 404 iframe.
     /// In the future, the iframe should have its own container.
