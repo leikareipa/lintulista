@@ -261,7 +261,8 @@ body
 
 .ObservationList > .ObservationListMenuBar > .buttons > .Button > .icon,
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon,
-.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon,
+.ObservationList > .ObservationListMenuBar > .buttons > .AsyncIconButton
 {
     color: #f1f1f1;
 }

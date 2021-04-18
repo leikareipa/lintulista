@@ -60,11 +60,20 @@ export async function LL_Backend(listKey, reduxStore)
             ll_assert((loginToken !== null),
                       "Trying to log out without having been logged in.");
 
-            await ll_backend_request.logout(listKey, loginToken);
-
-            loginToken = null;
-            loginValidUntil = undefined;
-            reduxStore.dispatch({type: "set-logged-in", isLoggedIn: false});
+            // We're not always in the position to inform the user of logout errors; e.g. when
+            // logging out on window close. So we silently ignore errors and proceed as if the
+            // logout succeeded.
+            try {
+                await ll_backend_request.logout(listKey, loginToken);
+            }
+            catch (error) {
+                console.warn("Ignoring logout error:", error);
+            }
+            finally {
+                loginToken = null;
+                loginValidUntil = undefined;
+                reduxStore.dispatch({type: "set-logged-in", isLoggedIn: false});
+            }
 
             return;
         },
