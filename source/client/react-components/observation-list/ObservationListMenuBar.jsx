@@ -78,7 +78,6 @@ export function ObservationListMenuBar(props = {})
                 menuTitle={"Lintulista"}
                 items={[
                     {text:tr("Image info"), callbackOnSelect:()=>window.open("./guide/images.html")},
-                    {text:tr("User's guide"), callbackOnSelect:()=>window.open("./guide/")},
                     {text:"GitHub", callbackOnSelect:()=>window.open("https://github.com/leikareipa/lintulista/")},
                 ]}
                 showTooltip={false}
