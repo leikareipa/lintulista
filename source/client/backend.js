@@ -52,6 +52,8 @@ export async function LL_Backend(listKey, reduxStore)
             loginValidUntil = loginDetails.until;
             reduxStore.dispatch({type: "set-logged-in", isLoggedIn: true});
 
+            window.addEventListener("beforeunload", this.logout);
+
             return;
         },
 
@@ -73,6 +75,8 @@ export async function LL_Backend(listKey, reduxStore)
                 loginToken = null;
                 loginValidUntil = undefined;
                 reduxStore.dispatch({type: "set-logged-in", isLoggedIn: false});
+
+                window.removeEventListener("beforeunload", this.logout);
             }
 
             return;
