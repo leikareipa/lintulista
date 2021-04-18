@@ -78,11 +78,10 @@ body
     animation: reveal-flip 1.2s linear;
     font-family: sans-serif;
     padding: 15px 30px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 120%;
-    border-radius: 6px;
-    border-bottom: 1px solid black;
+    background-color: white;
+    color: black;
+    border-radius: 0px;
+    border: 1px solid black;
 }
 
 #lintulista #app-container
@@ -91,7 +90,7 @@ body
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateY(-40px);
+    transform: translateY(-35px);
 }
 
 #lintulista.app-running #app-container
