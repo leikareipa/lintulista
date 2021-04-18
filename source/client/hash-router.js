@@ -114,7 +114,30 @@ async function route_list(url = "")
 
 async function route_404(url = "")
 {
-    window.location.replace("./404");
+    const appElement = document.getElementById("lintulista");
+    ll_assert_native_type(Element, appElement);
+    appElement.remove();
+    
+    const iframe = document.createElement("iframe");
+
+    iframe.style.cssText = `
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        border: none;
+    `;
+
+    iframe.src = "./404/";
+
+    /// Bit of a kludge to reuse the bluescreen container for the 404 iframe.
+    /// In the future, the iframe should have its own container.
+    const bsContainer = document.getElementById("blue-screen");
+    ll_assert_native_type(Element, bsContainer);
+    bsContainer.innerHTML = "";
+    bsContainer.appendChild(iframe);
+    bsContainer.style.display = "flex";
+    bsContainer.style.padding = "0";
 
     return;
 }
