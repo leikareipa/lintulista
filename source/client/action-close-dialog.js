@@ -9,6 +9,7 @@
 
 import {LL_Action} from "./action.js";
 import {ll_assert_native_type} from "./assert.js";
+import {ll_crash_app} from "./crash-app.js";
 
 const dialogContainerClass = "ll-dialog-container";
 
@@ -38,5 +39,9 @@ export const lla_close_dialog = LL_Action({
         }
 
         return;
-    }
+    },
+    on_error: async function(error)
+    {
+        ll_crash_app(error);
+    },
 });
