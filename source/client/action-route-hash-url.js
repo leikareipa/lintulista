@@ -7,8 +7,9 @@
 
 "use strict";
 
-import {ll_assert_native_type} from "./assert.js";
 import {LL_Action} from "./action.js";
+import {ll_assert_native_type} from "./assert.js";
+import {ll_crash_app} from "./crash-app.js";
 
 export const lla_route_hash_url = LL_Action({
     failMessage: "Unrecognized URL",
@@ -26,13 +27,8 @@ export const lla_route_hash_url = LL_Action({
 
         return true;
     },
-    on_error: async(error, {lintulistaUrl, routes})=>
+    on_error: async(error)=>
     {
-        const route_404 = routes[routes.length - 1];
-
-        ll_assert_native_type("object", route_404);
-        ll_assert_native_type("function", route_404.go);
-
-        route_404.go(lintulistaUrl);
+        ll_crash_app(error);
     }
 });
