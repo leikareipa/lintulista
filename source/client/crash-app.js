@@ -39,14 +39,16 @@ export function ll_crash_app(error)
     const bluescreenElement = document.getElementById("blue-screen");
     const errorMessageElement = bluescreenElement.querySelector(".error-description");
 
+    if (appElement instanceof Element) {
+        appElement.remove();
+    }
+
     // Normally we'd assert to make sure these elements exist, but since the
     // app is already in a crashed state, it wouldn't be able to handle the
     // assertions.
-    if ((appElement instanceof Element) &&
-        (bluescreenElement instanceof Element) &&
+    if ((bluescreenElement instanceof Element) &&
         (errorMessageElement instanceof Element))
     {
-        appElement.remove();
         errorMessageElement.innerHTML = errorMessage;
         bluescreenElement.style.display = "flex";
     }
