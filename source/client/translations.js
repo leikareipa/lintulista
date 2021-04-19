@@ -20,6 +20,10 @@ export const translations = {
         {fiFI: "Listan tunniste puuttuu",
          lat: "Nullum album fuit id provisum"},
 
+    "Failed to download CSV":
+        {fiFI: "CSV:n lataus epäonnistui",
+         lat: "CSV defecit receptio"},
+
     "The observation has been added":
         {fiFI: "Laji lisättiin listaan",
          lat: "Addidit observationis"},

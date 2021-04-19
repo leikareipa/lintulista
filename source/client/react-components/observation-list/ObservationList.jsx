@@ -15,7 +15,6 @@ import {ObservationListMenuBar} from "./ObservationListMenuBar.js";
 import {ObservationCard} from "./ObservationCard.js";
 import {LL_Observation} from "../../observation.js";
 import {LL_Backend} from "../../backend.js";
-import * as FileSaver from "../../filesaver/FileSaver.js"; /* For saveAs().*/
 
 // Lintulista's main component; displays the user's list of observations as a series of
 // ObservationCards. Also provides means to search the list for particular observations
@@ -48,23 +47,9 @@ export function ObservationList(props = {})
 
         </div>
 
-        <ObservationListFootnotes
-            numObservationsInList={observations.length}
-            callbackDownloadList={save_observations_to_csv_file}
-        />
+        <ObservationListFootnotes/>
                             
     </div>
-
-    function save_observations_to_csv_file()
-    {
-        let csvString = "Päivämäärä, Laji\n";
-
-        observations.forEach(obs=>{
-            csvString += `${LL_Observation.date_string(obs)}, ${obs.species||""},\n`;
-        });
-
-        saveAs(new Blob([csvString], {type: "text/plain;charset=utf-8"}), "lintulista.csv");
-    }
 
     function cards_from_observations(observations = [Observation])
     {

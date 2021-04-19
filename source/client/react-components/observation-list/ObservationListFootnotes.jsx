@@ -8,25 +8,23 @@
 
 import {ll_assert_native_type} from "../../assert.js";
 import {tr} from "../../translator.js";
+import {lla_export_observations_to_csv} from "../../action-export-obs-to-csv.js";
 
 // Displays footnotes at the bottom of the list (or of the screen); providing information like
 // the total number of observations in the current list.
-//
-// The current number of observations in the list can be given via props.numObservationsInList.
-//
-// A callback for when the user requests to download the list's contents as a CSV file should
-// be provided via props.callbackDownloadList.
 //
 export function ObservationListFootnotes(props = {})
 {
     ObservationListFootnotes.validate_props(props);
 
-    const obsCount = props.numObservationsInList
-        ? <>{tr("The list has %1 species", props.numObservationsInList)}.</>
+    const observations = ReactRedux.useSelector(state=>state.observations);
+
+    const obsCount = observations.length
+        ? <>{tr("The list has %1 species", observations.length)}.</>
         : <>{tr("The list is currently empty")}</>
 
-    const obsDownload = props.numObservationsInList
-        ? <span onClick={props.callbackDownloadList}
+    const obsDownload = observations.length
+        ? <span onClick={async()=>await lla_export_observations_to_csv.async({observations})}
                 style={{textDecoration:"underline", cursor:"pointer", fontVariant:"normal"}}>
 
               {tr("Download as CSV")}
@@ -45,8 +43,6 @@ export function ObservationListFootnotes(props = {})
 ObservationListFootnotes.validate_props = function(props)
 {
     ll_assert_native_type("object", props);
-    ll_assert_native_type("number", props.numObservationsInList);
-    ll_assert_native_type("function", props.callbackDownloadList);
     
     return;
 }
