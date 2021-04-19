@@ -1,3 +1,3 @@
-cp .babelrc-dev ./source/client/.babelrc
-./node_modules/.bin/babel ./source/client/ --out-dir ./distributable/js/
-rm ./source/client/.babelrc
+cp .babelrc-dev ./source/.babelrc
+./node_modules/.bin/babel ./source/ --out-dir ./distributable/js/
+rm ./source/.babelrc

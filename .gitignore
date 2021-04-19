@@ -1,4 +1,4 @@
-misc/
+.misc/
 .vscode/
 node_modules/
 lintulista-sql.json
