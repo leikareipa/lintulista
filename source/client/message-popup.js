@@ -9,7 +9,6 @@
 
 import {tr} from "./translator.js";
 import {ll_assert_native_type} from "./assert.js";
-import {LL_Throwable} from "./throwable.js";
 
 /// TODO.
 export function ll_message_popup(message = "")
@@ -20,25 +19,11 @@ export function ll_message_popup(message = "")
 }
 
 /// TODO.
-export function ll_error_popup__(errorMessage = "")
+export function ll_error_popup(errorMessage = "")
 {
     ll_assert_native_type("string", errorMessage);
     popup(tr(errorMessage), {type:"error"});
     return;
-}
-
-// Takes in an Error object (e.g. from catch()) and, so far as it's relevant to Lintulista,
-// presents its message to the user.
-export function ll_error_popup(error = {})
-{
-    const errorMessage = (error.message || error.reason.message || "Unknown error");
-
-    if (LL_Throwable.is_parent_of(error)) {
-        console.error(`Lintulista: ${errorMessage}`);
-    }
-    else {
-        console.error(`External error: ${errorMessage}`);
-    }
 }
 
 // Opens a self-closing popup notification in the DOM.
