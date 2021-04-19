@@ -14,7 +14,6 @@ import {LL_Throwable} from "./throwable.js";
 import {ll_assert_native_type} from "./assert.js";
 import {ll_crash_app} from "./crash-app.js";
 import {ll_hash_route} from "./hash-router.js";
-import {tr} from "./translator.js";
 import {store} from "./redux-store.js";
 
 export const lla_start_lintulista = LL_Action({
@@ -25,16 +24,6 @@ export const lla_start_lintulista = LL_Action({
 
         ll_assert_native_type("string", listKey);
         ll_assert_native_type(Element, container);
-
-        // Start a loading spinner to let the user know we might take a while.
-        {
-            document.querySelector("#lintulista > header").classList.add("glide");
-
-            ReactDOM.render(<div className="startup-loading-spinner">
-                {tr("Loading Lintulista. Just a moment...")}
-            </div>,
-            container);
-        }
 
         const backend = await LL_Backend(listKey, store);
 

@@ -8,10 +8,6 @@
 "use strict";
 
 export const translations = {
-    "Loading Lintulista. Just a moment...":
-        {fiFI: "Ladataan Lintulistaa. Pieni hetki...",
-        lat: "Parat Lintulista. Placet exspectare..."},
-
     "Lintulista failed to start":
         {fiFI: "Lintulistaa ei voitu käynnistää",
          lat: "Lintulista defecit incipere"},

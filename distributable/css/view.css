@@ -73,7 +73,7 @@ body
     width: 100%;
 }
 
-#lintulista .startup-loading-spinner
+#app-container .startup-loading-spinner
 {
     animation: reveal-flip 1.2s linear;
     font-family: sans-serif;
@@ -638,7 +638,7 @@ body
 
 .ObservationCard.highlighted .BirdThumbnail
 {
-    transform: scale(1.04);
+    transform: scale(1.03);
     box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.6);
 }
 
