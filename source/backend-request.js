@@ -14,11 +14,12 @@ import {LL_Observation} from "./observation.js";
 import {LL_Bird} from "./bird.js";
 import {LL_Throwable} from "./throwable.js";
 
+const lintulistaServerUrl = "http://localhost:8080";
+
 const backendURLs = {
-    lists: "http://localhost:8080",
-    login: "http://localhost:8080/login",
-    metadata: "./server/api/metadata.php",
-    knownBirdSpecies: "./server/metadata/known-birds.json",
+    lists: lintulistaServerUrl,
+    login: `${lintulistaServerUrl}/login`,
+    knownBirdSpecies: "./server/metadata/known-birds.json", /// TODO: This resource needs to be moved to a more suitable place.
 };
 
 export const ll_backend_request = {
